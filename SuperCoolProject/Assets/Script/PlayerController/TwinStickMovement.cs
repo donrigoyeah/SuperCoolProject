@@ -10,17 +10,24 @@ public class TwinStickMovement : MonoBehaviour
 {
     [SerializeField] private float playerSpeed;
     [SerializeField] private float gravityValue;
+    [SerializeField] private float jumpForce;
     
     private CharacterController controller;
 
     private Vector2 movement;
     private Vector2 aim;
     private Vector3 playerVelocity;
+    public bool isJumping = true;
+    public bool jumpTrigger;
+    public float jumpCooldownTimer = 0f;
+    public float jumpCooldown = 2f;
+
 
     private PlayerControls playerControls;
 
     private void Awake()
     {
+        isJumping = true;
         controller = GetComponent<CharacterController>();
         playerControls = new PlayerControls();
     }
@@ -32,18 +39,35 @@ public class TwinStickMovement : MonoBehaviour
     
     void Update()
     {
-        HandleInput();
-        HandleMovement();
-        HandleRotation();
+        Input();
+        Movement();
+        Rotation();
+
+        if (jumpTrigger && isJumping)
+        {
+            Jump();
+        }
+        
+        {
+            jumpCooldownTimer -= Time.deltaTime;
+
+            if (jumpCooldownTimer <= 0f)
+            {
+                isJumping = true; 
+                jumpCooldownTimer = jumpCooldown; 
+            }
+        }
     }
 
-    void HandleInput()
+    void Input()
     {
         movement = playerControls.PlayerActionMap.Movement.ReadValue<Vector2>();
         aim = playerControls.PlayerActionMap.Aim.ReadValue<Vector2>();
+        jumpTrigger = playerControls.PlayerActionMap.Jump.triggered;
+
     }
 
-    void HandleMovement()
+    void Movement()
     {
         Vector3 move = new Vector3(movement.x, 0, movement.y);
         controller.Move(move * Time.deltaTime * playerSpeed);
@@ -52,7 +76,7 @@ public class TwinStickMovement : MonoBehaviour
         controller.Move(playerVelocity * Time.deltaTime);
     }
 
-    void HandleRotation()
+    void Rotation()
     {
         Ray ray = Camera.main.ScreenPointToRay(aim);
         Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
@@ -69,6 +93,14 @@ public class TwinStickMovement : MonoBehaviour
     {
         Vector3 highCorrectPoint = new Vector3(lookPoint.x, transform.position.y, lookPoint.z);
         transform.LookAt(highCorrectPoint);
+    }
+
+    void Jump()
+    {
+
+        playerVelocity.y = jumpForce;
+        isJumping = false;
+
     }
     
 }
