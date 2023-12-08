@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 875804534354543705}
   - component: {fileID: 7910166194048014903}
   - component: {fileID: 7585532507068316445}
+  - component: {fileID: 7983239174723258367}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -181,7 +182,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerSpeed: 10
-  gravityValue: -9.81
+  gravityValue: -40
+  jumpForce: 15
+  isDashing: 1
+  dashTrigger: 0
+  dashCooldownTimer: 0
+  dashCooldown: 5
+  dashDuration: 0.3
+  dashSpeed: 20
+--- !u!114 &7983239174723258367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123791489352467104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c88a96626b1561f46b7a2e0b81689b0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bullet: {fileID: 2870642956473722730, guid: 5b08b8792badccc4081f2bd14322d3b9, type: 3}
+  fireRate: 0.5
+  nextFireTime: 0
+  bulletSpeed: 50
+  shootTrigger: 0
 --- !u!1 &5373621337931387877
 GameObject:
   m_ObjectHideFlags: 0
