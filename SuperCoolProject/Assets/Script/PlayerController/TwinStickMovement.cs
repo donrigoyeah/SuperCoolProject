@@ -17,10 +17,18 @@ public class TwinStickMovement : MonoBehaviour
     private Vector2 movement;
     private Vector2 aim;
     private Vector3 playerVelocity;
-    public bool isJumping = true;
-    public bool jumpTrigger;
-    public float jumpCooldownTimer = 0f;
-    public float jumpCooldown = 2f;
+    
+    private bool isJumping = true;
+    private bool jumpTrigger;
+    private float jumpCooldownTimer = 0f;
+    private float jumpCooldown = 2f;
+
+    public bool isDashing = true;
+    public bool dashTrigger;
+    public float dashCooldownTimer = 0f;
+    public float dashCooldown = 5f;
+    public float dashDuration = 0.3f;
+    public float dashSpeed = 20f;
 
 
     private PlayerControls playerControls;
@@ -48,13 +56,28 @@ public class TwinStickMovement : MonoBehaviour
             Jump();
         }
         
+        if (dashTrigger && isDashing)
+        {
+            StartCoroutine(Dash());
+        }
+
+        if(!isJumping)
         {
             jumpCooldownTimer -= Time.deltaTime;
-
             if (jumpCooldownTimer <= 0f)
             {
                 isJumping = true; 
                 jumpCooldownTimer = jumpCooldown; 
+            }
+        }
+        
+        if (!isDashing)
+        {
+            dashCooldownTimer -= Time.deltaTime;
+            if (dashCooldownTimer <= 0f)
+            {
+                isDashing = true;
+                dashCooldownTimer = dashCooldown;
             }
         }
     }
@@ -64,7 +87,7 @@ public class TwinStickMovement : MonoBehaviour
         movement = playerControls.PlayerActionMap.Movement.ReadValue<Vector2>();
         aim = playerControls.PlayerActionMap.Aim.ReadValue<Vector2>();
         jumpTrigger = playerControls.PlayerActionMap.Jump.triggered;
-
+        dashTrigger = playerControls.PlayerActionMap.Dash.triggered;
     }
 
     void Movement()
@@ -74,6 +97,7 @@ public class TwinStickMovement : MonoBehaviour
 
         playerVelocity.y += gravityValue * Time.deltaTime;
         controller.Move(playerVelocity * Time.deltaTime);
+        
     }
 
     void Rotation()
@@ -95,12 +119,22 @@ public class TwinStickMovement : MonoBehaviour
         transform.LookAt(highCorrectPoint);
     }
 
-    void Jump()
+    private void Jump()
     {
-
         playerVelocity.y = jumpForce;
         isJumping = false;
-
     }
-    
+
+    private IEnumerator Dash()
+    {
+        Debug.Log("Hey");
+
+        float originalSpeed = playerSpeed;
+        playerSpeed = dashSpeed;
+
+        yield return new WaitForSeconds(dashDuration);
+
+        playerSpeed = originalSpeed;
+        isDashing = false;
+    }
 }
