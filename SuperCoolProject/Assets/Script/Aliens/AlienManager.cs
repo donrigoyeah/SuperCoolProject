@@ -16,7 +16,7 @@ public class AlienManager : MonoBehaviour
 
     private void SpawnAlien()
     {
-        for (int i = 0; i < PoolManager.SharedInstance.alienAmount; i++)
+        for (int i = 0; i < PoolManager.SharedInstance.alienAmount / 2; i++)
         {
             GameObject alienPoolGo = PoolManager.SharedInstance.GetPooledAliens();
             if (alienPoolGo != null)
@@ -27,8 +27,10 @@ public class AlienManager : MonoBehaviour
                 int randPosX = Random.Range(2, 198) - 100;
                 int randPosZ = Random.Range(2, 198) - 100;
                 alienPoolGo.SetActive(true);
-                alienPoolGo.GetComponent<AlienHandler>().alienSpecies[randomSpecies].SetActive(true);
-                alienPoolGo.GetComponent<AlienHandler>().currentSpecies = randomSpecies;
+                AlienHandler alienPoolGoHandler = alienPoolGo.GetComponent<AlienHandler>();
+                alienPoolGoHandler.alienSpecies[randomSpecies].SetActive(true);
+                alienPoolGoHandler.currentSpecies = randomSpecies;
+
                 alienPoolGo.transform.position = new Vector3(randPosX, 0.5f, randPosZ);
             }
         }

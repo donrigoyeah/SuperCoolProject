@@ -1,64 +1,85 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class AlienHandler : MonoBehaviour
 {
+    [Header("General")]
     public float alienSpeed = 5;
     public float lookRadius = 10;
+    public GameObject[] alienSpecies; // 0:Sphere, 1:Square, 2:Triangle
+    public bool isLooking;
+    public bool wantsToMate;
+    public bool chasingPrey;
+    public bool evadingPredetor;
+
+    [Header("This Alien")]
     public float lifeTime = 0;
-
-    public GameObject[] alienSpecies;
+    public float mateTimer = 0;
+    public bool isFemale;
     public int currentSpecies;
+    Vector3 targetSpot = Vector3.one * 1000;
 
-    public GameObject closestObject = null;
-    int closestObjectIndex;
+    [Header("Target Alien")]
+    public GameObject closestAlien = null;
+    public GameObject lastClosestAlien = null;
+    AlienHandler closestAlienHandler = null;
+    int closestAlienIndex;
+
+    public Vector3 targetPosition;
 
     private void Awake()
     {
-        foreach (var item in alienSpecies)
-        {
-            item.SetActive(false);
-        }
+        DeactivateAllModels();
     }
 
 
     private void OnEnable()
     {
+        DeactivateAllModels();
         lifeTime = 0;
-        closestObject = null;
+        mateTimer = 0;
+        isFemale = UnityEngine.Random.Range(0, 2) == 1;
+        closestAlien = null;
+        closestAlienHandler = null;
     }
+
+
 
     private void FixedUpdate()
     {
         lifeTime += Time.deltaTime;
-        if (closestObject == null)
-        {
-            Idle();
-            FindClosestAlien();
-        }
-        else
-        {
-            float step = alienSpeed * Time.deltaTime; // calculate distance to move
+        mateTimer += Time.deltaTime;
+        float step = alienSpeed * Time.deltaTime; // calculate distance to move
 
-            if (closestObjectIndex == currentSpecies || lifeTime > 2)
+        if (closestAlien != null || closestAlienHandler != null)
+        {
+            isLooking = false;
+            targetPosition = closestAlien.transform.position;
+            if (closestAlienIndex == currentSpecies && lifeTime > 20 && mateTimer > 10 && isFemale != closestAlienHandler.isFemale)
             {
-                Debug.Log("Lets Mate");
-                // Handle mating
+                // Handle balz
+                HandleBalz(step);
             }
-            else if (closestObjectIndex > currentSpecies || (currentSpecies == 3 && closestObjectIndex == 0))
+            else if (closestAlienIndex > currentSpecies || (currentSpecies == 3 && closestAlienIndex == 0)) // 0:Sphere, 1:Square, 2:Triangle
             {
-                Debug.Log("Ohh Shit");
                 // Handle running away
                 HandleFleeing(step);
             }
-            else if (closestObjectIndex < currentSpecies || (currentSpecies == 0 && closestObjectIndex == 3))
+            else if (closestAlienIndex < currentSpecies || (currentSpecies == 0 && closestAlienIndex == 3)) // 0:Sphere, 1:Square, 2:Triangle
             {
-                Debug.Log("i want to eat you");
                 // Handle attacking
                 HandleAttacking(step);
             }
+        }
+        else
+        {
+            isLooking = true;
+
+            Idle(step);
+            FindClosestAlien();
         }
     }
     private void LateUpdate()
@@ -69,70 +90,140 @@ public class AlienHandler : MonoBehaviour
         if (transform.position.z < GameManager.SharedInstance.worldBoundaryMinusZ) { transform.position = new Vector3(transform.position.x, transform.position.y, GameManager.SharedInstance.worldBoundaryMinusZ); }
     }
 
-    void Idle()
+    void Idle(float step)
     {
-        float randDirX = Random.Range(0, 2) - .5f;
-        float randDirY = Random.Range(0, 2) - .5f;
-        transform.position += new Vector3(randDirX, 0, randDirY) * alienSpeed;
+        if (targetSpot == Vector3.one * 1000 || transform.position == targetSpot)
+        {
+            float randDirX = UnityEngine.Random.Range(0, 2) - .5f;
+            float randDirY = UnityEngine.Random.Range(0, 2) - .5f;
+            targetSpot = transform.position + new Vector3(randDirX, 0, randDirY) * 5;
+
+            if (targetSpot.x > GameManager.SharedInstance.worldBoundaryX ||
+                targetSpot.x < GameManager.SharedInstance.worldBoundaryMinusX ||
+                targetSpot.z < GameManager.SharedInstance.worldBoundaryMinusZ ||
+                targetSpot.z > GameManager.SharedInstance.worldBoundaryZ)
+            {
+                targetSpot = Vector3.one * 1000;
+            }
+        }
+        else
+        {
+            transform.position = Vector3.MoveTowards(transform.position, targetSpot, step);
+        }
     }
 
     private void HandleAttacking(float step)
     {
-        transform.position = Vector3.MoveTowards(transform.position, closestObject.transform.position, step);
+        chasingPrey = true;
+        transform.position = Vector3.MoveTowards(transform.position, closestAlien.transform.position, step);
+        Debug.DrawLine(transform.position, closestAlien.transform.position, Color.red);
     }
 
     private void HandleFleeing(float step)
     {
-        Vector3 fleeDir = transform.position - closestObject.transform.position;
+        evadingPredetor = true;
+        Vector3 fleeDir = closestAlien.transform.position - transform.position;
         transform.position = Vector3.MoveTowards(transform.position, fleeDir, step);
+        Debug.DrawLine(transform.position, fleeDir, Color.blue);
     }
 
+    private void HandleBalz(float step)
+    {
+        wantsToMate = true;
+        transform.position = Vector3.MoveTowards(transform.position, closestAlien.transform.position, step);
+        Debug.DrawLine(transform.position, closestAlien.transform.position, Color.green);
+
+    }
+    private void HandleMating()
+    {
+        if (isFemale)
+        {
+            GameObject alienPoolGo = PoolManager.SharedInstance.GetPooledAliens();
+            if (alienPoolGo != null)
+            {
+                AlienHandler newBornAlien;
+                alienPoolGo.SetActive(true);
+                newBornAlien = alienPoolGo.GetComponent<AlienHandler>();
+                newBornAlien.alienSpecies[currentSpecies].SetActive(true);
+                newBornAlien.currentSpecies = currentSpecies;
+                isFemale = UnityEngine.Random.Range(0, 2) == 1;
+
+                alienPoolGo.transform.position = new Vector3(transform.position.x, 0.5f, transform.position.z) + Vector3.forward;
+            }
+        }
+        lastClosestAlien = closestAlien;
+        wantsToMate = false;
+        closestAlien = null;
+        closestAlienHandler = null;
+        mateTimer = 0;
+    }
 
     public GameObject FindClosestAlien()
     {
-        for (int i = 0; i < PoolManager.SharedInstance.AlienPool.Count; i++)  //list of gameObjects to search through
-        {
-            if (PoolManager.SharedInstance.AlienPool[i] == this.gameObject) continue;
+        int layerMask = 1 << 9; // Lyer 9 is Enemy
+        Collider[] aliensInRange;
+        aliensInRange = Physics.OverlapSphere(this.transform.position, lookRadius, layerMask);
 
-            float dist = Vector3.Distance(PoolManager.SharedInstance.AlienPool[i].transform.position, transform.position);
-            if (dist < lookRadius)
+        for (int i = 0; i < aliensInRange.Length; i++)  //list of gameObjects to search through
+        {
+            if (aliensInRange[i] == lastClosestAlien) continue;
+
+            float dist = Vector3.Distance(aliensInRange[i].transform.position, transform.position);
+            if (dist > .1f && dist < lookRadius)
             {
-                closestObject = PoolManager.SharedInstance.AlienPool[i];
-                closestObjectIndex = closestObject.GetComponent<AlienHandler>().currentSpecies;
+                closestAlien = aliensInRange[i].gameObject;
+                closestAlienIndex = closestAlien.GetComponent<AlienHandler>().currentSpecies;
+                break;
             }
         }
-        return closestObject;
+        return closestAlien;
+
+        #region Loop over List approach
+        //for (int i = 0; i < PoolManager.SharedInstance.AlienPool.Count; i++)  //list of gameObjects to search through
+        //{
+        //    if (PoolManager.SharedInstance.AlienPool[i] == this.gameObject || PoolManager.SharedInstance.AlienPool[i] == lastClosestAlien) continue;
+
+        //    float dist = Vector3.Distance(PoolManager.SharedInstance.AlienPool[i].transform.position, transform.position);
+        //    if (dist < lookRadius)
+        //    {
+        //        closestAlien = PoolManager.SharedInstance.AlienPool[i];
+        //        closestAlienIndex = closestAlien.GetComponent<AlienHandler>().currentSpecies;
+        //        break;
+        //    }
+        //}
+        //return closestAlien;
+        #endregion
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.GetComponent<AlienHandler>().currentSpecies == currentSpecies)
+        AlienHandler otherAlien = collision.gameObject.GetComponent<AlienHandler>();
+        if (otherAlien.currentSpecies == currentSpecies && lifeTime > 20 && mateTimer > 10)
         {
             // Spawn new Species
-            Debug.Log("Mating");
-            GameObject alienPoolGo = PoolManager.SharedInstance.GetPooledAliens();
-            if (alienPoolGo != null)
-            {
-                alienPoolGo.SetActive(true);
-                alienPoolGo.GetComponent<AlienHandler>().alienSpecies[currentSpecies].SetActive(true);
-                alienPoolGo.GetComponent<AlienHandler>().currentSpecies = currentSpecies;
-                alienPoolGo.transform.position = this.transform.position;
-            }
-            else if (collision.gameObject.GetComponent<AlienHandler>().currentSpecies > currentSpecies || (collision.gameObject.GetComponent<AlienHandler>().currentSpecies == 3 && currentSpecies == 0))
-            {
-                // Got eaten
-                Debug.Log("Got eaten");
-
-                this.gameObject.SetActive(false);
-            }
-            else if (collision.gameObject.GetComponent<AlienHandler>().currentSpecies < currentSpecies || (collision.gameObject.GetComponent<AlienHandler>().currentSpecies == 0 && currentSpecies == 3))
-            {
-                // You eat
-                Debug.Log("Eat");
-
-                closestObject = null;
-            }
+            HandleMating();
+        }
+        else if (otherAlien.currentSpecies > currentSpecies || (otherAlien.currentSpecies == 3 && currentSpecies == 0)) // 0:Sphere, 1:Square, 2:Triangle
+        {
+            // Got eaten
+            this.gameObject.SetActive(false);
+            evadingPredetor = false;
+            closestAlien = null;
+        }
+        else if (otherAlien.currentSpecies < currentSpecies || (otherAlien.currentSpecies == 0 && currentSpecies == 3)) // 0:Sphere, 1:Square, 2:Triangle
+        {
+            // You eat
+            otherAlien.gameObject.SetActive(false);
+            chasingPrey = false;
+            closestAlien = null;
         }
     }
 
+    private void DeactivateAllModels()
+    {
+        foreach (var item in alienSpecies)
+        {
+            item.SetActive(false);
+        }
+    }
 }
