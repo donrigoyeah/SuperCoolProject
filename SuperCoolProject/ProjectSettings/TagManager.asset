@@ -7,6 +7,8 @@ TagManager:
   - triangle
   - square
   - sphere
+  - Bullet
+  - Alien
   layers:
   - Default
   - TransparentFX

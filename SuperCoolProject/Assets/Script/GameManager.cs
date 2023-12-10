@@ -16,4 +16,8 @@ public class GameManager : MonoBehaviour
     {
         SharedInstance = this;
     }
+
+    // TODO: Handle stuff like day/night cycle here
+    // Handle spaceship parts collected
+    // Handle gametime
 }

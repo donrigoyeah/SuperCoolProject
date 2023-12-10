@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class AlienManager : MonoBehaviour
 {
-    private void Awake()
-    {
-
-    }
-
     private void Start()
     {
         SpawnAlien();
@@ -22,18 +17,22 @@ public class AlienManager : MonoBehaviour
             if (alienPoolGo != null)
             {
                 int randomSpecies = Random.Range(0, 3);
-                //int randPosX = Random.Range(GameManager.SharedInstance.worldBoundaryMinusX, GameManager.SharedInstance.worldBoundaryX);
-                //int randPosZ = Random.Range(GameManager.SharedInstance.worldBoundaryMinusY, GameManager.SharedInstance.worldBoundaryY);
-                int randPosX = Random.Range(2, 198) - 100;
-                int randPosZ = Random.Range(2, 198) - 100;
+                //int randPosX = Random.Range(0, GameManager.SharedInstance.worldBoundaryX * 2) - GameManager.SharedInstance.worldBoundaryX;
+                //int randPosZ = Random.Range(0, GameManager.SharedInstance.worldBoundaryZ * 2) - GameManager.SharedInstance.worldBoundaryZ;
+                int randPosX = Random.Range(0, 200) - 100;
+                int randPosZ = Random.Range(0, 200) - 100;
+
                 alienPoolGo.SetActive(true);
                 AlienHandler alienPoolGoHandler = alienPoolGo.GetComponent<AlienHandler>();
                 alienPoolGoHandler.alienSpecies[randomSpecies].SetActive(true);
                 alienPoolGoHandler.currentSpecies = randomSpecies;
+                alienPoolGoHandler.ActivateCurrentModels(randomSpecies);
 
+                // TODO: Maybe have them spawn in groups of the same kind to make sure they have good start oppertunity
                 alienPoolGo.transform.position = new Vector3(randPosX, 0.5f, randPosZ);
             }
         }
     }
 
+    // TODO: Handle population control stuff here
 }

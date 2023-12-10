@@ -6,16 +6,34 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class AlienHandler : MonoBehaviour
 {
+    // Use these as states instead of boolean
+    enum AlienState
+    {
+        roaming,
+        hunting,
+        evading,
+        loving
+    }
+
+    // Use this for interaction
+    enum AlienAge
+    {
+        resource,
+        child,
+        sexualActive,
+        fullyGrown
+    }
+
     [Header("General")]
     public float alienSpeed = 5;
     public float lookRadius = 10;
     public GameObject[] alienSpecies; // 0:Sphere, 1:Square, 2:Triangle
-    public bool isLooking;
-    public bool wantsToMate;
-    public bool chasingPrey;
-    public bool evadingPredetor;
+    private float delta;
+    private float step;
 
     [Header("This Alien")]
+    AlienState currentState;
+    AlienAge currentAge;
     public float lifeTime = 0;
     public float mateTimer = 0;
     public bool isFemale;
@@ -27,66 +45,60 @@ public class AlienHandler : MonoBehaviour
     public GameObject lastClosestAlien = null;
     AlienHandler closestAlienHandler = null;
     int closestAlienIndex;
-
     public Vector3 targetPosition;
 
     private void Awake()
     {
-        DeactivateAllModels();
+        lifeTime = 0;
+        mateTimer = 0;
+        closestAlien = null;
+        closestAlienHandler = null;
+        isFemale = UnityEngine.Random.Range(0, 2) == 1;
+        currentState = AlienState.roaming;
+        currentAge = AlienAge.sexualActive;
     }
-
 
     private void OnEnable()
     {
-        DeactivateAllModels();
         lifeTime = 0;
         mateTimer = 0;
-        isFemale = UnityEngine.Random.Range(0, 2) == 1;
         closestAlien = null;
         closestAlienHandler = null;
+        isFemale = UnityEngine.Random.Range(0, 2) == 1;
+        currentState = AlienState.roaming;
+        currentAge = AlienAge.resource;
     }
 
     private void FixedUpdate()
     {
-        lifeTime += Time.deltaTime;
-        mateTimer += Time.deltaTime;
-        float step = alienSpeed * Time.deltaTime; // calculate distance to move
+        delta = Time.deltaTime;
+        lifeTime += delta;
+        mateTimer += delta;
+        step = alienSpeed * delta;
 
-        if (closestAlien != null || closestAlienHandler != null)
-        {
-            isLooking = false;
-            targetPosition = closestAlien.transform.position;
-            if (closestAlienIndex == currentSpecies && lifeTime > 20 && mateTimer > 10 && isFemale != closestAlienHandler.isFemale)
-            {
-                // Handle balz
-                HandleLoveApproach(step);
-            }
-            else if (closestAlienIndex > currentSpecies || (currentSpecies == 3 && closestAlienIndex == 0)) // 0:Sphere, 1:Square, 2:Triangle
-            {
-                // Handle running away
-                HandleFleeing(step);
-            }
-            else if (closestAlienIndex < currentSpecies || (currentSpecies == 0 && closestAlienIndex == 3)) // 0:Sphere, 1:Square, 2:Triangle
-            {
-                // Handle attacking
-                HandleAttacking(step);
-            }
-        }
-        else
-        {
-            isLooking = true;
+        HandleAging(lifeTime);
+        KeepInBoundaries();
 
+        if (currentState == AlienState.roaming)
+        {
             Idle(step);
             FindClosestAlien();
         }
-        KeepInBoundaries();
-    }
-    private void KeepInBoundaries()
-    {
-        if (transform.position.x > GameManager.SharedInstance.worldBoundaryX) { transform.position = new Vector3(GameManager.SharedInstance.worldBoundaryX, transform.position.y, transform.position.z); }
-        if (transform.position.x < GameManager.SharedInstance.worldBoundaryMinusX) { transform.position = new Vector3(GameManager.SharedInstance.worldBoundaryMinusX, transform.position.y, transform.position.z); }
-        if (transform.position.z > GameManager.SharedInstance.worldBoundaryZ) { transform.position = new Vector3(transform.position.x, transform.position.y, GameManager.SharedInstance.worldBoundaryZ); }
-        if (transform.position.z < GameManager.SharedInstance.worldBoundaryMinusZ) { transform.position = new Vector3(transform.position.x, transform.position.y, GameManager.SharedInstance.worldBoundaryMinusZ); }
+        else if (closestAlien != null)
+        {
+            if (currentState == AlienState.hunting)
+            {
+                HandleAttacking(step);
+            }
+            else if (currentState == AlienState.evading)
+            {
+                HandleFleeing(step);
+            }
+            else if (currentState == AlienState.loving)
+            {
+                HandleLoveApproach(step);
+            }
+        }
     }
 
     void Idle(float step)
@@ -111,16 +123,40 @@ public class AlienHandler : MonoBehaviour
         }
     }
 
+    private void HandleAging(float lifeTime)
+    {
+        if (lifeTime > 5)
+        {
+            currentAge = AlienAge.child;
+        }
+        else if (lifeTime > 10)
+        {
+            currentAge = AlienAge.sexualActive;
+
+        }
+        else if (lifeTime > 40)
+        {
+            currentAge = AlienAge.fullyGrown;
+
+        }
+    }
+
+    private void KeepInBoundaries()
+    {
+        if (transform.position.x > GameManager.SharedInstance.worldBoundaryX) { transform.position = new Vector3(GameManager.SharedInstance.worldBoundaryX, transform.position.y, transform.position.z); }
+        if (transform.position.x < GameManager.SharedInstance.worldBoundaryMinusX) { transform.position = new Vector3(GameManager.SharedInstance.worldBoundaryMinusX, transform.position.y, transform.position.z); }
+        if (transform.position.z > GameManager.SharedInstance.worldBoundaryZ) { transform.position = new Vector3(transform.position.x, transform.position.y, GameManager.SharedInstance.worldBoundaryZ); }
+        if (transform.position.z < GameManager.SharedInstance.worldBoundaryMinusZ) { transform.position = new Vector3(transform.position.x, transform.position.y, GameManager.SharedInstance.worldBoundaryMinusZ); }
+    }
+
     private void HandleAttacking(float step)
     {
-        chasingPrey = true;
         transform.position = Vector3.MoveTowards(transform.position, closestAlien.transform.position, step);
         Debug.DrawLine(transform.position, closestAlien.transform.position, Color.red);
     }
 
     private void HandleFleeing(float step)
     {
-        evadingPredetor = true;
         Vector3 fleeDir = closestAlien.transform.position - transform.position;
         transform.position = Vector3.MoveTowards(transform.position, fleeDir, step);
         Debug.DrawLine(transform.position, fleeDir, Color.blue);
@@ -128,11 +164,11 @@ public class AlienHandler : MonoBehaviour
 
     private void HandleLoveApproach(float step)
     {
-        wantsToMate = true;
         transform.position = Vector3.MoveTowards(transform.position, closestAlien.transform.position, step);
         Debug.DrawLine(transform.position, closestAlien.transform.position, Color.green);
 
     }
+
     private void HandleMating()
     {
         if (isFemale)
@@ -147,11 +183,11 @@ public class AlienHandler : MonoBehaviour
                 newBornAlien.currentSpecies = currentSpecies;
                 isFemale = UnityEngine.Random.Range(0, 2) == 1;
 
+                // TODO: Spawn them somewhere near, in the middle (?!)
                 alienPoolGo.transform.position = new Vector3(transform.position.x, 0.5f, transform.position.z) + Vector3.forward;
             }
         }
         lastClosestAlien = closestAlien;
-        wantsToMate = false;
         closestAlien = null;
         closestAlienHandler = null;
         mateTimer = 0;
@@ -163,7 +199,9 @@ public class AlienHandler : MonoBehaviour
         Collider[] aliensInRange;
         aliensInRange = Physics.OverlapSphere(this.transform.position, lookRadius, layerMask);
 
-        for (int i = 0; i < aliensInRange.Length; i++)  //list of gameObjects to search through
+        // TODO: Make a better closest alien selection
+        // Maybe if aggressor is near evade rather then love making (?!)
+        for (int i = 0; i < aliensInRange.Length; i++)
         {
             if (aliensInRange[i] == lastClosestAlien) continue;
 
@@ -174,6 +212,29 @@ public class AlienHandler : MonoBehaviour
                 closestAlienIndex = closestAlien.GetComponent<AlienHandler>().currentSpecies;
                 break;
             }
+        }
+
+        if (closestAlien != null)
+        {
+
+            // Check to which state the alien switches
+            if (closestAlienIndex == currentSpecies && lifeTime > 20 && mateTimer > 10 && isFemale != closestAlienHandler.isFemale)
+            {
+                // Handle loving
+                currentState = AlienState.loving;
+            }
+            else if (closestAlienIndex > currentSpecies || (currentSpecies == 3 && closestAlienIndex == 0)) // 0:Sphere, 1:Square, 2:Triangle
+            {
+                // Handle evading
+                currentState = AlienState.evading;
+
+            }
+            else if (closestAlienIndex < currentSpecies || (currentSpecies == 0 && closestAlienIndex == 3)) // 0:Sphere, 1:Square, 2:Triangle
+            {
+                // Handle attacking
+                currentState = AlienState.hunting;
+            }
+
         }
         return closestAlien;
 
@@ -196,33 +257,47 @@ public class AlienHandler : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        AlienHandler otherAlien = collision.gameObject.GetComponent<AlienHandler>();
-        if (otherAlien.currentSpecies == currentSpecies && lifeTime > 20 && mateTimer > 10)
+        if (collision.gameObject.CompareTag("Alien"))
         {
-            // Spawn new Species
-            HandleMating();
+            AlienHandler otherAlien = collision.gameObject.GetComponent<AlienHandler>();
+            if (otherAlien.currentSpecies == currentSpecies && lifeTime > 20 && mateTimer > 10)
+            {
+                // Spawn new Species
+                HandleMating();
+            }
+            else if (otherAlien.currentSpecies > currentSpecies || (otherAlien.currentSpecies == 3 && currentSpecies == 0)) // 0:Sphere, 1:Square, 2:Triangle
+            {
+                // Got eaten
+                this.gameObject.SetActive(false);
+                closestAlien = null;
+            }
+            else if (otherAlien.currentSpecies < currentSpecies || (otherAlien.currentSpecies == 0 && currentSpecies == 3)) // 0:Sphere, 1:Square, 2:Triangle
+            {
+                // You eat
+                otherAlien.gameObject.SetActive(false);
+                closestAlien = null;
+            }
         }
-        else if (otherAlien.currentSpecies > currentSpecies || (otherAlien.currentSpecies == 3 && currentSpecies == 0)) // 0:Sphere, 1:Square, 2:Triangle
+        else if (collision.gameObject.CompareTag("Bullet"))
         {
-            // Got eaten
-            this.gameObject.SetActive(false);
-            evadingPredetor = false;
-            closestAlien = null;
+            // TODO: handle hit by bullet
         }
-        else if (otherAlien.currentSpecies < currentSpecies || (otherAlien.currentSpecies == 0 && currentSpecies == 3)) // 0:Sphere, 1:Square, 2:Triangle
+        else if (collision.gameObject.CompareTag("Player"))
         {
-            // You eat
-            otherAlien.gameObject.SetActive(false);
-            chasingPrey = false;
-            closestAlien = null;
+            // TODO: Handle player collision
+            // here also farming resource if state is child
         }
     }
 
-    private void DeactivateAllModels()
+    public void ActivateCurrentModels(int currentSpeyiesIndex)
     {
         foreach (var item in alienSpecies)
         {
             item.SetActive(false);
         }
+        alienSpecies[currentSpeyiesIndex].SetActive(true);
     }
+
+
+
 }
