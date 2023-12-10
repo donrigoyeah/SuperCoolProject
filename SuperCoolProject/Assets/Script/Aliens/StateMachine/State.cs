@@ -10,6 +10,7 @@ public abstract class State : MonoBehaviour
     public AlienHandler alienHandler;
     public GameObject targetAlien;
     public Vector3 targetPosition;
+
     //public Rigidbody enemyRigidbody;
     //public NavMeshAgent navMeshAgent;
 
@@ -22,7 +23,7 @@ public abstract class State : MonoBehaviour
 
     private void Start()
     {
-        alienHandler = GetComponentInParent<AlienHandler>();
+        //alienHandler = GetComponentInParent<AlienHandler>();
         //enemyRigidbody = GetComponentInParent<Rigidbody>();
         //enemyManager = GetComponentInParent<EnemyManager>();
         //enemyInventory = GetComponentInParent<EnemyInventory>();

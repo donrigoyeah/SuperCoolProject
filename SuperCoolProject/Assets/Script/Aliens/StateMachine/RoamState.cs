@@ -14,7 +14,7 @@ public class RoamState : State
         // walk around
         WalkAround();
 
-
+        targetAlien = alienHandler.gameObject;
         // Look around
         int layerMask = 1 << 9; // Lyer 9 is Enemy
         Collider[] aliensInRange;
@@ -37,28 +37,30 @@ public class RoamState : State
                 break;
             }
         }
-
-        targetPosition = targetAlien.transform.position;
-        if (alienHandler.closestAlienIndex == alienHandler.currentSpecies &&
-            alienHandler.lifeTime > 20 &&
-            alienHandler.mateTimer > 10 &&
-            alienHandler.isFemale != alienHandler.closestAlienHandler.isFemale)
+        if (targetAlien != null || targetAlien == alienHandler.gameObject)
         {
-            return repoState;
+            targetPosition = targetAlien.transform.position;
+            if (alienHandler.closestAlienIndex == alienHandler.currentSpecies &&
+                alienHandler.lifeTime > 20 &&
+                alienHandler.mateTimer > 10 &&
+                alienHandler.isFemale != alienHandler.closestAlienHandler.isFemale)
+            {
+                return repoState;
+            }
+            else if (alienHandler.closestAlienIndex > alienHandler.currentSpecies || (alienHandler.currentSpecies == 3 && alienHandler.closestAlienIndex == 0)) // 0:Sphere, 1:Square, 2:Triangle
+            {
+                return evadeState;
+            }
+            else if (alienHandler.closestAlienIndex < alienHandler.currentSpecies || (alienHandler.currentSpecies == 0 && alienHandler.closestAlienIndex == 3)) // 0:Sphere, 1:Square, 2:Triangle
+            {
+                return attackState;
+            }
+            else
+            {
+                return this;
+            }
         }
-        else if (alienHandler.closestAlienIndex > alienHandler.currentSpecies || (alienHandler.currentSpecies == 3 && alienHandler.closestAlienIndex == 0)) // 0:Sphere, 1:Square, 2:Triangle
-        {
-            return evadeState;
-        }
-        else if (alienHandler.closestAlienIndex < alienHandler.currentSpecies || (alienHandler.currentSpecies == 0 && alienHandler.closestAlienIndex == 3)) // 0:Sphere, 1:Square, 2:Triangle
-        {
-            return attackState;
-        }
-        else
-        {
-            return this;
-        }
-
+        return this;
 
         #region Loop over List approach
         //for (int i = 0; i < PoolManager.SharedInstance.AlienPool.Count; i++)  //list of gameObjects to search through
