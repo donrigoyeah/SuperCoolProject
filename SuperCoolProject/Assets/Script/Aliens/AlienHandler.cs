@@ -24,33 +24,43 @@ public class AlienHandler : MonoBehaviour
         fullyGrown
     }
 
-    [Header("General")]
+    [Header("Tick stats")]
+    public float tickTimer;
+    public float tickTimerMax = .3f;
+
+    [Header("General AlienStuff")]
     public float alienSpeed = 5;
     public float lookRadius = 10;
     public GameObject[] alienSpecies; // 0:Sphere, 1:Square, 2:Triangle
     private float delta;
     private float step;
+    private float alienLifeResource = 1;
+    private float alienLifeChild = 10;
+    private float alienLifeSexual = 30;
+    private float alienLifeFullGrown = 50;
+
 
     [Header("This Alien")]
     AlienState currentState;
     AlienAge currentAge;
+    public float alienHealth;
     public float lifeTime = 0;
     public float mateTimer = 0;
     public bool isFemale;
     public int currentSpecies;
-    Vector3 targetSpot = Vector3.one * 1000;
+    Vector3 targetPosition = Vector3.one * 1000;
 
     [Header("Target Alien")]
     public GameObject closestAlien = null;
     public GameObject lastClosestAlien = null;
     AlienHandler closestAlienHandler = null;
     int closestAlienIndex;
-    public Vector3 targetPosition;
 
     private void Awake()
     {
         lifeTime = 0;
         mateTimer = 0;
+        alienHealth = alienLifeSexual;
         closestAlien = null;
         closestAlienHandler = null;
         isFemale = UnityEngine.Random.Range(0, 2) == 1;
@@ -62,6 +72,7 @@ public class AlienHandler : MonoBehaviour
     {
         lifeTime = 0;
         mateTimer = 0;
+        alienHealth = 1;
         closestAlien = null;
         closestAlienHandler = null;
         isFemale = UnityEngine.Random.Range(0, 2) == 1;
@@ -74,70 +85,89 @@ public class AlienHandler : MonoBehaviour
         delta = Time.deltaTime;
         lifeTime += delta;
         mateTimer += delta;
+        tickTimer += delta; // Used for update not every fixedUpdate but lesser
         step = alienSpeed * delta;
 
-        HandleAging(lifeTime);
-        KeepInBoundaries();
+        // Only Render on Tick condition
+        while (tickTimer >= tickTimerMax)
+        {
+            HandleAging(lifeTime);
+            tickTimer -= tickTimerMax;
 
-        if (currentState == AlienState.roaming)
-        {
-            Idle(step);
-            FindClosestAlien();
+            if (currentState == AlienState.roaming)
+            {
+                Idle(step);
+                FindClosestAlien();
+            }
+            else if (closestAlien != null)
+            {
+                // TODO: Currently only updates to targetPosition
+                if (currentState == AlienState.hunting)
+                {
+                    HandleAttacking(closestAlien, step);
+                }
+                else if (currentState == AlienState.evading)
+                {
+                    HandleFleeing(closestAlien, step);
+                }
+                else if (currentState == AlienState.loving)
+                {
+                    HandleLoveApproach(closestAlien, step);
+                }
+            }
         }
-        else if (closestAlien != null)
-        {
-            if (currentState == AlienState.hunting)
-            {
-                HandleAttacking(step);
-            }
-            else if (currentState == AlienState.evading)
-            {
-                HandleFleeing(step);
-            }
-            else if (currentState == AlienState.loving)
-            {
-                HandleLoveApproach(step);
-            }
-        }
+
+        HandleMovement(step);
+        KeepInBoundaries();
     }
 
     void Idle(float step)
     {
-        if (targetSpot == Vector3.one * 1000 || transform.position == targetSpot)
+        if (targetPosition == Vector3.one * 1000 || transform.position == targetPosition)
         {
             float randDirX = UnityEngine.Random.Range(0, 2) - .5f;
             float randDirY = UnityEngine.Random.Range(0, 2) - .5f;
-            targetSpot = transform.position + new Vector3(randDirX, 0, randDirY) * 5;
+            targetPosition = transform.position + new Vector3(randDirX, 0, randDirY) * 5;
 
-            if (targetSpot.x > GameManager.SharedInstance.worldBoundaryX ||
-                targetSpot.x < GameManager.SharedInstance.worldBoundaryMinusX ||
-                targetSpot.z < GameManager.SharedInstance.worldBoundaryMinusZ ||
-                targetSpot.z > GameManager.SharedInstance.worldBoundaryZ)
+            if (targetPosition.x > GameManager.SharedInstance.worldBoundaryX ||
+                targetPosition.x < GameManager.SharedInstance.worldBoundaryMinusX ||
+                targetPosition.z < GameManager.SharedInstance.worldBoundaryMinusZ ||
+                targetPosition.z > GameManager.SharedInstance.worldBoundaryZ)
             {
-                targetSpot = Vector3.one * 1000;
+                targetPosition = Vector3.one * 1000;
             }
         }
         else
         {
-            transform.position = Vector3.MoveTowards(transform.position, targetSpot, step);
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, step);
         }
     }
 
     private void HandleAging(float lifeTime)
     {
-        if (lifeTime > 5)
+        if (lifeTime < 5)
+        {
+            currentAge = AlienAge.resource;
+            alienHealth = alienLifeResource;
+            transform.localScale = Vector3.one * 0.2f;
+        }
+        else if (lifeTime > 5)
         {
             currentAge = AlienAge.child;
+            alienHealth = alienLifeChild;
+            transform.localScale = Vector3.one * .4f;
         }
         else if (lifeTime > 10)
         {
             currentAge = AlienAge.sexualActive;
-
+            alienHealth = alienLifeSexual;
+            transform.localScale = Vector3.one * .7f;
         }
         else if (lifeTime > 40)
         {
             currentAge = AlienAge.fullyGrown;
-
+            alienHealth = alienLifeFullGrown;
+            transform.localScale = Vector3.one;
         }
     }
 
@@ -149,24 +179,30 @@ public class AlienHandler : MonoBehaviour
         if (transform.position.z < GameManager.SharedInstance.worldBoundaryMinusZ) { transform.position = new Vector3(transform.position.x, transform.position.y, GameManager.SharedInstance.worldBoundaryMinusZ); }
     }
 
-    private void HandleAttacking(float step)
+    private void HandleMovement(float step)
     {
-        transform.position = Vector3.MoveTowards(transform.position, closestAlien.transform.position, step);
-        Debug.DrawLine(transform.position, closestAlien.transform.position, Color.red);
+        transform.position = Vector3.MoveTowards(transform.position, targetPosition, step);
     }
 
-    private void HandleFleeing(float step)
+    private void HandleAttacking(GameObject targetAlien, float step)
     {
-        Vector3 fleeDir = closestAlien.transform.position - transform.position;
-        transform.position = Vector3.MoveTowards(transform.position, fleeDir, step);
-        Debug.DrawLine(transform.position, fleeDir, Color.blue);
+        targetPosition = targetAlien.transform.position; // Update targetPosition only every tick update
+        //HandleMovement(targetAlien.transform.position, step);
+        Debug.DrawLine(transform.position, targetPosition, Color.red);
     }
 
-    private void HandleLoveApproach(float step)
+    private void HandleFleeing(GameObject targetAlien, float step)
     {
-        transform.position = Vector3.MoveTowards(transform.position, closestAlien.transform.position, step);
-        Debug.DrawLine(transform.position, closestAlien.transform.position, Color.green);
+        targetPosition = targetAlien.transform.position - transform.position;
+        //HandleMovement(targetPosition, step);
+        Debug.DrawLine(transform.position, targetPosition, Color.blue);
+    }
 
+    private void HandleLoveApproach(GameObject targetAlien, float step)
+    {
+        targetPosition = targetAlien.transform.position; // Update targetPosition only every tick update
+        //HandleMovement(targetAlien.transform.position, step);
+        Debug.DrawLine(transform.position, targetPosition, Color.green);
     }
 
     private void HandleMating()
@@ -209,12 +245,14 @@ public class AlienHandler : MonoBehaviour
             if (dist > .1f && dist < lookRadius)
             {
                 closestAlien = aliensInRange[i].gameObject;
-                closestAlienIndex = closestAlien.GetComponent<AlienHandler>().currentSpecies;
+                targetPosition = closestAlien.transform.position;
+                closestAlienHandler = closestAlien.GetComponent<AlienHandler>();
+                closestAlienIndex = closestAlienHandler.currentSpecies;
                 break;
             }
         }
 
-        if (closestAlien != null)
+        if (closestAlien != null && closestAlienHandler != null)
         {
 
             // Check to which state the alien switches

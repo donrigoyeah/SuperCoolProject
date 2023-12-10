@@ -29,7 +29,7 @@ public class AlienManager : MonoBehaviour
                 alienPoolGoHandler.ActivateCurrentModels(randomSpecies);
 
                 // TODO: Maybe have them spawn in groups of the same kind to make sure they have good start oppertunity
-                alienPoolGo.transform.position = new Vector3(randPosX, 0.5f, randPosZ);
+                alienPoolGo.transform.position = new Vector3(randPosX, 0.1f, randPosZ);
             }
         }
     }

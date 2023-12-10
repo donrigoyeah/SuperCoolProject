@@ -153,19 +153,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92d37729e291b4349b07b3bdacec80ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tickTimer: 0
+  tickTimerMax: 0.3
   alienSpeed: 3
   lookRadius: 5
   alienSpecies:
   - {fileID: 8329259287624427090}
   - {fileID: 6981288141397108614}
   - {fileID: 9077744314663935623}
+  alienHealth: 0
   lifeTime: 0
   mateTimer: 0
   isFemale: 0
   currentSpecies: 0
   closestAlien: {fileID: 0}
   lastClosestAlien: {fileID: 0}
-  targetPosition: {x: 0, y: 0, z: 0}
 --- !u!65 &4775806378367602359
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -185,8 +187,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.4767919, y: 1.9982638, z: 2.1907163}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 2.4767919, y: 2.842231, z: 2.4368734}
+  m_Center: {x: 0, y: 1.3714472, z: -0.123078585}
 --- !u!54 &-5414810399389503451
 Rigidbody:
   m_ObjectHideFlags: 0

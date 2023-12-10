@@ -329,7 +329,7 @@ Transform:
   m_GameObject: {fileID: 218710415}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -1, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 20, y: 1, z: 20}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -457,7 +457,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0.54215616, y: -0, z: -0, w: 0.8402778}
-  m_LocalPosition: {x: 9.385685, y: 26.766176, z: -11.594646}
+  m_LocalPosition: {x: 9.385685, y: 27.766176, z: -11.594646}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -566,7 +566,7 @@ Transform:
   m_GameObject: {fileID: 378715286}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9.385685, y: -5.7861767, z: 2.1046467}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1387,7 +1387,7 @@ Transform:
   m_GameObject: {fileID: 1180857002}
   serializedVersion: 2
   m_LocalRotation: {x: 0.54215616, y: -0, z: -0, w: 0.8402778}
-  m_LocalPosition: {x: 9.385685, y: 26.766176, z: -11.594646}
+  m_LocalPosition: {x: 9.385685, y: 27.766176, z: -11.594646}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1681,7 +1681,7 @@ Transform:
   m_GameObject: {fileID: 2116648334}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 10, y: -0.5, z: -6}
+  m_LocalPosition: {x: 10, y: 0.5, z: -6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1744,7 +1744,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fa559ac463c37d4b9d2ed5215ac221e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  alienAmount: 20
+  alienAmount: 100
   AlienPool: []
   Alien: {fileID: 1047908099467871381, guid: d934f14e333eefc4697225457031ccaa, type: 3}
   AlienContainer: {fileID: 1906840073}
@@ -1803,7 +1803,7 @@ PrefabInstance:
     - target: {fileID: 8794882847261471613, guid: 12858b1f8789e0e428bbcdcab1837ac1,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8794882847261471613, guid: 12858b1f8789e0e428bbcdcab1837ac1,
         type: 3}
