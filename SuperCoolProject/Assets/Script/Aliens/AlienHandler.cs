@@ -46,8 +46,6 @@ public class AlienHandler : MonoBehaviour
         closestAlienHandler = null;
     }
 
-
-
     private void FixedUpdate()
     {
         lifeTime += Time.deltaTime;
@@ -61,7 +59,7 @@ public class AlienHandler : MonoBehaviour
             if (closestAlienIndex == currentSpecies && lifeTime > 20 && mateTimer > 10 && isFemale != closestAlienHandler.isFemale)
             {
                 // Handle balz
-                HandleBalz(step);
+                HandleLoveApproach(step);
             }
             else if (closestAlienIndex > currentSpecies || (currentSpecies == 3 && closestAlienIndex == 0)) // 0:Sphere, 1:Square, 2:Triangle
             {
@@ -81,8 +79,9 @@ public class AlienHandler : MonoBehaviour
             Idle(step);
             FindClosestAlien();
         }
+        KeepInBoundaries();
     }
-    private void LateUpdate()
+    private void KeepInBoundaries()
     {
         if (transform.position.x > GameManager.SharedInstance.worldBoundaryX) { transform.position = new Vector3(GameManager.SharedInstance.worldBoundaryX, transform.position.y, transform.position.z); }
         if (transform.position.x < GameManager.SharedInstance.worldBoundaryMinusX) { transform.position = new Vector3(GameManager.SharedInstance.worldBoundaryMinusX, transform.position.y, transform.position.z); }
@@ -127,7 +126,7 @@ public class AlienHandler : MonoBehaviour
         Debug.DrawLine(transform.position, fleeDir, Color.blue);
     }
 
-    private void HandleBalz(float step)
+    private void HandleLoveApproach(float step)
     {
         wantsToMate = true;
         transform.position = Vector3.MoveTowards(transform.position, closestAlien.transform.position, step);
