@@ -2,15 +2,22 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerShoot : MonoBehaviour
 {
     public GameObject bullet;
+    [SerializeField] private Slider overheatSlider;
+    
     public float fireRate = 0.5f;
     public float nextFireTime = 0f;
     public float bulletSpeed = 150;
-    public bool shootTrigger;
+    public float gunCooldownSpeed = 0.02f;
+    public float gunOverheatingSpeed = 0.10f;
+    
+    private bool shootTrigger;
     private bool isShooting = false;
+    private bool gunOverheated = false;
     private PlayerControls playerControls;
 
     private void Awake()
@@ -33,14 +40,24 @@ public class PlayerShoot : MonoBehaviour
     
     void Update()
     {
-        shootTrigger = playerControls.PlayerActionMap.Shoot.triggered;
+        overheatSlider.value -= gunCooldownSpeed;
 
+        if (overheatSlider.value >= 0.97f)
+        {
+            gunOverheated = true;
+            overheatSlider.value -= gunCooldownSpeed + 0.003f;
+        }
+        else if (overheatSlider.value == 0f)
+        {
+            gunOverheated = false;
+        }
+        
         if (nextFireTime >= 0f)
         {
             nextFireTime -= Time.deltaTime;
         }
         
-        if (isShooting && nextFireTime <= 0f)
+        if (isShooting && nextFireTime <= 0f && !gunOverheated)
         {
             Shoot();
             nextFireTime = fireRate;
@@ -51,6 +68,7 @@ public class PlayerShoot : MonoBehaviour
     private void Shoot()
     {
         Debug.Log("Hey");
+        overheatSlider.value += gunOverheatingSpeed;
         GameObject shoot = Instantiate(bullet, new Vector3(transform.position.x, transform.position.y + 1, transform.position.z), Quaternion.identity);
         Rigidbody rb = shoot.GetComponent<Rigidbody>();
         rb.AddForce(transform.forward * bulletSpeed, ForceMode.Impulse);
