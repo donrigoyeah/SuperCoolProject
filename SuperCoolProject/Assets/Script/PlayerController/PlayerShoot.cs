@@ -6,15 +6,14 @@ using UnityEngine.UI;
 
 public class PlayerShoot : MonoBehaviour
 {
-    public GameObject bullet;
     [SerializeField] private Slider overheatSlider;
-    
+
     public float fireRate = 0.5f;
     public float nextFireTime = 0f;
     public float bulletSpeed = 150;
     public float gunCooldownSpeed = 0.02f;
     public float gunOverheatingSpeed = 0.10f;
-    
+
     private bool shootTrigger;
     private bool isShooting = false;
     private bool gunOverheated = false;
@@ -27,7 +26,7 @@ public class PlayerShoot : MonoBehaviour
         playerControls.PlayerActionMap.Shoot.canceled += ctx => isShooting = false;
 
     }
-    
+
     private void OnEnable()
     {
         playerControls.Enable();
@@ -37,7 +36,7 @@ public class PlayerShoot : MonoBehaviour
     {
         playerControls.Disable();
     }
-    
+
     void Update()
     {
         overheatSlider.value -= gunCooldownSpeed;
@@ -51,12 +50,12 @@ public class PlayerShoot : MonoBehaviour
         {
             gunOverheated = false;
         }
-        
+
         if (nextFireTime >= 0f)
         {
             nextFireTime -= Time.deltaTime;
         }
-        
+
         if (isShooting && nextFireTime <= 0f && !gunOverheated)
         {
             Shoot();
@@ -67,14 +66,17 @@ public class PlayerShoot : MonoBehaviour
 
     private void Shoot()
     {
-        Debug.Log("Hey");
+        Rigidbody rb;
+        GameObject bulletPoolGo = PoolManager.SharedInstance.GetPooledBullets();
+        if (bulletPoolGo != null)
+        {
+            bulletPoolGo.SetActive(true);
+            bulletPoolGo.transform.position = new Vector3(transform.position.x, transform.position.y + 1, transform.position.z);
+            rb = bulletPoolGo.GetComponent<Rigidbody>();
+            rb.AddForce(transform.forward * bulletSpeed, ForceMode.Impulse);
+        }
         overheatSlider.value += gunOverheatingSpeed;
-        GameObject shoot = Instantiate(bullet, new Vector3(transform.position.x, transform.position.y + 1, transform.position.z), Quaternion.identity);
-        Rigidbody rb = shoot.GetComponent<Rigidbody>();
-        rb.AddForce(transform.forward * bulletSpeed, ForceMode.Impulse);
-
-        Destroy(shoot, 3f);
     }
-    
+
 }
 

@@ -11,13 +11,13 @@ public class TwinStickMovement : MonoBehaviour
     [SerializeField] private float playerSpeed;
     [SerializeField] private float gravityValue;
     [SerializeField] private float jumpForce;
-    
+
     private CharacterController controller;
 
-    private Vector2 movement;
-    private Vector2 aim;
+    public Vector2 movement;
+    public Vector2 aim;
     private Vector3 playerVelocity;
-    
+
     private bool isJumping = true;
     private bool jumpTrigger;
     private float jumpCooldownTimer = 0f;
@@ -44,7 +44,7 @@ public class TwinStickMovement : MonoBehaviour
     {
         playerControls.Enable();
     }
-    
+
     void Update()
     {
         Input();
@@ -55,22 +55,22 @@ public class TwinStickMovement : MonoBehaviour
         {
             Jump();
         }
-        
+
         if (dashTrigger && isDashing)
         {
             StartCoroutine(Dash());
         }
 
-        if(!isJumping)
+        if (!isJumping)
         {
             jumpCooldownTimer -= Time.deltaTime;
             if (jumpCooldownTimer <= 0f)
             {
-                isJumping = true; 
-                jumpCooldownTimer = jumpCooldown; 
+                isJumping = true;
+                jumpCooldownTimer = jumpCooldown;
             }
         }
-        
+
         if (!isDashing)
         {
             dashCooldownTimer -= Time.deltaTime;
@@ -97,7 +97,7 @@ public class TwinStickMovement : MonoBehaviour
 
         playerVelocity.y += gravityValue * Time.deltaTime;
         controller.Move(playerVelocity * Time.deltaTime);
-        
+
     }
 
     void Rotation()

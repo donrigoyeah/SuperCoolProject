@@ -3,7 +3,12 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - triangle
+  - square
+  - sphere
+  - Bullet
+  - Alien
   layers:
   - Default
   - TransparentFX
@@ -13,8 +18,8 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
+  - Enviroment
+  - Aliens
   - 
   - 
   - 
