@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Experimental.GraphView.GraphView;
+using UnityEngine.UI;
 
 public class AlienHandler : MonoBehaviour
 {
@@ -43,6 +43,8 @@ public class AlienHandler : MonoBehaviour
     [Header("This Alien")]
     AlienState currentState;
     AlienAge currentAge;
+    public RawImage currentStateIcon;
+    public Texture[] allStateIcons; // 0: eye, 1: crosshair, 2: wind, 3: heart, 4: shield
     public float alienHealth;
     public float lifeTime = 0;
     public float mateTimer = 0;
@@ -141,6 +143,7 @@ public class AlienHandler : MonoBehaviour
         {
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, step);
         }
+        currentStateIcon.texture = allStateIcons[0]; // 0: eye, 1: crosshair, 2: wind, 3: heart, 4: shield
     }
 
     private void HandleAging(float lifeTime)
@@ -186,22 +189,22 @@ public class AlienHandler : MonoBehaviour
 
     private void HandleAttacking(GameObject targetAlien, float step)
     {
+        currentStateIcon.texture = allStateIcons[1]; // 0: eye, 1: crosshair, 2: wind, 3: heart, 4: shield
         targetPosition = targetAlien.transform.position; // Update targetPosition only every tick update
-        //HandleMovement(targetAlien.transform.position, step);
         Debug.DrawLine(transform.position, targetPosition, Color.red);
     }
 
     private void HandleFleeing(GameObject targetAlien, float step)
     {
+        currentStateIcon.texture = allStateIcons[2]; // 0: eye, 1: crosshair, 2: wind, 3: heart, 4: shield
         targetPosition = targetAlien.transform.position - transform.position;
-        //HandleMovement(targetPosition, step);
         Debug.DrawLine(transform.position, targetPosition, Color.blue);
     }
 
     private void HandleLoveApproach(GameObject targetAlien, float step)
     {
+        currentStateIcon.texture = allStateIcons[3]; // 0: eye, 1: crosshair, 2: wind, 3: heart, 4: shield
         targetPosition = targetAlien.transform.position; // Update targetPosition only every tick update
-        //HandleMovement(targetAlien.transform.position, step);
         Debug.DrawLine(transform.position, targetPosition, Color.green);
     }
 
