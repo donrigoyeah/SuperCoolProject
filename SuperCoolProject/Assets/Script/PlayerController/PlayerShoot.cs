@@ -17,6 +17,7 @@ public class PlayerShoot : MonoBehaviour
     private bool isShooting = false;
     private bool gunOverheated = false;
     private PlayerControls playerControls;
+    public Vector3 firePoint;
 
     private void Awake()
     {
@@ -73,7 +74,7 @@ public class PlayerShoot : MonoBehaviour
         if (bulletPoolGo != null)
         {
             bulletPoolGo.SetActive(true);
-            bulletPoolGo.transform.position = new Vector3(transform.position.x, transform.position.y + 1, transform.position.z);
+            bulletPoolGo.transform.position = firePoint;
             rb = bulletPoolGo.GetComponent<Rigidbody>();
             rb.AddForce(transform.forward * bulletSpeed, ForceMode.Impulse);
         }
