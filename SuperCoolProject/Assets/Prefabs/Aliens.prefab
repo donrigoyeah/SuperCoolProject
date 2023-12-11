@@ -340,7 +340,7 @@ MonoBehaviour:
   tickTimer: 0
   tickTimerMax: 0.5
   alienSpeed: 3
-  lookRadius: 5
+  lookRadius: 10
   alienSpecies:
   - {fileID: 8329259287624427090}
   - {fileID: 6981288141397108614}
@@ -352,6 +352,8 @@ MonoBehaviour:
   - {fileID: 2800000, guid: e48dc123625ca1140b78149f448e8a65, type: 3}
   - {fileID: 2800000, guid: 8e4964368d2561a4cbf316a5ef35fd36, type: 3}
   - {fileID: 2800000, guid: 1cc0d735338a78849b58c8881c86f4aa, type: 3}
+  - {fileID: 2800000, guid: 5f2b6bd99efada040b7a9a5f0a909fac, type: 3}
+  - {fileID: 2800000, guid: 2ddc0a0c158f6354985b0c000189f295, type: 3}
   alienHealth: 0
   lifeTime: 0
   mateTimer: 0

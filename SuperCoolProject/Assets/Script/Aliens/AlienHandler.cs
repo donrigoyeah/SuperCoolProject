@@ -38,6 +38,7 @@ public class AlienHandler : MonoBehaviour
     private float alienLifeChild = 10;
     private float alienLifeSexual = 30;
     private float alienLifeFullGrown = 50;
+    private float alertDistanceThreshold = 2;
 
 
     [Header("This Alien")]
@@ -69,7 +70,7 @@ public class AlienHandler : MonoBehaviour
         isFemale = UnityEngine.Random.Range(0, 2) == 1;
         currentState = AlienState.roaming;
         currentAge = AlienAge.resource;
-        HandleAging(0);
+        currentStateIcon.texture = allStateIcons[5]; // 0: eye, 1: crosshair, 2: wind, 3: heart, 4: shield, 5: clock, 6: loader
         rb = this.GetComponent<Rigidbody>();
         ActivateCurrentModels(currentSpecies);
     }
@@ -84,9 +85,10 @@ public class AlienHandler : MonoBehaviour
         isFemale = UnityEngine.Random.Range(0, 2) == 1;
         currentState = AlienState.roaming;
         currentAge = AlienAge.resource;
-        HandleAging(0);
-        rb = this.GetComponent<Rigidbody>();
+
+        HandleStateIcon(5); // 0: eye, 1: crosshair, 2: wind, 3: heart, 4: shield, 5: clock, 6: loader
         ActivateCurrentModels(currentSpecies);
+        rb = this.GetComponent<Rigidbody>();
     }
 
     private void FixedUpdate()
@@ -105,67 +107,62 @@ public class AlienHandler : MonoBehaviour
         {
             HandleAging(lifeTime);
 
-            if (currentState == AlienState.roaming)
+            if (currentState == AlienState.roaming && currentAge != AlienAge.resource)
             {
-                FindClosestAlien();
-                HandleLookForPlaceToIdle(step);
-            }
-            else if (closestAlien != null)
-            {
-                if (currentState == AlienState.hunting)
+                HandleLooking();
+                if (closestAlien != null)
                 {
-                    HandleAttacking(closestAlien, step);
-                }
-                else if (currentState == AlienState.evading)
-                {
-                    HandleFleeing(closestAlien, step);
-                }
-                else if (currentState == AlienState.loving)
-                {
-                    HandleLoveApproach(closestAlien, step);
+                    HandleRoaming();
                 }
             }
+            else if (currentState == AlienState.hunting)
+            {
+                HandleAttacking(closestAlien);
+            }
+            else if (currentState == AlienState.evading)
+            {
+                HandleFleeing(closestAlien);
+            }
+            else if (currentState == AlienState.loving)
+            {
+                HandleLoveApproach(closestAlien);
+            }
+
             tickTimer -= tickTimerMax;
         }
     }
 
-    private void HandleMovement(float step)
+    private void HandleStateIcon(int index)
     {
-        transform.position = Vector3.MoveTowards(transform.position, targetPosition, step);
+        currentStateIcon.texture = allStateIcons[index]; // 0: eye, 1: crosshair, 2: wind, 3: heart, 4: shield, 5: clock, 6: loader
     }
 
-    private void HandleLookForPlaceToIdle(float step)
+    private void HandleMovement(float step)
     {
-        if (targetPosition == Vector3.one * 1000 || transform.position == targetPosition)
+        if (currentAge != AlienAge.resource)
         {
-            float randDirX = UnityEngine.Random.Range(0, 2) - .5f;
-            float randDirY = UnityEngine.Random.Range(0, 2) - .5f;
-            targetPosition = transform.position + new Vector3(randDirX, 0, randDirY) * 5;
-
-            if (targetPosition.x > GameManager.SharedInstance.worldBoundaryX ||
-                targetPosition.x < GameManager.SharedInstance.worldBoundaryMinusX ||
-                targetPosition.z < GameManager.SharedInstance.worldBoundaryMinusZ ||
-                targetPosition.z > GameManager.SharedInstance.worldBoundaryZ)
-            {
-                targetPosition = Vector3.one * 1000;
-            }
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, step);
         }
     }
 
-    private void HandleAttacking(GameObject targetAlien, float step)
+
+    private void HandleAttacking(GameObject targetAlien)
     {
+        HandleStateIcon(1); // 0: eye, 1: crosshair, 2: wind, 3: heart, 4: shield, 5: clock, 6: loader
         targetPosition = targetAlien.transform.position; // Update targetPosition only every tick update
-        Debug.DrawLine(transform.position, targetPosition, Color.red);
+        Debug.DrawLine(transform.position, targetPosition);
     }
 
-    private void HandleFleeing(GameObject targetAlien, float step)
+    private void HandleFleeing(GameObject targetAlien)
     {
+        HandleStateIcon(2); // 0: eye, 1: crosshair, 2: wind, 3: heart, 4: shield, 5: clock, 6: loader
         targetPosition = targetAlien.transform.position - transform.position;
         Debug.DrawLine(transform.position, targetPosition, Color.blue);
     }
 
-    private void HandleLoveApproach(GameObject targetAlien, float step)
+    private void HandleLoveApproach(GameObject targetAlien)
     {
+        HandleStateIcon(3); // 0: eye, 1: crosshair, 2: wind, 3: heart, 4: shield, 5: clock, 6: loader
         targetPosition = targetAlien.transform.position; // Update targetPosition only every tick update
         Debug.DrawLine(transform.position, targetPosition, Color.green);
     }
@@ -182,6 +179,7 @@ public class AlienHandler : MonoBehaviour
                 newBornAlien = alienPoolGo.GetComponent<AlienHandler>();
                 newBornAlien.currentSpecies = currentSpecies;
                 newBornAlien.isFemale = UnityEngine.Random.Range(0, 2) == 1;
+                newBornAlien.HandleAging(0);
                 alienPoolGo.SetActive(true);
 
                 // TODO: Spawn them somewhere near, in the middle (?!)
@@ -191,33 +189,35 @@ public class AlienHandler : MonoBehaviour
         lastClosestAlien = closestAlien;
         closestAlien = null;
         closestAlienHandler = null;
-        mateTimer = 0;
-        currentStateIcon.texture = allStateIcons[0]; // 0: eye, 1: crosshair, 2: wind, 3: heart, 4: shield
+        targetPosition = Vector3.one * 1000;
         currentState = AlienState.roaming;
+        mateTimer = 0;
     }
 
-    public GameObject FindClosestAlien()
+    public void HandleLooking()
     {
+        HandleStateIcon(0); // 0: eye, 1: crosshair, 2: wind, 3: heart, 4: shield, 5: clock, 6: loader
+
         int layerMask = 1 << 9; // Lyer 9 is Alien
         Collider[] aliensInRange;
         aliensInRange = Physics.OverlapSphere(this.transform.position, lookRadius, layerMask);
 
+        float closestDistance = lookRadius; ;
         // TODO: Make a better closest alien selection
         // Maybe if aggressor is near evade rather then love making (?!)
         // JUst to find closest alien
         for (int i = 0; i < aliensInRange.Length; i++)
         {
-            if (aliensInRange[i] == lastClosestAlien) continue;
-
+            if (aliensInRange[i].gameObject == lastClosestAlien || aliensInRange[i].gameObject == this.gameObject) continue;
             float dist = Vector3.Distance(aliensInRange[i].transform.position, transform.position);
-            if (dist < lookRadius)
-            {
-                closestAlien = aliensInRange[i].gameObject;
-                targetPosition = closestAlien.transform.position;
-                closestAlienHandler = closestAlien.GetComponent<AlienHandler>();
-                closestAlienIndex = closestAlienHandler.currentSpecies;
-                break;
-            }
+            if (dist < closestDistance) { closestDistance = dist; }
+
+            closestAlien = aliensInRange[i].gameObject;
+            targetPosition = closestAlien.transform.position;
+            closestAlienHandler = closestAlien.GetComponent<AlienHandler>();
+            closestAlienIndex = closestAlienHandler.currentSpecies;
+
+            if (dist < alertDistanceThreshold) { break; }
         }
 
         if (closestAlien != null && closestAlienHandler != null)
@@ -225,30 +225,25 @@ public class AlienHandler : MonoBehaviour
             // Check to which state the alien switches
             if (closestAlienIndex == currentSpecies && lifeTime > 20 && mateTimer > 10 && isFemale != closestAlienHandler.isFemale)
             {
-                // Handle loving
-                currentStateIcon.texture = allStateIcons[3]; // 0: eye, 1: crosshair, 2: wind, 3: heart, 4: shield
                 currentState = AlienState.loving;
             }
-            else if (closestAlienIndex > currentSpecies || (currentSpecies == 2 && closestAlienIndex == 0)) // 0:Sphere, 1:Square, 2:Triangle
+            else if (currentSpecies == closestAlienIndex - 1 || (currentSpecies == 2 && closestAlienIndex == 0)) // 0:Sphere, 1:Square, 2:Triangle
             {
-                // Handle evading
-                currentStateIcon.texture = allStateIcons[2]; // 0: eye, 1: crosshair, 2: wind, 3: heart, 4: shield
                 currentState = AlienState.evading;
-
             }
-            else if (closestAlienIndex < currentSpecies || (currentSpecies == 0 && closestAlienIndex == 2)) // 0:Sphere, 1:Square, 2:Triangle
+            else if (currentSpecies == closestAlienIndex + 1 || (currentSpecies == 0 && closestAlienIndex == 2)) // 0:Sphere, 1:Square, 2:Triangle
             {
-                // Handle attacking
-                currentStateIcon.texture = allStateIcons[1]; // 0: eye, 1: crosshair, 2: wind, 3: heart, 4: shield
                 currentState = AlienState.hunting;
+            }
+            else
+            {
+                currentState = AlienState.roaming;
             }
         }
         else
         {
-            currentStateIcon.texture = allStateIcons[0]; // 0: eye, 1: crosshair, 2: wind, 3: heart, 4: shield
             currentState = AlienState.roaming;
         }
-        return closestAlien;
 
         #region Loop over List approach
         //for (int i = 0; i < PoolManager.SharedInstance.AlienPool.Count; i++)  //list of gameObjects to search through
@@ -267,7 +262,26 @@ public class AlienHandler : MonoBehaviour
         #endregion
     }
 
-    private void HandleAging(float lifeTime)
+    private void HandleRoaming()
+    {
+        HandleStateIcon(0); // 0: eye, 1: crosshair, 2: wind, 3: heart, 4: shield, 5: clock, 6: loader
+        if (targetPosition == Vector3.one * 1000 || transform.position == targetPosition)
+        {
+            float randDirX = UnityEngine.Random.Range(0, 2) - .5f;
+            float randDirY = UnityEngine.Random.Range(0, 2) - .5f;
+            targetPosition = transform.position + new Vector3(randDirX, 0, randDirY) * 10;
+
+            if (targetPosition.x > GameManager.SharedInstance.worldBoundaryX ||
+                targetPosition.x < GameManager.SharedInstance.worldBoundaryMinusX ||
+                targetPosition.z < GameManager.SharedInstance.worldBoundaryMinusZ ||
+                targetPosition.z > GameManager.SharedInstance.worldBoundaryZ)
+            {
+                targetPosition = Vector3.one * 1000;
+            }
+        }
+    }
+
+    public void HandleAging(float lifeTime)
     {
         if (lifeTime < 5)
         {
@@ -279,19 +293,19 @@ public class AlienHandler : MonoBehaviour
         {
             currentAge = AlienAge.child;
             alienHealth = alienLifeChild;
-            transform.localScale = Vector3.one * .4f;
+            transform.localScale = Vector3.one * .5f;
         }
         else if (lifeTime > 10)
         {
             currentAge = AlienAge.sexualActive;
             alienHealth = alienLifeSexual;
-            transform.localScale = Vector3.one * .7f;
+            transform.localScale = Vector3.one;
         }
         else if (lifeTime > 40)
         {
             currentAge = AlienAge.fullyGrown;
             alienHealth = alienLifeFullGrown;
-            transform.localScale = Vector3.one;
+            transform.localScale = Vector3.one * 1.2f;
         }
     }
 
@@ -327,7 +341,7 @@ public class AlienHandler : MonoBehaviour
             {
                 // You eat
                 otherAlien.gameObject.SetActive(false);
-                currentStateIcon.texture = allStateIcons[0]; // 0: eye, 1: crosshair, 2: wind, 3: heart, 4: shield
+                currentStateIcon.texture = allStateIcons[0]; // 0: eye, 1: crosshair, 2: wind, 3: heart, 4: shield, 5: clock, 6: loader
                 currentState = AlienState.roaming;
                 closestAlien = null;
             }
