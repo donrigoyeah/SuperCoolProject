@@ -23,7 +23,7 @@ public class AlienManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        PopulationControl();
+        PopulationUI();
     }
     private void SpawnAlien()
     {
@@ -40,6 +40,7 @@ public class AlienManager : MonoBehaviour
 
                 AlienHandler alienPoolGoHandler = alienPoolGo.GetComponent<AlienHandler>();
                 alienPoolGoHandler.currentSpecies = randomSpecies;
+                alienPoolGoHandler.HandleAging(0);
                 alienPoolGo.SetActive(true);
 
                 // TODO: Maybe have them spawn in groups of the same kind to make sure they have good start oppertunity
@@ -48,7 +49,7 @@ public class AlienManager : MonoBehaviour
         }
     }
 
-    private void PopulationControl()
+    private void PopulationUI()
     {
         sphereCount = 0;
         squareCount = 0;
@@ -75,6 +76,7 @@ public class AlienManager : MonoBehaviour
                 totalActiveAliens++;
             }
         }
+
         values = new float[3];
         values[0] = sphereCount;
         values[1] = squareCount;
@@ -83,7 +85,7 @@ public class AlienManager : MonoBehaviour
     }
 
 
-    public void SetPieChart(float[] valuesToSet)
+    private void SetPieChart(float[] valuesToSet)
     {
         float totalValues = 0;
         for (int i = 0; i < imagesPieChart.Length; i++)
