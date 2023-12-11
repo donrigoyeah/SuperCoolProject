@@ -26,7 +26,7 @@ public class AlienHandler : MonoBehaviour
 
     [Header("Tick stats")]
     public float tickTimer;
-    public float tickTimerMax = .3f;
+    public float tickTimerMax = .5f;
 
     [Header("General AlienStuff")]
     public float alienSpeed = 5;
@@ -94,12 +94,11 @@ public class AlienHandler : MonoBehaviour
         while (tickTimer >= tickTimerMax)
         {
             HandleAging(lifeTime);
-            tickTimer -= tickTimerMax;
 
             if (currentState == AlienState.roaming)
             {
-                Idle(step);
                 FindClosestAlien();
+                LookForPlaceToIdle(step);
             }
             else if (closestAlien != null)
             {
@@ -117,13 +116,14 @@ public class AlienHandler : MonoBehaviour
                     HandleLoveApproach(closestAlien, step);
                 }
             }
+            tickTimer -= tickTimerMax;
         }
 
         HandleMovement(step);
         KeepInBoundaries();
     }
 
-    void Idle(float step)
+    void LookForPlaceToIdle(float step)
     {
         if (targetPosition == Vector3.one * 1000 || transform.position == targetPosition)
         {
@@ -138,10 +138,6 @@ public class AlienHandler : MonoBehaviour
             {
                 targetPosition = Vector3.one * 1000;
             }
-        }
-        else
-        {
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, step);
         }
         currentStateIcon.texture = allStateIcons[0]; // 0: eye, 1: crosshair, 2: wind, 3: heart, 4: shield
     }
@@ -234,12 +230,13 @@ public class AlienHandler : MonoBehaviour
 
     public GameObject FindClosestAlien()
     {
-        int layerMask = 1 << 9; // Lyer 9 is Enemy
+        int layerMask = 1 << 9; // Lyer 9 is Alien
         Collider[] aliensInRange;
         aliensInRange = Physics.OverlapSphere(this.transform.position, lookRadius, layerMask);
 
         // TODO: Make a better closest alien selection
         // Maybe if aggressor is near evade rather then love making (?!)
+        // JUst to find closest alien
         for (int i = 0; i < aliensInRange.Length; i++)
         {
             if (aliensInRange[i] == lastClosestAlien) continue;
@@ -264,13 +261,13 @@ public class AlienHandler : MonoBehaviour
                 // Handle loving
                 currentState = AlienState.loving;
             }
-            else if (closestAlienIndex > currentSpecies || (currentSpecies == 3 && closestAlienIndex == 0)) // 0:Sphere, 1:Square, 2:Triangle
+            else if (closestAlienIndex > currentSpecies || (currentSpecies == 2 && closestAlienIndex == 0)) // 0:Sphere, 1:Square, 2:Triangle
             {
                 // Handle evading
                 currentState = AlienState.evading;
 
             }
-            else if (closestAlienIndex < currentSpecies || (currentSpecies == 0 && closestAlienIndex == 3)) // 0:Sphere, 1:Square, 2:Triangle
+            else if (closestAlienIndex < currentSpecies || (currentSpecies == 0 && closestAlienIndex == 2)) // 0:Sphere, 1:Square, 2:Triangle
             {
                 // Handle attacking
                 currentState = AlienState.hunting;
@@ -338,7 +335,5 @@ public class AlienHandler : MonoBehaviour
         }
         alienSpecies[currentSpeyiesIndex].SetActive(true);
     }
-
-
 
 }
