@@ -17,6 +17,7 @@ public class TwinStickMovement : MonoBehaviour
     public Vector2 movement;
     public Vector2 aim;
     private Vector3 playerVelocity;
+    public Vector3 targetAimPosition;
 
     private bool isJumping = true;
     private bool jumpTrigger;
@@ -115,13 +116,13 @@ public class TwinStickMovement : MonoBehaviour
 
     private void LookAt(Vector3 lookPoint)
     {
-        Vector3 highCorrectPoint = new Vector3(lookPoint.x, transform.position.y, lookPoint.z);
-        transform.LookAt(highCorrectPoint);
+        targetAimPosition = new Vector3(lookPoint.x, transform.position.y, lookPoint.z);
+        transform.LookAt(targetAimPosition);
     }
 
     private void Jump()
     {
-        playerVelocity.y = jumpForce;
+        playerVelocity.y = jumpForce; 
         isJumping = false;
     }
 

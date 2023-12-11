@@ -17,12 +17,13 @@ public class PlayerShoot : MonoBehaviour
     private bool isShooting = false;
     private bool gunOverheated = false;
     private PlayerControls playerControls;
-    public Vector3 firePoint;
+    private TwinStickMovement twinStickMovement;
+    public Transform firePoint;
 
     private void Awake()
     {
         playerControls = new PlayerControls();
-        
+        twinStickMovement = GetComponent<TwinStickMovement>();
         playerControls.PlayerActionMap.Shoot.performed += ctx => isShooting = true;
         playerControls.PlayerActionMap.Shoot.canceled += ctx => isShooting = false;
 
@@ -72,9 +73,10 @@ public class PlayerShoot : MonoBehaviour
         Rigidbody rb;
         GameObject bulletPoolGo = PoolManager.SharedInstance.GetPooledBullets();
         if (bulletPoolGo != null)
-        {
+        {            
+            bulletPoolGo.transform.position = firePoint.position;
             bulletPoolGo.SetActive(true);
-            bulletPoolGo.transform.position = firePoint;
+            
             rb = bulletPoolGo.GetComponent<Rigidbody>();
             rb.AddForce(transform.forward * bulletSpeed, ForceMode.Impulse);
         }

@@ -30,7 +30,7 @@ public class GrenadeThrower : MonoBehaviour
 
     private void Update()
     {
-        grenadeRechargeSlider.value += 0.0010f;
+        grenadeRechargeSlider.value += 1f; //0.0010f;
         
         if (grenadeRechargeSlider.value >= 0.98f)
         {
@@ -47,14 +47,10 @@ public class GrenadeThrower : MonoBehaviour
             }
         }
         
-
-
         if (isCharging)
         {
             ChargeThrow();
         }
-
-
     }
 
     void StartThrowing()

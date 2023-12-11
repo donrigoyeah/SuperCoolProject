@@ -102,6 +102,7 @@
       <workItem from="1702227877520" duration="9937000" />
       <workItem from="1702292061387" duration="428000" />
       <workItem from="1702297033589" duration="4766000" />
+      <workItem from="1702306363396" duration="11863000" />
     </task>
     <servers />
   </component>
@@ -112,24 +113,5 @@
   <component name="UnityUnitTestConfiguration" currentTestLauncher="Both" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Script/PlayerController/TwinStickMovement.cs</url>
-          <line>123</line>
-          <properties documentPath="U:\UnityProjects\NewProjects\CollabProject_1\SuperCoolProject\SuperCoolProject\Assets\Script\PlayerController\TwinStickMovement.cs" initialLine="105" containingFunctionPresentation="Method 'Jump'">
-            <startOffsets>
-              <option value="3110" />
-            </startOffsets>
-            <endOffsets>
-              <option value="3139" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
