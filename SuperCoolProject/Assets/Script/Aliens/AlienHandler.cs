@@ -208,10 +208,6 @@ public class AlienHandler : MonoBehaviour
         // JUst to find closest alien
         for (int i = 0; i < aliensInRange.Length; i++)
         {
-            if (aliensInRange[i].gameObject == this.gameObject)
-            {
-                Debug.Log("it is meeee");
-            }
             if (aliensInRange[i].gameObject == lastClosestAlien || aliensInRange[i].gameObject == this.gameObject) continue;
             float dist = Vector3.Distance(aliensInRange[i].transform.position, transform.position);
             if (dist < closestDistance) { closestDistance = dist; }
@@ -231,11 +227,11 @@ public class AlienHandler : MonoBehaviour
             {
                 currentState = AlienState.loving;
             }
-            else if (closestAlienIndex > currentSpecies || (currentSpecies == 2 && closestAlienIndex == 0)) // 0:Sphere, 1:Square, 2:Triangle
+            else if (currentSpecies == closestAlienIndex - 1 || (currentSpecies == 2 && closestAlienIndex == 0)) // 0:Sphere, 1:Square, 2:Triangle
             {
                 currentState = AlienState.evading;
             }
-            else if (closestAlienIndex < currentSpecies || (currentSpecies == 0 && closestAlienIndex == 2)) // 0:Sphere, 1:Square, 2:Triangle
+            else if (currentSpecies == closestAlienIndex + 1 || (currentSpecies == 0 && closestAlienIndex == 2)) // 0:Sphere, 1:Square, 2:Triangle
             {
                 currentState = AlienState.hunting;
             }

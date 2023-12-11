@@ -34,17 +34,17 @@ public class PoolManager : MonoBehaviour
             {
                 return AlienPool[i];
             }
-            else
-            {
-                // Add only when no more are available
-                Debug.Log("Add additionl alien to the pool");
-                GameObject tmp;
-                tmp = Instantiate(Alien);
-                tmp.transform.SetParent(AlienContainer.transform);
-                AlienPool.Add(tmp);
-                alienAmount++;
-                return tmp;
-            }
+            //else
+            //{
+            //    // Add only when no more are available
+            //    Debug.Log("Add additionl alien to the pool");
+            //    GameObject tmp;
+            //    tmp = Instantiate(Alien);
+            //    tmp.transform.SetParent(AlienContainer.transform);
+            //    AlienPool.Add(tmp);
+            //    alienAmount++;
+            //    return tmp;
+            //}
         }
         return null;
     }
