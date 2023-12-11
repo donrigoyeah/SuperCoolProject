@@ -2,11 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 public class GrenadeThrower : MonoBehaviour
 {
     [SerializeField] private GameObject grenadePrefab;
+    [SerializeField] private Slider grenadeRechargeSlider;
 
+    public bool grenadeCharged = false;
     private bool isCharging = false;
     private float chargeTime = 0f;
     private Camera mainCamera;
@@ -26,20 +30,31 @@ public class GrenadeThrower : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
+        grenadeRechargeSlider.value += 0.0010f;
+        
+        if (grenadeRechargeSlider.value >= 0.98f)
         {
-            StartThrowing();
+            grenadeCharged = true;
+            
+            if (Input.GetKeyDown(KeyCode.Q) && grenadeCharged)
+            {
+                StartThrowing();
+            }
+            
+            if (Input.GetKeyUp(KeyCode.Q))
+            {
+                ReleaseThrow();
+            }
         }
+        
+
 
         if (isCharging)
         {
             ChargeThrow();
         }
 
-        if (Input.GetKeyUp(KeyCode.Q))
-        {
-            ReleaseThrow();
-        }
+
     }
 
     void StartThrowing()
@@ -64,6 +79,9 @@ public class GrenadeThrower : MonoBehaviour
         isCharging = false;
 
         trajectoryLine.enabled = false;
+        
+        grenadeCharged = false;
+        grenadeRechargeSlider.value = 0f;
     }
 
     void ThrowGrenade(float force)

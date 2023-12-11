@@ -101,6 +101,7 @@
       <workItem from="1702215029773" duration="6223000" />
       <workItem from="1702227877520" duration="9937000" />
       <workItem from="1702292061387" duration="428000" />
+      <workItem from="1702297033589" duration="4766000" />
     </task>
     <servers />
   </component>
@@ -120,10 +121,10 @@
           <line>123</line>
           <properties documentPath="U:\UnityProjects\NewProjects\CollabProject_1\SuperCoolProject\SuperCoolProject\Assets\Script\PlayerController\TwinStickMovement.cs" initialLine="105" containingFunctionPresentation="Method 'Jump'">
             <startOffsets>
-              <option value="3149" />
+              <option value="3110" />
             </startOffsets>
             <endOffsets>
-              <option value="3178" />
+              <option value="3139" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="1" />

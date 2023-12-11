@@ -7,7 +7,6 @@ using UnityEngine.UI;
 public class PlayerShoot : MonoBehaviour
 {
     [SerializeField] private Slider overheatSlider;
-
     public float fireRate = 0.5f;
     public float nextFireTime = 0f;
     public float bulletSpeed = 150;
@@ -22,6 +21,7 @@ public class PlayerShoot : MonoBehaviour
     private void Awake()
     {
         playerControls = new PlayerControls();
+        
         playerControls.PlayerActionMap.Shoot.performed += ctx => isShooting = true;
         playerControls.PlayerActionMap.Shoot.canceled += ctx => isShooting = false;
 
@@ -40,7 +40,6 @@ public class PlayerShoot : MonoBehaviour
     void Update()
     {
         overheatSlider.value -= gunCooldownSpeed;
-
         if (overheatSlider.value >= 0.97f)
         {
             gunOverheated = true;
@@ -62,6 +61,9 @@ public class PlayerShoot : MonoBehaviour
             nextFireTime = fireRate;
             isShooting = false;
         }
+        
+        overheatSlider.gameObject.transform.Find("Fill Area").Find("Fill").GetComponent<Image>().color =
+            Color.Lerp(Color.green, Color.red, overheatSlider.value / 0.70f);
     }
 
     private void Shoot()
