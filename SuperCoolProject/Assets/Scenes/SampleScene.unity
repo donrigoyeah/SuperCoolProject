@@ -2464,6 +2464,61 @@ PrefabInstance:
       propertyPath: grenadeRechargeSlider
       value: 
       objectReference: {fileID: 830917597}
+    - target: {fileID: 6766940811692802884, guid: 12858b1f8789e0e428bbcdcab1837ac1,
+        type: 3}
+      propertyPath: m_StaticShadowCaster
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6766940811692802884, guid: 12858b1f8789e0e428bbcdcab1837ac1,
+        type: 3}
+      propertyPath: m_Parameters.textureMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6766940811692802884, guid: 12858b1f8789e0e428bbcdcab1837ac1,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 64241d9a1073a0e498fee84e1bab6bb2, type: 2}
+    - target: {fileID: 6766940811692802884, guid: 12858b1f8789e0e428bbcdcab1837ac1,
+        type: 3}
+      propertyPath: m_Parameters.numCornerVertices
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6766940811692802884, guid: 12858b1f8789e0e428bbcdcab1837ac1,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.key0.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6766940811692802884, guid: 12858b1f8789e0e428bbcdcab1837ac1,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.key0.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6766940811692802884, guid: 12858b1f8789e0e428bbcdcab1837ac1,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.key0.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6766940811692802884, guid: 12858b1f8789e0e428bbcdcab1837ac1,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.key1.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6766940811692802884, guid: 12858b1f8789e0e428bbcdcab1837ac1,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.key1.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6766940811692802884, guid: 12858b1f8789e0e428bbcdcab1837ac1,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.key1.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6766940811692802884, guid: 12858b1f8789e0e428bbcdcab1837ac1,
+        type: 3}
+      propertyPath: m_Parameters.generateLightingData
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7983239174723258367, guid: 12858b1f8789e0e428bbcdcab1837ac1,
         type: 3}
       propertyPath: overheatSlider

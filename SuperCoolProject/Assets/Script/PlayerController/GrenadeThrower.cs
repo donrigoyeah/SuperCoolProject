@@ -23,6 +23,10 @@ public class GrenadeThrower : MonoBehaviour
 
     [SerializeField] private LineRenderer trajectoryLine;
     
+    public float timeStep = 0.1f;
+    public float gravityScale = 1.0f;
+    public float upwardTime = 0.5f;
+    
     private void Start()
     {
         mainCamera = Camera.main;
@@ -30,7 +34,7 @@ public class GrenadeThrower : MonoBehaviour
 
     private void Update()
     {
-        grenadeRechargeSlider.value += 1f; //0.0010f;
+        grenadeRechargeSlider.value += 0.0010f;
         
         if (grenadeRechargeSlider.value >= 0.98f)
         {
@@ -107,13 +111,23 @@ public class GrenadeThrower : MonoBehaviour
         Vector3[] points = new Vector3[100];
         trajectoryLine.positionCount = points.Length;
 
-        Vector3 playerForward = transform.forward; 
-
+        Vector3 playerForward = transform.forward;
+        
         for (int i = 0; i < points.Length; i++)
         {
-            float time = i * 0.1f;
+            float time = i * timeStep;
 
-            points[i] = origin + playerForward * speed.magnitude * time + 0.5f * Physics.gravity * time * time;
+            if (time <= upwardTime)
+            {
+                float verticalSpeed = throwDirection.y * throwForce * time;
+                points[i] = origin + playerForward * throwForce * time + new Vector3(0, verticalSpeed, 0);
+            }
+            else
+            {
+                float timeAfterUpward = time - upwardTime;
+                float verticalSpeed = (throwDirection.y * throwForce * timeAfterUpward) - 0.5f * Physics.gravity.y * gravityScale * timeAfterUpward * timeAfterUpward;
+                points[i] = points[Mathf.FloorToInt(upwardTime / timeStep)] + playerForward * throwForce * timeAfterUpward + new Vector3(0, verticalSpeed, 0);
+            }
         }
 
         trajectoryLine.SetPositions(points);

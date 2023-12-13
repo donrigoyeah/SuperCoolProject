@@ -75,10 +75,12 @@ public class PlayerShoot : MonoBehaviour
         if (bulletPoolGo != null)
         {            
             bulletPoolGo.transform.position = firePoint.position;
+            bulletPoolGo.transform.rotation = firePoint.rotation;
+
             bulletPoolGo.SetActive(true);
-            
+
             rb = bulletPoolGo.GetComponent<Rigidbody>();
-            rb.AddForce(transform.forward * bulletSpeed, ForceMode.Impulse);
+            rb.velocity = firePoint.forward * bulletSpeed; 
         }
         overheatSlider.value += gunOverheatingSpeed;
     }
