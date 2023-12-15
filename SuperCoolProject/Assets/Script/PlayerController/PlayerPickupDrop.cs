@@ -33,12 +33,14 @@ public class PlayerPickupDrop : MonoBehaviour
         {
             other.gameObject.GetComponent<PlayerShoot>().enabled = false;
             other.gameObject.GetComponent<PlayerManager>().isCarryingPart = true;
+            other.gameObject.GetComponent<PlayerManager>().currentPart = this.gameObject;
             this.transform.parent = other.transform;
         }
         else
         {
             other.gameObject.GetComponent<PlayerShoot>().enabled = true;
             other.gameObject.GetComponent<PlayerManager>().isCarryingPart = false;
+            other.gameObject.GetComponent<PlayerManager>().currentPart = null;
             this.transform.parent = null;
         }
     }

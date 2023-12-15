@@ -12,7 +12,9 @@ public class SpaceShipHandler : MonoBehaviour
             if (PM != null && PM.isCarryingPart)
             {
                 GameManager.SharedInstance.currentSpaceShipParts++;
-                other.gameObject.SetActive(false);
+                PM.currentPart.SetActive(false);
+                PM.currentPart = null;
+                PM.isCarryingPart = false;
             }
         }
     }
