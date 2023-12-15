@@ -8,7 +8,8 @@ using UnityEngine.UI;
 public class GrenadeThrower : MonoBehaviour
 {
     [SerializeField] private GameObject grenadePrefab;
-    [SerializeField] private Slider grenadeRechargeSlider;
+    [SerializeField] private Image grenadeRechargeImage;
+
 
     public bool grenadeCharged = false;
     private bool isCharging = false;
@@ -22,11 +23,11 @@ public class GrenadeThrower : MonoBehaviour
     [SerializeField] private Vector3 throwDirection = new Vector3(0, 1, 0);
 
     [SerializeField] private LineRenderer trajectoryLine;
-    
+
     public float timeStep = 0.1f;
     public float gravityScale = 1.0f;
     public float upwardTime = 0.5f;
-    
+
     private void Start()
     {
         mainCamera = Camera.main;
@@ -34,23 +35,23 @@ public class GrenadeThrower : MonoBehaviour
 
     private void Update()
     {
-        grenadeRechargeSlider.value += 0.0010f;
-        
-        if (grenadeRechargeSlider.value >= 0.98f)
+        grenadeRechargeImage.fillAmount += 0.0010f;
+
+        if (grenadeRechargeImage.fillAmount >= 0.98f)
         {
             grenadeCharged = true;
-            
+
             if (Input.GetKeyDown(KeyCode.Q) && grenadeCharged)
             {
                 StartThrowing();
             }
-            
+
             if (Input.GetKeyUp(KeyCode.Q))
             {
                 ReleaseThrow();
             }
         }
-        
+
         if (isCharging)
         {
             ChargeThrow();
@@ -79,9 +80,9 @@ public class GrenadeThrower : MonoBehaviour
         isCharging = false;
 
         trajectoryLine.enabled = false;
-        
+
         grenadeCharged = false;
-        grenadeRechargeSlider.value = 0f;
+        grenadeRechargeImage.fillAmount = 0;
     }
 
     void ThrowGrenade(float force)
@@ -112,7 +113,7 @@ public class GrenadeThrower : MonoBehaviour
         trajectoryLine.positionCount = points.Length;
 
         Vector3 playerForward = transform.forward;
-        
+
         for (int i = 0; i < points.Length; i++)
         {
             float time = i * timeStep;
@@ -132,5 +133,5 @@ public class GrenadeThrower : MonoBehaviour
 
         trajectoryLine.SetPositions(points);
     }
-    
+
 }
