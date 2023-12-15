@@ -10,6 +10,7 @@ TagManager:
   - Bullet
   - Alien
   - SpaceShipDoor
+  - Part
   layers:
   - Default
   - TransparentFX

@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour
         float angle = 0;
         for (int i = 0; i < totalSpaceShipParts; i++)
         {
-            radius = Random.Range(40, 80);
+            radius = Random.Range(40, 65);
             //angle = Random.Range(0, 360);
 
             float randPosX = radius * Mathf.Cos(angle);
