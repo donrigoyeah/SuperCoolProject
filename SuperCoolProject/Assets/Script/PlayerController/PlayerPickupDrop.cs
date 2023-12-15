@@ -36,7 +36,7 @@ public class PlayerPickupDrop : MonoBehaviour
             other.gameObject.GetComponent<PlayerManager>().currentPart = this.gameObject;
             this.transform.parent = other.transform;
         }
-        else
+        else if (!isDragDropActionPressed && other.CompareTag("Player"))
         {
             other.gameObject.GetComponent<PlayerShoot>().enabled = true;
             other.gameObject.GetComponent<PlayerManager>().isCarryingPart = false;
