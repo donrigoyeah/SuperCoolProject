@@ -5,10 +5,15 @@ using UnityEngine.UI;
 
 public class PlayerManager : MonoBehaviour
 {
+    [Header("Player Variables")]
+    public float playerDetectionRadius = 10;
+    public Collider[] aliensInRange;
+
+
     [Header("Resource Variables")]
-    public float maxSphereResource = 10;
-    public float maxSquareResource = 10;
-    public float maxTriangleResource = 10;
+    float maxSphereResource = 100;
+    float maxSquareResource = 100;
+    float maxTriangleResource = 100;
 
     public float currentSphereResource;
     public float currentSquareResource;
@@ -26,8 +31,41 @@ public class PlayerManager : MonoBehaviour
     private void FixedUpdate()
     {
         HandleResourceUI();
+        HandleDeath();
+        HandleAlienDetection();
     }
 
+
+    private void HandleDeath()
+    {
+        if (currentSphereResource <= 0 ||
+            currentSquareResource <= 0 ||
+            currentTriangleResource <= 0)
+        {
+            Debug.Log("Player died");
+        }
+    }
+
+
+    private void HandleAlienDetection()
+    {
+        int layerMask = 1 << 9; // Lyer 9 is Alien
+
+        aliensInRange = Physics.OverlapSphere(this.transform.position, playerDetectionRadius, layerMask);
+
+        foreach (var item in aliensInRange)
+        {
+            AlienHandler AH = item.gameObject.GetComponent<AlienHandler>();
+            if (AH != null)
+            {
+                if (AH.lifeTime > AH.timeToChild)
+                {
+                    AH.closestAlien = this.gameObject;
+                    AH.HandleFleeing(this.gameObject); // this time its not an alienGO but the player
+                }
+            }
+        }
+    }
 
     private void HandleResourceUI()
     {
@@ -44,8 +82,29 @@ public class PlayerManager : MonoBehaviour
 
     public void HandleGainResource(int rescourseIndex)
     {
-        if (rescourseIndex == 0) { currentSphereResource += resourceGain; if (currentSphereResource > maxSphereResource) { currentSphereResource = maxSphereResource; } }
-        if (rescourseIndex == 1) { currentSquareResource += resourceGain; if (currentSquareResource > maxSquareResource) { currentSquareResource = maxSquareResource; } }
-        if (rescourseIndex == 2) { currentTriangleResource += resourceGain; if (currentTriangleResource > maxTriangleResource) { currentTriangleResource = maxTriangleResource; } }
+        if (rescourseIndex == 0)
+        {
+            currentSphereResource += resourceGain;
+            if (currentSphereResource > maxSphereResource)
+            {
+                currentSphereResource = maxSphereResource;
+            }
+        }
+        if (rescourseIndex == 1)
+        {
+            currentSquareResource += resourceGain;
+            if (currentSquareResource > maxSquareResource)
+            {
+                currentSquareResource = maxSquareResource;
+            }
+        }
+        if (rescourseIndex == 2)
+        {
+            currentTriangleResource += resourceGain;
+            if (currentTriangleResource > maxTriangleResource)
+            {
+                currentTriangleResource = maxTriangleResource;
+            }
+        }
     }
 }

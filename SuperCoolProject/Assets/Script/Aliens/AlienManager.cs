@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class AlienManager : MonoBehaviour
 {
+    public static AlienManager SharedInstance;
+
     // 0:Sphere, 1:Square, 2:Triangle
     public int sphereCount;
     public int squareCount;
@@ -15,6 +17,10 @@ public class AlienManager : MonoBehaviour
     public Image[] imagesPieChart;
     public float[] values;
 
+    private void Awake()
+    {
+        SharedInstance = this;
+    }
 
     private void Start()
     {
@@ -35,11 +41,18 @@ public class AlienManager : MonoBehaviour
                 int randomSpecies = Random.Range(0, 3);
                 //int randPosX = Random.Range(0, GameManager.SharedInstance.worldBoundaryX * 2) - GameManager.SharedInstance.worldBoundaryX;
                 //int randPosZ = Random.Range(0, GameManager.SharedInstance.worldBoundaryZ * 2) - GameManager.SharedInstance.worldBoundaryZ;
-                int randPosX = Random.Range(0, 200) - 100;
-                int randPosZ = Random.Range(0, 200) - 100;
+                //int randPosX = Random.Range(0, 200) - 100;
+                //int randPosZ = Random.Range(0, 200) - 100;
+
+                float r = Random.Range(10, 50);
+                float angle = Random.Range(0, 360);
+
+                float randPosX = r * Mathf.Cos(angle);
+                float randPosZ = r * Mathf.Sin(angle);
 
                 AlienHandler alienPoolGoHandler = alienPoolGo.GetComponent<AlienHandler>();
                 alienPoolGoHandler.currentSpecies = randomSpecies;
+                alienPoolGoHandler.lifeTime = Random.Range(0, 10) * -1;
                 alienPoolGoHandler.HandleAging(0);
                 alienPoolGo.SetActive(true);
 
