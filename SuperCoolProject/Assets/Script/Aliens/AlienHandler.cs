@@ -34,10 +34,10 @@ public class AlienHandler : MonoBehaviour
     public GameObject[] alienSpecies; // 0:Sphere, 1:Square, 2:Triangle
     private float delta;
     private float step;
-    private float alienLifeResource = 1;
-    private float alienLifeChild = 10;
-    private float alienLifeSexual = 30;
-    private float alienLifeFullGrown = 50;
+    private int alienLifeResource = 1;
+    private int alienLifeChild = 1;
+    private int alienLifeSexual = 3;
+    private int alienLifeFullGrown = 5;
     private float alertDistanceThreshold = 2;
 
 
@@ -47,7 +47,7 @@ public class AlienHandler : MonoBehaviour
     Rigidbody rb;
     public RawImage currentStateIcon;
     public Texture[] allStateIcons; // 0: eye, 1: crosshair, 2: wind, 3: heart, 4: shield
-    public float alienHealth;
+    public int alienHealth;
     public float lifeTime = 0;
     public float mateTimer = 0;
     public bool isFemale;
@@ -62,7 +62,7 @@ public class AlienHandler : MonoBehaviour
 
     private void Awake()
     {
-        lifeTime = 0;
+        lifeTime = UnityEngine.Random.Range(0, 10);
         mateTimer = 0;
         alienHealth = alienLifeResource;
         closestAlien = null;
@@ -283,25 +283,27 @@ public class AlienHandler : MonoBehaviour
 
     public void HandleAging(float lifeTime)
     {
-        if (lifeTime < 5)
+        if (lifeTime < 10)
         {
+            DisableRagdoll();
             currentAge = AlienAge.resource;
             alienHealth = alienLifeResource;
             transform.localScale = Vector3.one * 0.2f;
         }
-        else if (lifeTime > 5)
+        else if (lifeTime > 10)
         {
+            EnableRagdoll();
             currentAge = AlienAge.child;
             alienHealth = alienLifeChild;
             transform.localScale = Vector3.one * .5f;
         }
-        else if (lifeTime > 10)
+        else if (lifeTime > 15)
         {
             currentAge = AlienAge.sexualActive;
             alienHealth = alienLifeSexual;
             transform.localScale = Vector3.one;
         }
-        else if (lifeTime > 40)
+        else if (lifeTime > 25)
         {
             currentAge = AlienAge.fullyGrown;
             alienHealth = alienLifeFullGrown;
@@ -348,12 +350,22 @@ public class AlienHandler : MonoBehaviour
         }
         else if (collision.gameObject.CompareTag("Bullet"))
         {
-            // TODO: handle hit by bullet
+            collision.gameObject.SetActive(false);
+            alienHealth--;
+            // Handle Alien Death
+            if (alienHealth == 0)
+            {
+                this.gameObject.SetActive(false);
+            };
         }
         else if (collision.gameObject.CompareTag("Player"))
         {
-            // TODO: Handle player collision
-            // here also farming resource if state is child
+            // Handle Gathering resource
+            if (currentAge == AlienAge.resource)
+            {
+                PlayerManager PM = collision.gameObject.GetComponent<PlayerManager>();
+                PM.HandleGainResource(currentSpecies);
+            }
         }
     }
 

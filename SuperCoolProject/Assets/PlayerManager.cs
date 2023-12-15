@@ -25,11 +25,11 @@ public class PlayerManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        HandleResources();
+        HandleResourceUI();
     }
 
 
-    private void HandleResources()
+    private void HandleResourceUI()
     {
         // 0:Sphere, 1:Square, 2:Triangle
         if (currentSphereResource > 0) { currentSphereResource -= resourceDrain; }
@@ -40,5 +40,12 @@ public class PlayerManager : MonoBehaviour
         resourcePieCharts[0].fillAmount = currentSphereResource / maxSphereResource;
         resourcePieCharts[1].fillAmount = currentSphereResource / maxSphereResource;
         resourcePieCharts[2].fillAmount = currentSphereResource / maxSphereResource;
+    }
+
+    public void HandleGainResource(int rescourseIndex)
+    {
+        if (rescourseIndex == 0) { currentSphereResource += resourceGain; }
+        if (rescourseIndex == 1) { currentSquareResource += resourceGain; }
+        if (rescourseIndex == 2) { currentTriangleResource += resourceGain; }
     }
 }
