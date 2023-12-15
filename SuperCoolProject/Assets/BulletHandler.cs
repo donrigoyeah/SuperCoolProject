@@ -6,7 +6,6 @@ public class BulletHandler : MonoBehaviour
 {
     private void OnEnable()
     {
-        // Gets rendered everytime object gets setActive
         StartCoroutine(DisableAfterSeconds());
     }
 

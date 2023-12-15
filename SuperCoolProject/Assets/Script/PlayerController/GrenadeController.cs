@@ -8,7 +8,7 @@ public class GrenadeController : MonoBehaviour
     [SerializeField] private GameObject explosionEffectPrefab;
     [SerializeField] private Vector3 explosionParticleOffset = new Vector3(0, 1, 0);
 
-    [SerializeField] private float explosionDelay = 3f;
+    [SerializeField] private float explosionDelay = 1.5f;
     [SerializeField] private float explosionForce = 700f;
     [SerializeField] private float explosionRadius = 5f;
 
@@ -36,7 +36,7 @@ public class GrenadeController : MonoBehaviour
     void Explode()
     {
         GameObject explosionEffect = Instantiate(explosionEffectPrefab, transform.position + explosionParticleOffset, Quaternion.identity);
-        Destroy(explosionEffect, 4f);
+        Destroy(explosionEffect, 1.5f);
         
         NearbyForceApply();
         
