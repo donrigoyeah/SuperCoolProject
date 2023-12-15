@@ -44,8 +44,8 @@ public class PlayerManager : MonoBehaviour
 
     public void HandleGainResource(int rescourseIndex)
     {
-        if (rescourseIndex == 0) { currentSphereResource += resourceGain; }
-        if (rescourseIndex == 1) { currentSquareResource += resourceGain; }
-        if (rescourseIndex == 2) { currentTriangleResource += resourceGain; }
+        if (rescourseIndex == 0) { currentSphereResource += resourceGain; if (currentSphereResource > maxSphereResource) { currentSphereResource = maxSphereResource; } }
+        if (rescourseIndex == 1) { currentSquareResource += resourceGain; if (currentSquareResource > maxSquareResource) { currentSquareResource = maxSquareResource; } }
+        if (rescourseIndex == 2) { currentTriangleResource += resourceGain; if (currentTriangleResource > maxTriangleResource) { currentTriangleResource = maxTriangleResource; } }
     }
 }
