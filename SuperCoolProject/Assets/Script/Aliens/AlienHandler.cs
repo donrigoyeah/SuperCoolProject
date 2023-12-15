@@ -253,7 +253,7 @@ public class AlienHandler : MonoBehaviour
         targetPosition = this.transform.position + (this.transform.position - targetAlien.transform.position);
     } // Use this here on the player as well to scare the aliens away
 
-    private void HandleAttacking(GameObject targetAlien) // Player makes them flee as well and by acting als targetAlien in PlayerManager
+    public void HandleAttacking(GameObject targetAlien) // Player makes them flee as well and by acting als targetAlien in PlayerManager
     {
         if (!targetAlien.activeInHierarchy)
         {
@@ -398,12 +398,17 @@ public class AlienHandler : MonoBehaviour
         // Handle Player interaction && is also put in trigger / trigger state changes in HandleAging()
         else if (other.gameObject.CompareTag("Player"))
         {
+            PlayerManager PM = other.gameObject.GetComponent<PlayerManager>();
+
             // Handle Gathering resource
             if (currentAge == AlienAge.resource)
             {
-                PlayerManager PM = other.gameObject.GetComponent<PlayerManager>();
                 PM.HandleGainResource(currentSpecies);
                 this.gameObject.SetActive(false);
+            }
+            else
+            {
+                PM.HandleHit();
             }
         }
     }

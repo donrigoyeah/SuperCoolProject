@@ -44,7 +44,7 @@ public class AlienManager : MonoBehaviour
                 //int randPosX = Random.Range(0, 200) - 100;
                 //int randPosZ = Random.Range(0, 200) - 100;
 
-                float r = Random.Range(10, 50);
+                float r = Random.Range(30, 90);
                 float angle = Random.Range(0, 360);
 
                 float randPosX = r * Mathf.Cos(angle);

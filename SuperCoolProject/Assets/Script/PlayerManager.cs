@@ -8,6 +8,10 @@ public class PlayerManager : MonoBehaviour
     [Header("Player Variables")]
     public float playerDetectionRadius = 10;
     public Collider[] aliensInRange;
+    public bool playerShield;
+    public bool isCarryingPart;
+    public float timeSinceLastHit;
+    public GameObject playerShieldGO;
 
 
     [Header("Resource Variables")]
@@ -30,20 +34,40 @@ public class PlayerManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        HandleResourceUI();
+        float delta = Time.deltaTime;
+        timeSinceLastHit += delta;
+
+        HandleResource();
         HandleDeath();
         HandleAlienDetection();
+
+        // TODO: Make this maybe coroutine ?!
+        if (playerShield == false && timeSinceLastHit > 3)
+        {
+            playerShieldGO.SetActive(true);
+            playerShield = true;
+
+        }
+    }
+
+    public void HandleHit()
+    {
+        if (playerShield == true)
+        {
+            timeSinceLastHit = 0;
+            playerShieldGO.SetActive(false);
+            playerShield = false;
+        }
+        else
+        {
+            HandleDeath();
+        }
     }
 
 
     private void HandleDeath()
     {
-        if (currentSphereResource <= 0 ||
-            currentSquareResource <= 0 ||
-            currentTriangleResource <= 0)
-        {
-            Debug.Log("Player died");
-        }
+        Debug.Log("Player died");
     }
 
 
@@ -63,11 +87,16 @@ public class PlayerManager : MonoBehaviour
                     AH.closestAlien = this.gameObject;
                     AH.HandleFleeing(this.gameObject); // this time its not an alienGO but the player
                 }
+                else if (AH.lifeTime > AH.timeToFullGrown)
+                {
+                    AH.closestAlien = this.gameObject;
+                    AH.HandleAttacking(this.gameObject); // this time its not an alienGO but the player
+                }
             }
         }
     }
 
-    private void HandleResourceUI()
+    private void HandleResource()
     {
         // 0:Sphere, 1:Square, 2:Triangle
         if (currentSphereResource > 0) { currentSphereResource -= resourceDrain; }
@@ -78,6 +107,14 @@ public class PlayerManager : MonoBehaviour
         resourcePieCharts[0].fillAmount = currentSphereResource / maxSphereResource;
         resourcePieCharts[1].fillAmount = currentSphereResource / maxSphereResource;
         resourcePieCharts[2].fillAmount = currentSphereResource / maxSphereResource;
+
+        // Check if enough resources
+        if (currentSphereResource <= 0 ||
+            currentSquareResource <= 0 ||
+            currentTriangleResource <= 0)
+        {
+            HandleDeath();
+        }
     }
 
     public void HandleGainResource(int rescourseIndex)
