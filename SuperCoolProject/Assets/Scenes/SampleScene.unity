@@ -397,7 +397,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ca995376a5e354e468db20b5567de5af, type: 2}
+  - {fileID: 2100000, guid: 18fc867aee5165344a46d8a577febc06, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2887,7 +2887,7 @@ PrefabInstance:
         type: 3}
       propertyPath: playerShieldGO
       value: 
-      objectReference: {fileID: 1848143880493537950}
+      objectReference: {fileID: 0}
     - target: {fileID: 8794882847261471613, guid: 12858b1f8789e0e428bbcdcab1837ac1,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2946,12 +2946,6 @@ PrefabInstance:
 --- !u!4 &1848143880493537949 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8794882847261471613, guid: 12858b1f8789e0e428bbcdcab1837ac1,
-    type: 3}
-  m_PrefabInstance: {fileID: 1848143880493537948}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1848143880493537950 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4563558085366679620, guid: 12858b1f8789e0e428bbcdcab1837ac1,
     type: 3}
   m_PrefabInstance: {fileID: 1848143880493537948}
   m_PrefabAsset: {fileID: 0}
