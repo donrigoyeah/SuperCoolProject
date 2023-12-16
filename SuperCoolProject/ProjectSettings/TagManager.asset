@@ -9,6 +9,8 @@ TagManager:
   - sphere
   - Bullet
   - Alien
+  - SpaceShipDoor
+  - Part
   layers:
   - Default
   - TransparentFX

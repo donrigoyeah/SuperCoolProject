@@ -63,7 +63,7 @@ public class PlayerShoot : MonoBehaviour
             nextFireTime = fireRate;
             isShooting = false;
         }
-        
+
         overheatSlider.gameObject.transform.Find("Fill Area").Find("Fill").GetComponent<Image>().color =
             Color.Lerp(Color.green, Color.red, overheatSlider.value / 0.70f);
     }
@@ -73,14 +73,14 @@ public class PlayerShoot : MonoBehaviour
         Rigidbody rb;
         GameObject bulletPoolGo = PoolManager.SharedInstance.GetPooledBullets();
         if (bulletPoolGo != null)
-        {            
+        {
             bulletPoolGo.transform.position = firePoint.position;
             bulletPoolGo.transform.rotation = firePoint.rotation;
 
             bulletPoolGo.SetActive(true);
 
             rb = bulletPoolGo.GetComponent<Rigidbody>();
-            rb.velocity = firePoint.forward * bulletSpeed; 
+            rb.velocity = firePoint.forward * bulletSpeed;
         }
         overheatSlider.value += gunOverheatingSpeed;
     }

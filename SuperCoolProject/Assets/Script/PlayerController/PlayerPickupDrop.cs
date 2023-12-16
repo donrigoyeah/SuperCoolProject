@@ -18,25 +18,29 @@ public class PlayerPickupDrop : MonoBehaviour
     {
         playerControls.Disable();
     }
-    
+
     private void Awake()
     {
         playerControls = new PlayerControls();
-        
+
         playerControls.PlayerActionMap.DragDrop.started += ctx => isDragDropActionPressed = true;
         playerControls.PlayerActionMap.DragDrop.canceled += ctx => isDragDropActionPressed = false;
     }
-    
+
     private void OnTriggerStay(Collider other)
     {
         if (isDragDropActionPressed && other.CompareTag("Player"))
         {
-            GameObject.Find("Player").GetComponent<PlayerShoot>().enabled = false;
+            other.gameObject.GetComponent<PlayerShoot>().enabled = false;
+            other.gameObject.GetComponent<PlayerManager>().isCarryingPart = true;
+            other.gameObject.GetComponent<PlayerManager>().currentPart = this.gameObject;
             this.transform.parent = other.transform;
         }
-        else
+        else if (!isDragDropActionPressed && other.CompareTag("Player"))
         {
-            GameObject.Find("Player").GetComponent<PlayerShoot>().enabled = true;
+            other.gameObject.GetComponent<PlayerShoot>().enabled = true;
+            other.gameObject.GetComponent<PlayerManager>().isCarryingPart = false;
+            other.gameObject.GetComponent<PlayerManager>().currentPart = null;
             this.transform.parent = null;
         }
     }
