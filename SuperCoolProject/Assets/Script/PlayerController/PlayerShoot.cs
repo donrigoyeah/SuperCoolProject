@@ -26,7 +26,6 @@ public class PlayerShoot : MonoBehaviour
         twinStickMovement = GetComponent<TwinStickMovement>();
         playerControls.PlayerActionMap.Shoot.performed += ctx => isShooting = true;
         playerControls.PlayerActionMap.Shoot.canceled += ctx => isShooting = false;
-
     }
 
     private void OnEnable()

@@ -66,6 +66,9 @@ public class AlienHandler : MonoBehaviour
     AlienHandler closestAlienHandler = null;
     int closestAlienIndex;
 
+
+    public Animation anim;
+
     #endregion
 
     private void Awake()
@@ -98,6 +101,12 @@ public class AlienHandler : MonoBehaviour
         hungerTimer += delta;
         tickTimer += delta;
         step = (alienSpeed + lifeTime / 25) * delta;
+
+        if (anim != null && currentSpecies == 2)
+        {
+            Debug.Log("Should play animation");
+            anim.Play("Armature|IDLE");
+        }
 
         //Keep alien on the floor (y)
         if (transform.position.y > .2f) { transform.position = new Vector3(transform.position.x, 0.1f, transform.position.z); }
