@@ -2878,16 +2878,6 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7692718112746338049, guid: 12858b1f8789e0e428bbcdcab1837ac1,
-        type: 3}
-      propertyPath: resourceDrain
-      value: 0.02
-      objectReference: {fileID: 0}
-    - target: {fileID: 7692718112746338049, guid: 12858b1f8789e0e428bbcdcab1837ac1,
-        type: 3}
-      propertyPath: playerShieldGO
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 8794882847261471613, guid: 12858b1f8789e0e428bbcdcab1837ac1,
         type: 3}
       propertyPath: m_LocalPosition.x
