@@ -104,7 +104,6 @@ public class AlienHandler : MonoBehaviour
 
         if (anim != null && currentSpecies == 2)
         {
-            Debug.Log("Should play animation");
             anim.Play("Armature|IDLE");
         }
 
