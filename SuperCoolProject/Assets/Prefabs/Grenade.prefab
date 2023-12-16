@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4942129456108240249}
   - component: {fileID: 5418460062194360374}
   - component: {fileID: 1082734900822190475}
-  - component: {fileID: 9085041924559917782}
+  - component: {fileID: -6292732325558360807}
   m_Layer: 0
   m_Name: Grenade
   m_TagString: Untagged
@@ -115,7 +115,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2496734503096154801}
   serializedVersion: 4
-  m_Mass: 10
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -132,9 +132,9 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &9085041924559917782
+--- !u!114 &-6292732325558360807
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -143,12 +143,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2496734503096154801}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd6e8e869e88a164aaba5de1e9dd54a7, type: 3}
+  m_Script: {fileID: 11500000, guid: caf6f8f085739fb4c9b040e79efc36e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosionEffectPrefab: {fileID: 518168211817822157, guid: fb7d9e6c815c64345a2b9b60dd55c223,
-    type: 3}
-  explosionParticleOffset: {x: 0, y: 1, z: 0}
-  explosionDelay: 0.85
-  explosionForce: 700
-  explosionRadius: 5
+  _rb: {fileID: 1082734900822190475}
