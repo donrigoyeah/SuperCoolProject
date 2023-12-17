@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class SpaceShipParts : MonoBehaviour
 {
-    public SpaceShipScriptable spaceShipData;
 
     private void Update()
     {

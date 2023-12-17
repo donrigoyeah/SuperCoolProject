@@ -6,6 +6,8 @@ public class SpaceShipPartHandler : MonoBehaviour
 {
     private InputHandler inputHandler;
     private PlayerManager playerManager;
+    public SpaceShipScriptable spaceShipData;
+
 
     private void OnTriggerStay(Collider other)
     {
