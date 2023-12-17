@@ -9,7 +9,7 @@ public class AlienHandler : MonoBehaviour
 {
     #region Variables
 
-    enum AlienState
+    public enum AlienState
     {
         roaming,
         hunting,
@@ -17,13 +17,14 @@ public class AlienHandler : MonoBehaviour
         loving
     }
 
-    enum AlienAge
+    public enum AlienAge
     {
         resource,
         child,
         sexualActive,
         fullyGrown
     }
+
 
     [Header("Tick stats")]
     public float tickTimer;
@@ -46,8 +47,8 @@ public class AlienHandler : MonoBehaviour
 
 
     [Header("This Alien")]
-    AlienState currentState;
-    AlienAge currentAge;
+    public AlienState currentState;
+    public AlienAge currentAge;
     Rigidbody rb;
     Collider coll;
     public RawImage currentStateIcon;
@@ -102,10 +103,7 @@ public class AlienHandler : MonoBehaviour
         tickTimer += delta;
         step = (alienSpeed + lifeTime / 25) * delta;
 
-        if (anim != null && currentSpecies == 2)
-        {
-            anim.Play("Armature|IDLE");
-        }
+
 
         //Keep alien on the floor (y)
         if (transform.position.y > .2f) { transform.position = new Vector3(transform.position.x, 0.1f, transform.position.z); }
@@ -337,6 +335,10 @@ public class AlienHandler : MonoBehaviour
     {
         if (currentAge != AlienAge.resource)
         {
+            if (anim != null && currentSpecies == 2)
+            {
+                anim.Play("Armature|WALK");
+            }
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, step);
             if (Vector3.Distance(transform.position, targetPosition) < .5f)
             {
