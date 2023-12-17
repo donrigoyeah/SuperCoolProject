@@ -71,5 +71,3 @@ public class GrenadeThrower : MonoBehaviour {
         Destroy(grenadeTrajectory.gameObject);
     }
 }
-
-//Sorry it took so much time. I hope you find this code to be alright

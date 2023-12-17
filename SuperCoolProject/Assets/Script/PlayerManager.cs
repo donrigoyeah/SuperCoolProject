@@ -68,7 +68,7 @@ public class PlayerManager : MonoBehaviour
 
     private void HandleDeath()
     {
-        //Debug.Log("Player died");
+        // Debug.Log("Player died");
     }
 
 
