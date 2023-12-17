@@ -33,37 +33,36 @@ public class AlienManager : MonoBehaviour
     }
     private void SpawnAlien()
     {
+        int oneSixedOfPoulation = Mathf.RoundToInt(PoolManager.SharedInstance.alienAmount / 6);
+        float currentPopulationSixth = oneSixedOfPoulation;
+        float pieSliceSize = 60;
+        float currentSlize = 0;
+        int currentSpieziesForArea = 0;
+        int k = 0;
+
         for (int i = 0; i < PoolManager.SharedInstance.alienAmount; i++)
         {
             GameObject alienPoolGo = PoolManager.SharedInstance.GetPooledAliens();
-            float oneSixedOfPoulation = PoolManager.SharedInstance.alienAmount / 6;
-            float currentPopulationSixth = oneSixedOfPoulation;
-            float pieSliceSize = 60;
-            float pieAreaMin = 0;
-            float pieAreaMax = 60;
-            int currentSpieziesForArea = 0;
-
             if (alienPoolGo != null)
             {
                 if (i > currentPopulationSixth)
                 {
+                    currentPopulationSixth += oneSixedOfPoulation;
+                    currentSlize += pieSliceSize;
+
                     currentSpieziesForArea++;
                     if (currentSpieziesForArea == 3) { currentSpieziesForArea = 0; };
-                    pieAreaMin += pieSliceSize;
-                    pieAreaMax += pieSliceSize;
-                    currentPopulationSixth += oneSixedOfPoulation;
+
                 }
-                //int randomSpecies = Random.Range(0, 3);
-                int randomSpecies = currentSpieziesForArea;
 
-                float r = Random.Range(30, 100);
-                float angle = Random.Range(pieAreaMin, pieAreaMax);
+                float r = Random.Range(30, 70);
+                float angle = Random.Range(currentSlize - 5, currentSlize + 5);
 
-                float randPosX = r * Mathf.Cos(angle);
-                float randPosZ = r * Mathf.Sin(angle);
+                float randPosX = r * Mathf.Cos(Mathf.Deg2Rad * angle);
+                float randPosZ = r * Mathf.Sin(Mathf.Deg2Rad * angle);
 
                 AlienHandler alienPoolGoHandler = alienPoolGo.GetComponent<AlienHandler>();
-                alienPoolGoHandler.currentSpecies = randomSpecies;
+                alienPoolGoHandler.currentSpecies = currentSpieziesForArea;
                 alienPoolGoHandler.lifeTime = Random.Range(0, 10) * -1;
                 alienPoolGoHandler.HandleAging(0);
                 alienPoolGo.SetActive(true);

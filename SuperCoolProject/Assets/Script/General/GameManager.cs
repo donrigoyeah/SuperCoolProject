@@ -23,7 +23,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private SpaceShipScriptable[] spaceShipScriptable;
 
     public bool hasFuelCanister = false;
-    //private TwinStickMovement twinStickMovement;
 
     private void Awake()
     {

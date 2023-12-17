@@ -108,14 +108,12 @@ public class PlayerAttacker : MonoBehaviour
         // Normale gun heat cooldown
         if (gunOverheated == false && currentWeaponHeat > 0)
         {
-            Debug.Log("Heating up");
             currentWeaponHeat -= gunCooldownSpeed;
         }
 
         // Gun is overheated and needs to cool down before use
         if (gunOverheated == true && currentWeaponHeat > 0)
         {
-            Debug.Log("OVERHEATED and depleating");
             currentWeaponHeat -= gunCooldownSpeed + gunOverHeatCooldownSpeed;
             gunOverheated = true;
         }
@@ -160,7 +158,7 @@ public class PlayerAttacker : MonoBehaviour
                 UpdateTrajectory();
             }
             else if (!inputHandler.inputSecondaryFire && throwForce > 0)
-            { 
+            {
                 currentGrenadeCooldownValue = 0;
                 lineRenderer.positionCount = 0;
                 throwForce = 0;
@@ -182,7 +180,7 @@ public class PlayerAttacker : MonoBehaviour
 
         if (currentGrenadeCooldownValue < grenadeCooldownMax)
         {
-            
+
             grenadeAvailable = false;
             currentGrenadeCooldownValue += grenadeCooldownSpeed;
             currentGrenadeCooldownValue = Mathf.Min(grenadeCooldownMax, currentGrenadeCooldownValue);
