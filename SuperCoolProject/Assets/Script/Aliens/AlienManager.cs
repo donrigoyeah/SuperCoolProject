@@ -7,6 +7,7 @@ public class AlienManager : MonoBehaviour
 {
     public static AlienManager SharedInstance;
 
+    [Header("Current Alien Population")]
     // 0:Sphere, 1:Square, 2:Triangle
     public int sphereCount;
     public int squareCount;
@@ -16,6 +17,14 @@ public class AlienManager : MonoBehaviour
 
     public Image[] imagesPieChart;
     public float[] values;
+
+    [Header("Spawn Settings")]
+    public int segmentAmount = 6;
+    public int segmentWidthRange = 10;
+    public int minRadius = 30;
+    public int maxRadius = 70;
+    public int maxSleepDelay = 10;
+
 
     private void Awake()
     {
@@ -33,21 +42,20 @@ public class AlienManager : MonoBehaviour
     }
     private void SpawnAlien()
     {
-        int oneSixedOfPoulation = Mathf.RoundToInt(PoolManager.SharedInstance.alienAmount / 6);
-        float currentPopulationSixth = oneSixedOfPoulation;
-        float pieSliceSize = 60;
-        float currentSlize = 0;
+        int oneSegmentOfPoulation = Mathf.RoundToInt(PoolManager.SharedInstance.alienAmount / segmentAmount);
+        int currentPopulationSegment = oneSegmentOfPoulation;
+        int pieSliceSize = 360 / segmentAmount;
+        int currentSlize = 0;
         int currentSpieziesForArea = 0;
-        int k = 0;
 
         for (int i = 0; i < PoolManager.SharedInstance.alienAmount; i++)
         {
             GameObject alienPoolGo = PoolManager.SharedInstance.GetPooledAliens();
             if (alienPoolGo != null)
             {
-                if (i > currentPopulationSixth)
+                if (i > currentPopulationSegment)
                 {
-                    currentPopulationSixth += oneSixedOfPoulation;
+                    currentPopulationSegment += oneSegmentOfPoulation;
                     currentSlize += pieSliceSize;
 
                     currentSpieziesForArea++;
@@ -55,19 +63,18 @@ public class AlienManager : MonoBehaviour
 
                 }
 
-                float r = Random.Range(30, 70);
-                float angle = Random.Range(currentSlize - 5, currentSlize + 5);
+                float r = Random.Range(minRadius, maxRadius);
+                float angle = Random.Range(currentSlize - segmentWidthRange, currentSlize + segmentWidthRange);
 
                 float randPosX = r * Mathf.Cos(Mathf.Deg2Rad * angle);
                 float randPosZ = r * Mathf.Sin(Mathf.Deg2Rad * angle);
 
                 AlienHandler alienPoolGoHandler = alienPoolGo.GetComponent<AlienHandler>();
                 alienPoolGoHandler.currentSpecies = currentSpieziesForArea;
-                alienPoolGoHandler.lifeTime = Random.Range(0, 10) * -1;
+                alienPoolGoHandler.lifeTime = Random.Range(0, maxSleepDelay) * -1;
                 alienPoolGoHandler.HandleAging(0);
                 alienPoolGo.SetActive(true);
 
-                // TODO: Maybe have them spawn in groups of the same kind to make sure they have good start oppertunity
                 alienPoolGo.transform.position = new Vector3(randPosX, 0.1f, randPosZ);
             }
         }

@@ -28,6 +28,10 @@ public class PlayerManager : MonoBehaviour
     public float resourceGain = 5;
 
     public Image[] resourcePieCharts;
+    // 0:Sphere, 1:Square, 2:Triangle
+    public GameObject ResourceUISphere;
+    public GameObject ResourceUISquare;
+    public GameObject ResourceUITriangle;
 
     [Header("Player Variables")]
     public bool hasShield;
@@ -103,6 +107,11 @@ public class PlayerManager : MonoBehaviour
         if (currentSphereResource > 0) { currentSphereResource -= resourceDrain; }
         if (currentSquareResource > 0) { currentSquareResource -= resourceDrain; }
         if (currentTriangleResource > 0) { currentTriangleResource -= resourceDrain; }
+
+        // Only show resource UI if below 75%
+        if (currentSphereResource < 3 * maxSphereResource / 4) { ResourceUISphere.SetActive(true); } else { ResourceUISphere.SetActive(false); }
+        if (currentSquareResource < 3 * maxSquareResource / 4) { ResourceUISquare.SetActive(true); } else { ResourceUISquare.SetActive(false); }
+        if (currentTriangleResource < 3 * maxTriangleResource / 4) { ResourceUITriangle.SetActive(true); } else { ResourceUITriangle.SetActive(false); }
 
         // Update UI
         resourcePieCharts[0].fillAmount = currentSphereResource / maxSphereResource;
