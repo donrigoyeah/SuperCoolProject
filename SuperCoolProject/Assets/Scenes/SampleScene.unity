@@ -460,7 +460,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &288190632
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2658,6 +2658,12 @@ MonoBehaviour:
   totalSpaceShipParts: 5
   currentSpaceShipParts: 0
   spaceShipPartsDisplay: {fileID: 1001025137}
+  spaceShipScriptable:
+  - {fileID: 11400000, guid: 02e70b1c46affb643a104ac019c880b5, type: 2}
+  - {fileID: 11400000, guid: ae33f24f63959e445a51dd0946d38663, type: 2}
+  - {fileID: 11400000, guid: b66cc0a944aaae8419fed1b5e2094d74, type: 2}
+  - {fileID: 11400000, guid: 7acb7ce8852f0454eac80f3b73c811b8, type: 2}
+  - {fileID: 11400000, guid: ae33f24f63959e445a51dd0946d38663, type: 2}
 --- !u!1 &2012718215
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(PlayerInput))]
 public class TwinStickMovement : MonoBehaviour
 {
-    [SerializeField] private float playerSpeed;
+    [SerializeField] public float playerSpeed;
     [SerializeField] private float gravityValue;
     [SerializeField] private float jumpForce;
     
