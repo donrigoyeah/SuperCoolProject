@@ -36,12 +36,28 @@ public class AlienManager : MonoBehaviour
         for (int i = 0; i < PoolManager.SharedInstance.alienAmount; i++)
         {
             GameObject alienPoolGo = PoolManager.SharedInstance.GetPooledAliens();
+            float oneSixedOfPoulation = PoolManager.SharedInstance.alienAmount / 6;
+            float currentPopulationSixth = oneSixedOfPoulation;
+            float pieSliceSize = 60;
+            float pieAreaMin = 0;
+            float pieAreaMax = 60;
+            int currentSpieziesForArea = 0;
+
             if (alienPoolGo != null)
             {
-                int randomSpecies = Random.Range(0, 3);
+                if (i > currentPopulationSixth)
+                {
+                    currentSpieziesForArea++;
+                    if (currentSpieziesForArea == 3) { currentSpieziesForArea = 0; };
+                    pieAreaMin += pieSliceSize;
+                    pieAreaMax += pieSliceSize;
+                    currentPopulationSixth += oneSixedOfPoulation;
+                }
+                //int randomSpecies = Random.Range(0, 3);
+                int randomSpecies = currentSpieziesForArea;
 
-                float r = Random.Range(30, 65);
-                float angle = Random.Range(0, 360);
+                float r = Random.Range(30, 100);
+                float angle = Random.Range(pieAreaMin, pieAreaMax);
 
                 float randPosX = r * Mathf.Cos(angle);
                 float randPosZ = r * Mathf.Sin(angle);
