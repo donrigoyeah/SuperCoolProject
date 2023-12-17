@@ -51,5 +51,7 @@ public class Grenade : MonoBehaviour
                 rb.AddExplosionForce(explosionForce, transform.position, explosionRadius);
             }
         }
+
+        hasExploded = false;
     }
 }

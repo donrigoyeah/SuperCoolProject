@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2659099586607025304}
   - component: {fileID: 2088604724729448688}
   - component: {fileID: 8750388930879463079}
-  - component: {fileID: 189869154632687697}
+  - component: {fileID: 703465819759145288}
   m_Layer: 0
   m_Name: SpaceCraftPart
   m_TagString: Part
@@ -106,7 +106,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3.0309286, y: 1, z: 3.5564113}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &189869154632687697
+--- !u!114 &703465819759145288
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -115,6 +115,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 621607558053313764}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee27af04a3b782e4a94c4d2c6926241e, type: 3}
+  m_Script: {fileID: 11500000, guid: d736195705b82324bb71e72292acdb22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
