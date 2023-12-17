@@ -1998,7 +1998,12 @@ MonoBehaviour:
   totalSpaceShipParts: 5
   currentSpaceShipParts: 0
   spaceShipPartsDisplay: {fileID: 1001025137}
-  spaceShipScriptable: []
+  spaceShipScriptable:
+  - {fileID: 11400000, guid: 02e70b1c46affb643a104ac019c880b5, type: 2}
+  - {fileID: 11400000, guid: ae33f24f63959e445a51dd0946d38663, type: 2}
+  - {fileID: 11400000, guid: b66cc0a944aaae8419fed1b5e2094d74, type: 2}
+  - {fileID: 11400000, guid: 7acb7ce8852f0454eac80f3b73c811b8, type: 2}
+  - {fileID: 11400000, guid: 7acb7ce8852f0454eac80f3b73c811b8, type: 2}
   hasFuelCanister: 0
 --- !u!1 &2045070897
 GameObject:
