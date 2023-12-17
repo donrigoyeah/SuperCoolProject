@@ -1,26 +1,25 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerPickupDrop : MonoBehaviour
+public class SpaceShipPartHandler : MonoBehaviour
 {
     private InputHandler inputHandler;
     private PlayerManager playerManager;
-    
+
     private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             inputHandler = other.gameObject.GetComponent<InputHandler>();
-            if (inputHandler.isDragDropActionPressed)
+            if (inputHandler.inputInteracting)
             {
                 playerManager = other.gameObject.GetComponent<PlayerManager>();
                 playerManager.currentPart = this.gameObject;
                 playerManager.isCarryingPart = true;
                 this.transform.parent = other.transform;
             }
-            else if (!inputHandler.isDragDropActionPressed)
+            else if (!inputHandler.inputInteracting)
             {
                 Debug.Log("3");
                 if (playerManager == null)

@@ -176,12 +176,11 @@ GameObject:
   - component: {fileID: 6546434695164003504}
   - component: {fileID: 875804534354543705}
   - component: {fileID: 7910166194048014903}
-  - component: {fileID: 7585532507068316445}
-  - component: {fileID: 551760365157556508}
-  - component: {fileID: 7983239174723258367}
   - component: {fileID: 221246856862962231}
-  - component: {fileID: 6766940811692802884}
   - component: {fileID: 7692718112746338049}
+  - component: {fileID: 7595266375327355587}
+  - component: {fileID: 9130882823596995695}
+  - component: {fileID: 6766940811692802884}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -339,59 +338,6 @@ MonoBehaviour:
   m_DefaultActionMap: PlayerActionMap
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &7585532507068316445
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1123791489352467104}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bba3bffa466a9b640a78d1693f47fffd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerSpeed: 10
-  gravityValue: -40
-  jumpForce: 15
-  targetAimPosition: {x: 0, y: 0, z: 0}
-  dashCooldown: 5
---- !u!114 &551760365157556508
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1123791489352467104}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e45ab36a9a43ff42be6ffb301b4d660, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lineRenderer: {fileID: 6766940811692802884}
-  PhysicsFrame: 35
-  grenadePrefab: {fileID: -6292732325558360807, guid: 632de922000647541804b1fae094b496,
-    type: 3}
-  force: 1
-  maxForce: 20
-  currentForce: 5
-  spawnLocation: {fileID: 7748597816388016088}
---- !u!114 &7983239174723258367
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1123791489352467104}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c88a96626b1561f46b7a2e0b81689b0e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  overheatSlider: {fileID: 6036372453612913000}
-  fireRate: 0.4
-  gunCooldownSpeed: 0.003
-  firePoint: {fileID: 7666627156274332060}
 --- !u!114 &221246856862962231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -404,7 +350,87 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 390e1fa6a0198074d90984df30adbab3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isShooting: 0
+  inputPrimaryFire: 0
+  inputSecondaryFire: 0
+  inputSecondaryFireStarted: 0
+  inputInteracting: 0
+  inputJumping: 0
+  inputDashing: 0
+--- !u!114 &7692718112746338049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123791489352467104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89361d7519fa43d48a60a7edf83ced56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerDetectionRadius: 10
+  aliensInRange: []
+  playerShield: 0
+  isCarryingPart: 0
+  currentPart: {fileID: 0}
+  timeSinceLastHit: 0
+  playerShieldGO: {fileID: 4563558085366679620}
+  currentSphereResource: 100
+  currentSquareResource: 100
+  currentTriangleResource: 100
+  resourceDrain: 0.02
+  resourceGain: 20
+  resourcePieCharts:
+  - {fileID: 9071979888274502329}
+  - {fileID: 7812766738713300160}
+  - {fileID: 1961346652028593165}
+  hasShield: 0
+--- !u!114 &7595266375327355587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123791489352467104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cea3148f6dd4df1488cbe5698e1be0e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerSpeed: 10
+  gravityValue: -40
+  jumpForce: 15
+  targetAimPosition: {x: 0, y: 0, z: 0}
+  dashCooldown: 5
+--- !u!114 &9130882823596995695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123791489352467104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f55cee3f51077314f910e68be8f1ef6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  firePoint: {fileID: 7666627156274332060}
+  overheatSlider: {fileID: 6036372453612913000}
+  fireRate: 0.5
+  currentWeaponHeat: 0
+  maxWeaponHeat: 0
+  singleLazerHeat: 10
+  gunCooldownSpeed: 0.003
+  gunOverHeatCooldownSpeed: 0.003
+  lineRenderer: {fileID: 6766940811692802884}
+  grenadePrefab: {fileID: -6292732325558360807, guid: 632de922000647541804b1fae094b496,
+    type: 3}
+  spawnLocation: {fileID: 7748597816388016088}
+  force: 1
+  forceBuildUpSpeed: 0.3
+  maxForce: 10
+  currentForce: 0
+  PhysicsFrame: 62
 --- !u!120 &6766940811692802884
 LineRenderer:
   serializedVersion: 2
@@ -509,35 +535,6 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
---- !u!114 &7692718112746338049
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1123791489352467104}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89361d7519fa43d48a60a7edf83ced56, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerDetectionRadius: 10
-  aliensInRange: []
-  playerShield: 0
-  isCarryingPart: 0
-  currentPart: {fileID: 0}
-  timeSinceLastHit: 0
-  playerShieldGO: {fileID: 0}
-  currentSphereResource: 100
-  currentSquareResource: 100
-  currentTriangleResource: 100
-  resourceDrain: 0.02
-  resourceGain: 20
-  resourcePieCharts:
-  - {fileID: 9071979888274502329}
-  - {fileID: 7812766738713300160}
-  - {fileID: 1961346652028593165}
-  hasShield: 0
 --- !u!1 &2401035407914200527
 GameObject:
   m_ObjectHideFlags: 0
@@ -548,7 +545,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7666627156274332060}
   m_Layer: 0
-  m_Name: FirePoint
+  m_Name: LazerSpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -811,7 +808,7 @@ GameObject:
   - component: {fileID: 8381757559704676178}
   - component: {fileID: 51327033599341626}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: GrenadeSpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

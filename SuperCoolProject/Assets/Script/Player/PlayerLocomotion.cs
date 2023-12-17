@@ -1,17 +1,13 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(CharacterController))]
-[RequireComponent(typeof(PlayerInput))]
-public class TwinStickMovement : MonoBehaviour
+public class PlayerLocomotion : MonoBehaviour
 {
     [SerializeField] private float playerSpeed;
     [SerializeField] private float gravityValue;
     [SerializeField] private float jumpForce;
-    
+
     private CharacterController controller;
     private Vector3 playerVelocity;
     public Vector3 targetAimPosition;
@@ -19,34 +15,34 @@ public class TwinStickMovement : MonoBehaviour
     private bool isJumping = true;
     private float jumpCooldownTimer = 0f;
     private float jumpCooldown = 2f;
-    
-    [SerializeField]private float dashCooldown = 5f;
+
+    [SerializeField] private float dashCooldown = 5f;
     private bool isDashing = true;
     private float dashCooldownTimer = 0f;
     private float dashDuration = 0.3f;
     private float dashSpeed = 20f;
-    
+
     private PlayerControls playerControls;
     private InputHandler inputHandler;
 
     private void Awake()
     {
-        isJumping = true;
+        isJumping = false;
         controller = GetComponent<CharacterController>();
         inputHandler = GetComponent<InputHandler>();
     }
-    
+
     void Update()
     {
         Movement();
         Rotation();
 
-        if (inputHandler.jumpTriggered && isJumping)
+        if (inputHandler.inputJumping && isJumping)
         {
             Jump();
         }
 
-        if (inputHandler.dashTriggered && isDashing)
+        if (inputHandler.inputDashing && isDashing)
         {
             StartCoroutine(Dash());
         }
@@ -71,10 +67,10 @@ public class TwinStickMovement : MonoBehaviour
             }
         }
     }
-    
+
     void Movement()
     {
-        Vector3 move = new Vector3( inputHandler.movementInput.x, 0,  inputHandler.movementInput.y);
+        Vector3 move = new Vector3(inputHandler.inputMovement.x, 0, inputHandler.inputMovement.y);
         controller.Move(move * Time.deltaTime * playerSpeed);
 
         playerVelocity.y += gravityValue * Time.deltaTime;
@@ -84,7 +80,7 @@ public class TwinStickMovement : MonoBehaviour
 
     void Rotation()
     {
-        Ray ray = Camera.main.ScreenPointToRay(inputHandler.aimInput);
+        Ray ray = Camera.main.ScreenPointToRay(inputHandler.inputAim);
         Plane groundPlane = new Plane(Vector3.up, Vector3.zero); // represent a plane in 3D space
         float rayDistance;
 
@@ -103,7 +99,7 @@ public class TwinStickMovement : MonoBehaviour
 
     private void Jump()
     {
-        playerVelocity.y = jumpForce; 
+        playerVelocity.y = jumpForce;
         isJumping = false;
     }
 
