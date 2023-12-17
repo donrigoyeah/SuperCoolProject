@@ -9,5 +9,7 @@ public class SpaceShipScriptable : ScriptableObject
     public string partName;
     public string mass;
     public string abilityUnlock;
+    public GameObject model;
+    
     
 }
