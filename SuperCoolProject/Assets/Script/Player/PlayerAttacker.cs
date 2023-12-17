@@ -3,31 +3,37 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using static UnityEngine.Rendering.DebugUI;
 
 
 public class PlayerAttacker : MonoBehaviour
 {
     [Header("Lazer Gun Stuff")]
-    [SerializeField] public Transform firePoint;
-    [SerializeField] public Slider overheatSlider;
+    [SerializeField] public Transform lazerSpawnLocation;
+    [SerializeField] public Image overheatUI;
     [SerializeField] private float fireRate = 0.5f;
     [SerializeField] private float currentWeaponHeat = 0;
     [SerializeField] private float maxWeaponHeat = 100;
     [SerializeField] private float singleLazerHeat = 10;
     [SerializeField] private float gunCooldownSpeed = 0.003f;
     [SerializeField] private float gunOverHeatCooldownSpeed = 0.003f;
-    private bool gunOverheated = false;
-    private float nextFireTime = 0f;
-    private float bulletSpeed = 50;
+    [SerializeField] private bool gunOverheated = false;
+    [SerializeField] private float nextFireTime = 0f;
+    [SerializeField] private float bulletSpeed = 50;
 
     [Header("Grenade stuff")]
+    [SerializeField] private Transform grenadeSpawnLocation;
+    [SerializeField] public Image grenadeCooldownUI;
     [SerializeField] private LineRenderer lineRenderer;
     [SerializeField] private Grenade grenadePrefab;
-    [SerializeField] private Transform spawnLocation;
-    [SerializeField] private float force;
-    [SerializeField] private float forceBuildUpSpeed = 0.3f;
-    [SerializeField] private float maxForce = 10f;
-    [SerializeField] private float currentForce = 0f;
+    [SerializeField] private float throwForce;
+    [SerializeField] private float throwForceBuildUpSpeed = 0.3f;
+    [SerializeField] private float maxthrowForce = 10f;
+    [SerializeField] private float currentThrowForce = 0f;
+    [SerializeField] private float currentGrenadeCooldownValue = 0f;
+    [SerializeField] private float grenadeCooldownSpeed = 1;
+    [SerializeField] private float grenadeCooldownMax = 10;
+    [SerializeField] private bool grenadeAvailable;
 
     [Header("Grenade Trajectory Physics stuff")]
     [SerializeField] private int PhysicsFrame = 62;
@@ -37,15 +43,11 @@ public class PlayerAttacker : MonoBehaviour
     [Header("References")]
     private InputHandler inputHandler;
     private PlayerManager playerManager;
-    private Image overHeatUIImage;
-    // TODO: Add recharge slider
-    private Image grenadeRechargeUIImage;
 
     private void Awake()
     {
         inputHandler = GetComponent<InputHandler>();
         playerManager = GetComponent<PlayerManager>();
-        overHeatUIImage = overheatSlider.fillRect.GetComponent<Image>();
     }
 
     private void Start()
@@ -63,13 +65,14 @@ public class PlayerAttacker : MonoBehaviour
     {
         float delta = Time.deltaTime;
         HandleWeaponHeat(delta);
+        HandleGrenadeCooldown(delta);
     }
 
     #region Handle Lazer
 
     private void HandleShootLazer()
     {
-        if (!gunOverheated && nextFireTime > fireRate)
+        if (gunOverheated == false && nextFireTime > fireRate)
         {
             if (inputHandler.inputPrimaryFire && !playerManager.isCarryingPart)
             {
@@ -79,46 +82,57 @@ public class PlayerAttacker : MonoBehaviour
             }
         }
 
-        overHeatUIImage.color = Color.Lerp(Color.green, Color.red, overheatSlider.value / 0.70f);
+        overheatUI.color = Color.Lerp(Color.green, Color.red, overheatUI.fillAmount / 0.70f);
     }
 
     private void HandleWeaponHeat(float delta)
     {
         SetWepaonHeatSlider(currentWeaponHeat);
         nextFireTime += delta;
-        if (currentWeaponHeat <= 0) { currentWeaponHeat = 0; return; }
 
-        if (currentWeaponHeat > 0 && gunOverheated == false)
-        {
-            currentWeaponHeat -= gunCooldownSpeed;
-        }
-        else if (currentWeaponHeat >= maxWeaponHeat)
+        // Overheated gun
+        if (currentWeaponHeat > maxWeaponHeat)
         {
             gunOverheated = true;
         }
-        else if (gunOverheated == true && currentWeaponHeat > 0)
-        {
-            currentWeaponHeat -= gunCooldownSpeed + gunOverHeatCooldownSpeed;
-        }
-        else if (gunOverheated == true && currentWeaponHeat <= 0)
+
+        // Return if current heat is 0
+        if (currentWeaponHeat <= 0)
         {
             gunOverheated = false;
+            currentWeaponHeat = 0;
+            //TODO: Hide UI if not needed?!
+            return;
+        }
+
+        // Normale gun heat cooldown
+        if (gunOverheated == false && currentWeaponHeat > 0)
+        {
+            Debug.Log("Heating up");
+            currentWeaponHeat -= gunCooldownSpeed;
+        }
+
+        // Gun is overheated and needs to cool down before use
+        if (gunOverheated == true && currentWeaponHeat > 0)
+        {
+            Debug.Log("OVERHEATED and depleating");
+            currentWeaponHeat -= gunCooldownSpeed + gunOverHeatCooldownSpeed;
+            gunOverheated = true;
         }
     }
 
     private void SetWepaonHeatSlider(float value)
     {
-        overheatSlider.value = value / maxWeaponHeat;
+        overheatUI.fillAmount = value / maxWeaponHeat;
     }
 
     private void SpawnLazer()
     {
-        Debug.Log("Shoot lazer");
         GameObject bulletPoolGo = PoolManager.SharedInstance.GetPooledBullets();
         if (bulletPoolGo != null)
         {
-            bulletPoolGo.transform.position = firePoint.position;
-            bulletPoolGo.transform.rotation = firePoint.rotation;
+            bulletPoolGo.transform.position = lazerSpawnLocation.position;
+            bulletPoolGo.transform.rotation = lazerSpawnLocation.rotation;
 
             bulletPoolGo.SetActive(true);
 
@@ -126,34 +140,56 @@ public class PlayerAttacker : MonoBehaviour
             Rigidbody rb = bulletPoolGo.GetComponent<Rigidbody>();
             if (rb != null)
             {
-                rb.velocity = firePoint.forward * bulletSpeed;
+                rb.velocity = lazerSpawnLocation.forward * bulletSpeed;
             }
         }
     }
 
     #endregion
 
-
-
-
     #region Handle Grenade
 
     private void HandleGrenadeThrow()
     {
-        if (inputHandler.inputSecondaryFire)
+        if (grenadeAvailable)
         {
-            force += forceBuildUpSpeed;
-            currentForce = Mathf.Min(maxForce, force);
-            UpdateTrajectory();
+            if (inputHandler.inputSecondaryFire)
+            {
+                throwForce += throwForceBuildUpSpeed;
+                currentThrowForce = Mathf.Min(maxthrowForce, throwForce);
+                UpdateTrajectory();
+            }
+            else if (!inputHandler.inputSecondaryFire && throwForce > 0)
+            {
+                LaunchGrenade();
+                lineRenderer.positionCount = 0;
+                currentGrenadeCooldownValue = 0;
+                throwForce = 0;
+            }
+        }
+    }
+
+    private void HandleGrenadeCooldown(float delta)
+    {
+        SetGrenadeCooldownUI(currentGrenadeCooldownValue);
+        if (currentGrenadeCooldownValue >= grenadeCooldownMax)
+        {
+            grenadeAvailable = true;
+            currentGrenadeCooldownValue = grenadeCooldownMax;
+            return;
         }
 
-        if (!inputHandler.inputSecondaryFire && force > 0)
+        if (currentGrenadeCooldownValue < grenadeCooldownMax)
         {
-            LaunchGrenade();
-            lineRenderer.positionCount = 0;
-            force = 0;
+            grenadeAvailable = false;
+            currentGrenadeCooldownValue += grenadeCooldownSpeed;
+            currentGrenadeCooldownValue = Mathf.Min(grenadeCooldownMax, currentGrenadeCooldownValue);
         }
+    }
 
+    private void SetGrenadeCooldownUI(float currentChargeValue)
+    {
+        grenadeCooldownUI.fillAmount = currentChargeValue / grenadeCooldownMax;
     }
 
     private void CreatePhysicsScene()
@@ -164,8 +200,8 @@ public class PlayerAttacker : MonoBehaviour
 
     private void LaunchGrenade()
     {
-        var spawned = Instantiate(grenadePrefab, spawnLocation.position, spawnLocation.rotation); //this is used to spawn grenede at spawnlocation with alloted force
-        spawned.Init(spawnLocation.forward * currentForce, false);
+        var spawned = Instantiate(grenadePrefab, grenadeSpawnLocation.position, grenadeSpawnLocation.rotation); //this is used to spawn grenede at spawnlocation with alloted throwForce
+        spawned.Init(grenadeSpawnLocation.forward * currentThrowForce, false);
     }
 
     private void UpdateTrajectory()
@@ -176,10 +212,10 @@ public class PlayerAttacker : MonoBehaviour
             lineRenderer.positionCount = PhysicsFrame;
         }
 
-        Grenade grenadeTrajectory = Instantiate(grenadePrefab, spawnLocation.position, Quaternion.identity); // this is used to simulate trejectory
+        Grenade grenadeTrajectory = Instantiate(grenadePrefab, grenadeSpawnLocation.position, Quaternion.identity); // this is used to simulate trejectory
         SceneManager.MoveGameObjectToScene(grenadeTrajectory.gameObject, simulateScene);
 
-        grenadeTrajectory.Init(spawnLocation.forward * currentForce, true);
+        grenadeTrajectory.Init(grenadeSpawnLocation.forward * currentThrowForce, true);
 
         for (var i = 0; i < PhysicsFrame; i++)
         {

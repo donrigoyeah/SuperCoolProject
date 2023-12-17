@@ -2195,16 +2195,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 6646997203433489949, guid: 12858b1f8789e0e428bbcdcab1837ac1,
-        type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6646997203433489949, guid: 12858b1f8789e0e428bbcdcab1837ac1,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8794882847261471613, guid: 12858b1f8789e0e428bbcdcab1837ac1,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2254,21 +2244,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9130882823596995695, guid: 12858b1f8789e0e428bbcdcab1837ac1,
-        type: 3}
-      propertyPath: maxWeaponHeat
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 9130882823596995695, guid: 12858b1f8789e0e428bbcdcab1837ac1,
-        type: 3}
-      propertyPath: gunCooldownSpeed
-      value: 0.05
-      objectReference: {fileID: 0}
-    - target: {fileID: 9130882823596995695, guid: 12858b1f8789e0e428bbcdcab1837ac1,
-        type: 3}
-      propertyPath: gunOverHeatCooldownSpeed
-      value: 0.05
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

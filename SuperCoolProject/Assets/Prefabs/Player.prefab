@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6409773689940403714}
-  - component: {fileID: 6036372453612913000}
   m_Layer: 5
   m_Name: Gun Overheat
   m_TagString: Untagged
@@ -30,100 +29,13 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 148307616774562709}
-  - {fileID: 1252825160725948734}
+  - {fileID: 6646997203433489949}
   m_Father: {fileID: 4522037182476434306}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -0.86, y: 0.31}
   m_SizeDelta: {x: 6, y: 35}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &6036372453612913000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 339469481652884982}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Navigation:
-    m_Mode: 3
-    m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 0
-  m_TargetGraphic: {fileID: 0}
-  m_FillRect: {fileID: 6646997203433489949}
-  m_HandleRect: {fileID: 0}
-  m_Direction: 2
-  m_MinValue: 0
-  m_MaxValue: 1
-  m_WholeNumbers: 0
-  m_Value: 0.408
-  m_OnValueChanged:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!1 &412089588032667580
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1252825160725948734}
-  m_Layer: 5
-  m_Name: Fill Area
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1252825160725948734
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 412089588032667580}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 6646997203433489949}
-  m_Father: {fileID: 6409773689940403714}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &781418449999175352
 GameObject:
@@ -414,22 +326,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f55cee3f51077314f910e68be8f1ef6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firePoint: {fileID: 7666627156274332060}
-  overheatSlider: {fileID: 6036372453612913000}
-  fireRate: 0.5
+  lazerSpawnLocation: {fileID: 7666627156274332060}
+  overheatUI: {fileID: 8228046787694399299}
+  fireRate: 0.2
   currentWeaponHeat: 0
-  maxWeaponHeat: 0
-  singleLazerHeat: 10
-  gunCooldownSpeed: 0.003
-  gunOverHeatCooldownSpeed: 0.003
+  maxWeaponHeat: 100
+  singleLazerHeat: 20
+  gunCooldownSpeed: 0.5
+  gunOverHeatCooldownSpeed: 0.1
+  gunOverheated: 0
+  nextFireTime: 0
+  bulletSpeed: 50
+  grenadeSpawnLocation: {fileID: 7748597816388016088}
+  grenadeCooldownUI: {fileID: 1498719313514528619}
   lineRenderer: {fileID: 6766940811692802884}
   grenadePrefab: {fileID: -6292732325558360807, guid: 632de922000647541804b1fae094b496,
     type: 3}
-  spawnLocation: {fileID: 7748597816388016088}
-  force: 1
-  forceBuildUpSpeed: 0.3
-  maxForce: 10
-  currentForce: 0
+  throwForce: 0
+  throwForceBuildUpSpeed: 0.3
+  maxthrowForce: 10
+  currentThrowForce: 0
+  currentGrenadeCooldownValue: 0
+  grenadeCooldownSpeed: 0.1
+  grenadeCooldownMax: 10
+  grenadeAvailable: 0
   PhysicsFrame: 62
 --- !u!120 &6766940811692802884
 LineRenderer:
@@ -1331,7 +1251,7 @@ GameObject:
   - component: {fileID: 6997752391080946229}
   - component: {fileID: 1498719313514528619}
   m_Layer: 0
-  m_Name: Fill Color
+  m_Name: GrenadeCooldownUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1389,7 +1309,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 1
-  m_FillAmount: 0.508
+  m_FillAmount: 0.621
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -1513,7 +1433,7 @@ GameObject:
   - component: {fileID: 2677133136638237815}
   - component: {fileID: 8228046787694399299}
   m_Layer: 5
-  m_Name: Fill
+  m_Name: GunOverheatUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1531,12 +1451,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1252825160725948734}
+  m_Father: {fileID: 6409773689940403714}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 10}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2677133136638237815
 CanvasRenderer:
@@ -1567,11 +1487,11 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
+  m_FillMethod: 1
+  m_FillAmount: 0.457
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -1641,8 +1561,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -1738,7 +1658,7 @@ GameObject:
   - component: {fileID: 9091775366112518364}
   - component: {fileID: 2385217371385946582}
   m_Layer: 0
-  m_Name: Fill Background
+  m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
