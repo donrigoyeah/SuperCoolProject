@@ -15,7 +15,7 @@ public class SpaceShipHandler : MonoBehaviour
                 PM.currentPart.SetActive(false);
                 PM.currentPart = null;
                 PM.isCarryingPart = false;
-                GameManager.SharedInstance.hasFuelCanister = true;
+                //GameManager.SharedInstance.hasFuelCanister = true;
             }
         }
     }
