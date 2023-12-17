@@ -278,6 +278,9 @@ MonoBehaviour:
   - {fileID: 9071979888274502329}
   - {fileID: 7812766738713300160}
   - {fileID: 1961346652028593165}
+  ResourceUISphere: {fileID: 4379426908928487387}
+  ResourceUISquare: {fileID: 5059296771400489165}
+  ResourceUITriangle: {fileID: 5180734292164752012}
   hasShield: 0
 --- !u!114 &7595266375327355587
 MonoBehaviour:
