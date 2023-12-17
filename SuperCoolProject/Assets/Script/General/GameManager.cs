@@ -29,8 +29,6 @@ public class GameManager : MonoBehaviour
         SharedInstance = this;
         currentSpaceShipParts = 0;
         HandleSpawnShipParts();
-
-
     }
 
     private void FixedUpdate()
@@ -46,6 +44,7 @@ public class GameManager : MonoBehaviour
         float angle = 0;
         for (int i = 0; i < totalSpaceShipParts; i++)
         {
+            // TODO: Increase Radius with each part so some are close, while others are far
             radius = Random.Range(40, 65);
             //angle = Random.Range(0, 360);
 

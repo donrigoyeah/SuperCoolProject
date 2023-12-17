@@ -309,6 +309,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lazerSpawnLocation: {fileID: 7666627156274332060}
+  overheatUIGO: {fileID: 339469481652884982}
   overheatUI: {fileID: 8228046787694399299}
   fireRate: 0.2
   currentWeaponHeat: 0
@@ -320,6 +321,7 @@ MonoBehaviour:
   nextFireTime: 0
   bulletSpeed: 50
   grenadeSpawnLocation: {fileID: 7748597816388016088}
+  grenadeCooldownUIGO: {fileID: 781418449999175352}
   grenadeCooldownUI: {fileID: 1498719313514528619}
   lineRenderer: {fileID: 6766940811692802884}
   grenadePrefab: {fileID: -6292732325558360807, guid: 632de922000647541804b1fae094b496,

@@ -182,6 +182,17 @@
                 },
                 {
                     "name": "",
+                    "id": "495a9d22-d0f4-4f89-9f52-871c26f5bf59",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SecondaryFire",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "f2e112be-6970-4f28-80f3-3f6549da1af9",
                     "path": "<Keyboard>/e",
                     "interactions": "",

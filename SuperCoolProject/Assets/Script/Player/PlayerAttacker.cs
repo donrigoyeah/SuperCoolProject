@@ -10,6 +10,7 @@ public class PlayerAttacker : MonoBehaviour
 {
     [Header("Lazer Gun Stuff")]
     [SerializeField] public Transform lazerSpawnLocation;
+    [SerializeField] public GameObject overheatUIGO;
     [SerializeField] public Image overheatUI;
     [SerializeField] private float fireRate = 0.5f;
     [SerializeField] private float currentWeaponHeat = 0;
@@ -23,6 +24,7 @@ public class PlayerAttacker : MonoBehaviour
 
     [Header("Grenade stuff")]
     [SerializeField] private Transform grenadeSpawnLocation;
+    [SerializeField] public GameObject grenadeCooldownUIGO;
     [SerializeField] public Image grenadeCooldownUI;
     [SerializeField] private LineRenderer lineRenderer;
     [SerializeField] private Grenade grenadePrefab;
@@ -101,6 +103,7 @@ public class PlayerAttacker : MonoBehaviour
         {
             gunOverheated = false;
             currentWeaponHeat = 0;
+            overheatUIGO.SetActive(false);
             //TODO: Hide UI if not needed?!
             return;
         }
@@ -109,6 +112,7 @@ public class PlayerAttacker : MonoBehaviour
         if (gunOverheated == false && currentWeaponHeat > 0)
         {
             currentWeaponHeat -= gunCooldownSpeed;
+            overheatUIGO.SetActive(true);
         }
 
         // Gun is overheated and needs to cool down before use
@@ -175,15 +179,16 @@ public class PlayerAttacker : MonoBehaviour
         {
             grenadeAvailable = true;
             currentGrenadeCooldownValue = grenadeCooldownMax;
+            grenadeCooldownUIGO.SetActive(false);
             return;
         }
 
         if (currentGrenadeCooldownValue < grenadeCooldownMax)
         {
-
             grenadeAvailable = false;
             currentGrenadeCooldownValue += grenadeCooldownSpeed;
             currentGrenadeCooldownValue = Mathf.Min(grenadeCooldownMax, currentGrenadeCooldownValue);
+            grenadeCooldownUIGO.SetActive(true);
         }
     }
 
