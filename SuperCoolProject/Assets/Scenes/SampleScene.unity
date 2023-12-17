@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -397,7 +397,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 170a74a2352aedb4b920f0561b3cd09c, type: 2}
+  - {fileID: 2100000, guid: 18fc867aee5165344a46d8a577febc06, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -436,8 +436,8 @@ Transform:
   m_GameObject: {fileID: 218710415}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -2, z: 0}
-  m_LocalScale: {x: 20, y: 1, z: 20}
+  m_LocalPosition: {x: 0, y: -4, z: 0}
+  m_LocalScale: {x: 40, y: 1, z: 40}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2045070898}
@@ -1195,7 +1195,7 @@ Transform:
   m_GameObject: {fileID: 680126619}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -100, y: -11, z: -100}
+  m_LocalPosition: {x: -200, y: -11, z: -200}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1219,7 +1219,7 @@ TerrainCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_TerrainData: {fileID: 15600000, guid: 3c095a1cc5b0bbb49a5b86040e410d0a, type: 2}
+  m_TerrainData: {fileID: 15600000, guid: 7e8ba09c0180e3b458d4dd7cf0ee9e6a, type: 2}
   m_EnableTreeColliders: 1
 --- !u!218 &680126622
 Terrain:
@@ -1230,7 +1230,7 @@ Terrain:
   m_GameObject: {fileID: 680126619}
   m_Enabled: 1
   serializedVersion: 6
-  m_TerrainData: {fileID: 15600000, guid: 3c095a1cc5b0bbb49a5b86040e410d0a, type: 2}
+  m_TerrainData: {fileID: 15600000, guid: 7e8ba09c0180e3b458d4dd7cf0ee9e6a, type: 2}
   m_TreeDistance: 5000
   m_TreeBillboardDistance: 50
   m_TreeCrossFadeLength: 5
@@ -2664,6 +2664,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b66cc0a944aaae8419fed1b5e2094d74, type: 2}
   - {fileID: 11400000, guid: 7acb7ce8852f0454eac80f3b73c811b8, type: 2}
   - {fileID: 11400000, guid: ae33f24f63959e445a51dd0946d38663, type: 2}
+  hasFuelCanister: 0
 --- !u!1 &2012718215
 GameObject:
   m_ObjectHideFlags: 0
@@ -2988,18 +2989,28 @@ PrefabInstance:
     - target: {fileID: 6646997203433489949, guid: 12858b1f8789e0e428bbcdcab1837ac1,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6646997203433489949, guid: 12858b1f8789e0e428bbcdcab1837ac1,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7983239174723258367, guid: 12858b1f8789e0e428bbcdcab1837ac1,
         type: 3}
       propertyPath: firePoint
       value: 
       objectReference: {fileID: 1129375690}
+    - target: {fileID: 8228046787694399299, guid: 12858b1f8789e0e428bbcdcab1837ac1,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 8228046787694399299, guid: 12858b1f8789e0e428bbcdcab1837ac1,
+        type: 3}
+      propertyPath: m_FillAmount
+      value: 0.42
+      objectReference: {fileID: 0}
     - target: {fileID: 8794882847261471613, guid: 12858b1f8789e0e428bbcdcab1837ac1,
         type: 3}
       propertyPath: m_LocalPosition.x

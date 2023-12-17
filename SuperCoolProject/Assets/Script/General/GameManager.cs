@@ -23,8 +23,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private SpaceShipScriptable[] spaceShipScriptable;
 
     public bool hasFuelCanister = false;
-    private TwinStickMovement twinStickMovement;
-    
+    //private TwinStickMovement twinStickMovement;
+
     private void Awake()
     {
         SharedInstance = this;
@@ -56,9 +56,9 @@ public class GameManager : MonoBehaviour
             angle += 360 / totalSpaceShipParts;
             GameObject Go = Instantiate(SpaceShipPart, SpaceShipPartContainer);
             Go.transform.position = new Vector3(randPosX, 0, randPosZ);
-            
+
             SpaceShipParts dataAssign = Go.AddComponent<SpaceShipParts>();
-            
+
             if (spaceShipScriptable.Length > i)
             {
                 dataAssign.spaceShipData = spaceShipScriptable[i];
@@ -72,7 +72,7 @@ public class GameManager : MonoBehaviour
         if (hasFuelCanister)
         {
             Debug.Log("worked");
-            twinStickMovement.playerSpeed = 13f;
+            //twinStickMovement.playerSpeed = 13f;
         }
     }
 
@@ -83,7 +83,7 @@ public class GameManager : MonoBehaviour
             Debug.Log("Player won");
         }
     }
-    
+
     // TODO: Handle stuff like day/night cycle here
     // Handle spaceship parts collected
     // Handle gametime
