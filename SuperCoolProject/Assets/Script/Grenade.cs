@@ -1,8 +1,9 @@
 using System;
 using UnityEngine;
 
-public class Grenade : MonoBehaviour {
-    
+public class Grenade : MonoBehaviour
+{
+
     [SerializeField] private Rigidbody _rb;
     private bool _isGhost;
     [SerializeField] private float explosionForce = 700f;
@@ -10,7 +11,8 @@ public class Grenade : MonoBehaviour {
     [SerializeField] private GameObject explosionEffect;
     private float countdown = 1f;
     private bool hasExploded = false;
-    public void Init(Vector3 velocity, bool isGhost) {
+    public void Init(Vector3 velocity, bool isGhost)
+    {
         _rb.AddForce(velocity, ForceMode.Impulse);
     }
 
@@ -37,6 +39,7 @@ public class Grenade : MonoBehaviour {
 
     void Explosion()
     {
+        // TODO: CHeck if we only need the  rb.AddExplosionForce(explosionForce, transform.position, explosionRadius); without the sphere cast
         Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius);
 
         foreach (Collider nearbyObects in colliders)
