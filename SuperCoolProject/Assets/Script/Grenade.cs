@@ -40,6 +40,7 @@ public class Grenade : MonoBehaviour
     void Explosion()
     {
         // TODO: CHeck if we only need the  rb.AddExplosionForce(explosionForce, transform.position, explosionRadius); without the sphere cast
+        
         Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius);
 
         foreach (Collider nearbyObects in colliders)

@@ -160,11 +160,12 @@ public class PlayerAttacker : MonoBehaviour
                 UpdateTrajectory();
             }
             else if (!inputHandler.inputSecondaryFire && throwForce > 0)
-            {
-                LaunchGrenade();
-                lineRenderer.positionCount = 0;
+            { 
                 currentGrenadeCooldownValue = 0;
+                lineRenderer.positionCount = 0;
                 throwForce = 0;
+                LaunchGrenade();
+                grenadeAvailable = false;
             }
         }
     }
@@ -181,6 +182,7 @@ public class PlayerAttacker : MonoBehaviour
 
         if (currentGrenadeCooldownValue < grenadeCooldownMax)
         {
+            
             grenadeAvailable = false;
             currentGrenadeCooldownValue += grenadeCooldownSpeed;
             currentGrenadeCooldownValue = Mathf.Min(grenadeCooldownMax, currentGrenadeCooldownValue);
