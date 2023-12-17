@@ -7,41 +7,29 @@ using UnityEngine.UI;
 public class PlayerShoot : MonoBehaviour
 {
     [SerializeField] private Slider overheatSlider;
-    public float fireRate = 0.5f;
-    public float nextFireTime = 0f;
-    public float bulletSpeed = 150;
-    public float gunCooldownSpeed = 0.02f;
-    public float gunOverheatingSpeed = 0.10f;
+    [SerializeField] private float fireRate = 0.5f;
+    private float nextFireTime = 0f;
+    private float bulletSpeed = 50;
+    [SerializeField] private float gunCooldownSpeed = 0.003f;
+    private float gunOverheatingSpeed = 0.10f;
 
     private bool shootTrigger;
-    private bool isShooting = false;
     private bool gunOverheated = false;
     private PlayerControls playerControls;
-    private TwinStickMovement twinStickMovement;
-    public Transform firePoint;
+    [SerializeField] public Transform firePoint;
+    private InputHandler inputHandler;
+    private PlayerManager playerManager;
 
     private void Awake()
     {
-        playerControls = new PlayerControls();
-        twinStickMovement = GetComponent<TwinStickMovement>();
-        playerControls.PlayerActionMap.Shoot.performed += ctx => isShooting = true;
-        playerControls.PlayerActionMap.Shoot.canceled += ctx => isShooting = false;
-
-    }
-
-    private void OnEnable()
-    {
-        playerControls.Enable();
-    }
-
-    private void OnDisable()
-    {
-        playerControls.Disable();
+        inputHandler = GetComponent<InputHandler>();
+        playerManager = GetComponent<PlayerManager>();
     }
 
     void Update()
     {
         overheatSlider.value -= gunCooldownSpeed;
+
         if (overheatSlider.value >= 0.97f)
         {
             gunOverheated = true;
@@ -54,18 +42,17 @@ public class PlayerShoot : MonoBehaviour
 
         if (nextFireTime >= 0f)
         {
+            Debug.Log("gg");
             nextFireTime -= Time.deltaTime;
         }
-
-        if (isShooting && nextFireTime <= 0f && !gunOverheated)
+        
+        if (inputHandler.isShooting && nextFireTime <= 0f && !gunOverheated && !playerManager.isCarryingPart)
         {
             Shoot();
             nextFireTime = fireRate;
-            isShooting = false;
         }
-
-        overheatSlider.gameObject.transform.Find("Fill Area").Find("Fill").GetComponent<Image>().color =
-            Color.Lerp(Color.green, Color.red, overheatSlider.value / 0.70f);
+        
+        overheatSlider.fillRect.GetComponent<Image>().color = Color.Lerp(Color.green, Color.red, overheatSlider.value / 0.70f);
     }
 
     private void Shoot()
@@ -84,6 +71,5 @@ public class PlayerShoot : MonoBehaviour
         }
         overheatSlider.value += gunOverheatingSpeed;
     }
-
 }
 

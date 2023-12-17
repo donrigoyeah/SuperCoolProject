@@ -177,8 +177,9 @@ GameObject:
   - component: {fileID: 875804534354543705}
   - component: {fileID: 7910166194048014903}
   - component: {fileID: 7585532507068316445}
+  - component: {fileID: 551760365157556508}
   - component: {fileID: 7983239174723258367}
-  - component: {fileID: 5781907047500087492}
+  - component: {fileID: 221246856862962231}
   - component: {fileID: 6766940811692802884}
   - component: {fileID: 7692718112746338049}
   m_Layer: 0
@@ -353,15 +354,28 @@ MonoBehaviour:
   playerSpeed: 10
   gravityValue: -40
   jumpForce: 15
-  movement: {x: 0, y: 0}
-  aim: {x: 0, y: 0}
   targetAimPosition: {x: 0, y: 0, z: 0}
-  isDashing: 1
-  dashTrigger: 0
-  dashCooldownTimer: 0
   dashCooldown: 5
-  dashDuration: 0.3
-  dashSpeed: 20
+--- !u!114 &551760365157556508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123791489352467104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e45ab36a9a43ff42be6ffb301b4d660, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lineRenderer: {fileID: 6766940811692802884}
+  PhysicsFrame: 35
+  grenadePrefab: {fileID: -6292732325558360807, guid: 632de922000647541804b1fae094b496,
+    type: 3}
+  force: 1
+  maxForce: 20
+  currentForce: 5
+  spawnLocation: {fileID: 7748597816388016088}
 --- !u!114 &7983239174723258367
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -375,13 +389,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   overheatSlider: {fileID: 6036372453612913000}
-  fireRate: 0.1
-  nextFireTime: 0
-  bulletSpeed: 50
+  fireRate: 0.4
   gunCooldownSpeed: 0.003
-  gunOverheatingSpeed: 0.1
   firePoint: {fileID: 7666627156274332060}
---- !u!114 &5781907047500087492
+--- !u!114 &221246856862962231
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -390,21 +401,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1123791489352467104}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c471914cbc57e454ba9ea24ff507a924, type: 3}
+  m_Script: {fileID: 11500000, guid: 390e1fa6a0198074d90984df30adbab3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grenadePrefab: {fileID: 2496734503096154801, guid: 632de922000647541804b1fae094b496,
-    type: 3}
-  grenadeRechargeImage: {fileID: 1498719313514528619}
-  grenadeCharged: 0
-  throwForce: 10
-  maxForce: 20
-  throwPosition: {fileID: 7748597816388016088}
-  throwDirection: {x: 0, y: 1, z: 0}
-  trajectoryLine: {fileID: 6766940811692802884}
-  timeStep: 0.1
-  gravityScale: 1
-  upwardTime: 0.5
+  isShooting: 0
 --- !u!120 &6766940811692802884
 LineRenderer:
   serializedVersion: 2
@@ -413,7 +413,7 @@ LineRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1123791489352467104}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -825,7 +825,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3538925497042575291}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.54215616, y: -0, z: -0, w: 0.8402778}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1.681, z: 0.556}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_ConstrainProportionsScale: 0

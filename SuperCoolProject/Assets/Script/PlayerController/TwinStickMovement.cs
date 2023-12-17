@@ -11,53 +11,42 @@ public class TwinStickMovement : MonoBehaviour
     [SerializeField] private float playerSpeed;
     [SerializeField] private float gravityValue;
     [SerializeField] private float jumpForce;
-
+    
     private CharacterController controller;
-
-    public Vector2 movement;
-    public Vector2 aim;
     private Vector3 playerVelocity;
     public Vector3 targetAimPosition;
 
     private bool isJumping = true;
-    private bool jumpTrigger;
     private float jumpCooldownTimer = 0f;
     private float jumpCooldown = 2f;
-
-    public bool isDashing = true;
-    public bool dashTrigger;
-    public float dashCooldownTimer = 0f;
-    public float dashCooldown = 5f;
-    public float dashDuration = 0.3f;
-    public float dashSpeed = 20f;
-
-
+    
+    [SerializeField]private float dashCooldown = 5f;
+    private bool isDashing = true;
+    private float dashCooldownTimer = 0f;
+    private float dashDuration = 0.3f;
+    private float dashSpeed = 20f;
+    
     private PlayerControls playerControls;
+    private InputHandler inputHandler;
 
     private void Awake()
     {
         isJumping = true;
         controller = GetComponent<CharacterController>();
-        playerControls = new PlayerControls();
+        inputHandler = GetComponent<InputHandler>();
     }
-
-    private void OnEnable()
-    {
-        playerControls.Enable();
-    }
-
+    
     void Update()
     {
-        Input();
         Movement();
         Rotation();
 
-        if (jumpTrigger && isJumping)
+        if (inputHandler.jumpTriggered && isJumping)
         {
             Jump();
         }
 
-        if (dashTrigger && isDashing)
+        if (inputHandler.dashTriggered && isDashing)
         {
             StartCoroutine(Dash());
         }
@@ -82,18 +71,10 @@ public class TwinStickMovement : MonoBehaviour
             }
         }
     }
-
-    void Input()
-    {
-        movement = playerControls.PlayerActionMap.Movement.ReadValue<Vector2>();
-        aim = playerControls.PlayerActionMap.Aim.ReadValue<Vector2>();
-        jumpTrigger = playerControls.PlayerActionMap.Jump.triggered;
-        dashTrigger = playerControls.PlayerActionMap.Dash.triggered;
-    }
-
+    
     void Movement()
     {
-        Vector3 move = new Vector3(movement.x, 0, movement.y);
+        Vector3 move = new Vector3( inputHandler.movementInput.x, 0,  inputHandler.movementInput.y);
         controller.Move(move * Time.deltaTime * playerSpeed);
 
         playerVelocity.y += gravityValue * Time.deltaTime;
@@ -103,8 +84,8 @@ public class TwinStickMovement : MonoBehaviour
 
     void Rotation()
     {
-        Ray ray = Camera.main.ScreenPointToRay(aim);
-        Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
+        Ray ray = Camera.main.ScreenPointToRay(inputHandler.aimInput);
+        Plane groundPlane = new Plane(Vector3.up, Vector3.zero); // represent a plane in 3D space
         float rayDistance;
 
         if (groundPlane.Raycast(ray, out rayDistance))
@@ -128,14 +109,11 @@ public class TwinStickMovement : MonoBehaviour
 
     private IEnumerator Dash()
     {
-        Debug.Log("Hey");
-
-        float originalSpeed = playerSpeed;
         playerSpeed = dashSpeed;
 
         yield return new WaitForSeconds(dashDuration);
 
-        playerSpeed = originalSpeed;
+        playerSpeed = 10f;
         isDashing = false;
     }
 }

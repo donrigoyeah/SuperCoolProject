@@ -5,43 +5,33 @@ using UnityEngine;
 
 public class PlayerPickupDrop : MonoBehaviour
 {
-    private bool dragTrigger;
-    private PlayerControls playerControls;
-    private bool isDragDropActionPressed = false;
-
-    private void OnEnable()
-    {
-        playerControls.Enable();
-    }
-
-    private void OnDisable()
-    {
-        playerControls.Disable();
-    }
-
-    private void Awake()
-    {
-        playerControls = new PlayerControls();
-
-        playerControls.PlayerActionMap.DragDrop.started += ctx => isDragDropActionPressed = true;
-        playerControls.PlayerActionMap.DragDrop.canceled += ctx => isDragDropActionPressed = false;
-    }
-
+    private InputHandler inputHandler;
+    private PlayerManager playerManager;
+    
     private void OnTriggerStay(Collider other)
     {
-        if (isDragDropActionPressed && other.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
-            other.gameObject.GetComponent<PlayerShoot>().enabled = false;
-            other.gameObject.GetComponent<PlayerManager>().isCarryingPart = true;
-            other.gameObject.GetComponent<PlayerManager>().currentPart = this.gameObject;
-            this.transform.parent = other.transform;
+            inputHandler = other.gameObject.GetComponent<InputHandler>();
+            if (inputHandler.isDragDropActionPressed)
+            {
+                playerManager = other.gameObject.GetComponent<PlayerManager>();
+                playerManager.currentPart = this.gameObject;
+                playerManager.isCarryingPart = true;
+                this.transform.parent = other.transform;
+            }
+            else if (!inputHandler.isDragDropActionPressed)
+            {
+                Debug.Log("3");
+                if (playerManager == null)
+                {
+                    playerManager = other.gameObject.GetComponent<PlayerManager>();
+                }
+                playerManager.currentPart = null;
+                playerManager.isCarryingPart = false;
+                this.transform.parent = null;
+            }
         }
-        else if (!isDragDropActionPressed && other.CompareTag("Player"))
-        {
-            other.gameObject.GetComponent<PlayerShoot>().enabled = true;
-            other.gameObject.GetComponent<PlayerManager>().isCarryingPart = false;
-            other.gameObject.GetComponent<PlayerManager>().currentPart = null;
-            this.transform.parent = null;
-        }
+
     }
 }

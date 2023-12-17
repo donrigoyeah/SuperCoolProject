@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2088604724729448688}
   - component: {fileID: 8750388930879463079}
   - component: {fileID: 189869154632687697}
+  - component: {fileID: 2473418660881149003}
   m_Layer: 0
   m_Name: SpaceCraftPart
   m_TagString: Part
@@ -118,3 +119,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee27af04a3b782e4a94c4d2c6926241e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2473418660881149003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 621607558053313764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecdd24cb03f0e7143a7f47cbf804e114, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ammoBox: {fileID: 11400000, guid: 4aa0af65ef46dcc40a89d0ac10dcaf8f, type: 2}
