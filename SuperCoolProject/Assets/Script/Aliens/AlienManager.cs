@@ -39,10 +39,6 @@ public class AlienManager : MonoBehaviour
             if (alienPoolGo != null)
             {
                 int randomSpecies = Random.Range(0, 3);
-                //int randPosX = Random.Range(0, GameManager.SharedInstance.worldBoundaryX * 2) - GameManager.SharedInstance.worldBoundaryX;
-                //int randPosZ = Random.Range(0, GameManager.SharedInstance.worldBoundaryZ * 2) - GameManager.SharedInstance.worldBoundaryZ;
-                //int randPosX = Random.Range(0, 200) - 100;
-                //int randPosZ = Random.Range(0, 200) - 100;
 
                 float r = Random.Range(30, 65);
                 float angle = Random.Range(0, 360);
