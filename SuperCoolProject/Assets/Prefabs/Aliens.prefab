@@ -646,6 +646,9 @@ MonoBehaviour:
   timeToChild: 5
   timeToSexual: 15
   timeToFullGrown: 25
+  isFemale: 0
+  maxAmountOfBabies: 3
+  currentSpecies: 0
   currentState: 0
   currentAge: 0
   currentStateIcon: {fileID: 3589108659310432011}
@@ -661,8 +664,8 @@ MonoBehaviour:
   lifeTime: 0
   lustTimer: 0
   hungerTimer: 0
-  isFemale: 0
-  currentSpecies: 0
+  lustTimerThreshold: 5
+  hungerTimerThreshold: 5
   closestAlien: {fileID: 0}
   lastClosestAlien: {fileID: 0}
   anim: {fileID: 4000616983802165593}

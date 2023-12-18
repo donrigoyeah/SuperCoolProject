@@ -1,24 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
 public class InputHandler : MonoBehaviour
 {
     private PlayerControls playerControls;
-    public Vector2 inputMovement { get; private set; }
-    public Vector2 inputAim { get; private set; }
-
+    public Vector2 inputMovement;
+    public Vector2 inputAim;
     public bool inputPrimaryFire;
     public bool inputSecondaryFire;
-    public bool inputSecondaryFireStarted;
     public bool inputInteracting;
     public bool inputJumping;
     public bool inputDashing;
-    //public bool isDragDropActionPressed { get; private set; }
-
-    //public bool jumpTriggered { get; private set; }
-    //public bool dashTriggered { get; private set; }
+    public bool isGamepad;
 
     private void Awake()
     {
@@ -28,7 +24,14 @@ public class InputHandler : MonoBehaviour
     private void HandleInput()
     {
         playerControls.PlayerActionMap.Movement.performed += ctx => inputMovement = ctx.ReadValue<Vector2>();
-        playerControls.PlayerActionMap.Aim.performed += ctx => inputAim = ctx.ReadValue<Vector2>();
+        playerControls.PlayerActionMap.Aim.performed += ctx =>
+        {
+            inputAim = ctx.ReadValue<Vector2>();
+            if (ctx.control.device is Gamepad)
+            {
+                isGamepad = true;
+            }
+        };
 
         playerControls.PlayerActionMap.Jump.performed += _ => inputJumping = true;
         playerControls.PlayerActionMap.Jump.canceled += _ => inputJumping = false;
