@@ -768,7 +768,7 @@ MonoBehaviour:
   segmentAmount: 6
   segmentWidthRange: 10
   minRadius: 30
-  maxRadius: 70
+  maxRadius: 100
   maxSleepDelay: 10
 --- !u!1 &506797197
 GameObject:
@@ -1778,7 +1778,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fa559ac463c37d4b9d2ed5215ac221e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  alienAmount: 100
+  alienAmount: 200
   AlienPool: []
   Alien: {fileID: 1047908099467871381, guid: d934f14e333eefc4697225457031ccaa, type: 3}
   AlienContainer: {fileID: 977988002}
@@ -1995,7 +1995,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 109ceb8310df21a4ebfad50b040233ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  worldRadius: 98
+  worldRadius: 150
   SpaceShip: {fileID: 0}
   SpaceShipPart: {fileID: 621607558053313764, guid: 3bf27bdc90cd48e4c87d44d31e595876,
     type: 3}

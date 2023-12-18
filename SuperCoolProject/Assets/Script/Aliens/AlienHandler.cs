@@ -26,7 +26,6 @@ public class AlienHandler : MonoBehaviour
         fullyGrown
     }
 
-
     [Header("Tick stats")]
     public float tickTimer;
     public float tickTimerMax = .5f;
@@ -455,8 +454,7 @@ public class AlienHandler : MonoBehaviour
                 DisgardClosestAlien();
             }
 
-            Vector3 targetRotation = Vector3.RotateTowards(transform.position, targetPosition, step, 0f);
-            transform.rotation = Quaternion.LookRotation(targetRotation);
+            transform.LookAt(targetPosition, Vector3.up);
         }
     }
 

@@ -71,7 +71,7 @@ public class AlienManager : MonoBehaviour
 
                 AlienHandler alienPoolGoHandler = alienPoolGo.GetComponent<AlienHandler>();
                 alienPoolGoHandler.currentSpecies = currentSpieziesForArea;
-                alienPoolGoHandler.lifeTime = Random.Range(0, maxSleepDelay) * -1;
+                alienPoolGoHandler.lifeTime = Random.Range(0, maxSleepDelay);
                 alienPoolGoHandler.HandleAging(0);
                 alienPoolGo.SetActive(true);
 
