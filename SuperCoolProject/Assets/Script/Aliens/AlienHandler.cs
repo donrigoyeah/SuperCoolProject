@@ -98,6 +98,18 @@ public class AlienHandler : MonoBehaviour
         coll.isTrigger = true;
     }
 
+    // Disable this script when the GameObject moves out of the camera's view
+    void OnBecameInvisible()
+    {
+        alienSpecies[currentSpecies].SetActive(false);
+    }
+
+    // Enable this script when the GameObject moves into the camera's view
+    void OnBecameVisible()
+    {
+        alienSpecies[currentSpecies].SetActive(true);
+    }
+
     private void FixedUpdate()
     {
         delta = Time.deltaTime;
@@ -333,7 +345,7 @@ public class AlienHandler : MonoBehaviour
             currentState = AlienState.looking;
         }
         HandleStateIcon(2); // 0: eye, 1: crosshair, 2: wind, 3: heart, 4: shield, 5: clock, 6: loader
-        targetPosition = this.transform.position + (this.transform.position - targetAlien.transform.position);
+        targetPosition = this.transform.position + (this.transform.position - targetAlien.transform.position) * 10;
     } // Use this here on the player as well to scare the aliens away
 
     public void HandleAttacking(GameObject targetAlien) // Player makes them flee as well and by acting als targetAlien in PlayerManager
