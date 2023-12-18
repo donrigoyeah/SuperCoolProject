@@ -47,7 +47,7 @@ public class PlayerManager : MonoBehaviour
         HandleAlienDetection();
 
         // TODO: Make this maybe coroutine ?!
-        if (playerShield == false && timeSinceLastHit > 3)
+        if (playerShield == false && timeSinceLastHit > 3 && GameManager.SharedInstance.hasShieldGenerator)
         {
             playerShieldGO.SetActive(true);
             playerShield = true;
