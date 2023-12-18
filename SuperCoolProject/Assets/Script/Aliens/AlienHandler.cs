@@ -150,6 +150,10 @@ public class AlienHandler : MonoBehaviour
 
             tickTimer -= tickTimerMax;
         }
+    }
+
+    private void LateUpdate()
+    {
         // Finaly execute movement
         HandleMovement(step);
     }
