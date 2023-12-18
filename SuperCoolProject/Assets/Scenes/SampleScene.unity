@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -727,7 +727,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &454318530
 Transform:
   m_ObjectHideFlags: 0
@@ -1423,7 +1423,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1244808668
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1778,7 +1778,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fa559ac463c37d4b9d2ed5215ac221e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  alienAmount: 200
+  alienAmount: 400
   AlienPool: []
   Alien: {fileID: 1047908099467871381, guid: d934f14e333eefc4697225457031ccaa, type: 3}
   AlienContainer: {fileID: 977988002}
@@ -2010,6 +2010,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7acb7ce8852f0454eac80f3b73c811b8, type: 2}
   - {fileID: 11400000, guid: 7acb7ce8852f0454eac80f3b73c811b8, type: 2}
   hasFuelCanister: 0
+  hasAmmoBox: 0
+  hasShieldGenerator: 0
+  hasAntenna: 0
+  playerLocomotion: {fileID: 1848143880493537963}
+  map: {fileID: 1244808667}
 --- !u!1 &2045070897
 GameObject:
   m_ObjectHideFlags: 0
@@ -2213,6 +2218,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 7692718112746338049, guid: 12858b1f8789e0e428bbcdcab1837ac1,
+        type: 3}
+      propertyPath: currentPart.Array.size
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 8794882847261471613, guid: 12858b1f8789e0e428bbcdcab1837ac1,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2304,6 +2314,18 @@ MonoBehaviour:
   inputJumping: 0
   inputDashing: 0
   isGamepad: 0
+--- !u!114 &1848143880493537963 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7595266375327355587, guid: 12858b1f8789e0e428bbcdcab1837ac1,
+    type: 3}
+  m_PrefabInstance: {fileID: 1848143880493537948}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1344950230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cea3148f6dd4df1488cbe5698e1be0e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1866789224722557377
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2321,6 +2343,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SpaceShip
+      objectReference: {fileID: 0}
+    - target: {fileID: 3022947434942135248, guid: 04d1705c49be2ff449668c9f21cbf177,
+        type: 3}
+      propertyPath: spaceShipPartHandler
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6825165279061734110, guid: 04d1705c49be2ff449668c9f21cbf177,
         type: 3}
