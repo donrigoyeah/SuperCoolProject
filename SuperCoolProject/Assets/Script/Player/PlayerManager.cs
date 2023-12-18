@@ -86,14 +86,14 @@ public class PlayerManager : MonoBehaviour
             AlienHandler AH = item.gameObject.GetComponent<AlienHandler>();
             if (AH != null)
             {
-                if (AH.lifeTime > AH.timeToChild)
+                AH.closestAlien = this.gameObject;
+
+                if (AH.currentAge != AlienHandler.AlienAge.fullyGrown)
                 {
-                    AH.closestAlien = this.gameObject;
                     AH.HandleFleeing(this.gameObject); // this time its not an alienGO but the player
                 }
-                else if (AH.lifeTime > AH.timeToFullGrown)
+                else if (AH.currentAge == AlienHandler.AlienAge.fullyGrown)
                 {
-                    AH.closestAlien = this.gameObject;
                     AH.HandleAttacking(this.gameObject); // this time its not an alienGO but the player
                 }
             }

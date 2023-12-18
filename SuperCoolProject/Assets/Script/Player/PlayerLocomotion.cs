@@ -80,14 +80,26 @@ public class PlayerLocomotion : MonoBehaviour
 
     void Rotation()
     {
-        Ray ray = Camera.main.ScreenPointToRay(inputHandler.inputAim);
-        Plane groundPlane = new Plane(Vector3.up, Vector3.zero); // represent a plane in 3D space
-        float rayDistance;
-
-        if (groundPlane.Raycast(ray, out rayDistance))
+        // Handle Gamepad rotation
+        if (inputHandler.isGamepad)
         {
-            Vector3 point = ray.GetPoint(rayDistance);
-            LookAt(point);
+            float horizontal = inputHandler.inputAim.x;
+            float vertical = inputHandler.inputAim.y;
+
+            LookAt(new Vector3(transform.position.x + horizontal, 0, transform.position.z + vertical));
+        }
+        // Handle Mouse Input
+        else
+        {
+            Ray ray = Camera.main.ScreenPointToRay(inputHandler.inputAim);
+            Plane groundPlane = new Plane(Vector3.up, Vector3.zero); // represent a plane in 3D space
+            float rayDistance;
+
+            if (groundPlane.Raycast(ray, out rayDistance))
+            {
+                Vector3 point = ray.GetPoint(rayDistance);
+                LookAt(point);
+            }
         }
     }
 

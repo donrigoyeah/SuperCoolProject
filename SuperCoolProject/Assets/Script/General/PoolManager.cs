@@ -34,19 +34,16 @@ public class PoolManager : MonoBehaviour
             {
                 return AlienPool[i];
             }
-            //else
-            //{
-            //    // Add only when no more are available
-            //    Debug.Log("Add additionl alien to the pool");
-            //    GameObject tmp;
-            //    tmp = Instantiate(Alien);
-            //    tmp.transform.SetParent(AlienContainer.transform);
-            //    AlienPool.Add(tmp);
-            //    alienAmount++;
-            //    return tmp;
-            //}
         }
-        return null;
+
+        // Add only when no more are available
+        Debug.Log("Add additionl alien to the pool");
+        GameObject tmp;
+        tmp = Instantiate(Alien);
+        tmp.transform.SetParent(AlienContainer.transform);
+        AlienPool.Add(tmp);
+        alienAmount++;
+        return tmp;
     }
 
     private void AlienPooling()
@@ -73,7 +70,15 @@ public class PoolManager : MonoBehaviour
                 return BulletPool[i];
             }
         }
-        return null;
+
+        // Add only when no more are available
+        Debug.Log("Add additionl alien to the pool");
+        GameObject tmp;
+        tmp = Instantiate(Alien);
+        tmp.transform.SetParent(BulletContainer.transform);
+        BulletPool.Add(tmp);
+        bulletAmount++;
+        return tmp;
     }
     private void BulletPooling()
     {
