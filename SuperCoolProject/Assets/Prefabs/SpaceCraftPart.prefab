@@ -119,3 +119,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spaceShipData: {fileID: 0}
+  playerSpeedReduction: 0
+  previousPlayerSpeed: 10

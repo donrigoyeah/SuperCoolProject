@@ -10,7 +10,7 @@ public class PlayerManager : MonoBehaviour
     public Collider[] aliensInRange;
     public bool playerShield;
     public bool isCarryingPart;
-    public GameObject currentPart;              //sfasf
+    public GameObject currentPart;
     public float timeSinceLastHit;
     public GameObject playerShieldGO;
 
@@ -51,7 +51,6 @@ public class PlayerManager : MonoBehaviour
         {
             playerShieldGO.SetActive(true);
             playerShield = true;
-
         }
     }
 

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -765,6 +765,11 @@ MonoBehaviour:
   - {fileID: 1350027386}
   - {fileID: 2114840081}
   values: []
+  segmentAmount: 6
+  segmentWidthRange: 10
+  minRadius: 30
+  maxRadius: 70
+  maxSleepDelay: 10
 --- !u!1 &506797197
 GameObject:
   m_ObjectHideFlags: 0
@@ -2005,6 +2010,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7acb7ce8852f0454eac80f3b73c811b8, type: 2}
   - {fileID: 11400000, guid: 7acb7ce8852f0454eac80f3b73c811b8, type: 2}
   hasFuelCanister: 0
+  hasAmmoBox: 0
+  hasShieldGenerator: 0
+  hasAntenna: 0
+  playerLocomotion: {fileID: 1848143880493537963}
 --- !u!1 &2045070897
 GameObject:
   m_ObjectHideFlags: 0
@@ -2208,6 +2217,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 7692718112746338049, guid: 12858b1f8789e0e428bbcdcab1837ac1,
+        type: 3}
+      propertyPath: currentPart.Array.size
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 8794882847261471613, guid: 12858b1f8789e0e428bbcdcab1837ac1,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2297,6 +2311,18 @@ MonoBehaviour:
   inputInteracting: 0
   inputJumping: 0
   inputDashing: 0
+--- !u!114 &1848143880493537963 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7595266375327355587, guid: 12858b1f8789e0e428bbcdcab1837ac1,
+    type: 3}
+  m_PrefabInstance: {fileID: 1848143880493537948}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1344950230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cea3148f6dd4df1488cbe5698e1be0e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1866789224722557377
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2314,6 +2340,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SpaceShip
+      objectReference: {fileID: 0}
+    - target: {fileID: 3022947434942135248, guid: 04d1705c49be2ff449668c9f21cbf177,
+        type: 3}
+      propertyPath: spaceShipPartHandler
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6825165279061734110, guid: 04d1705c49be2ff449668c9f21cbf177,
         type: 3}
