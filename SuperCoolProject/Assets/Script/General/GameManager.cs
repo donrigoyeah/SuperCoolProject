@@ -29,8 +29,7 @@ public class GameManager : MonoBehaviour
     public bool hasAntenna = false;
     
     [SerializeField] private PlayerLocomotion playerLocomotion;
-    [SerializeField] private PlayerAttacker playerAttacker;
-    
+    [SerializeField] private GameObject map;
     private void Awake()
     {
         SharedInstance = this;
@@ -76,9 +75,7 @@ public class GameManager : MonoBehaviour
     {
         if (hasFuelCanister) { Debug.Log("worked"); playerLocomotion.playerSpeed = 13f; }
 
-        if (hasAntenna) { Debug.Log("Found Antenna"); }
-
-        if (hasShieldGenerator) { Debug.Log("Found Shield Generator"); }
+        if (hasAntenna) { Debug.Log("Found Antenna"); map.SetActive(true);}
     }
 
     private void HandleWin()

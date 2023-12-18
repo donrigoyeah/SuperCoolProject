@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -727,7 +727,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &454318530
 Transform:
   m_ObjectHideFlags: 0
@@ -1423,7 +1423,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1244808668
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2014,6 +2014,7 @@ MonoBehaviour:
   hasShieldGenerator: 0
   hasAntenna: 0
   playerLocomotion: {fileID: 1848143880493537963}
+  map: {fileID: 1244808667}
 --- !u!1 &2045070897
 GameObject:
   m_ObjectHideFlags: 0
@@ -2305,12 +2306,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70dc945efba9bb444bc252eee2ca43cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inputMovement: {x: 0, y: 0}
+  inputAim: {x: 0, y: 0}
   inputPrimaryFire: 0
   inputSecondaryFire: 0
-  inputSecondaryFireStarted: 0
   inputInteracting: 0
   inputJumping: 0
   inputDashing: 0
+  isGamepad: 0
 --- !u!114 &1848143880493537963 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7595266375327355587, guid: 12858b1f8789e0e428bbcdcab1837ac1,
