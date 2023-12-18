@@ -7,12 +7,7 @@ using UnityEngine;
 public class SpaceShipScriptable : ScriptableObject
 {
     public string partName;
-    public string mass;
+    public float mass;
     public string abilityUnlock;
     public GameObject model;
-
-    public void AbilityUnlocked()
-    {
-        Debug.Log(abilityUnlock);
-    }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerLocomotion : MonoBehaviour
 {
-    [SerializeField] public float playerSpeed;
+    public float playerSpeed;
     [SerializeField] private float gravityValue;
     [SerializeField] private float jumpForce;
 

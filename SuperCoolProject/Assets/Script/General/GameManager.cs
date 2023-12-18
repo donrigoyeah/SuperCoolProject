@@ -21,9 +21,16 @@ public class GameManager : MonoBehaviour
     public int currentSpaceShipParts;
     public TextMeshProUGUI spaceShipPartsDisplay;
     [SerializeField] private SpaceShipScriptable[] spaceShipScriptable;
-
+    
+    [Header("SpaceShipPartsBoolValues")]
     public bool hasFuelCanister = false;
-
+    public bool hasAmmoBox = false;
+    public bool hasShieldGenerator = false;
+    public bool hasAntenna = false;
+    
+    [SerializeField] private PlayerLocomotion playerLocomotion;
+    [SerializeField] private PlayerAttacker playerAttacker;
+    
     private void Awake()
     {
         SharedInstance = this;
@@ -55,23 +62,23 @@ public class GameManager : MonoBehaviour
             GameObject Go = Instantiate(SpaceShipPart, SpaceShipPartContainer);
             Go.transform.position = new Vector3(randPosX, 0, randPosZ);
 
-            SpaceShipPartHandler dataAssign = Go.GetComponent<SpaceShipPartHandler>();
+            SpaceShipPartHandler DataAssign = Go.GetComponent<SpaceShipPartHandler>();
 
             if (spaceShipScriptable.Length > i)
             {
-                 dataAssign.spaceShipData = spaceShipScriptable[i];
-
+                 DataAssign.spaceShipData = spaceShipScriptable[i];
             }
         }
     }
 
-    private void SpaceShipPartsCollection()
+    //Space Ships parts are collected and abilities are unlocked here
+    public void SpaceShipPartUpdate()
     {
-        if (hasFuelCanister)
-        {
-            Debug.Log("worked");
-            //twinStickMovement.playerSpeed = 13f;
-        }
+        if (hasFuelCanister) { Debug.Log("worked"); playerLocomotion.playerSpeed = 13f; }
+
+        if (hasAntenna) { Debug.Log("Found Antenna"); }
+
+        if (hasShieldGenerator) { Debug.Log("Found Shield Generator"); }
     }
 
     private void HandleWin()
