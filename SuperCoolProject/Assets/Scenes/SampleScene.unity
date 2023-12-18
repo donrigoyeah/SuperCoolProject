@@ -765,6 +765,11 @@ MonoBehaviour:
   - {fileID: 1350027386}
   - {fileID: 2114840081}
   values: []
+  segmentAmount: 6
+  segmentWidthRange: 10
+  minRadius: 30
+  maxRadius: 70
+  maxSleepDelay: 10
 --- !u!1 &506797197
 GameObject:
   m_ObjectHideFlags: 0
@@ -1773,7 +1778,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fa559ac463c37d4b9d2ed5215ac221e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  alienAmount: 400
+  alienAmount: 200
   AlienPool: []
   Alien: {fileID: 1047908099467871381, guid: d934f14e333eefc4697225457031ccaa, type: 3}
   AlienContainer: {fileID: 977988002}
@@ -2291,12 +2296,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70dc945efba9bb444bc252eee2ca43cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inputMovement: {x: 0, y: 0}
+  inputAim: {x: 0, y: 0}
   inputPrimaryFire: 0
   inputSecondaryFire: 0
-  inputSecondaryFireStarted: 0
   inputInteracting: 0
   inputJumping: 0
   inputDashing: 0
+  isGamepad: 0
 --- !u!1001 &1866789224722557377
 PrefabInstance:
   m_ObjectHideFlags: 0
