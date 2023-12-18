@@ -72,7 +72,7 @@ public class AlienHandler : MonoBehaviour
     int closestAlienIndex;
 
 
-    public Animation anim;
+    public Animation[] anim;
 
     #endregion
 
@@ -175,10 +175,10 @@ public class AlienHandler : MonoBehaviour
         HandleStateIcon(0); // 0: eye, 1: crosshair, 2: wind, 3: heart, 4: shield, 5: clock, 6: loader
         //StartCoroutine(DoNothingForRandomTime()); // SHort time where alien just stands and looks
 
-        if(anim != null)
+        if (anim[currentSpecies] != null)
         {
-            anim.Play("Armature|IDLE");
-            
+            anim[currentSpecies].Play("Armature|IDLE");
+
         }
 
         #region Find closest Alien
@@ -442,9 +442,9 @@ public class AlienHandler : MonoBehaviour
     {
         if (currentAge != AlienAge.resource && currentState != AlienState.looking)
         {
-            if (anim != null)
+            if (anim[currentSpecies] != null)
             {
-                anim.Play("Armature|WALK");
+                anim[currentSpecies].Play("Armature|WALK");
             }
 
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, step);

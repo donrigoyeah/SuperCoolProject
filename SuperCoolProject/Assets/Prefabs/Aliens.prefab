@@ -681,7 +681,10 @@ MonoBehaviour:
   hungerTimerThreshold: 5
   closestAlien: {fileID: 0}
   lastClosestAlien: {fileID: 0}
-  anim: {fileID: 4000616983802165593}
+  anim:
+  - {fileID: 5963850295929243108}
+  - {fileID: 1449686039756169074}
+  - {fileID: 4000616983802165593}
 --- !u!65 &4775806378367602359
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -839,6 +842,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -1995150314605265975, guid: 6fdcb40f7814abd48bed4982b4d5dec0,
+        type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 6fdcb40f7814abd48bed4982b4d5dec0,
         type: 3}
       propertyPath: m_Name
@@ -956,6 +964,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -4747917413154575537, guid: c76cdac869bbdcb44aabcd3cfca3cbbc,
+        type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: c76cdac869bbdcb44aabcd3cfca3cbbc,
         type: 3}
       propertyPath: m_Name
@@ -969,6 +982,12 @@ PrefabInstance:
 --- !u!4 &5445582020008399146 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c76cdac869bbdcb44aabcd3cfca3cbbc,
+    type: 3}
+  m_PrefabInstance: {fileID: 5483183689576199873}
+  m_PrefabAsset: {fileID: 0}
+--- !u!111 &5963850295929243108 stripped
+Animation:
+  m_CorrespondingSourceObject: {fileID: 2223639932434330405, guid: c76cdac869bbdcb44aabcd3cfca3cbbc,
     type: 3}
   m_PrefabInstance: {fileID: 5483183689576199873}
   m_PrefabAsset: {fileID: 0}
@@ -1043,6 +1062,11 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: cfeb425fbc4b9ba48bb91865eee95221,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -809828480950454423, guid: cfeb425fbc4b9ba48bb91865eee95221,
+        type: 3}
+      propertyPath: m_CastShadows
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: cfeb425fbc4b9ba48bb91865eee95221,
