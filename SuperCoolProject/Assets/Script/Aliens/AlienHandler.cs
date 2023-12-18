@@ -128,6 +128,7 @@ public class AlienHandler : MonoBehaviour
             this.gameObject.SetActive(false);
         }
 
+
         // Only Render on Tick condition
         while (tickTimer >= tickTimerMax)
         {
@@ -148,37 +149,33 @@ public class AlienHandler : MonoBehaviour
                     HandleLoveApproach(closestAlien);
                 }
             }
-            else
+
+            if (currentState == AlienState.looking)
             {
-                if (currentState == AlienState.looking)
-                {
-                    HandleLooking();
-                }
-                else if (currentState == AlienState.roaming)
-                {
-                    HandleRoaming(delta);
-                }
+                HandleLooking();
+            }
+            else if (currentState == AlienState.roaming)
+            {
+                HandleRoaming(delta);
             }
 
             tickTimer -= tickTimerMax;
         }
-    }
-
-    private void LateUpdate()
-    {
-        // Finaly execute movement
+        // Finaly process movement
         HandleMovement(step);
     }
 
     public void HandleLooking()
     {
         HandleStateIcon(0); // 0: eye, 1: crosshair, 2: wind, 3: heart, 4: shield, 5: clock, 6: loader
-        //StartCoroutine(DoNothingForRandomTime()); // SHort time where alien just stands and looks
+        StartCoroutine(DoNothingForRandomTime()); // SHort time where alien just stands and looks
 
         if (anim[currentSpecies] != null)
         {
-            anim[currentSpecies].Play("Armature|IDLE");
-
+            if (currentSpecies != 0)
+            {
+                anim[currentSpecies].Play("Armature|IDLE");
+            }
         }
 
         #region Find closest Alien
@@ -323,7 +320,7 @@ public class AlienHandler : MonoBehaviour
         // When arrived at position, chill for a bit then look again
         if (Vector3.Distance(transform.position, targetPosition) < .1f)
         {
-            //StartCoroutine(DoNothingForRandomTime());
+            StartCoroutine(DoNothingForRandomTime());
             currentState = AlienState.looking;
             targetPosition = Vector3.one * 1000;
         }
@@ -350,8 +347,11 @@ public class AlienHandler : MonoBehaviour
             closestAlien = null;
             currentState = AlienState.looking;
         }
+
         HandleStateIcon(2); // 0: eye, 1: crosshair, 2: wind, 3: heart, 4: shield, 5: clock, 6: loader
-        targetPosition = this.transform.position + (this.transform.position - targetAlien.transform.position) * 10;
+        targetPosition = this.transform.position + (this.transform.position - targetAlien.transform.position);
+        //Debug.Log("Escaping Vecotr: " + targetPosition);
+        //Debug.DrawLine(this.transform.position, this.transform.position + (this.transform.position - targetAlien.transform.position), Color.green);
     } // Use this here on the player as well to scare the aliens away
 
     public void HandleAttacking(GameObject targetAlien) // Player makes them flee as well and by acting als targetAlien in PlayerManager
@@ -448,11 +448,15 @@ public class AlienHandler : MonoBehaviour
             }
 
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, step);
+
             if (Vector3.Distance(transform.position, targetPosition) < .1f)
             {
                 currentState = AlienState.looking;
                 DisgardClosestAlien();
             }
+
+            Vector3 targetRotation = Vector3.RotateTowards(transform.position, targetPosition, step, 0f);
+            transform.rotation = Quaternion.LookRotation(targetRotation);
         }
     }
 

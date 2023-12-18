@@ -677,8 +677,8 @@ MonoBehaviour:
   lifeTime: 0
   lustTimer: 0
   hungerTimer: 0
-  lustTimerThreshold: 5
-  hungerTimerThreshold: 5
+  lustTimerThreshold: 10
+  hungerTimerThreshold: 2
   closestAlien: {fileID: 0}
   lastClosestAlien: {fileID: 0}
   anim:
