@@ -118,3 +118,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d736195705b82324bb71e72292acdb22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spaceShipData: {fileID: 0}

@@ -55,11 +55,11 @@ public class GameManager : MonoBehaviour
             GameObject Go = Instantiate(SpaceShipPart, SpaceShipPartContainer);
             Go.transform.position = new Vector3(randPosX, 0, randPosZ);
 
-            SpaceShipParts dataAssign = Go.AddComponent<SpaceShipParts>();
+            SpaceShipPartHandler dataAssign = Go.GetComponent<SpaceShipPartHandler>();
 
             if (spaceShipScriptable.Length > i)
             {
-                dataAssign.spaceShipData = spaceShipScriptable[i];
+                 dataAssign.spaceShipData = spaceShipScriptable[i];
 
             }
         }

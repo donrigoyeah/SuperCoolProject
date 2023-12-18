@@ -10,6 +10,9 @@ public class SpaceShipScriptable : ScriptableObject
     public string mass;
     public string abilityUnlock;
     public GameObject model;
-    
-    
+
+    public void AbilityUnlocked()
+    {
+        Debug.Log(abilityUnlock);
+    }
 }
