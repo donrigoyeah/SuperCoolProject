@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -13,7 +14,8 @@ public class SpaceShipPartHandler : MonoBehaviour
     public SpaceShipScriptable spaceShipData;
     public float playerSpeedReduction = 0f;
     public float previousPlayerSpeed = 10f;
-    
+    public TextMeshProUGUI tmp;
+
     private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -43,5 +45,10 @@ public class SpaceShipPartHandler : MonoBehaviour
                 this.transform.parent = null;
             }
         }
+    }
+    
+    private void Update()
+    {
+        tmp.text = spaceShipData.partName;
     }
 }
