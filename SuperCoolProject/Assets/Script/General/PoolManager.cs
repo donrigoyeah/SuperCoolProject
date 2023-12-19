@@ -8,6 +8,7 @@ public class PoolManager : MonoBehaviour
 
     [Header("Aliens")]
     public int alienAmount;
+    public int alienAmountMax;
     public List<GameObject> AlienPool;
     public GameObject Alien;
     public GameObject AlienContainer;
@@ -35,15 +36,18 @@ public class PoolManager : MonoBehaviour
                 return AlienPool[i];
             }
         }
-
-        // Add only when no more are available
-        Debug.Log("Add additionl alien to the pool");
-        GameObject tmp;
-        tmp = Instantiate(Alien);
-        tmp.transform.SetParent(AlienContainer.transform);
-        AlienPool.Add(tmp);
-        alienAmount++;
-        return tmp;
+        if (alienAmount < alienAmountMax)
+        {
+            // Add only when no more are available
+            Debug.Log("Add additionl alien to the pool");
+            GameObject tmp;
+            tmp = Instantiate(Alien);
+            tmp.transform.SetParent(AlienContainer.transform);
+            AlienPool.Add(tmp);
+            alienAmount++;
+            return tmp;
+        }
+        return null;
     }
 
     private void AlienPooling()

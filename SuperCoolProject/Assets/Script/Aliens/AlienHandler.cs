@@ -34,6 +34,8 @@ public class AlienHandler : MonoBehaviour
     public float alienSpeed = 5;
     public float lookRadius = 10;
     public GameObject[] alienSpecies; // 0:Sphere > 1:Square > 2:Triangle  
+    public GameObject resourceSteamGO;
+    public ParticleSystem resourceSteam;
     private float delta;
     private float step;
     private int alienLifeResource = 1;
@@ -77,13 +79,13 @@ public class AlienHandler : MonoBehaviour
 
     private void Awake()
     {
-        ResetVariable();
-        DisgardClosestAlien();
-        ActivateCurrentModels(currentSpecies);
-        if (rb == null) { rb = this.GetComponent<Rigidbody>(); }
-        if (coll == null) { coll = this.GetComponent<Collider>(); }
-        //DisableRagdoll();
-        coll.isTrigger = true;
+        //ResetVariable();
+        //DisgardClosestAlien();
+        //ActivateCurrentModels(currentSpecies);
+        //if (rb == null) { rb = this.GetComponent<Rigidbody>(); }
+        //if (coll == null) { coll = this.GetComponent<Collider>(); }
+        ////DisableRagdoll();
+        //coll.isTrigger = true;
     }
 
     private void OnEnable()
@@ -131,7 +133,8 @@ public class AlienHandler : MonoBehaviour
         // Only Render on Tick condition
         while (tickTimer >= tickTimerMax)
         {
-            HandleAging(lifeTime);
+            // Handle Aging now with coroutine
+            //HandleAging(lifeTime);
 
             if (closestAlien != null)
             {
@@ -396,8 +399,6 @@ public class AlienHandler : MonoBehaviour
                     AlienHandler newBornAlien;
                     newBornAlien = alienPoolGo.GetComponent<AlienHandler>();
                     newBornAlien.currentSpecies = currentSpecies;
-                    newBornAlien.isFemale = UnityEngine.Random.Range(0, 2) == 1;
-                    newBornAlien.HandleAging(0);
                     alienPoolGo.SetActive(true);
 
                     // TODO: Spawn them somewhere near, in the middle (?!)
@@ -409,33 +410,60 @@ public class AlienHandler : MonoBehaviour
         DisgardClosestAlien();
     }
 
-    public void HandleAging(float lifeTime)
+    public IEnumerator HandleAge()
     {
-        if (lifeTime < timeToChild)
-        {
-            currentAge = AlienAge.resource;
-            alienHealth = alienLifeResource;
-            transform.localScale = Vector3.one * 0.2f;
-        }
-        else if (lifeTime > timeToChild && lifeTime < timeToSexual && lifeTime < timeToFullGrown)
-        {
-            currentAge = AlienAge.child;
-            alienHealth = alienLifeChild;
-            transform.localScale = Vector3.one * .5f;
-        }
-        else if (lifeTime > timeToSexual && lifeTime < timeToFullGrown)
-        {
-            currentAge = AlienAge.sexualActive;
-            alienHealth = alienLifeSexual;
-            transform.localScale = Vector3.one;
-        }
-        else if (lifeTime > timeToFullGrown)
-        {
-            currentAge = AlienAge.fullyGrown;
-            alienHealth = alienLifeFullGrown;
-            transform.localScale = Vector3.one * 1.2f;
-        }
+        // Resource Life
+        resourceSteamGO.SetActive(true);
+        currentAge = AlienAge.resource;
+        alienHealth = alienLifeResource;
+        transform.localScale = Vector3.one * 0.2f;
+        yield return new WaitForSeconds(timeToChild);
+        // Child Life
+        resourceSteamGO.SetActive(false);
+        currentAge = AlienAge.child;
+        alienHealth = alienLifeChild;
+        transform.localScale = Vector3.one * .5f;
+        yield return new WaitForSeconds(timeToSexual);
+        // Sexual active Life
+        currentAge = AlienAge.sexualActive;
+        alienHealth = alienLifeSexual;
+        transform.localScale = Vector3.one;
+        yield return new WaitForSeconds(timeToFullGrown);
+        // Full Grown Life
+        currentAge = AlienAge.fullyGrown;
+        alienHealth = alienLifeFullGrown;
+        transform.localScale = Vector3.one * 1.2f;
+
     }
+
+    //public void HandleAging(float lifeTime)
+    //{
+    //    if (lifeTime < timeToChild)
+    //    {
+    //        currentAge = AlienAge.resource;
+    //        alienHealth = alienLifeResource;
+    //        transform.localScale = Vector3.one * 0.2f;
+    //    }
+    //    else if (lifeTime > timeToChild && lifeTime < timeToSexual && lifeTime < timeToFullGrown)
+    //    {
+    //        resourceSteamGO.SetActive(false);
+    //        currentAge = AlienAge.child;
+    //        alienHealth = alienLifeChild;
+    //        transform.localScale = Vector3.one * .5f;
+    //    }
+    //    else if (lifeTime > timeToSexual && lifeTime < timeToFullGrown)
+    //    {
+    //        currentAge = AlienAge.sexualActive;
+    //        alienHealth = alienLifeSexual;
+    //        transform.localScale = Vector3.one;
+    //    }
+    //    else if (lifeTime > timeToFullGrown)
+    //    {
+    //        currentAge = AlienAge.fullyGrown;
+    //        alienHealth = alienLifeFullGrown;
+    //        transform.localScale = Vector3.one * 1.2f;
+    //    }
+    //}
 
     private void HandleMovement(float step)
     {
@@ -563,13 +591,29 @@ public class AlienHandler : MonoBehaviour
 
     void ResetVariable()
     {
-        lifeTime = UnityEngine.Random.Range(0, 10) * -1;
+        timeToChild += UnityEngine.Random.Range(0, 10);
+        alienHealth = alienLifeResource;
+        currentAge = AlienAge.resource;
         lustTimer = 0;
         hungerTimer = 0;
-        alienHealth = alienLifeResource;
         isFemale = UnityEngine.Random.Range(0, 2) == 1;
-        currentAge = AlienAge.resource;
         HandleStateIcon(6); // 0: eye, 1: crosshair, 2: wind, 3: heart, 4: shield, 5: clock, 6: loader
+
+        // TODO: Place this at better location
+        ParticleSystem.MainModule ma = resourceSteam.main;
+        if (currentSpecies == 0)
+        {
+            ma.startColor = Color.blue;
+        }
+        else if (currentSpecies == 1)
+        {
+            ma.startColor = Color.green;
+        }
+        else if (currentSpecies == 2)
+        {
+            ma.startColor = Color.red;
+        }
+        StartCoroutine(HandleAge());
     }
 
     void DisableRagdoll()

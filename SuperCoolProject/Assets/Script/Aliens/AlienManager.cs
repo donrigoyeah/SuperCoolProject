@@ -72,7 +72,7 @@ public class AlienManager : MonoBehaviour
                 AlienHandler alienPoolGoHandler = alienPoolGo.GetComponent<AlienHandler>();
                 alienPoolGoHandler.currentSpecies = currentSpieziesForArea;
                 alienPoolGoHandler.lifeTime = Random.Range(0, maxSleepDelay);
-                alienPoolGoHandler.HandleAging(0);
+                alienPoolGoHandler.transform.localScale = Vector3.one * 0.2f; // Resource scale
                 alienPoolGo.SetActive(true);
 
                 alienPoolGo.transform.position = new Vector3(randPosX, 0.1f, randPosZ);
