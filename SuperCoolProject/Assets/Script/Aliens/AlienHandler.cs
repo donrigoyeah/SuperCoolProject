@@ -558,6 +558,7 @@ public class AlienHandler : MonoBehaviour
             else
             {
                 PM.HandleHit();
+                this.gameObject.SetActive(false);
             }
         }
     }

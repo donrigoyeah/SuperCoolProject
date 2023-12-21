@@ -14,12 +14,10 @@ public class PlayerManager : MonoBehaviour
     public float timeSinceLastHit;
     public GameObject playerShieldGO;
 
-
     [Header("Resource Variables")]
     float maxSphereResource = 100;
     float maxSquareResource = 100;
     float maxTriangleResource = 100;
-
     public float currentSphereResource;
     public float currentSquareResource;
     public float currentTriangleResource;
@@ -27,15 +25,12 @@ public class PlayerManager : MonoBehaviour
     public float resourceDrain = .1f;
     public float resourceGain = 5;
 
-    public Image[] resourcePieCharts;
     // 0:Sphere, 1:Square, 2:Triangle
+    [Header("UI Elements")]
+    public Image[] resourcePieCharts;
     public GameObject ResourceUISphere;
     public GameObject ResourceUISquare;
     public GameObject ResourceUITriangle;
-
-    [Header("Player Variables")]
-    public bool hasShield;
-    //public GameObject shield;
 
     private void FixedUpdate()
     {
@@ -43,7 +38,6 @@ public class PlayerManager : MonoBehaviour
         timeSinceLastHit += delta;
 
         HandleResource();
-        HandleDeath();
         HandleAlienDetection();
 
         // TODO: Make this maybe coroutine ?!
@@ -56,22 +50,35 @@ public class PlayerManager : MonoBehaviour
 
     public void HandleHit()
     {
-        if (playerShield == true)
+        if (timeSinceLastHit > 1)
         {
             timeSinceLastHit = 0;
-            playerShieldGO.SetActive(false);
-            playerShield = false;
-        }
-        else
-        {
-            HandleDeath();
+
+            if (playerShield == false)
+            {
+                HandleDeath();
+            }
+            else
+            {
+                timeSinceLastHit = 0;
+                playerShieldGO.SetActive(false);
+                playerShield = false;
+            }
         }
     }
 
 
     private void HandleDeath()
     {
-        // Debug.Log("Player died");
+        // TODO: Instanciate GameObject like (deadPlayerBody)
+        // Add draggable script to it
+        // WHen returned to spaceship, enable upgrades again
+        // Make global boolean to handle this
+
+        GameManager.SharedInstance.HandleCloneJuiceDrain();
+
+        // TODO: Better respawn thingi
+        this.gameObject.transform.position = Vector3.zero;
     }
 
 

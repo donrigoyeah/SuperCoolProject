@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Serialization;
 
@@ -14,6 +15,12 @@ public class GameManager : MonoBehaviour
     [Header("Spaceship")]
     public GameObject SpaceShip;
 
+    [Header("Clone Juice")]
+    [SerializeField] public Image cloneJuiceUI;
+    public float cloneCost = 20;
+    public float currentCloneJuice;
+    public float maxCloneJuice;
+
     [Header("SpaceshipParts")]
     public GameObject SpaceShipPart;
     public Transform SpaceShipPartContainer;
@@ -21,28 +28,34 @@ public class GameManager : MonoBehaviour
     public int currentSpaceShipParts;
     public TextMeshProUGUI spaceShipPartsDisplay;
     [SerializeField] private SpaceShipScriptable[] spaceShipScriptable;
-    
+
     [Header("SpaceShipPartsBoolValues")]
     public bool hasFuelCanister = false;
     public bool hasAmmoBox = false;
     public bool hasShieldGenerator = false;
     public bool hasAntenna = false;
-    
+
     [SerializeField] private PlayerLocomotion playerLocomotion;
     [SerializeField] private GameObject map;
     private void Awake()
     {
         SharedInstance = this;
-        currentSpaceShipParts = 0;
         HandleSpawnShipParts();
-    }
-
-    private void FixedUpdate()
-    {
+        currentSpaceShipParts = 0;
         spaceShipPartsDisplay.text = currentSpaceShipParts.ToString() + "/" + totalSpaceShipParts.ToString();
-        HandleWin();
+        currentCloneJuice = maxCloneJuice;
+        cloneJuiceUI.fillAmount = currentCloneJuice / maxCloneJuice;
     }
 
+    public void HandleCloneJuiceDrain()
+    {
+        currentCloneJuice -= cloneCost;
+        cloneJuiceUI.fillAmount = currentCloneJuice / maxCloneJuice;
+        if (currentCloneJuice < 0)
+        {
+            HandleLoss();
+        }
+    }
 
     private void HandleSpawnShipParts()
     {
@@ -65,7 +78,7 @@ public class GameManager : MonoBehaviour
 
             if (spaceShipScriptable.Length > i)
             {
-                 DataAssign.spaceShipData = spaceShipScriptable[i];
+                DataAssign.spaceShipData = spaceShipScriptable[i];
             }
         }
     }
@@ -73,17 +86,26 @@ public class GameManager : MonoBehaviour
     //Space Ships parts are collected and abilities are unlocked here
     public void SpaceShipPartUpdate()
     {
+        spaceShipPartsDisplay.text = currentSpaceShipParts.ToString() + "/" + totalSpaceShipParts.ToString();
+
         if (hasFuelCanister) { Debug.Log("worked"); playerLocomotion.playerSpeed = 13f; }
 
-        if (hasAntenna) { Debug.Log("Found Antenna"); map.SetActive(true);}
+        if (hasAntenna) { Debug.Log("Found Antenna"); map.SetActive(true); }
+
+        if (currentSpaceShipParts == totalSpaceShipParts)
+        {
+            HandleWin();
+        }
     }
 
     private void HandleWin()
     {
-        if (currentSpaceShipParts == totalSpaceShipParts)
-        {
-            Debug.Log("Player won");
-        }
+        Debug.Log("Player won");
+    }
+
+    private void HandleLoss()
+    {
+        Debug.Log("You Lost");
     }
 
     // TODO: Handle stuff like day/night cycle here
