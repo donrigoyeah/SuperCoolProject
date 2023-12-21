@@ -93,6 +93,7 @@ GameObject:
   - component: {fileID: 9130882823596995695}
   - component: {fileID: 6766940811692802884}
   - component: {fileID: 6940714301392089187}
+  - component: {fileID: 3354267858870704732}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -266,6 +267,7 @@ MonoBehaviour:
   playerDetectionRadius: 10
   aliensInRange: []
   playerShield: 0
+  shieldRechargeTime: 2
   isCarryingPart: 0
   currentPart: {fileID: 0}
   timeSinceLastHit: 0
@@ -282,7 +284,6 @@ MonoBehaviour:
   ResourceUISphere: {fileID: 4379426908928487387}
   ResourceUISquare: {fileID: 5059296771400489165}
   ResourceUITriangle: {fileID: 5180734292164752012}
-  hasShield: 0
 --- !u!114 &7595266375327355587
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -444,6 +445,26 @@ LineRenderer:
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
 --- !u!114 &6940714301392089187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123791489352467104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70dc945efba9bb444bc252eee2ca43cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputMovement: {x: 0, y: 0}
+  inputAim: {x: 0, y: 0}
+  inputPrimaryFire: 0
+  inputSecondaryFire: 0
+  inputInteracting: 0
+  inputJumping: 0
+  inputDashing: 0
+  isGamepad: 0
+--- !u!114 &3354267858870704732
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1577,7 +1598,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 21300000, guid: ea00b20c364c50b4a9d4c7312f3ea8cc, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1652,7 +1673,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 21300000, guid: ea00b20c364c50b4a9d4c7312f3ea8cc, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

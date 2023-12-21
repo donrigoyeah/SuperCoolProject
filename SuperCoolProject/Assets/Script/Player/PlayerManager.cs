@@ -9,6 +9,7 @@ public class PlayerManager : MonoBehaviour
     public float playerDetectionRadius = 10;
     public Collider[] aliensInRange;
     public bool playerShield;
+    public float shieldRechargeTime = 2;
     public bool isCarryingPart;
     public GameObject currentPart;
     public float timeSinceLastHit;
@@ -41,7 +42,7 @@ public class PlayerManager : MonoBehaviour
         HandleAlienDetection();
 
         // TODO: Make this maybe coroutine ?!
-        if (playerShield == false && timeSinceLastHit > 3 && GameManager.SharedInstance.hasShieldGenerator)
+        if (playerShield == false && timeSinceLastHit > shieldRechargeTime && GameManager.SharedInstance.hasShieldGenerator)
         {
             playerShieldGO.SetActive(true);
             playerShield = true;
@@ -50,20 +51,15 @@ public class PlayerManager : MonoBehaviour
 
     public void HandleHit()
     {
-        if (timeSinceLastHit > 1)
+        if (playerShield == false)
+        {
+            HandleDeath();
+        }
+        else
         {
             timeSinceLastHit = 0;
-
-            if (playerShield == false)
-            {
-                HandleDeath();
-            }
-            else
-            {
-                timeSinceLastHit = 0;
-                playerShieldGO.SetActive(false);
-                playerShield = false;
-            }
+            playerShield = false;
+            playerShieldGO.SetActive(false);
         }
     }
 

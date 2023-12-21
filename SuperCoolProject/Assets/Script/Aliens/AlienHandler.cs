@@ -65,6 +65,7 @@ public class AlienHandler : MonoBehaviour
     public float lustTimerThreshold = 5;
     public float hungerTimerThreshold = 5;
     Vector3 targetPosition = Vector3.one * 1000;
+    bool hasInteractedWithPlayer;
 
     [Header("Target Alien")]
     public GameObject closestAlien = null;
@@ -547,18 +548,22 @@ public class AlienHandler : MonoBehaviour
         // Handle Player interaction && is also put in trigger / trigger state changes in HandleAging()
         else if (other.gameObject.CompareTag("Player"))
         {
-            PlayerManager PM = other.gameObject.GetComponent<PlayerManager>();
-
-            // Handle Gathering resource
-            if (currentAge == AlienAge.resource)
+            if (hasInteractedWithPlayer == false)
             {
-                PM.HandleGainResource(currentSpecies);
-                this.gameObject.SetActive(false);
-            }
-            else
-            {
-                PM.HandleHit();
-                this.gameObject.SetActive(false);
+                PlayerManager PM = other.gameObject.GetComponent<PlayerManager>();
+                // Handle Gathering resource
+                if (currentAge == AlienAge.resource)
+                {
+                    hasInteractedWithPlayer = true;
+                    PM.HandleGainResource(currentSpecies);
+                    this.gameObject.SetActive(false);
+                }
+                else
+                {
+                    hasInteractedWithPlayer = true;
+                    PM.HandleHit();
+                    this.gameObject.SetActive(false);
+                }
             }
         }
     }
