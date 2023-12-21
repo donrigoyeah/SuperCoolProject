@@ -5536,8 +5536,8 @@ MonoBehaviour:
   resourceSteamGO: {fileID: 4705887365241048240}
   resourceSteam: {fileID: 3915903878569315107}
   timeToChild: 10
-  timeToSexual: 1
-  timeToFullGrown: 1
+  timeToSexual: 5
+  timeToFullGrown: 10
   isFemale: 0
   maxAmountOfBabies: 3
   currentSpecies: 0

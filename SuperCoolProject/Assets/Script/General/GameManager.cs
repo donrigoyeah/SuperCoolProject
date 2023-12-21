@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Serialization;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -106,6 +107,7 @@ public class GameManager : MonoBehaviour
     private void HandleLoss()
     {
         Debug.Log("You Lost");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     // TODO: Handle stuff like day/night cycle here
