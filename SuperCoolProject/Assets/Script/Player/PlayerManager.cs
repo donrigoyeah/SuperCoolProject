@@ -71,11 +71,17 @@ public class PlayerManager : MonoBehaviour
         // WHen returned to spaceship, enable upgrades again
         // Make global boolean to handle this
 
+        currentSphereResource = maxSphereResource;
+        currentSquareResource = maxSquareResource;
+        currentTriangleResource = maxTriangleResource;
+
         GameManager.SharedInstance.HandleCloneJuiceDrain();
 
         // TODO: Better respawn thingi
         this.gameObject.transform.position = Vector3.zero;
     }
+
+
 
 
     private void HandleAlienDetection()
