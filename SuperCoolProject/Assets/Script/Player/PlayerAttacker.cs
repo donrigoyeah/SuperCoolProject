@@ -1,8 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
+using UnityEngine.VFX;
 using static UnityEngine.Rendering.DebugUI;
 
 
@@ -21,6 +24,7 @@ public class PlayerAttacker : MonoBehaviour
     [SerializeField] private bool gunOverheated = false;
     [SerializeField] private float nextFireTime = 0f;
     [SerializeField] private float bulletSpeed = 50;
+    [SerializeField] VisualEffect muzzleFlash;
 
     [Header("Grenade stuff")]
     [SerializeField] private Transform grenadeSpawnLocation;
@@ -46,6 +50,8 @@ public class PlayerAttacker : MonoBehaviour
     private InputHandler inputHandler;
     private PlayerManager playerManager;
 
+    [SerializeField] private CameraShake CameraShake;
+    
     private void Awake()
     {
         inputHandler = GetComponent<InputHandler>();
@@ -79,11 +85,16 @@ public class PlayerAttacker : MonoBehaviour
             if (inputHandler.inputPrimaryFire && !playerManager.isCarryingPart)
             {
                 SpawnLazer();
+                CameraShake.ShakeCamera();
                 currentWeaponHeat += singleLazerHeat;
                 nextFireTime = 0;
             }
+            else
+            {
+                CameraShake.ResetCameraPosition();
+            }
         }
-
+        
         overheatUI.color = Color.Lerp(Color.green, Color.red, overheatUI.fillAmount / 0.70f);
     }
 
@@ -135,7 +146,9 @@ public class PlayerAttacker : MonoBehaviour
         {
             bulletPoolGo.transform.position = lazerSpawnLocation.position;
             bulletPoolGo.transform.rotation = lazerSpawnLocation.rotation;
-
+            VisualEffect MuzzleFlash = Instantiate(muzzleFlash, lazerSpawnLocation.position, lazerSpawnLocation.rotation);
+            MuzzleFlash.Play();
+            Destroy(MuzzleFlash.gameObject, 1f);  //Add to object pool
             bulletPoolGo.SetActive(true);
 
 
@@ -146,6 +159,8 @@ public class PlayerAttacker : MonoBehaviour
             }
         }
     }
+    
+
 
     #endregion
 

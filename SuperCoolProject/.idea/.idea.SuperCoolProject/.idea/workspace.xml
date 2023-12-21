@@ -11,8 +11,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/Assets/Script/Player/InputHandler1.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Script/SpaceShipParts/SpaceShipParts.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Script/Player/CameraShake.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProblemsViewState">
@@ -138,6 +137,15 @@
       <workItem from="1702900096861" duration="10824000" />
       <workItem from="1702912833712" duration="2383000" />
       <workItem from="1702926432310" duration="729000" />
+      <workItem from="1703027228001" duration="985000" />
+      <workItem from="1703067569447" duration="2591000" />
+      <workItem from="1703072740202" duration="244000" />
+      <workItem from="1703077763362" duration="4722000" />
+      <workItem from="1703088307316" duration="852000" />
+      <workItem from="1703103263764" duration="3221000" />
+      <workItem from="1703110367492" duration="3179000" />
+      <workItem from="1703167001149" duration="2423000" />
+      <workItem from="1703169860400" duration="442000" />
     </task>
     <servers />
   </component>

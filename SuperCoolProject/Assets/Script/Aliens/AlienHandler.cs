@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class AlienHandler : MonoBehaviour
@@ -46,8 +47,16 @@ public class AlienHandler : MonoBehaviour
     public int timeToChild = 5;
     public int timeToSexual = 15;
     public int timeToFullGrown = 25;
-
-
+    public Material dissolve;
+    public SkinnedMeshRenderer skinRenderer1;
+    public SkinnedMeshRenderer skinRenderer2;
+    public SkinnedMeshRenderer skinRenderer3;
+    public Material[] orignalMaterial1;
+    public float dissolveRate = 0.0125f;
+    public float refreshRate = 0.025f;
+    
+    
+    
     [Header("This Alien")]
     public bool isFemale;
     public int maxAmountOfBabies = 10;
@@ -541,7 +550,8 @@ public class AlienHandler : MonoBehaviour
             {
                 // TODO: Add Coroutine & Ragdoll to show impact/force of bullets
                 //EnableRagdoll();
-                this.gameObject.SetActive(false);
+                StartCoroutine(Dissolve());
+                // this.gameObject.SetActive(false);
             };
         }
         // Handle Player interaction && is also put in trigger / trigger state changes in HandleAging()
@@ -628,5 +638,45 @@ public class AlienHandler : MonoBehaviour
         rb.isKinematic = false;
         rb.detectCollisions = true;
         coll.isTrigger = false;
+    }
+
+    IEnumerator Dissolve()
+    {
+        if (alienHealth <= 0)
+        {
+            /*if (skinRenderer1.gameObject.activeSelf)
+            {
+                skinRenderer1.material = dissolve;
+            }
+            else if (skinRenderer2.gameObject.activeSelf)
+            {
+                skinRenderer2.material = dissolve;
+            }
+            else if (skinRenderer3.gameObject.activeSelf)
+            {
+                skinRenderer3.material = dissolve;
+            }*/
+            
+            skinRenderer1.material = dissolve;
+            skinRenderer2.material = dissolve;
+            skinRenderer3.material = dissolve;
+            
+            float counter = 0;
+            while (dissolve.GetFloat("_DissolveAmount") < 1)
+            {
+                counter += dissolveRate;
+                for (int i = 0; i <= 10; i++)
+                {
+                    dissolve.SetFloat("_DissolveAmount", counter);
+                    yield return new WaitForSeconds(refreshRate);
+                }
+            }
+        }
+        dissolve.SetFloat("_DissolveAmount", 0);
+        this.gameObject.SetActive(false);
+        
+        skinRenderer1.material = orignalMaterial1[0];
+        skinRenderer2.material = orignalMaterial1[1];
+        skinRenderer3.material = orignalMaterial1[2];
     }
 }

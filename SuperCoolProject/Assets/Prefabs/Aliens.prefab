@@ -5538,6 +5538,18 @@ MonoBehaviour:
   timeToChild: 10
   timeToSexual: 1
   timeToFullGrown: 1
+  dissolve: {fileID: 2100000, guid: d5b2fb1daa206294894f6eea03c042e4, type: 2}
+  skinRenderer1: {fileID: 8215740853866470798}
+  skinRenderer2: {fileID: 8202699833278670185}
+  skinRenderer3: {fileID: 4600740534043661}
+  orignalMaterial1:
+  - {fileID: 2100000, guid: bd93952cbcfb3e643989a7b2336965d5, type: 2}
+  - {fileID: 2100000, guid: 8c5530671ba218743894b79eac0e24c8, type: 2}
+  - {fileID: 2100000, guid: 50e87ee599495614d9103dc7be4d5128, type: 2}
+  orignalMaterial2: {fileID: 0}
+  orignalMaterial3: {fileID: 0}
+  dissolveRate: 0.3
+  refreshRate: 0.0025
   isFemale: 0
   maxAmountOfBabies: 3
   currentSpecies: 0
@@ -5721,6 +5733,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -2932998491564163895, guid: 6fdcb40f7814abd48bed4982b4d5dec0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -1995150314605265975, guid: 6fdcb40f7814abd48bed4982b4d5dec0,
         type: 3}
       propertyPath: m_CastShadows
@@ -5780,6 +5797,12 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
+--- !u!137 &8202699833278670185 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -1995150314605265975, guid: 6fdcb40f7814abd48bed4982b4d5dec0,
+    type: 3}
+  m_PrefabInstance: {fileID: 1556580080082919072}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5483183689576199873
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5853,6 +5876,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -5117700066308340382, guid: c76cdac869bbdcb44aabcd3cfca3cbbc,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4747917413154575537, guid: c76cdac869bbdcb44aabcd3cfca3cbbc,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -4747917413154575537, guid: c76cdac869bbdcb44aabcd3cfca3cbbc,
         type: 3}
       propertyPath: m_CastShadows
@@ -5888,6 +5921,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Watex_adult
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c76cdac869bbdcb44aabcd3cfca3cbbc,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5902,6 +5940,12 @@ Transform:
 --- !u!111 &5963850295929243108 stripped
 Animation:
   m_CorrespondingSourceObject: {fileID: 2223639932434330405, guid: c76cdac869bbdcb44aabcd3cfca3cbbc,
+    type: 3}
+  m_PrefabInstance: {fileID: 5483183689576199873}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &8215740853866470798 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -4747917413154575537, guid: c76cdac869bbdcb44aabcd3cfca3cbbc,
     type: 3}
   m_PrefabInstance: {fileID: 5483183689576199873}
   m_PrefabAsset: {fileID: 0}
@@ -5978,6 +6022,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7640558969779515294, guid: cfeb425fbc4b9ba48bb91865eee95221,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -809828480950454423, guid: cfeb425fbc4b9ba48bb91865eee95221,
         type: 3}
       propertyPath: m_CastShadows
@@ -6007,6 +6056,12 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 4000616983802165593}
   m_SourcePrefab: {fileID: 100100000, guid: cfeb425fbc4b9ba48bb91865eee95221, type: 3}
+--- !u!137 &4600740534043661 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -809828480950454423, guid: cfeb425fbc4b9ba48bb91865eee95221,
+    type: 3}
+  m_PrefabInstance: {fileID: 8417985339658367844}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8311402379114517647 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: cfeb425fbc4b9ba48bb91865eee95221,
