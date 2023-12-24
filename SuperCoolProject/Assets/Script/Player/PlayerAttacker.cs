@@ -50,6 +50,7 @@ public class PlayerAttacker : MonoBehaviour
     private InputHandler inputHandler;
     private PlayerManager playerManager;
 
+    [Header("Camera Shake")]
     [SerializeField] private CameraShake CameraShake;
     
     private void Awake()
@@ -107,6 +108,7 @@ public class PlayerAttacker : MonoBehaviour
         if (currentWeaponHeat > maxWeaponHeat)
         {
             gunOverheated = true;
+            CameraShake.ResetCameraPosition();
         }
 
         // Return if current heat is 0

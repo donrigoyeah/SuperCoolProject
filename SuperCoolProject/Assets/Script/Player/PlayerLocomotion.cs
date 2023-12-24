@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PlayerLocomotion : MonoBehaviour
 {
@@ -22,6 +23,11 @@ public class PlayerLocomotion : MonoBehaviour
     private float dashDuration = 0.3f;
     private float dashSpeed = 20f;
 
+    [Header("Dust Particle System")]
+    [SerializeField] private ParticleSystem dustParticle;
+    private ParticleSystem currentDustParticle;
+    
+    [Header("References")]
     private PlayerControls playerControls;
     private InputHandler inputHandler;
 
@@ -72,10 +78,27 @@ public class PlayerLocomotion : MonoBehaviour
     {
         Vector3 move = new Vector3(inputHandler.inputMovement.x, 0, inputHandler.inputMovement.y);
         controller.Move(move * Time.deltaTime * playerSpeed);
-
+        
+        if (move.magnitude > 0.1f)
+        {
+            if (currentDustParticle == null)
+            {
+                currentDustParticle = Instantiate(dustParticle, transform.position, Quaternion.identity);
+            }
+            
+            currentDustParticle.transform.position = transform.position;
+        }
+        else
+        {
+            if (currentDustParticle != null) 
+            {
+                Destroy(currentDustParticle.gameObject);
+                currentDustParticle = null;
+            }
+        }
+        
         playerVelocity.y += gravityValue * Time.deltaTime;
         controller.Move(playerVelocity * Time.deltaTime);
-
     }
 
     void Rotation()

@@ -27,6 +27,11 @@ public class GameManager : MonoBehaviour
     public bool hasAmmoBox = false;
     public bool hasShieldGenerator = false;
     public bool hasAntenna = false;
+
+    [Header("KillCounter")] 
+    public int sphereKilled = 0;
+    public int squareKilled = 0;
+    public int triangleKilled = 0;
     
     [SerializeField] private PlayerLocomotion playerLocomotion;
     [SerializeField] private GameObject map;

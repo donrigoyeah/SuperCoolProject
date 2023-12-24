@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -47,13 +48,16 @@ public class AlienHandler : MonoBehaviour
     public int timeToChild = 5;
     public int timeToSexual = 15;
     public int timeToFullGrown = 25;
+    
+    
     public Material dissolve;
     public SkinnedMeshRenderer skinRenderer1;
     public SkinnedMeshRenderer skinRenderer2;
     public SkinnedMeshRenderer skinRenderer3;
-    public Material[] orignalMaterial1;
+    [FormerlySerializedAs("orignalMaterial1")] public Material[] orignalMaterial;
     public float dissolveRate = 0.0125f;
     public float refreshRate = 0.025f;
+    [SerializeField] private TextMeshProUGUI[] killcounter;
     
     
     
@@ -95,6 +99,7 @@ public class AlienHandler : MonoBehaviour
         //if (coll == null) { coll = this.GetComponent<Collider>(); }
         ////DisableRagdoll();
         //coll.isTrigger = true;
+
     }
 
     private void OnEnable()
@@ -174,6 +179,7 @@ public class AlienHandler : MonoBehaviour
         }
         // Finaly process movement
         HandleMovement(step);
+        
     }
 
     public void HandleLooking()
@@ -550,6 +556,10 @@ public class AlienHandler : MonoBehaviour
             {
                 // TODO: Add Coroutine & Ragdoll to show impact/force of bullets
                 //EnableRagdoll();
+                if (currentSpecies == 0) { killcounter[0].text = GameManager.SharedInstance.sphereKilled++.ToString();}
+                if (currentSpecies == 1) { killcounter[0].text = GameManager.SharedInstance.squareKilled++.ToString();}
+                if (currentSpecies == 2) { killcounter[0].text = GameManager.SharedInstance.triangleKilled++.ToString();}
+                
                 StartCoroutine(Dissolve());
                 // this.gameObject.SetActive(false);
             };
@@ -642,41 +652,44 @@ public class AlienHandler : MonoBehaviour
 
     IEnumerator Dissolve()
     {
-        if (alienHealth <= 0)
+        switch (currentSpecies)
         {
-            /*if (skinRenderer1.gameObject.activeSelf)
-            {
+            case 0:
                 skinRenderer1.material = dissolve;
-            }
-            else if (skinRenderer2.gameObject.activeSelf)
-            {
+                break;
+            case 1:
                 skinRenderer2.material = dissolve;
-            }
-            else if (skinRenderer3.gameObject.activeSelf)
-            {
+                break;
+            default:
                 skinRenderer3.material = dissolve;
-            }*/
+                break;
+        }
             
-            skinRenderer1.material = dissolve;
-            skinRenderer2.material = dissolve;
-            skinRenderer3.material = dissolve;
-            
-            float counter = 0;
-            while (dissolve.GetFloat("_DissolveAmount") < 1)
+        float counter = 0;
+        while (dissolve.GetFloat("_DissolveAmount") < 1)
+        {
+            counter += dissolveRate;
+            for (int i = 0; i <= 10; i++) 
             {
-                counter += dissolveRate;
-                for (int i = 0; i <= 10; i++)
-                {
-                    dissolve.SetFloat("_DissolveAmount", counter);
-                    yield return new WaitForSeconds(refreshRate);
-                }
+                dissolve.SetFloat("_DissolveAmount", counter);
+                yield return new WaitForSeconds(refreshRate);
             }
         }
         dissolve.SetFloat("_DissolveAmount", 0);
         this.gameObject.SetActive(false);
         
-        skinRenderer1.material = orignalMaterial1[0];
-        skinRenderer2.material = orignalMaterial1[1];
-        skinRenderer3.material = orignalMaterial1[2];
+        switch (currentSpecies)
+        {
+            case 0:
+                skinRenderer1.material = orignalMaterial[0];
+                break;
+            case 1:
+                skinRenderer2.material = orignalMaterial[1];
+                break;
+            default:
+                skinRenderer3.material = orignalMaterial[2];
+                break;
+        }
+        
     }
 }

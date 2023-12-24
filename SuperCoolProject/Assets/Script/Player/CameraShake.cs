@@ -22,7 +22,6 @@ public class CameraShake : MonoBehaviour
     //Shake Camera whenver the player shoots laser
     public void ShakeCamera()
     {
-        Debug.Log("CameraShake");
         cbmcp.m_AmplitudeGain = shakeIntensity;
     }
 
