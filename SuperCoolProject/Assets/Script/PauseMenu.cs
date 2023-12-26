@@ -12,7 +12,6 @@ public class PauseMenu : MonoBehaviour
 {
     public static PauseMenu SharedInstance;
 
-
     [SerializeField] private GameObject pauseMenu;   // using gameobject for canvas because for some reason canvas.enable = true was not working
     [SerializeField] private Slider volumeSlider;
     [SerializeField] private TextMeshProUGUI playtimeText;
@@ -83,7 +82,7 @@ public class PauseMenu : MonoBehaviour
     public void Restart()
     {
         pauseMenu.SetActive(false);
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void Quit()

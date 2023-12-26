@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 public class PlayerLocomotion : MonoBehaviour
 {
@@ -17,18 +18,23 @@ public class PlayerLocomotion : MonoBehaviour
     private float jumpCooldownTimer = 0f;
     private float jumpCooldown = 2f;
 
-    [SerializeField] private float dashCooldown = 5f;
-    private bool isDashing = true;
-    private float dashCooldownTimer = 0f;
+    [Header("Dash")]
+    [SerializeField] public GameObject dashUiGO;
+    [SerializeField] public Image dashUi;
+    public float dashMaxValue = 100;
+    public float dashCurrentCharge = 0;
+    public float dashCost = 33;
+    public float dashRechargeSpeed = 3;
+
+    public bool isDashing = false;
     private float dashDuration = 0.3f;
-    private float dashSpeed = 20f;
+    private float dashExtraSpeed = 20f;
 
     [Header("Footstep Smoke Particle System")]
     [SerializeField] private float deltaFSS;
     private float currentFSSTimer;
 
     [Header("References")]
-    public GameObject pauseMenu;
     private PlayerControls playerControls;
     private InputHandler inputHandler;
 
@@ -49,9 +55,12 @@ public class PlayerLocomotion : MonoBehaviour
             Jump();
         }
 
-        if (inputHandler.inputDashing && isDashing)
+        if (inputHandler.inputDashing && dashCurrentCharge > 0)
         {
-            StartCoroutine(Dash());
+            if (isDashing == false)
+            {
+                StartCoroutine(Dash());
+            }
         }
 
         if (!isJumping)
@@ -64,14 +73,15 @@ public class PlayerLocomotion : MonoBehaviour
             }
         }
 
-        if (!isDashing)
+        if (dashCurrentCharge < dashMaxValue)
         {
-            dashCooldownTimer -= Time.deltaTime;
-            if (dashCooldownTimer <= 0f)
-            {
-                isDashing = true;
-                dashCooldownTimer = dashCooldown;
-            }
+            dashUiGO.SetActive(true);
+            dashCurrentCharge += Time.deltaTime * dashRechargeSpeed;
+            dashUi.fillAmount = dashCurrentCharge / dashMaxValue;
+        }
+        else
+        {
+            dashUiGO.SetActive(false);
         }
 
         if (inputHandler.inputPause)
@@ -151,12 +161,14 @@ public class PlayerLocomotion : MonoBehaviour
 
     private IEnumerator Dash()
     {
-        playerSpeed = dashSpeed;
+        isDashing = true;
+        playerSpeed += dashExtraSpeed;
+        dashCurrentCharge -= dashCost;
 
         yield return new WaitForSeconds(dashDuration);
 
-        playerSpeed = 10f;
         isDashing = false;
+        playerSpeed -= dashExtraSpeed;
     }
     IEnumerator DisableAfterSeconds(int sec, GameObject objectToDeactivate)
     {
