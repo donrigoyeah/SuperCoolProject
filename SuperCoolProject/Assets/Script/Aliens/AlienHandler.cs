@@ -1,9 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
+using UnityEngine.VFX;
 
 public class AlienHandler : MonoBehaviour
 {
@@ -46,8 +49,21 @@ public class AlienHandler : MonoBehaviour
     public int timeToChild = 5;
     public int timeToSexual = 15;
     public int timeToFullGrown = 25;
+    
+    [Header("Dissolve")]
+    public Material dissolve;
+    public SkinnedMeshRenderer skinRenderer1;
+    public SkinnedMeshRenderer skinRenderer2;
+    public SkinnedMeshRenderer skinRenderer3;
+    public Material[] orignalMaterial;
+    public float dissolveRate = 0.0125f;
+    public float refreshRate = 0.025f;
+    
+    
+    [SerializeField] private TextMeshProUGUI[] killcounter;
+    [SerializeField] private VisualEffect bulletImpactExplosion;
 
-
+    
     [Header("This Alien")]
     public bool isFemale;
     public int maxAmountOfBabies = 10;
@@ -87,6 +103,7 @@ public class AlienHandler : MonoBehaviour
         //if (coll == null) { coll = this.GetComponent<Collider>(); }
         ////DisableRagdoll();
         //coll.isTrigger = true;
+
     }
 
     private void OnEnable()
@@ -166,6 +183,7 @@ public class AlienHandler : MonoBehaviour
         }
         // Finaly process movement
         HandleMovement(step);
+        
     }
 
     public void HandleLooking()
@@ -537,12 +555,19 @@ public class AlienHandler : MonoBehaviour
         {
             other.gameObject.SetActive(false);
             alienHealth--;
+            VisualEffect explosionParticleEffect = Instantiate(bulletImpactExplosion, transform.position, Quaternion.identity);
+            Destroy(explosionParticleEffect, 0.5f);
             // Handle Alien Death
             if (alienHealth == 0)
             {
                 // TODO: Add Coroutine & Ragdoll to show impact/force of bullets
                 //EnableRagdoll();
-                this.gameObject.SetActive(false);
+                if (currentSpecies == 0) { killcounter[0].text = GameManager.SharedInstance.sphereKilled++.ToString();}
+                if (currentSpecies == 1) { killcounter[0].text = GameManager.SharedInstance.squareKilled++.ToString();}
+                if (currentSpecies == 2) { killcounter[0].text = GameManager.SharedInstance.triangleKilled++.ToString();}
+                
+                StartCoroutine(Dissolve());
+                // this.gameObject.SetActive(false);
             };
         }
         // Handle Player interaction && is also put in trigger / trigger state changes in HandleAging()
@@ -634,5 +659,48 @@ public class AlienHandler : MonoBehaviour
         rb.isKinematic = false;
         rb.detectCollisions = true;
         coll.isTrigger = false;
+    }
+
+    IEnumerator Dissolve()
+    {
+        switch (currentSpecies)
+        {
+            case 0:
+                skinRenderer1.material = dissolve;
+                break;
+            case 1:
+                skinRenderer2.material = dissolve;
+                break;
+            default:
+                skinRenderer3.material = dissolve;
+                break;
+        }
+            
+        float counter = 0;
+        while (dissolve.GetFloat("_DissolveAmount") < 1)
+        {
+            counter += dissolveRate;
+            for (int i = 0; i <= 10; i++) 
+            {
+                dissolve.SetFloat("_DissolveAmount", counter);
+                yield return new WaitForSeconds(refreshRate);
+            }
+        }
+        dissolve.SetFloat("_DissolveAmount", 0);
+        this.gameObject.SetActive(false);
+        
+        switch (currentSpecies)
+        {
+            case 0:
+                skinRenderer1.material = orignalMaterial[0];
+                break;
+            case 1:
+                skinRenderer2.material = orignalMaterial[1];
+                break;
+            default:
+                skinRenderer3.material = orignalMaterial[2];
+                break;
+        }
+        
     }
 }

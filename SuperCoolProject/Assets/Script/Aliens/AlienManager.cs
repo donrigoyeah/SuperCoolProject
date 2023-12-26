@@ -16,6 +16,7 @@ public class AlienManager : MonoBehaviour
     public int totalActiveAliens;
 
     public Image[] imagesPieChart;
+    public Slider[] menuResourcesSlider;
     public float[] values;
 
     [Header("Spawn Settings")]
@@ -123,6 +124,7 @@ public class AlienManager : MonoBehaviour
         {
             totalValues += FindPercentage(valuesToSet, i);
             imagesPieChart[i].fillAmount = totalValues;
+            menuResourcesSlider[i].value = totalValues;
         }
     }
 

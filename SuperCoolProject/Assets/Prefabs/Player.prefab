@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: 9130882823596995695}
   - component: {fileID: 6766940811692802884}
   - component: {fileID: 6940714301392089187}
-  - component: {fileID: 3354267858870704732}
+  - component: {fileID: 1783370522383966147}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -267,7 +267,6 @@ MonoBehaviour:
   playerDetectionRadius: 10
   aliensInRange: []
   playerShield: 0
-  shieldRechargeTime: 2
   isCarryingPart: 0
   currentPart: {fileID: 0}
   timeSinceLastHit: 0
@@ -284,6 +283,7 @@ MonoBehaviour:
   ResourceUISphere: {fileID: 4379426908928487387}
   ResourceUISquare: {fileID: 5059296771400489165}
   ResourceUITriangle: {fileID: 5180734292164752012}
+  hasShield: 0
 --- !u!114 &7595266375327355587
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -301,6 +301,7 @@ MonoBehaviour:
   jumpForce: 15
   targetAimPosition: {x: 0, y: 0, z: 0}
   dashCooldown: 5
+  dustParticle: {fileID: 0}
 --- !u!114 &9130882823596995695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -325,6 +326,8 @@ MonoBehaviour:
   gunOverheated: 0
   nextFireTime: 0
   bulletSpeed: 50
+  muzzleFlash: {fileID: 5532080155087812583, guid: 0e0729d89e5805e438cac1c9d39b3c7c,
+    type: 3}
   grenadeSpawnLocation: {fileID: 7748597816388016088}
   grenadeCooldownUIGO: {fileID: 781418449999175352}
   grenadeCooldownUI: {fileID: 1498719313514528619}
@@ -340,6 +343,7 @@ MonoBehaviour:
   grenadeCooldownMax: 10
   grenadeAvailable: 0
   PhysicsFrame: 62
+  CameraShake: {fileID: 0}
 --- !u!120 &6766940811692802884
 LineRenderer:
   serializedVersion: 2
@@ -464,7 +468,7 @@ MonoBehaviour:
   inputJumping: 0
   inputDashing: 0
   isGamepad: 0
---- !u!114 &3354267858870704732
+--- !u!114 &1783370522383966147
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -509,7 +513,7 @@ Transform:
   m_GameObject: {fileID: 2401035407914200527}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.415, z: 0.82}
+  m_LocalPosition: {x: -0.048, y: 0.415, z: 0.896}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1598,7 +1602,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: ea00b20c364c50b4a9d4c7312f3ea8cc, type: 3}
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1673,7 +1677,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: ea00b20c364c50b4a9d4c7312f3ea8cc, type: 3}
+  m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
