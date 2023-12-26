@@ -86,7 +86,15 @@ public class PlayerLocomotion : MonoBehaviour
 
         if (inputHandler.inputPause)
         {
-            PauseMenu.SharedInstance.Pause();
+            if (!PauseMenu.SharedInstance.isPaused)
+            {
+                PauseMenu.SharedInstance.Pause();
+            }
+            else if (PauseMenu.SharedInstance.isPaused)
+            {
+                PauseMenu.SharedInstance.Resume();
+
+            }
         }
     }
 

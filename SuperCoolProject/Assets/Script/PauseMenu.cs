@@ -41,13 +41,13 @@ public class PauseMenu : MonoBehaviour
         {
             Load();
         }
-        startTime = Time.realtimeSinceStartup;
+        startTime = Time.time;
 
     }
 
     void Update()
     {
-        float currentTime = Time.realtimeSinceStartup - startTime;
+        float currentTime = Time.time - startTime;
         string formattedTime = FormatTime(currentTime);
         playtimeText.text = "Playtime: " + formattedTime;
     }
