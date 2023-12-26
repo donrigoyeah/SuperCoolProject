@@ -42,7 +42,7 @@ public class PlayerManager : MonoBehaviour
         HandleAlienDetection();
 
         // TODO: Make this maybe coroutine ?!
-        if (playerShield == false && timeSinceLastHit > shieldRechargeTime && GameManager.SharedInstance.hasShieldGenerator)
+        if (playerShield == false && timeSinceLastHit > shieldRechargeTime) // && GameManager.SharedInstance.hasShieldGenerator
         {
             playerShieldGO.SetActive(true);
             playerShield = true;
@@ -57,6 +57,7 @@ public class PlayerManager : MonoBehaviour
         }
         else
         {
+            Debug.Log("Lost shield");
             timeSinceLastHit = 0;
             playerShield = false;
             playerShieldGO.SetActive(false);
