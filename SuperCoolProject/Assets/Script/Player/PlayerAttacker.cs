@@ -149,7 +149,6 @@ public class PlayerAttacker : MonoBehaviour
             bulletPoolGo.transform.position = lazerSpawnLocation.position;
             bulletPoolGo.transform.rotation = lazerSpawnLocation.rotation;
             VisualEffect MuzzleFlash = Instantiate(muzzleFlash, lazerSpawnLocation.position, lazerSpawnLocation.rotation);
-            MuzzleFlash.Play();
             Destroy(MuzzleFlash.gameObject, 1f);  //Add to object pool
             bulletPoolGo.SetActive(true);
 

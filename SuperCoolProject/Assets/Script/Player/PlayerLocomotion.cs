@@ -79,13 +79,13 @@ public class PlayerLocomotion : MonoBehaviour
         Vector3 move = new Vector3(inputHandler.inputMovement.x, 0, inputHandler.inputMovement.y);
         controller.Move(move * Time.deltaTime * playerSpeed);
         
+        //Dust during movement particles
         if (move.magnitude > 0.1f)
         {
             if (currentDustParticle == null)
             {
                 currentDustParticle = Instantiate(dustParticle, transform.position, Quaternion.identity);
             }
-            
             currentDustParticle.transform.position = transform.position;
         }
         else

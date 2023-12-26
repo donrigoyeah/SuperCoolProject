@@ -5552,6 +5552,8 @@ MonoBehaviour:
   - {fileID: 7395736146292914704, guid: 794424cb423cbf34aa9273f135ce8d88, type: 3}
   - {fileID: 4018064588828016910, guid: dc0868b2beff07f4d9fa0889c4dace0d, type: 3}
   - {fileID: 8636997799462476809, guid: cea096c034857474f879a1d493cbf65e, type: 3}
+  bulletImpactExplosion: {fileID: 1877581926400556468, guid: b2874eb7576b98f4fa9f4c0a1481802b,
+    type: 3}
   isFemale: 0
   maxAmountOfBabies: 3
   currentSpecies: 0

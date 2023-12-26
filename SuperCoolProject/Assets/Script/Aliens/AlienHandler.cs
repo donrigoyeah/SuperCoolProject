@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using UnityEngine.VFX;
 
 public class AlienHandler : MonoBehaviour
 {
@@ -49,17 +50,19 @@ public class AlienHandler : MonoBehaviour
     public int timeToSexual = 15;
     public int timeToFullGrown = 25;
     
-    
+    [Header("Dissolve")]
     public Material dissolve;
     public SkinnedMeshRenderer skinRenderer1;
     public SkinnedMeshRenderer skinRenderer2;
     public SkinnedMeshRenderer skinRenderer3;
-    [FormerlySerializedAs("orignalMaterial1")] public Material[] orignalMaterial;
+    public Material[] orignalMaterial;
     public float dissolveRate = 0.0125f;
     public float refreshRate = 0.025f;
+    
+    
     [SerializeField] private TextMeshProUGUI[] killcounter;
-    
-    
+    [SerializeField] private VisualEffect bulletImpactExplosion;
+
     
     [Header("This Alien")]
     public bool isFemale;
@@ -551,6 +554,8 @@ public class AlienHandler : MonoBehaviour
         {
             other.gameObject.SetActive(false);
             alienHealth--;
+            VisualEffect explosionParticleEffect = Instantiate(bulletImpactExplosion, transform.position, Quaternion.identity);
+            Destroy(explosionParticleEffect, 0.5f);
             // Handle Alien Death
             if (alienHealth == 0)
             {
