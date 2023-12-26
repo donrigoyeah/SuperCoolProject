@@ -57,7 +57,6 @@ public class PlayerManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("Lost shield");
             timeSinceLastHit = 0;
             playerShield = false;
             playerShieldGO.SetActive(false);

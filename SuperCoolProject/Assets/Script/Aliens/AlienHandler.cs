@@ -45,7 +45,6 @@ public class AlienHandler : MonoBehaviour
     private int alienLifeChild = 2;
     private int alienLifeSexual = 3;
     private int alienLifeFullGrown = 5;
-    private float alertDistanceThreshold = 2;
     public int timeToChild = 5;
     public int timeToSexual = 15;
     public int timeToFullGrown = 25;
@@ -58,11 +57,6 @@ public class AlienHandler : MonoBehaviour
     public Material[] orignalMaterial;
     public float dissolveRate = 0.0125f;
     public float refreshRate = 0.025f;
-
-
-    [SerializeField] private TextMeshProUGUI[] killcounter;
-    [SerializeField] private VisualEffect bulletImpactExplosion;
-
 
     [Header("This Alien")]
     public bool isFemale;
@@ -363,7 +357,7 @@ public class AlienHandler : MonoBehaviour
 
     public void HandleFleeing(GameObject targetAlien)
     {
-        if (!targetAlien.activeInHierarchy || Vector3.Distance(targetAlien.transform.position, transform.position) > lookRadius)
+        if (!targetAlien.activeInHierarchy || Vector3.Distance(targetAlien.transform.position, transform.position) > lookRadius + 1)
         {
             closestAlien = null;
             currentState = AlienState.looking;
@@ -549,10 +543,14 @@ public class AlienHandler : MonoBehaviour
                 }
 
             }
+            return;
         }
         // Handle Bullet interaction
         else if (other.gameObject.CompareTag("Bullet"))
         {
+            // Cannot shoot resource
+            if (currentAge == AlienAge.resource) { return; }
+
 
             // Needs to deactivate this here so it does not trigger multiple times
             // Maybe deactive the Collider on the Bullet and then make sure to enable it again if new spawned
@@ -564,11 +562,12 @@ public class AlienHandler : MonoBehaviour
             {
                 // TODO: Add Coroutine & Ragdoll to show impact/force of bullets
                 //EnableRagdoll();
-                if (currentSpecies == 0) { killcounter[0].text = GameManager.SharedInstance.sphereKilled++.ToString(); }
-                if (currentSpecies == 1) { killcounter[0].text = GameManager.SharedInstance.squareKilled++.ToString(); }
-                if (currentSpecies == 2) { killcounter[0].text = GameManager.SharedInstance.triangleKilled++.ToString(); }
+                if (currentSpecies == 0) { GameManager.SharedInstance.sphereKilled++; }
+                if (currentSpecies == 1) { GameManager.SharedInstance.squareKilled++; }
+                if (currentSpecies == 2) { GameManager.SharedInstance.triangleKilled++; }
 
                 StartCoroutine(Dissolve());
+                return;
                 // this.gameObject.SetActive(false);
             };
         }

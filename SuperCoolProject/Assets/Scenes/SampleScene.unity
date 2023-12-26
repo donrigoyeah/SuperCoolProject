@@ -1223,7 +1223,7 @@ RectTransform:
   m_Father: {fileID: 381591120}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2614,6 +2614,10 @@ MonoBehaviour:
   pauseMenu: {fileID: 985243444}
   volumeSlider: {fileID: 1749814452}
   playtimeText: {fileID: 445591072}
+  sphereKillCounter: {fileID: 0}
+  squareKillCounter: {fileID: 0}
+  triangleKillCounter: {fileID: 0}
+  isPaused: 0
 --- !u!1 &521918131
 GameObject:
   m_ObjectHideFlags: 0
@@ -2647,7 +2651,7 @@ RectTransform:
   m_Father: {fileID: 114519822}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -4152,7 +4156,7 @@ RectTransform:
   m_Father: {fileID: 588183175}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 0.6219597}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -4618,7 +4622,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a31d424cc4917b4fa00c130cccfe173, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeIntensity: 3
+  shakeIntensity: 1
 --- !u!114 &863491085
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5122,7 +5126,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &985243445
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6420,9 +6424,9 @@ RectTransform:
   m_Father: {fileID: 1359316335}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -17, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1269220507
 MonoBehaviour:
@@ -8001,7 +8005,7 @@ RectTransform:
   m_Father: {fileID: 860278622}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -8453,10 +8457,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 1100093831}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 506797202}
+        m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
+        m_MethodName: Resume
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -9957,12 +9961,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 5209518645007623820, guid: 12858b1f8789e0e428bbcdcab1837ac1,
+    - target: {fileID: 7595266375327355587, guid: 12858b1f8789e0e428bbcdcab1837ac1,
         type: 3}
-      propertyPath: m_Sprite
+      propertyPath: pauseMenu
       value: 
-      objectReference: {fileID: 21300000, guid: ea00b20c364c50b4a9d4c7312f3ea8cc,
-        type: 3}
+      objectReference: {fileID: 985243444}
     - target: {fileID: 8794882847261471613, guid: 12858b1f8789e0e428bbcdcab1837ac1,
         type: 3}
       propertyPath: m_LocalPosition.x

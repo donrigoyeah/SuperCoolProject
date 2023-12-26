@@ -10,13 +10,26 @@ using UnityEngine.InputSystem;
 
 public class PauseMenu : MonoBehaviour
 {
+    public static PauseMenu SharedInstance;
+
+
     [SerializeField] private GameObject pauseMenu;   // using gameobject for canvas because for some reason canvas.enable = true was not working
     [SerializeField] private Slider volumeSlider;
     [SerializeField] private TextMeshProUGUI playtimeText;
+    [SerializeField] private TextMeshProUGUI sphereKillCounter;
+    [SerializeField] private TextMeshProUGUI squareKillCounter;
+    [SerializeField] private TextMeshProUGUI triangleKillCounter;
+
     private float startTime;
+    public bool isPaused;
 
     //TODO: SFX volume and mouse sensivity
-    
+
+    private void Awake()
+    {
+        SharedInstance = this;
+    }
+
     void Start()
     {
         // Check if there is old volume settings or not
@@ -32,15 +45,9 @@ public class PauseMenu : MonoBehaviour
         startTime = Time.realtimeSinceStartup;
 
     }
-    
+
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Pause();
-        }
-        
-        
         float currentTime = Time.realtimeSinceStartup - startTime;
         string formattedTime = FormatTime(currentTime);
         playtimeText.text = "Playtime: " + formattedTime;
@@ -54,17 +61,23 @@ public class PauseMenu : MonoBehaviour
 
         return string.Format("{0:00}:{1:00}:{2:00}", hours, minutes, seconds);
     }
-    
+
+    // Gets called on playerLocomotion
     public void Pause()
     {
         Time.timeScale = 0;
+        sphereKillCounter.text = GameManager.SharedInstance.sphereKilled.ToString();
+        squareKillCounter.text = GameManager.SharedInstance.squareKilled.ToString();
+        triangleKillCounter.text = GameManager.SharedInstance.triangleKilled.ToString();
         pauseMenu.SetActive(true);
+        isPaused = true;
     }
 
     public void Resume()
     {
         pauseMenu.SetActive(false);
         Time.timeScale = 1;
+        isPaused = false;
     }
 
     public void Restart()
@@ -85,7 +98,7 @@ public class PauseMenu : MonoBehaviour
         AudioListener.volume = volumeSlider.value;
         Save();
     }
-    
+
     private void Load()
     {
         volumeSlider.value = PlayerPrefs.GetFloat("musicVolume");
@@ -95,6 +108,6 @@ public class PauseMenu : MonoBehaviour
     {
         PlayerPrefs.SetFloat("musicVolume", volumeSlider.value);
     }
-    
+
 }
 

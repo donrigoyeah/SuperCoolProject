@@ -82,7 +82,7 @@ public class PlayerAttacker : MonoBehaviour
     {
         if (gunOverheated == false && nextFireTime > fireRate)
         {
-            if (inputHandler.inputPrimaryFire && !playerManager.isCarryingPart)
+            if (inputHandler.inputPrimaryFire && !playerManager.isCarryingPart && !PauseMenu.SharedInstance.isPaused)
             {
                 SpawnLazer();
                 CameraShake.ShakeCamera();

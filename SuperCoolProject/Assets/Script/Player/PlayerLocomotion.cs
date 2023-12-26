@@ -28,6 +28,7 @@ public class PlayerLocomotion : MonoBehaviour
     private float currentFSSTimer;
 
     [Header("References")]
+    public GameObject pauseMenu;
     private PlayerControls playerControls;
     private InputHandler inputHandler;
 
@@ -71,6 +72,11 @@ public class PlayerLocomotion : MonoBehaviour
                 isDashing = true;
                 dashCooldownTimer = dashCooldown;
             }
+        }
+
+        if (inputHandler.inputPause)
+        {
+            PauseMenu.SharedInstance.Pause();
         }
     }
 
