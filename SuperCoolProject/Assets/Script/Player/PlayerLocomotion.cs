@@ -23,10 +23,10 @@ public class PlayerLocomotion : MonoBehaviour
     private float dashDuration = 0.3f;
     private float dashSpeed = 20f;
 
-    [Header("Dust Particle System")]
-    [SerializeField] private ParticleSystem dustParticle;
-    private ParticleSystem currentDustParticle;
-    
+    [Header("Footstep Smoke Particle System")]
+    [SerializeField] private float deltaFSS;
+    private float currentFSSTimer;
+
     [Header("References")]
     private PlayerControls playerControls;
     private InputHandler inputHandler;
@@ -78,25 +78,30 @@ public class PlayerLocomotion : MonoBehaviour
     {
         Vector3 move = new Vector3(inputHandler.inputMovement.x, 0, inputHandler.inputMovement.y);
         controller.Move(move * Time.deltaTime * playerSpeed);
-        
+
+        if (currentFSSTimer < deltaFSS)
+        {
+            currentFSSTimer += Time.deltaTime;
+        }
+
         //Dust during movement particles
-        if (move.magnitude > 0.1f)
+        if (move.magnitude > 0.1f && currentFSSTimer >= deltaFSS)
         {
-            if (currentDustParticle == null)
+            // Spawn Footstep Smoke GO
+            GameObject FSSGO = PoolManager.SharedInstance.GetPooledFSS();
+            if (FSSGO != null)
             {
-                currentDustParticle = Instantiate(dustParticle, transform.position, Quaternion.identity);
+                FSSGO.transform.position = transform.position;
+                FSSGO.transform.rotation = transform.rotation;
+                FSSGO.SetActive(true);
+                // Disable again after 1 second
+                StartCoroutine(DisableAfterSeconds(1, FSSGO));
             }
-            currentDustParticle.transform.position = transform.position;
+            // Reset timer to limit spawns
+            currentFSSTimer = 0;
         }
-        else
-        {
-            if (currentDustParticle != null) 
-            {
-                Destroy(currentDustParticle.gameObject);
-                currentDustParticle = null;
-            }
-        }
-        
+
+        // TODO: DO we need this? Maybe remove gravity at all and set y to fixed position (?!)
         playerVelocity.y += gravityValue * Time.deltaTime;
         controller.Move(playerVelocity * Time.deltaTime);
     }
@@ -146,5 +151,10 @@ public class PlayerLocomotion : MonoBehaviour
 
         playerSpeed = 10f;
         isDashing = false;
+    }
+    IEnumerator DisableAfterSeconds(int sec, GameObject objectToDeactivate)
+    {
+        yield return new WaitForSeconds(sec);
+        objectToDeactivate.SetActive(false);
     }
 }

@@ -49,7 +49,7 @@ public class AlienHandler : MonoBehaviour
     public int timeToChild = 5;
     public int timeToSexual = 15;
     public int timeToFullGrown = 25;
-    
+
     [Header("Dissolve")]
     public Material dissolve;
     public SkinnedMeshRenderer skinRenderer1;
@@ -58,12 +58,12 @@ public class AlienHandler : MonoBehaviour
     public Material[] orignalMaterial;
     public float dissolveRate = 0.0125f;
     public float refreshRate = 0.025f;
-    
-    
+
+
     [SerializeField] private TextMeshProUGUI[] killcounter;
     [SerializeField] private VisualEffect bulletImpactExplosion;
 
-    
+
     [Header("This Alien")]
     public bool isFemale;
     public int maxAmountOfBabies = 10;
@@ -183,7 +183,7 @@ public class AlienHandler : MonoBehaviour
         }
         // Finaly process movement
         HandleMovement(step);
-        
+
     }
 
     public void HandleLooking()
@@ -553,19 +553,21 @@ public class AlienHandler : MonoBehaviour
         // Handle Bullet interaction
         else if (other.gameObject.CompareTag("Bullet"))
         {
+
+            // Needs to deactivate this here so it does not trigger multiple times
+            // Maybe deactive the Collider on the Bullet and then make sure to enable it again if new spawned
             other.gameObject.SetActive(false);
             alienHealth--;
-            VisualEffect explosionParticleEffect = Instantiate(bulletImpactExplosion, transform.position, Quaternion.identity);
-            Destroy(explosionParticleEffect, 0.5f);
+
             // Handle Alien Death
             if (alienHealth == 0)
             {
                 // TODO: Add Coroutine & Ragdoll to show impact/force of bullets
                 //EnableRagdoll();
-                if (currentSpecies == 0) { killcounter[0].text = GameManager.SharedInstance.sphereKilled++.ToString();}
-                if (currentSpecies == 1) { killcounter[0].text = GameManager.SharedInstance.squareKilled++.ToString();}
-                if (currentSpecies == 2) { killcounter[0].text = GameManager.SharedInstance.triangleKilled++.ToString();}
-                
+                if (currentSpecies == 0) { killcounter[0].text = GameManager.SharedInstance.sphereKilled++.ToString(); }
+                if (currentSpecies == 1) { killcounter[0].text = GameManager.SharedInstance.squareKilled++.ToString(); }
+                if (currentSpecies == 2) { killcounter[0].text = GameManager.SharedInstance.triangleKilled++.ToString(); }
+
                 StartCoroutine(Dissolve());
                 // this.gameObject.SetActive(false);
             };
@@ -675,12 +677,12 @@ public class AlienHandler : MonoBehaviour
                 skinRenderer3.material = dissolve;
                 break;
         }
-            
+
         float counter = 0;
         while (dissolve.GetFloat("_DissolveAmount") < 1)
         {
             counter += dissolveRate;
-            for (int i = 0; i <= 10; i++) 
+            for (int i = 0; i <= 10; i++)
             {
                 dissolve.SetFloat("_DissolveAmount", counter);
                 yield return new WaitForSeconds(refreshRate);
@@ -688,7 +690,7 @@ public class AlienHandler : MonoBehaviour
         }
         dissolve.SetFloat("_DissolveAmount", 0);
         this.gameObject.SetActive(false);
-        
+
         switch (currentSpecies)
         {
             case 0:
@@ -701,6 +703,6 @@ public class AlienHandler : MonoBehaviour
                 skinRenderer3.material = orignalMaterial[2];
                 break;
         }
-        
+
     }
 }

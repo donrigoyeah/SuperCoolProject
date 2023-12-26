@@ -24,7 +24,6 @@ public class PlayerAttacker : MonoBehaviour
     [SerializeField] private bool gunOverheated = false;
     [SerializeField] private float nextFireTime = 0f;
     [SerializeField] private float bulletSpeed = 50;
-    [SerializeField] VisualEffect muzzleFlash;
 
     [Header("Grenade stuff")]
     [SerializeField] private Transform grenadeSpawnLocation;
@@ -52,7 +51,7 @@ public class PlayerAttacker : MonoBehaviour
 
     [Header("Camera Shake")]
     [SerializeField] private CameraShake CameraShake;
-    
+
     private void Awake()
     {
         inputHandler = GetComponent<InputHandler>();
@@ -95,7 +94,7 @@ public class PlayerAttacker : MonoBehaviour
                 CameraShake.ResetCameraPosition();
             }
         }
-        
+
         overheatUI.color = Color.Lerp(Color.green, Color.red, overheatUI.fillAmount / 0.70f);
     }
 
@@ -148,19 +147,24 @@ public class PlayerAttacker : MonoBehaviour
         {
             bulletPoolGo.transform.position = lazerSpawnLocation.position;
             bulletPoolGo.transform.rotation = lazerSpawnLocation.rotation;
-            VisualEffect MuzzleFlash = Instantiate(muzzleFlash, lazerSpawnLocation.position, lazerSpawnLocation.rotation);
-            Destroy(MuzzleFlash.gameObject, 1f);  //Add to object pool
             bulletPoolGo.SetActive(true);
-
-
             Rigidbody rb = bulletPoolGo.GetComponent<Rigidbody>();
             if (rb != null)
             {
                 rb.velocity = lazerSpawnLocation.forward * bulletSpeed;
             }
+
+        }
+        GameObject muzzlePoolGo = PoolManager.SharedInstance.GetPooledMuzzle();
+        if (muzzlePoolGo != null)
+        {
+            muzzlePoolGo.transform.position = lazerSpawnLocation.position;
+            muzzlePoolGo.transform.rotation = lazerSpawnLocation.rotation;
+            muzzlePoolGo.SetActive(true);
+            StartCoroutine(DisableAfterSeconds(1, muzzlePoolGo));
         }
     }
-    
+
 
 
     #endregion
@@ -250,5 +254,12 @@ public class PlayerAttacker : MonoBehaviour
         Destroy(grenadeTrajectory.gameObject);
     }
     #endregion
+
+
+    IEnumerator DisableAfterSeconds(int sec, GameObject objectToDeactivate)
+    {
+        yield return new WaitForSeconds(sec);
+        objectToDeactivate.SetActive(false);
+    }
 
 }

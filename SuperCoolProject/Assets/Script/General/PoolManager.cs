@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class PoolManager : MonoBehaviour
 {
@@ -19,11 +20,32 @@ public class PoolManager : MonoBehaviour
     public GameObject Bullet;
     public GameObject BulletContainer;
 
+    [Header("Bullet Explosions")]
+    public int bulletExpAmount;
+    public GameObject bulletExp;
+    public List<GameObject> BulletExpPool;
+    public GameObject BulletExpContainer;
+
+    [Header("Muzzle Flash")]
+    public int muzzleAmount;
+    public GameObject muzzle;
+    public List<GameObject> MuzzlePool;
+    public GameObject MuzzleContainer;
+
+    [Header("Foot Step Smoke")]
+    public int FSSAmount;
+    public List<GameObject> FSSPool;
+    public GameObject FSS;
+    public GameObject FSSContainer;
+
     private void Awake()
     {
         SharedInstance = this;
         AlienPooling();
         BulletPooling();
+        BulletExpPooling();
+        MuzzlePooling();
+        FSSPooling();
     }
 
     #region AlienPooling
@@ -94,6 +116,90 @@ public class PoolManager : MonoBehaviour
             tmp.transform.SetParent(BulletContainer.transform);
             tmp.SetActive(false);
             BulletPool.Add(tmp);
+        }
+    }
+    #endregion
+
+    #region Bullet Explosion Pooling
+    public GameObject GetPooledBulletExplosion()
+    {
+        for (int i = 0; i < bulletExpAmount; i++)
+        {
+            if (!BulletExpPool[i].activeInHierarchy)
+            {
+                return BulletExpPool[i];
+            }
+        }
+
+        return null;
+    }
+
+    private void BulletExpPooling()
+    {
+        BulletExpPool = new List<GameObject>();
+        GameObject tmp;
+        for (int i = 0; i < bulletExpAmount; i++)
+        {
+            tmp = Instantiate(bulletExp);
+            tmp.transform.SetParent(BulletExpContainer.transform);
+            tmp.SetActive(false);
+            BulletExpPool.Add(tmp);
+        }
+    }
+    #endregion
+
+    #region Muzzle Pooling
+    public GameObject GetPooledMuzzle()
+    {
+        for (int i = 0; i < muzzleAmount; i++)
+        {
+            if (!MuzzlePool[i].activeInHierarchy)
+            {
+                return MuzzlePool[i];
+            }
+        }
+
+        return null;
+    }
+
+    private void MuzzlePooling()
+    {
+        MuzzlePool = new List<GameObject>();
+        GameObject tmp;
+        for (int i = 0; i < muzzleAmount; i++)
+        {
+            tmp = Instantiate(muzzle);
+            tmp.transform.SetParent(MuzzleContainer.transform);
+            tmp.SetActive(false);
+            MuzzlePool.Add(tmp);
+        }
+    }
+    #endregion
+
+    #region Footstep Smoke Pooling
+    public GameObject GetPooledFSS()
+    {
+        for (int i = 0; i < FSSAmount; i++)
+        {
+            if (!FSSPool[i].activeInHierarchy)
+            {
+                return FSSPool[i];
+            }
+        }
+
+        return null;
+    }
+
+    private void FSSPooling()
+    {
+        FSSPool = new List<GameObject>();
+        GameObject tmp;
+        for (int i = 0; i < FSSAmount; i++)
+        {
+            tmp = Instantiate(FSS);
+            tmp.transform.SetParent(FSSContainer.transform);
+            tmp.SetActive(false);
+            FSSPool.Add(tmp);
         }
     }
     #endregion

@@ -11,10 +11,7 @@ public class GameManager : MonoBehaviour
     public static GameManager SharedInstance;
 
     [Header("World")]
-    public int worldRadius = 98;
-
-    [Header("Spaceship")]
-    public GameObject SpaceShip;
+    public int worldRadius = 150;
 
     [Header("Clone Juice")]
     [SerializeField] public Image cloneJuiceUI;
@@ -36,11 +33,11 @@ public class GameManager : MonoBehaviour
     public bool hasShieldGenerator = false;
     public bool hasAntenna = false;
 
-    [Header("KillCounter")] 
+    [Header("KillCounter")]
     public int sphereKilled = 0;
     public int squareKilled = 0;
     public int triangleKilled = 0;
-    
+
     [SerializeField] private PlayerLocomotion playerLocomotion;
     [SerializeField] private GameObject map;
     private void Awake()
