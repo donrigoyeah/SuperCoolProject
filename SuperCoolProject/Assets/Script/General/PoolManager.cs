@@ -5,13 +5,21 @@ using UnityEngine.VFX;
 
 public class PoolManager : MonoBehaviour
 {
+    // SharedInstances lets us access it from everyy file
+    // Only for Scripts that have exactly one instance in the scene
     public static PoolManager SharedInstance;
 
+    // Header In Inspector
     [Header("Aliens")]
+    // Amount of initial Spawned Aliens
     public int alienAmount;
+    // Amount of max possible with extras
     public int alienAmountMax;
+    // Actualy Pool of all GameObjects
     public List<GameObject> AlienPool;
+    // The prefab
     public GameObject Alien;
+    // The place to spawn the GO into
     public GameObject AlienContainer;
 
     [Header("Bullets")]
@@ -51,36 +59,54 @@ public class PoolManager : MonoBehaviour
     #region AlienPooling
     public GameObject GetPooledAliens()
     {
+        Debug.Log("Code Explanation for AlienPooling");
+
+        // Loop through initla amount of planned anliens
         for (int i = 0; i < alienAmount; i++)
         {
+            // If not active in Hierarchy...
             if (!AlienPool[i].activeInHierarchy)
             {
+                // Found inactive, returns "new"
                 return AlienPool[i];
             }
         }
+        // Buffer check / spawn only this amount of additionals
         if (alienAmount < alienAmountMax)
         {
-            // Add only when no more are available
-            Debug.Log("Add additionl alien to the pool");
+            // Inititalize Gameobject tmp/Temporary
             GameObject tmp;
+            // Add to scene
             tmp = Instantiate(Alien);
+            // place in file structure so all are in a container
             tmp.transform.SetParent(AlienContainer.transform);
+            // Add to pre defined List
             AlienPool.Add(tmp);
+            // Add total amount for looping to find active
             alienAmount++;
+            // Return newly generated GO
             return tmp;
         }
+        // Returns nothing to function to "formaly end"?!
         return null;
     }
 
     private void AlienPooling()
     {
+        // Instantiate the planned List of GO
         AlienPool = new List<GameObject>();
+        // Define typ of variable
         GameObject tmp;
+        // Loop though Amount set in  Inspector / Unity editor
         for (int i = 0; i < alienAmount; i++)
         {
+            // Generate Opject in Scene
             tmp = Instantiate(Alien);
+            // Set location for clearer structure in Scene
             tmp.transform.SetParent(AlienContainer.transform);
+            // Disable the freshly instatiated object / Place to handle loading screne?!
             tmp.SetActive(false);
+            // Add to List/Object Pool
             AlienPool.Add(tmp);
         }
     }

@@ -6,9 +6,22 @@ using UnityEngine.VFX;
 
 public class BulletHandler : MonoBehaviour
 {
+    // These values get updated after spawning from object pool
+    public float bulletDamage = 1;
+    public float bulletSpeed = 1;
+    public float lifeTime = 2;
+
+    // To make in available in other script. Probably not very secure for competitive online play but here should be fine :)
+    public Rigidbody rb;
+
+    private void Awake()
+    {
+        Rigidbody rb = GetComponent<Rigidbody>();
+    }
+
     private void OnEnable()
     {
-        StartCoroutine(DisableAfterSeconds(2, this.gameObject));
+        StartCoroutine(DisableAfterSeconds(lifeTime, this.gameObject));
     }
 
     private void OnTriggerEnter(Collider other)
