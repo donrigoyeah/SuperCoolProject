@@ -19,6 +19,7 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] private TextMeshProUGUI squareKillCounter;
     [SerializeField] private TextMeshProUGUI triangleKillCounter;
 
+
     private float startTime;
     public bool isPaused;
 
@@ -27,6 +28,8 @@ public class PauseMenu : MonoBehaviour
     private void Awake()
     {
         SharedInstance = this;
+        Debug.Log("Maybe UI update here?");
+        // Handle entire UI from this script? Add values of resourceUI and other displays here"); 
     }
 
     void Start()
@@ -65,13 +68,19 @@ public class PauseMenu : MonoBehaviour
     public void Pause()
     {
         Time.timeScale = 0;
-        sphereKillCounter.text = GameManager.SharedInstance.sphereKilled.ToString();
-        squareKillCounter.text = GameManager.SharedInstance.squareKilled.ToString();
-        triangleKillCounter.text = GameManager.SharedInstance.triangleKilled.ToString();
+        Debug.Log("Moved to own function");
+        UpdatePauseUI();
+
         pauseMenu.SetActive(true);
         isPaused = true;
     }
 
+    private void UpdatePauseUI()
+    {
+        sphereKillCounter.text = GameManager.SharedInstance.sphereKilled.ToString();
+        squareKillCounter.text = GameManager.SharedInstance.squareKilled.ToString();
+        triangleKillCounter.text = GameManager.SharedInstance.triangleKilled.ToString();
+    }
     public void Resume()
     {
         pauseMenu.SetActive(false);

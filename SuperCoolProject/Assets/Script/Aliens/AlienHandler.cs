@@ -42,9 +42,9 @@ public class AlienHandler : MonoBehaviour
     private float delta;
     private float step;
     private int alienLifeResource = 1;
-    private int alienLifeChild = 2;
-    private int alienLifeSexual = 3;
-    private int alienLifeFullGrown = 5;
+    private int alienLifeChild = 30;
+    private int alienLifeSexual = 40;
+    private int alienLifeFullGrown = 50;
     public int timeToChild = 5;
     public int timeToSexual = 15;
     public int timeToFullGrown = 25;
@@ -68,7 +68,7 @@ public class AlienHandler : MonoBehaviour
     Collider coll;
     public RawImage currentStateIcon;
     public Texture[] allStateIcons; // 0: eye, 1: crosshair, 2: wind, 3: heart, 4: shield
-    public int alienHealth;
+    public float alienHealth;
     public float lifeTime = 0;
     public float lustTimer = 0;
     public float hungerTimer = 0;
@@ -357,6 +357,7 @@ public class AlienHandler : MonoBehaviour
 
     public void HandleFleeing(GameObject targetAlien)
     {
+        // Add +1 so i is out of the lookradius
         if (!targetAlien.activeInHierarchy || Vector3.Distance(targetAlien.transform.position, transform.position) > lookRadius + 1)
         {
             closestAlien = null;
@@ -551,10 +552,13 @@ public class AlienHandler : MonoBehaviour
             // Cannot shoot resource
             if (currentAge == AlienAge.resource) { return; }
 
+            Debug.Log("Handle Bullet damage to alien here");
+            BulletHandler BH = other.gameObject.GetComponent<BulletHandler>();
+            alienHealth -= BH.bulletDamage;
             // Needs to deactivate this here so it does not trigger multiple times
             // Maybe deactive the Collider on the Bullet and then make sure to enable it again if new spawned
             other.gameObject.SetActive(false);
-            alienHealth--;
+
 
             // Handle Alien Death
             if (alienHealth <= 0)
@@ -571,27 +575,32 @@ public class AlienHandler : MonoBehaviour
                 // this.gameObject.SetActive(false);
             };
         }
-        // Handle Player interaction && is also put in trigger / trigger state changes in HandleAging()
-        else if (other.gameObject.CompareTag("Player"))
-        {
-            if (hasInteractedWithPlayer == false)
-            {
-                PlayerManager PM = other.gameObject.GetComponent<PlayerManager>();
-                // Handle Gathering resource
-                if (currentAge == AlienAge.resource)
-                {
-                    hasInteractedWithPlayer = true;
-                    PM.HandleGainResource(currentSpecies);
-                    this.gameObject.SetActive(false);
-                }
-                else
-                {
-                    hasInteractedWithPlayer = true;
-                    PM.HandleHit();
-                    this.gameObject.SetActive(false);
-                }
-            }
-        }
+        Debug.Log("Moved this to player so alien script get shortend");
+
+        //// Handle Player interaction && is also put in trigger / trigger state changes in HandleAging()
+        //else if (other.gameObject.CompareTag("Player"))
+        //{
+        //    // Less resources on all the alien instances
+
+        //    //if (hasInteractedWithPlayer == false)
+        //    //{
+        //    //    PlayerManager PM = other.gameObject.GetComponent<PlayerManager>();
+        //    //    // Handle Gathering resource
+        //    //    if (currentAge == AlienAge.resource)
+        //    //    {
+        //    //        // Check so script only runce once
+        //    //        hasInteractedWithPlayer = true;
+        //    //        PM.HandleGainResource(currentSpecies);
+        //    //        this.gameObject.SetActive(false);
+        //    //    }
+        //    //    else
+        //    //    {
+        //    //        hasInteractedWithPlayer = true;
+        //    //        PM.HandleHit();
+        //    //        this.gameObject.SetActive(false);
+        //    //    }
+        //    //}
+        //}
     }
 
     public void ActivateCurrentModels(int currentSpeziesIndex)

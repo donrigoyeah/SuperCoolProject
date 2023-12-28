@@ -7,7 +7,8 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.VFX;
 using static UnityEngine.Rendering.DebugUI;
-
+using Unity.VisualScripting;
+using static AlienHandler;
 
 public class PlayerAttacker : MonoBehaviour
 {
@@ -18,12 +19,15 @@ public class PlayerAttacker : MonoBehaviour
     [SerializeField] private float fireRate = 0.5f;
     [SerializeField] private float currentWeaponHeat = 0;
     [SerializeField] private float maxWeaponHeat = 100;
+    [SerializeField] private float boostWeaponHeatThreshold = 70;
     [SerializeField] private float singleLazerHeat = 10;
     [SerializeField] private float gunCooldownSpeed = 0.003f;
     [SerializeField] private float gunOverHeatCooldownSpeed = 0.003f;
     [SerializeField] private bool gunOverheated = false;
     [SerializeField] private float nextFireTime = 0f;
     [SerializeField] private float bulletSpeed = 50;
+    [SerializeField] private float bulletDamage = 10;
+    [SerializeField] private float bulletDamageBoost = 2;
 
     [Header("Grenade stuff")]
     [SerializeField] private Transform grenadeSpawnLocation;
@@ -84,7 +88,16 @@ public class PlayerAttacker : MonoBehaviour
         {
             if (inputHandler.inputPrimaryFire && !playerManager.isCarryingPart && !PauseMenu.SharedInstance.isPaused)
             {
-                SpawnLazer();
+                if (currentWeaponHeat > boostWeaponHeatThreshold)
+                {
+                    Debug.Log("Code Explanation for Extra Damage");
+                    SpawnLazer(bulletDamage + bulletDamageBoost * currentWeaponHeat / boostWeaponHeatThreshold);
+                }
+                else
+                {
+                    SpawnLazer(bulletDamage);
+                }
+
                 CameraShake.ShakeCamera();
                 currentWeaponHeat += singleLazerHeat;
                 nextFireTime = 0;
@@ -140,19 +153,23 @@ public class PlayerAttacker : MonoBehaviour
         overheatUI.fillAmount = value / maxWeaponHeat;
     }
 
-    private void SpawnLazer()
+    private void SpawnLazer(float damage)
     {
         GameObject bulletPoolGo = PoolManager.SharedInstance.GetPooledBullets();
         if (bulletPoolGo != null)
         {
             bulletPoolGo.transform.position = lazerSpawnLocation.position;
             bulletPoolGo.transform.rotation = lazerSpawnLocation.rotation;
+            BulletHandler BH = bulletPoolGo.GetComponent<BulletHandler>();
+            BH.bulletDamage = damage;
             bulletPoolGo.SetActive(true);
-            Rigidbody rb = bulletPoolGo.GetComponent<Rigidbody>();
-            if (rb != null)
-            {
-                rb.velocity = lazerSpawnLocation.forward * bulletSpeed;
-            }
+            Debug.Log("Moved to BulletHandler:");
+            BH.rb.velocity = lazerSpawnLocation.forward * bulletSpeed;
+            //Rigidbody rb = bulletPoolGo.GetComponent<Rigidbody>();
+            //if (rb != null)
+            //{
+            //    rb.velocity = lazerSpawnLocation.forward * bulletSpeed;
+            //}
 
         }
         GameObject muzzlePoolGo = PoolManager.SharedInstance.GetPooledMuzzle();
@@ -255,6 +272,42 @@ public class PlayerAttacker : MonoBehaviour
     }
     #endregion
 
+    #region Handle Player / Alien interaction
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("Moved this to player so alien script get shortend");
+        // Less resources on all the alien instances
+        if (other.gameObject.CompareTag("Alien"))
+        {
+            AlienHandler AH = other.gameObject.GetComponent<AlienHandler>();
+            if (AH.currentAge == AlienAge.resource)
+            {
+                playerManager.HandleGainResource(AH.currentSpecies);
+            }
+        }
+
+        //if (hasInteractedWithPlayer == false)
+        //{
+        //    PlayerManager PM = other.gameObject.GetComponent<PlayerManager>();
+        //    // Handle Gathering resource
+        //    if (currentAge == AlienAge.resource)
+        //    {
+        //        // Check so script only runce once
+        //        hasInteractedWithPlayer = true;
+        //        PM.HandleGainResource(currentSpecies);
+        //        this.gameObject.SetActive(false);
+        //    }
+        //    else
+        //    {
+        //        hasInteractedWithPlayer = true;
+        //        PM.HandleHit();
+        //        this.gameObject.SetActive(false);
+        //    }
+        //}
+
+    }
+    #endregion
 
     IEnumerator DisableAfterSeconds(int sec, GameObject objectToDeactivate)
     {
