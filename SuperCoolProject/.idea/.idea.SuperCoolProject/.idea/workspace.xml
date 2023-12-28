@@ -11,6 +11,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Assets/Script/General/TimeManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/Player/CameraShake.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
@@ -164,6 +165,13 @@
       <workItem from="1703522845858" duration="125000" />
       <workItem from="1703608156566" duration="1177000" />
       <workItem from="1703610065015" duration="972000" />
+      <workItem from="1703626318738" duration="618000" />
+      <workItem from="1703631438892" duration="4917000" />
+      <workItem from="1703675907791" duration="6115000" />
+      <workItem from="1703715387158" duration="231000" />
+      <workItem from="1703722573166" duration="10631000" />
+      <workItem from="1703761115904" duration="4181000" />
+      <workItem from="1703775634702" duration="1242000" />
     </task>
     <servers />
   </component>

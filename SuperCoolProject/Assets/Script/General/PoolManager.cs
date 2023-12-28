@@ -61,7 +61,7 @@ public class PoolManager : MonoBehaviour
         if (alienAmount < alienAmountMax)
         {
             // Add only when no more are available
-            Debug.Log("Add additionl alien to the pool");
+            // Debug.Log("Add additionl alien to the pool");
             GameObject tmp;
             tmp = Instantiate(Alien);
             tmp.transform.SetParent(AlienContainer.transform);

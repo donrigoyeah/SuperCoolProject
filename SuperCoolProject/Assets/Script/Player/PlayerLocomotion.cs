@@ -37,7 +37,7 @@ public class PlayerLocomotion : MonoBehaviour
     [Header("References")]
     private PlayerControls playerControls;
     private InputHandler inputHandler;
-
+    
     private void Awake()
     {
         isJumping = false;

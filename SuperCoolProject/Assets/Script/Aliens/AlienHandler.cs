@@ -551,15 +551,15 @@ public class AlienHandler : MonoBehaviour
             // Cannot shoot resource
             if (currentAge == AlienAge.resource) { return; }
 
-
             // Needs to deactivate this here so it does not trigger multiple times
             // Maybe deactive the Collider on the Bullet and then make sure to enable it again if new spawned
             other.gameObject.SetActive(false);
             alienHealth--;
 
             // Handle Alien Death
-            if (alienHealth == 0)
+            if (alienHealth <= 0)
             {
+                
                 // TODO: Add Coroutine & Ragdoll to show impact/force of bullets
                 //EnableRagdoll();
                 if (currentSpecies == 0) { GameManager.SharedInstance.sphereKilled++; }
