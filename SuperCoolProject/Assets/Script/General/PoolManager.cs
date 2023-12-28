@@ -74,6 +74,8 @@ public class PoolManager : MonoBehaviour
         // Buffer check / spawn only this amount of additionals
         if (alienAmount < alienAmountMax)
         {
+            // Add only when no more are available
+            // Debug.Log("Add additionl alien to the pool");
             // Inititalize Gameobject tmp/Temporary
             GameObject tmp;
             // Add to scene

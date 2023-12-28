@@ -11,6 +11,9 @@ public class Grenade : MonoBehaviour
     [SerializeField] private GameObject explosionEffect;
     private float countdown = 1f;
     private bool hasExploded = false;
+
+    public AlienHandler alienHandler;
+
     public void Init(Vector3 velocity, bool isGhost)
     {
         _rb.AddForce(velocity, ForceMode.Impulse);
@@ -45,13 +48,32 @@ public class Grenade : MonoBehaviour
 
         foreach (Collider nearbyObects in colliders)
         {
-            Rigidbody rb = nearbyObects.GetComponent<Rigidbody>();
-            if (rb != null)
+            AlienHandler alien = nearbyObects.GetComponent<AlienHandler>();
+            if (alien != null)
             {
-                rb.AddExplosionForce(explosionForce, transform.position, explosionRadius);
+                Rigidbody rb = nearbyObects.GetComponent<Rigidbody>();
+                if (rb != null)
+                {
+                    float distance = Vector3.Distance(transform.position, alien.transform.position);
+
+                    float damage = CalculateDamage(distance);
+
+                    alien.alienHealth -= (int)damage;
+                }
             }
         }
-
         hasExploded = false;
+    }
+    
+    float CalculateDamage(float distance)
+    {
+
+        float maxDamage = 4f;
+        float minDamage = 1f;
+        float maxDistance = explosionRadius;
+
+        float damage = maxDamage - (distance / maxDistance) * (maxDamage - minDamage);
+        Debug.Log(damage);
+        return damage;
     }
 }
