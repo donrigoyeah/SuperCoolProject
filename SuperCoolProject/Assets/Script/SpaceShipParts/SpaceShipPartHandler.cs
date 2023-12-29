@@ -15,6 +15,15 @@ public class SpaceShipPartHandler : MonoBehaviour
     public float playerSpeedReduction = 0f;
     public float previousPlayerSpeed = 10f;
     public TextMeshProUGUI tmp;
+    
+    // public LineRenderer linerenderer;
+    // public Transform position1;
+    // public Transform position2;
+
+    private void Start()
+    {
+        // linerenderer.positionCount = 2;
+    }
 
     private void OnTriggerStay(Collider other)
     {
@@ -43,6 +52,7 @@ public class SpaceShipPartHandler : MonoBehaviour
                 playerManager.currentPart = null;
                 playerManager.isCarryingPart = false;
                 this.transform.parent = null;
+
             }
         }
     }
@@ -50,5 +60,12 @@ public class SpaceShipPartHandler : MonoBehaviour
     private void Update()
     {
         tmp.text = spaceShipData.partName;
+        
+    }
+
+    private void LineCreator()
+    {
+        // linerenderer.SetPosition(0, position1.position); connect the player with the variable from the code
+        // linerenderer.SetPosition(1, position2.position); 
     }
 }

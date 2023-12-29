@@ -257,6 +257,8 @@ MonoBehaviour:
   playerSpeedReduction: 0
   previousPlayerSpeed: 10
   tmp: {fileID: 3354510961972014199}
+  ParticleSystem: {fileID: 1834161352568267220, guid: 523267235871452419eee02a89d24662,
+    type: 3}
 --- !u!1 &6126277448112617445
 GameObject:
   m_ObjectHideFlags: 0

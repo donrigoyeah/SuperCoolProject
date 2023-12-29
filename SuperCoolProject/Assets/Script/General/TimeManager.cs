@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class TimeManager : MonoBehaviour
@@ -8,11 +9,14 @@ public class TimeManager : MonoBehaviour
     [Header("Time")]
     [SerializeField] private int minutes;
     [SerializeField] private int hours;
-    [SerializeField] private int days;
+    [SerializeField] private int days = 1;
     [SerializeField] private float timeCounter;
     [SerializeField] private int secondsInMinutes = 60;
     [SerializeField] private int minutesinHour = 60;
     [SerializeField] private float timeBoost = 150f; //1min cycle completes in 25seconds
+
+    [Header("Light")] 
+    [SerializeField] private TextMeshProUGUI displayTime;
     
     [Header("Light")]
     [SerializeField] private Light sun;
@@ -39,6 +43,8 @@ public class TimeManager : MonoBehaviour
             minutes = 0;
             HourSettings(hours);
         }
+        
+        DisplayTimeText();
     }
     
     private void HourSettings(int hour)
@@ -72,5 +78,11 @@ public class TimeManager : MonoBehaviour
             // sun.intensity = Mathf.Lerp(initialSunIntensity, finalSunIntensity, lerp); // Incase we have change of plans for intensity
             yield return null;
         }
+    }
+    
+    private void DisplayTimeText()
+    {
+        string formattedTime = $"{hours:D2}:{minutes:D2}";
+        displayTime.text ="Day: " + days + "  Time: " + formattedTime;
     }
 }

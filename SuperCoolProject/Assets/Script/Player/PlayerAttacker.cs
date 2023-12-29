@@ -28,13 +28,15 @@ public class PlayerAttacker : MonoBehaviour
     [SerializeField] private float bulletSpeed = 50;
     [SerializeField] private float bulletDamage = 10;
     [SerializeField] private float bulletDamageBoost = 2;
+    [SerializeField] private LineRenderer laserSight;
+    [SerializeField] private bool isLaserSight = true;
 
     [Header("Grenade stuff")]
     [SerializeField] private Transform grenadeSpawnLocation;
     [SerializeField] public GameObject grenadeCooldownUIGO;
     [SerializeField] public Image grenadeCooldownUI;
     [SerializeField] private LineRenderer lineRenderer;
-    [SerializeField] private Grenade grenadePrefab;
+    [SerializeField] private GrenadeHandler grenadePrefab;
     [SerializeField] private float throwForce;
     [SerializeField] private float throwForceBuildUpSpeed = 0.3f;
     [SerializeField] private float maxthrowForce = 10f;
@@ -71,6 +73,16 @@ public class PlayerAttacker : MonoBehaviour
     {
         HandleShootLazer();
         HandleGrenadeThrow();
+
+        if (isLaserSight)
+        {
+            laserSight.enabled = true;
+            LaserSight();
+        }
+        else
+        {
+            laserSight.enabled = false;
+        }
     }
 
     private void FixedUpdate()
@@ -120,6 +132,8 @@ public class PlayerAttacker : MonoBehaviour
         if (currentWeaponHeat > maxWeaponHeat)
         {
             gunOverheated = true;
+            isLaserSight = false;
+            Debug.Log("Overheated");
             CameraShake.ResetCameraPosition();
         }
 
@@ -127,6 +141,7 @@ public class PlayerAttacker : MonoBehaviour
         if (currentWeaponHeat <= 0)
         {
             gunOverheated = false;
+            isLaserSight = true;
             currentWeaponHeat = 0;
             overheatUIGO.SetActive(false);
             //TODO: Hide UI if not needed?!
@@ -179,10 +194,29 @@ public class PlayerAttacker : MonoBehaviour
             muzzlePoolGo.transform.rotation = lazerSpawnLocation.rotation;
             muzzlePoolGo.SetActive(true);
             StartCoroutine(DisableAfterSeconds(1, muzzlePoolGo));
-        }
+        } 
     }
 
-
+    void LaserSight()
+    {
+        Debug.Log("Laser Sight");
+        //TODO: Add Recoil
+        
+        RaycastHit hit;
+        
+        if(Physics.Raycast(transform.position, transform.forward, out hit))
+        {
+            if (hit.collider)
+            {
+                laserSight.SetPosition(1, new Vector3(0, 0, hit.distance));
+            }
+            else
+            {
+                laserSight.SetPosition(0, transform.position);
+                laserSight.SetPosition(1, transform.position + transform.forward * 40);
+            }
+        }
+    }
 
     #endregion
 
@@ -254,7 +288,7 @@ public class PlayerAttacker : MonoBehaviour
             lineRenderer.positionCount = PhysicsFrame;
         }
 
-        Grenade grenadeTrajectory = Instantiate(grenadePrefab, grenadeSpawnLocation.position, Quaternion.identity); // this is used to simulate trejectory
+        GrenadeHandler grenadeTrajectory = Instantiate(grenadePrefab, grenadeSpawnLocation.position, Quaternion.identity); // this is used to simulate trejectory
         SceneManager.MoveGameObjectToScene(grenadeTrajectory.gameObject, simulateScene);
 
         grenadeTrajectory.Init(grenadeSpawnLocation.forward * currentThrowForce, true);

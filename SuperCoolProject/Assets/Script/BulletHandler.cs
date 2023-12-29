@@ -37,8 +37,8 @@ public class BulletHandler : MonoBehaviour
         this.gameObject.SetActive(false);
     }
 
-
-
+    
+    
     IEnumerator DisableAfterSeconds(float sec, GameObject objectToDeactivate)
     {
         // VisualEffect explosionParticleEffect = Instantiate(bulletImpactExplosion, transform.position, Quaternion.identity);

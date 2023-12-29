@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Grenade : MonoBehaviour
+public class GrenadeHandler : MonoBehaviour
 {
 
     [SerializeField] private Rigidbody _rb;

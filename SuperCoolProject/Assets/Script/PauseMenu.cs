@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -12,37 +13,42 @@ public class PauseMenu : MonoBehaviour
 {
     public static PauseMenu SharedInstance;
 
-    [SerializeField] private GameObject pauseMenu;   // using gameobject for canvas because for some reason canvas.enable = true was not working
-    [SerializeField] private Slider volumeSlider;
-    [SerializeField] private TextMeshProUGUI playtimeText;
+    [Header("Volume Settings")]
+    [SerializeField] private GameObject pauseMenu;
+    [SerializeField] private Slider musicSlider;
+    [SerializeField] private Slider sfxSlider;
+    [SerializeField] private AudioMixer myMixer;
+    
+    [Header("Kill Counter")]
     [SerializeField] private TextMeshProUGUI sphereKillCounter;
     [SerializeField] private TextMeshProUGUI squareKillCounter;
     [SerializeField] private TextMeshProUGUI triangleKillCounter;
 
-
+    [SerializeField] private TextMeshProUGUI playtimeText;
     private float startTime;
     public bool isPaused;
 
-    //TODO: SFX volume and mouse sensivity
+    //TODO: mouse sensivity
 
     private void Awake()
     {
         SharedInstance = this;
         Debug.Log("Maybe UI update here?");
+        Debug.Log("Redid volume and audio mixer is being used to handle volume slider for music and sfx");
         // Handle entire UI from this script? Add values of resourceUI and other displays here"); 
     }
 
     void Start()
     {
         // Check if there is old volume settings or not
-        if (!PlayerPrefs.HasKey("musicVolume"))
+        if (PlayerPrefs.HasKey("musicVolume"))
         {
-            PlayerPrefs.SetFloat("musicVolume", 1);
-            Load();
+            LoadVolume();
         }
         else
         {
-            Load();
+            SetMusicVol();
+            SetSFXVol();
         }
         startTime = Time.time;
 
@@ -99,22 +105,28 @@ public class PauseMenu : MonoBehaviour
         Debug.Log("Wish quitting would be this easy");
         Application.Quit();
     }
-
-    //Changes volumes this function is directly used on inspector
-    public void ChangeVolume()
+    
+    public void SetMusicVol()
     {
-        AudioListener.volume = volumeSlider.value;
-        Save();
+        float volume = musicSlider.value;
+        myMixer.SetFloat("Music", Mathf.Log10(volume) * 20);
+        PlayerPrefs.SetFloat("musicVolume", volume);
+    }
+    
+    public void SetSFXVol()
+    {
+        float volume = sfxSlider.value;
+        myMixer.SetFloat("SFX", Mathf.Log10(volume) * 20);
+        PlayerPrefs.SetFloat("SFXVolume", volume);
     }
 
-    private void Load()
+    private void LoadVolume()
     {
-        volumeSlider.value = PlayerPrefs.GetFloat("musicVolume");
-    }
+        musicSlider.value = PlayerPrefs.GetFloat("musicVolume");
+        sfxSlider.value = PlayerPrefs.GetFloat("SFXVolume");
 
-    private void Save()
-    {
-        PlayerPrefs.SetFloat("musicVolume", volumeSlider.value);
+        SetMusicVol();
+        SetSFXVol();
     }
 
 }
