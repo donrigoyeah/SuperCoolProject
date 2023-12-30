@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Serialization;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,8 +12,6 @@ public class GameManager : MonoBehaviour
 
     [Header("World")]
     public int worldRadius = 150;
-    public bool hasLost;
-
 
     [Header("Clone Juice")]
     [SerializeField] public Image cloneJuiceUI;
@@ -39,12 +38,8 @@ public class GameManager : MonoBehaviour
     public int squareKilled = 0;
     public int triangleKilled = 0;
 
-    [Header("References")]
     [SerializeField] private PlayerLocomotion playerLocomotion;
     [SerializeField] private GameObject map;
-    public GameObject GameOverScreen;
-
-
     private void Awake()
     {
         SharedInstance = this;
@@ -114,8 +109,7 @@ public class GameManager : MonoBehaviour
     private void HandleLoss()
     {
         Debug.Log("You Lost");
-        hasLost = true;
-        GameOverScreen.SetActive(true);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     // TODO: Handle stuff like day/night cycle here

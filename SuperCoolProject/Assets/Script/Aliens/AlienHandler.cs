@@ -563,7 +563,7 @@ public class AlienHandler : MonoBehaviour
             // Handle Alien Death
             if (alienHealth <= 0)
             {
-
+                
                 // TODO: Add Coroutine & Ragdoll to show impact/force of bullets
                 //EnableRagdoll();
                 if (currentSpecies == 0) { GameManager.SharedInstance.sphereKilled++; }
@@ -574,7 +574,6 @@ public class AlienHandler : MonoBehaviour
                 return;
                 // this.gameObject.SetActive(false);
             };
-            return;
         }
         Debug.Log("Moved this to player so alien script get shortend");
 
