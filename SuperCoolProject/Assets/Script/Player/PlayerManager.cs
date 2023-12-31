@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerManager : MonoBehaviour
@@ -12,8 +13,8 @@ public class PlayerManager : MonoBehaviour
     public float shieldRechargeTime = 2;
     public bool isCarryingPart;
     public GameObject currentPart;
-    public float timeSinceLastHit;
     public GameObject playerShieldGO;
+    public bool isAlive;
 
     [Header("Resource Variables")]
     float maxSphereResource = 100;
@@ -32,21 +33,22 @@ public class PlayerManager : MonoBehaviour
     public GameObject ResourceUISphere;
     public GameObject ResourceUISquare;
     public GameObject ResourceUITriangle;
+    public GameObject DeathScreen;
+    public Image DeathScreenCloneJuiceUI;
+
+    private InputHandler inputHandler;
+
+    private void Awake()
+    {
+        inputHandler = GetComponent<InputHandler>();
+    }
 
     private void FixedUpdate()
     {
-        float delta = Time.deltaTime;
-        timeSinceLastHit += delta;
-
         HandleResource();
         HandleAlienDetection();
-
-        // TODO: Make this maybe coroutine ?!
-        if (playerShield == false && timeSinceLastHit > shieldRechargeTime) // && GameManager.SharedInstance.hasShieldGenerator
-        {
-            playerShieldGO.SetActive(true);
-            playerShield = true;
-        }
+        HandleRespawn();
+        HandleGameOver();
     }
 
     public void HandleHit()
@@ -57,12 +59,9 @@ public class PlayerManager : MonoBehaviour
         }
         else
         {
-            timeSinceLastHit = 0;
-            playerShield = false;
-            playerShieldGO.SetActive(false);
+            StartCoroutine(ShieldRespawn(shieldRechargeTime));
         }
     }
-
 
     private void HandleDeath()
     {
@@ -71,18 +70,21 @@ public class PlayerManager : MonoBehaviour
         // WHen returned to spaceship, enable upgrades again
         // Make global boolean to handle this
 
+        // Set Variable to disable movement/input
+        isAlive = false;
+
+        // Enable UI Element
+        // TODO: Check if all players are dead. otherwise maybe make deathscreen on playerHUD as well
+        DeathScreen.SetActive(true);
+
+        DeathScreenCloneJuiceUI.fillAmount = GameManager.SharedInstance.currentCloneJuice / GameManager.SharedInstance.maxCloneJuice;
+
+        // Reset all resource variables back to max on new clone
         currentSphereResource = maxSphereResource;
         currentSquareResource = maxSquareResource;
         currentTriangleResource = maxTriangleResource;
-
-        GameManager.SharedInstance.HandleCloneJuiceDrain();
-
-        // TODO: Better respawn thingi
-        this.gameObject.transform.position = Vector3.zero;
+        Debug.Log("Press Jump to respawn");
     }
-
-
-
 
     private void HandleAlienDetection()
     {
@@ -161,5 +163,38 @@ public class PlayerManager : MonoBehaviour
                 currentTriangleResource = maxTriangleResource;
             }
         }
+    }
+
+    private void HandleRespawn()
+    {
+        if (!isAlive && inputHandler.inputJumping)
+        {
+            if (DeathScreen.activeInHierarchy)
+            {
+                DeathScreen.SetActive(false);
+            }
+
+            GameManager.SharedInstance.HandleCloneJuiceDrain();
+
+            // TODO: Add Transition/ Fade to black/ camera shutter effect?!
+            this.gameObject.transform.position = Vector3.zero;
+        }
+    }
+
+    private void HandleGameOver()
+    {
+        if (GameManager.SharedInstance.hasLost && inputHandler.inputJumping)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+    }
+
+    IEnumerator ShieldRespawn(float timeToRecharge)
+    {
+        playerShield = false;
+        playerShieldGO.SetActive(false);
+        yield return new WaitForSeconds(timeToRecharge);
+        playerShield = true;
+        playerShieldGO.SetActive(true);
     }
 }

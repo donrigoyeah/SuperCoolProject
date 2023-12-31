@@ -15,6 +15,7 @@ public class InputHandler : MonoBehaviour
     public bool inputJumping;
     public bool inputDashing;
     public bool inputPause;
+    public bool inputDevKit;
     public bool isGamepad;
 
     private void Awake()
@@ -51,6 +52,9 @@ public class InputHandler : MonoBehaviour
 
         playerControls.PlayerActionMap.Pause.performed += ctx => inputPause = true;
         playerControls.PlayerActionMap.Pause.canceled += ctx => inputPause = false;
+
+        playerControls.PlayerActionMap.DevKit.performed += ctx => inputDevKit = true;
+        playerControls.PlayerActionMap.DevKit.canceled += ctx => inputDevKit = false;
     }
 
     private void OnEnable()

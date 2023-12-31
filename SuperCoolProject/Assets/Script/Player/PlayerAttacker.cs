@@ -98,6 +98,7 @@ public class PlayerAttacker : MonoBehaviour
     {
         if (gunOverheated == false && nextFireTime > fireRate)
         {
+            overheatUI.color = Color.Lerp(Color.green, Color.red, overheatUI.fillAmount / 0.70f);
             if (inputHandler.inputPrimaryFire && !playerManager.isCarryingPart && !PauseMenu.SharedInstance.isPaused)
             {
                 if (currentWeaponHeat > boostWeaponHeatThreshold)
@@ -120,7 +121,6 @@ public class PlayerAttacker : MonoBehaviour
             }
         }
 
-        overheatUI.color = Color.Lerp(Color.green, Color.red, overheatUI.fillAmount / 0.70f);
     }
 
     private void HandleWeaponHeat(float delta)
@@ -131,6 +131,7 @@ public class PlayerAttacker : MonoBehaviour
         // Overheated gun
         if (currentWeaponHeat > maxWeaponHeat)
         {
+            overheatUI.color = Color.red;
             gunOverheated = true;
             isLaserSight = false;
             Debug.Log("Overheated");

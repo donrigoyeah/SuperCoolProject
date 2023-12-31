@@ -98,6 +98,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""DevKit"",
+                    ""type"": ""Button"",
+                    ""id"": ""96a5fc4d-7313-4ffc-9dbe-03b75fd562f2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -342,6 +351,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""660551c3-476c-4854-9c98-0ff6428b546d"",
+                    ""path"": ""<Keyboard>/numpadEnter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DevKit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -375,6 +395,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_PlayerActionMap_Jump = m_PlayerActionMap.FindAction("Jump", throwIfNotFound: true);
         m_PlayerActionMap_Dash = m_PlayerActionMap.FindAction("Dash", throwIfNotFound: true);
         m_PlayerActionMap_Pause = m_PlayerActionMap.FindAction("Pause", throwIfNotFound: true);
+        m_PlayerActionMap_DevKit = m_PlayerActionMap.FindAction("DevKit", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -444,6 +465,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerActionMap_Jump;
     private readonly InputAction m_PlayerActionMap_Dash;
     private readonly InputAction m_PlayerActionMap_Pause;
+    private readonly InputAction m_PlayerActionMap_DevKit;
     public struct PlayerActionMapActions
     {
         private @PlayerControls m_Wrapper;
@@ -456,6 +478,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Jump => m_Wrapper.m_PlayerActionMap_Jump;
         public InputAction @Dash => m_Wrapper.m_PlayerActionMap_Dash;
         public InputAction @Pause => m_Wrapper.m_PlayerActionMap_Pause;
+        public InputAction @DevKit => m_Wrapper.m_PlayerActionMap_DevKit;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActionMap; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -489,6 +512,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Pause.started += instance.OnPause;
             @Pause.performed += instance.OnPause;
             @Pause.canceled += instance.OnPause;
+            @DevKit.started += instance.OnDevKit;
+            @DevKit.performed += instance.OnDevKit;
+            @DevKit.canceled += instance.OnDevKit;
         }
 
         private void UnregisterCallbacks(IPlayerActionMapActions instance)
@@ -517,6 +543,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Pause.started -= instance.OnPause;
             @Pause.performed -= instance.OnPause;
             @Pause.canceled -= instance.OnPause;
+            @DevKit.started -= instance.OnDevKit;
+            @DevKit.performed -= instance.OnDevKit;
+            @DevKit.canceled -= instance.OnDevKit;
         }
 
         public void RemoveCallbacks(IPlayerActionMapActions instance)
@@ -553,5 +582,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
+        void OnDevKit(InputAction.CallbackContext context);
     }
 }

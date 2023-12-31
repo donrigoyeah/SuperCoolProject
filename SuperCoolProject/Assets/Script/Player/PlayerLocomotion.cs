@@ -36,54 +36,61 @@ public class PlayerLocomotion : MonoBehaviour
 
     [Header("References")]
     private PlayerControls playerControls;
+    private PlayerManager playerManager;
     private InputHandler inputHandler;
-    
+
     private void Awake()
     {
         isJumping = false;
         controller = GetComponent<CharacterController>();
         inputHandler = GetComponent<InputHandler>();
+        playerManager = GetComponent<PlayerManager>();
     }
 
     void Update()
     {
-        Movement();
-        Rotation();
-
-        if (inputHandler.inputJumping && isJumping)
+        // Player is Alive
+        if (playerManager.isAlive)
         {
-            Jump();
-        }
+            Movement();
+            Rotation();
 
-        if (inputHandler.inputDashing && dashCurrentCharge > 0)
-        {
-            if (isDashing == false)
+            if (inputHandler.inputJumping && isJumping)
             {
-                StartCoroutine(Dash());
+                Jump();
+            }
+
+            if (!isJumping)
+            {
+                jumpCooldownTimer -= Time.deltaTime;
+                if (jumpCooldownTimer <= 0f)
+                {
+                    isJumping = true;
+                    jumpCooldownTimer = jumpCooldown;
+                }
+            }
+
+            if (inputHandler.inputDashing && dashCurrentCharge > 0)
+            {
+                if (isDashing == false)
+                {
+                    StartCoroutine(Dash());
+                }
+            }
+
+            if (dashCurrentCharge < dashMaxValue)
+            {
+                dashUiGO.SetActive(true);
+                dashCurrentCharge += Time.deltaTime * dashRechargeSpeed;
+                dashUi.fillAmount = dashCurrentCharge / dashMaxValue;
+            }
+            else
+            {
+                dashUiGO.SetActive(false);
             }
         }
 
-        if (!isJumping)
-        {
-            jumpCooldownTimer -= Time.deltaTime;
-            if (jumpCooldownTimer <= 0f)
-            {
-                isJumping = true;
-                jumpCooldownTimer = jumpCooldown;
-            }
-        }
-
-        if (dashCurrentCharge < dashMaxValue)
-        {
-            dashUiGO.SetActive(true);
-            dashCurrentCharge += Time.deltaTime * dashRechargeSpeed;
-            dashUi.fillAmount = dashCurrentCharge / dashMaxValue;
-        }
-        else
-        {
-            dashUiGO.SetActive(false);
-        }
-
+        // Handle Pause Input
         if (inputHandler.inputPause)
         {
             // TODO: Check that it does not trigger double
@@ -98,7 +105,6 @@ public class PlayerLocomotion : MonoBehaviour
                 Debug.Log("Close Menu");
                 PauseMenu.SharedInstance.Pause();
             }
-
         }
     }
 
