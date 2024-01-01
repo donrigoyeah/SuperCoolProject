@@ -58,8 +58,17 @@ public class PlayerAttacker : MonoBehaviour
     [Header("Camera Shake")]
     [SerializeField] private CameraShake CameraShake;
 
+    [Header("Audio")]
+    private AudioSource audioSource;
+    [SerializeField] private AudioClip coolingDownAudio;
+    [SerializeField] private AudioClip gunReadyAudio;
+    [SerializeField] private AudioClip gunOverheatedAudio;
+    private bool hasOverheatedOnce = false;
+
+
     private void Awake()
     {
+        audioSource = GetComponent<AudioSource>();
         inputHandler = GetComponent<InputHandler>();
         playerManager = GetComponent<PlayerManager>();
     }
@@ -120,7 +129,6 @@ public class PlayerAttacker : MonoBehaviour
                 CameraShake.ResetCameraPosition();
             }
         }
-
     }
 
     private void HandleWeaponHeat(float delta)
@@ -134,10 +142,25 @@ public class PlayerAttacker : MonoBehaviour
             overheatUI.color = Color.red;
             gunOverheated = true;
             isLaserSight = false;
+            if (!audioSource.isPlaying)
+            {
+                audioSource.PlayOneShot(gunOverheatedAudio, 1f);
+                audioSource.PlayOneShot(coolingDownAudio, 1f);
+            }
             Debug.Log("Overheated");
             CameraShake.ResetCameraPosition();
+            hasOverheatedOnce = true;
         }
 
+        if (currentWeaponHeat == 0)
+        {
+            if (!audioSource.isPlaying && hasOverheatedOnce)
+            {
+                audioSource.PlayOneShot(gunReadyAudio, 1f);
+            }
+            hasOverheatedOnce = false;
+        }
+        
         // Return if current heat is 0
         if (currentWeaponHeat <= 0)
         {
@@ -200,7 +223,7 @@ public class PlayerAttacker : MonoBehaviour
 
     void LaserSight()
     {
-        Debug.Log("Laser Sight");
+        // Debug.Log("Laser Sight");
         //TODO: Add Recoil
         
         RaycastHit hit;

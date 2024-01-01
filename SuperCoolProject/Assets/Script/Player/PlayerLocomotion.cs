@@ -39,9 +39,14 @@ public class PlayerLocomotion : MonoBehaviour
     private PlayerManager playerManager;
     private InputHandler inputHandler;
 
+    [Header("Audio")] 
+    [SerializeField] private AudioClip footstepAudio;
+    private AudioSource audioSource;
+
     private void Awake()
     {
         isJumping = false;
+        audioSource = GetComponent<AudioSource>();
         controller = GetComponent<CharacterController>();
         inputHandler = GetComponent<InputHandler>();
         playerManager = GetComponent<PlayerManager>();
@@ -112,7 +117,8 @@ public class PlayerLocomotion : MonoBehaviour
     {
         Vector3 move = new Vector3(inputHandler.inputMovement.x, 0, inputHandler.inputMovement.y);
         controller.Move(move * Time.deltaTime * playerSpeed);
-
+        
+        
         if (currentFSSTimer < deltaFSS)
         {
             currentFSSTimer += Time.deltaTime;
@@ -121,6 +127,8 @@ public class PlayerLocomotion : MonoBehaviour
         //Dust during movement particles
         if (move.magnitude > 0.1f && currentFSSTimer >= deltaFSS)
         {
+            audioSource.PlayOneShot(footstepAudio, 1f);
+            
             // Spawn Footstep Smoke GO
             GameObject FSSGO = PoolManager.SharedInstance.GetPooledFSS();
             if (FSSGO != null)

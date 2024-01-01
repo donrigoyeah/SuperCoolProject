@@ -15,10 +15,20 @@ public class SpaceShipPartHandler : MonoBehaviour
     public float playerSpeedReduction = 0f;
     public float previousPlayerSpeed = 10f;
     public TextMeshProUGUI tmp;
+
+    private AudioSource audioSource;
+    [SerializeField] private AudioClip draggingAudio;
+    
+    
     
     // public LineRenderer linerenderer;
     // public Transform position1;
     // public Transform position2;
+
+    private void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
 
     private void Start()
     {
@@ -37,6 +47,10 @@ public class SpaceShipPartHandler : MonoBehaviour
 
             if (inputHandler.inputInteracting)
             {
+                if (!audioSource.isPlaying)
+                {
+                    audioSource.PlayOneShot(draggingAudio, 1f);
+                }
                 playerManager.currentPart = this.gameObject;
                 playerLocomotion.playerSpeed = playerSpeedReduction;
                 playerManager.isCarryingPart = true;

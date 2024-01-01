@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class PlayerManager : MonoBehaviour
@@ -36,10 +37,17 @@ public class PlayerManager : MonoBehaviour
     public GameObject DeathScreen;
     public Image DeathScreenCloneJuiceUI;
 
+    [Header("Audio")] 
+    [SerializeField] private AudioClip shieldRechargeAudio;
+    [SerializeField] private AudioClip shieldBreakAudio;
+    [SerializeField] private AudioClip deathAudio;
+    private AudioSource audioSource;
+    
     private InputHandler inputHandler;
 
     private void Awake()
     {
+        audioSource = GetComponent<AudioSource>();
         inputHandler = GetComponent<InputHandler>();
     }
 
@@ -72,7 +80,7 @@ public class PlayerManager : MonoBehaviour
 
         // Set Variable to disable movement/input
         isAlive = false;
-
+        audioSource.PlayOneShot(deathAudio, 1f);
         // Enable UI Element
         // TODO: Check if all players are dead. otherwise maybe make deathscreen on playerHUD as well
         DeathScreen.SetActive(true);
@@ -192,9 +200,11 @@ public class PlayerManager : MonoBehaviour
     IEnumerator ShieldRespawn(float timeToRecharge)
     {
         playerShield = false;
+        audioSource.PlayOneShot(shieldBreakAudio, 1f);
         playerShieldGO.SetActive(false);
         yield return new WaitForSeconds(timeToRecharge);
         playerShield = true;
+        audioSource.PlayOneShot(shieldRechargeAudio, 1f);
         playerShieldGO.SetActive(true);
     }
 }
