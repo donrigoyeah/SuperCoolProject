@@ -59,12 +59,11 @@ public class PlayerAttacker : MonoBehaviour
     [SerializeField] private CameraShake CameraShake;
 
     [Header("Audio")]
-    private AudioSource audioSource;
     [SerializeField] private AudioClip coolingDownAudio;
     [SerializeField] private AudioClip gunReadyAudio;
     [SerializeField] private AudioClip gunOverheatedAudio;
     private bool hasOverheatedOnce = false;
-
+    private AudioSource audioSource;
 
     private void Awake()
     {
@@ -110,6 +109,7 @@ public class PlayerAttacker : MonoBehaviour
             overheatUI.color = Color.Lerp(Color.green, Color.red, overheatUI.fillAmount / 0.70f);
             if (inputHandler.inputPrimaryFire && !playerManager.isCarryingPart && !PauseMenu.SharedInstance.isPaused)
             {
+                Debug.Log("3");
                 if (currentWeaponHeat > boostWeaponHeatThreshold)
                 {
                     Debug.Log("Code Explanation for Extra Damage");

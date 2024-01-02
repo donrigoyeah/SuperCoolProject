@@ -28,6 +28,10 @@ public class PauseMenu : MonoBehaviour
     private float startTime;
     public bool isPaused;
 
+    [Header("Camera Shake")]
+    [SerializeField] private CameraShake cameraShake;
+    [SerializeField] private Slider cameraShakeSlider;
+    
     //TODO: mouse sensivity
 
     private void Awake()
@@ -43,7 +47,7 @@ public class PauseMenu : MonoBehaviour
         // Check if there is old volume settings or not
         if (PlayerPrefs.HasKey("musicVolume"))
         {
-            LoadVolume();
+            Load();
         }
         else
         {
@@ -120,14 +124,22 @@ public class PauseMenu : MonoBehaviour
         PlayerPrefs.SetFloat("SFXVolume", volume);
     }
 
-    private void LoadVolume()
+    private void Load()
     {
         musicSlider.value = PlayerPrefs.GetFloat("musicVolume");
         sfxSlider.value = PlayerPrefs.GetFloat("SFXVolume");
-
+        cameraShakeSlider.value = PlayerPrefs.GetFloat("CameraShakeIntensity");
+        
+        CameraShakeController();
         SetMusicVol();
         SetSFXVol();
     }
 
+    private void CameraShakeController()
+    {
+        float cameraShakeModifier = cameraShakeSlider.value * 2.5f;
+        cameraShake.shakeIntensity = cameraShakeModifier;
+        PlayerPrefs.SetFloat("CameraShakeIntensity",cameraShakeModifier);
+    }
 }
 

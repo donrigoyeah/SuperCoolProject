@@ -347,6 +347,8 @@ MonoBehaviour:
   currentPart: {fileID: 0}
   playerShieldGO: {fileID: 4563558085366679620}
   isAlive: 1
+  dissolveRate: 0.0125
+  refreshRate: 0.025
   currentSphereResource: 100
   currentSquareResource: 100
   currentTriangleResource: 100
@@ -386,6 +388,8 @@ MonoBehaviour:
   dashCurrentCharge: 100
   dashCost: 33
   dashRechargeSpeed: 10
+  dashParticle: {fileID: 6448676784099222644, guid: e5b5091f03195594db39cb372d284b32,
+    type: 3}
   isDashing: 0
   deltaFSS: 0.2
   footstepAudio: {fileID: 8300000, guid: da2a6eb0d4102284abdc66f885d4a59b, type: 3}
@@ -686,7 +690,7 @@ Transform:
   m_GameObject: {fileID: 2401035407914200527}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.048, y: 0.415, z: 0.896}
+  m_LocalPosition: {x: -0.048, y: 1.196, z: 0.896}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1610,7 +1614,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ce922caf2a96b7648876de7aa5cef3e2, type: 2}
+  - {fileID: 2100000, guid: d5b2fb1daa206294894f6eea03c042e4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

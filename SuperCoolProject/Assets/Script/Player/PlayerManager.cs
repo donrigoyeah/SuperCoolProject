@@ -16,7 +16,11 @@ public class PlayerManager : MonoBehaviour
     public GameObject currentPart;
     public GameObject playerShieldGO;
     public bool isAlive;
-
+    private Material dissolve;
+    public float dissolveRate = 0.0125f;
+    public float refreshRate = 0.025f;
+    
+    
     [Header("Resource Variables")]
     float maxSphereResource = 100;
     float maxSquareResource = 100;
@@ -47,6 +51,7 @@ public class PlayerManager : MonoBehaviour
 
     private void Awake()
     {
+        dissolve = GetComponent<Material>();
         audioSource = GetComponent<AudioSource>();
         inputHandler = GetComponent<InputHandler>();
     }
@@ -57,6 +62,9 @@ public class PlayerManager : MonoBehaviour
         HandleAlienDetection();
         HandleRespawn();
         HandleGameOver();
+        
+        
+        Debug.Log("HandleHit is here");
     }
 
     public void HandleHit()
@@ -199,10 +207,22 @@ public class PlayerManager : MonoBehaviour
 
     IEnumerator ShieldRespawn(float timeToRecharge)
     {
+        float counter = 0;
+        while (dissolve.GetFloat("_DissolveAmount") < 1)
+        {
+            counter += dissolveRate;
+            for (int i = 0; i <= 10; i++)
+            {
+                dissolve.SetFloat("_DissolveAmount", counter);
+                yield return new WaitForSeconds(refreshRate);
+            }
+        }
+        
         playerShield = false;
         audioSource.PlayOneShot(shieldBreakAudio, 1f);
         playerShieldGO.SetActive(false);
         yield return new WaitForSeconds(timeToRecharge);
+        dissolve.SetFloat("_DissolveAmount", 0);
         playerShield = true;
         audioSource.PlayOneShot(shieldRechargeAudio, 1f);
         playerShieldGO.SetActive(true);

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -25,7 +26,9 @@ public class PlayerLocomotion : MonoBehaviour
     public float dashCurrentCharge = 0;
     public float dashCost = 33;
     public float dashRechargeSpeed = 3;
-
+    [SerializeField] private ParticleSystem dashParticle;
+    private ParticleSystem dashParticleSystemInstantiate;
+    
     public bool isDashing = false;
     private float dashDuration = 0.3f;
     private float dashExtraSpeed = 20f;
@@ -92,6 +95,12 @@ public class PlayerLocomotion : MonoBehaviour
             else
             {
                 dashUiGO.SetActive(false);
+            }
+            
+            //This is to make dash partcle system follow player for proper trail
+            if (dashParticleSystemInstantiate != null)
+            {
+                dashParticleSystemInstantiate.transform.position = this.transform.position;
             }
         }
 
@@ -187,11 +196,15 @@ public class PlayerLocomotion : MonoBehaviour
 
     private IEnumerator Dash()
     {
+        Debug.Log("Particle system for dash added here");
         isDashing = true;
         playerSpeed += dashExtraSpeed;
         dashCurrentCharge -= dashCost;
 
+        //Instantiate particle system for dash
+        dashParticleSystemInstantiate = Instantiate(dashParticle, this.transform.position, quaternion.identity);
         yield return new WaitForSeconds(dashDuration);
+        Destroy(dashParticleSystemInstantiate.gameObject);
 
         isDashing = false;
         playerSpeed -= dashExtraSpeed;
