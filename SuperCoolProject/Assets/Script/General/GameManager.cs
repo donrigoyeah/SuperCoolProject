@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Serialization;
+using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,7 +13,8 @@ public class GameManager : MonoBehaviour
     [Header("World")]
     public int worldRadius = 150;
     public bool hasLost;
-
+    public int numberOfPlayers;
+    public int maxPlayers = 2;
 
     [Header("Clone Juice")]
     [SerializeField] public Image cloneJuiceUI;
@@ -42,6 +44,7 @@ public class GameManager : MonoBehaviour
     [Header("References")]
     [SerializeField] private PlayerLocomotion playerLocomotion;
     [SerializeField] private GameObject map;
+    [SerializeField] private PlayerInputManager playerInputManager;
     public GameObject GameOverScreen;
 
 
@@ -62,6 +65,15 @@ public class GameManager : MonoBehaviour
         if (currentCloneJuice < 0)
         {
             HandleLoss();
+        }
+    }
+
+    public void AddPlayer()
+    {
+        numberOfPlayers++;
+        if (numberOfPlayers == maxPlayers)
+        {
+            playerInputManager.DisableJoining();
         }
     }
 

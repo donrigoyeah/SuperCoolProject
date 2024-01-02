@@ -552,7 +552,7 @@ public class AlienHandler : MonoBehaviour
             // Cannot shoot resource
             if (currentAge == AlienAge.resource) { return; }
 
-            Debug.Log("Handle Bullet damage to alien here");
+            //Debug.Log("Handle Bullet damage to alien here");
             BulletHandler BH = other.gameObject.GetComponent<BulletHandler>();
             alienHealth -= BH.bulletDamage;
             // Needs to deactivate this here so it does not trigger multiple times
@@ -576,7 +576,7 @@ public class AlienHandler : MonoBehaviour
             };
             return;
         }
-        Debug.Log("Moved this to player so alien script get shortend");
+        //Debug.Log("Moved this to player so alien script get shortend");
 
         //// Handle Player interaction && is also put in trigger / trigger state changes in HandleAging()
         //else if (other.gameObject.CompareTag("Player"))

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
@@ -36,10 +37,19 @@ public class PlayerLocomotion : MonoBehaviour
 
     [Header("References")]
     private PlayerControls playerControls;
+    private PlayerInput playerInput;
     private PlayerManager playerManager;
     private InputHandler inputHandler;
 
-    private void Awake()
+    //private void Awake()
+    //{
+    //    isJumping = false;
+    //    controller = GetComponent<CharacterController>();
+    //    inputHandler = GetComponent<InputHandler>();
+    //    playerManager = GetComponent<PlayerManager>();
+    //}
+
+    private void OnEnable()
     {
         isJumping = false;
         controller = GetComponent<CharacterController>();
@@ -52,8 +62,11 @@ public class PlayerLocomotion : MonoBehaviour
         // Player is Alive
         if (playerManager.isAlive)
         {
-            Movement();
-            Rotation();
+            if (inputHandler.inputMovement != Vector2.zero && !playerManager.isInteracting)
+            {
+                Movement();
+                Rotation();
+            }
 
             if (inputHandler.inputJumping && isJumping)
             {
@@ -97,12 +110,10 @@ public class PlayerLocomotion : MonoBehaviour
             if (PauseMenu.SharedInstance.isPaused)
             {
                 PauseMenu.SharedInstance.Resume();
-
             }
 
             if (PauseMenu.SharedInstance.isPaused == false)
             {
-                Debug.Log("Close Menu");
                 PauseMenu.SharedInstance.Pause();
             }
         }

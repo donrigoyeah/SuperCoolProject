@@ -59,7 +59,7 @@ public class PoolManager : MonoBehaviour
     #region AlienPooling
     public GameObject GetPooledAliens()
     {
-        Debug.Log("Code Explanation for AlienPooling");
+        //Debug.Log("Code Explanation for AlienPooling");
 
         // Loop through initla amount of planned anliens
         for (int i = 0; i < alienAmount; i++)
