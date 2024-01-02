@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class PlayerManager : MonoBehaviour
@@ -18,6 +19,11 @@ public class PlayerManager : MonoBehaviour
     public bool isAlive;
     public bool isInteracting;
 
+    private Material dissolve;
+    public float dissolveRate = 0.0125f;
+    public float refreshRate = 0.025f;
+    
+    
     [Header("Resource Variables")]
     float maxSphereResource = 100;
     float maxSquareResource = 100;
@@ -38,10 +44,18 @@ public class PlayerManager : MonoBehaviour
     public GameObject DeathScreen;
     public Image DeathScreenCloneJuiceUI;
 
+    [Header("Audio")] 
+    [SerializeField] private AudioClip shieldRechargeAudio;
+    [SerializeField] private AudioClip shieldBreakAudio;
+    [SerializeField] private AudioClip deathAudio;
+    private AudioSource audioSource;
+    
     private InputHandler inputHandler;
 
     private void Awake()
     {
+        dissolve = GetComponent<Material>();
+        audioSource = GetComponent<AudioSource>();
         inputHandler = GetComponent<InputHandler>();
     }
 
@@ -51,6 +65,9 @@ public class PlayerManager : MonoBehaviour
         HandleAlienDetection();
         HandleRespawn();
         HandleGameOver();
+        
+        
+        Debug.Log("HandleHit is here");
     }
 
     public void HandleHit()
@@ -74,7 +91,7 @@ public class PlayerManager : MonoBehaviour
 
         // Set Variable to disable movement/input
         isAlive = false;
-
+        audioSource.PlayOneShot(deathAudio, 1f);
         // Enable UI Element
         // TODO: Check if all players are dead. otherwise maybe make deathscreen on playerHUD as well
         DeathScreen.SetActive(true);
@@ -193,10 +210,24 @@ public class PlayerManager : MonoBehaviour
 
     IEnumerator ShieldRespawn(float timeToRecharge)
     {
+        float counter = 0;
+        while (dissolve.GetFloat("_DissolveAmount") < 1)
+        {
+            counter += dissolveRate;
+            for (int i = 0; i <= 10; i++)
+            {
+                dissolve.SetFloat("_DissolveAmount", counter);
+                yield return new WaitForSeconds(refreshRate);
+            }
+        }
+        
         playerShield = false;
+        audioSource.PlayOneShot(shieldBreakAudio, 1f);
         playerShieldGO.SetActive(false);
         yield return new WaitForSeconds(timeToRecharge);
+        dissolve.SetFloat("_DissolveAmount", 0);
         playerShield = true;
+        audioSource.PlayOneShot(shieldRechargeAudio, 1f);
         playerShieldGO.SetActive(true);
     }
 }

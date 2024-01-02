@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
@@ -26,7 +27,9 @@ public class PlayerLocomotion : MonoBehaviour
     public float dashCurrentCharge = 0;
     public float dashCost = 33;
     public float dashRechargeSpeed = 3;
-
+    [SerializeField] private ParticleSystem dashParticle;
+    private ParticleSystem dashParticleSystemInstantiate;
+    
     public bool isDashing = false;
     private float dashDuration = 0.3f;
     private float dashExtraSpeed = 20f;
@@ -41,6 +44,9 @@ public class PlayerLocomotion : MonoBehaviour
     private PlayerManager playerManager;
     private InputHandler inputHandler;
 
+    [Header("Audio")] 
+    [SerializeField] private AudioClip footstepAudio;
+    private AudioSource audioSource;
     //private void Awake()
     //{
     //    isJumping = false;
@@ -52,6 +58,7 @@ public class PlayerLocomotion : MonoBehaviour
     private void OnEnable()
     {
         isJumping = false;
+        audioSource = GetComponent<AudioSource>();
         controller = GetComponent<CharacterController>();
         inputHandler = GetComponent<InputHandler>();
         playerManager = GetComponent<PlayerManager>();
@@ -101,6 +108,12 @@ public class PlayerLocomotion : MonoBehaviour
             {
                 dashUiGO.SetActive(false);
             }
+            
+            //This is to make dash partcle system follow player for proper trail
+            if (dashParticleSystemInstantiate != null)
+            {
+                dashParticleSystemInstantiate.transform.position = this.transform.position;
+            }
         }
 
         // Handle Pause Input
@@ -123,7 +136,8 @@ public class PlayerLocomotion : MonoBehaviour
     {
         Vector3 move = new Vector3(inputHandler.inputMovement.x, 0, inputHandler.inputMovement.y);
         controller.Move(move * Time.deltaTime * playerSpeed);
-
+        
+        
         if (currentFSSTimer < deltaFSS)
         {
             currentFSSTimer += Time.deltaTime;
@@ -132,6 +146,8 @@ public class PlayerLocomotion : MonoBehaviour
         //Dust during movement particles
         if (move.magnitude > 0.1f && currentFSSTimer >= deltaFSS)
         {
+            audioSource.PlayOneShot(footstepAudio, 1f);
+            
             // Spawn Footstep Smoke GO
             GameObject FSSGO = PoolManager.SharedInstance.GetPooledFSS();
             if (FSSGO != null)
@@ -190,11 +206,15 @@ public class PlayerLocomotion : MonoBehaviour
 
     private IEnumerator Dash()
     {
+        Debug.Log("Particle system for dash added here");
         isDashing = true;
         playerSpeed += dashExtraSpeed;
         dashCurrentCharge -= dashCost;
 
+        //Instantiate particle system for dash
+        dashParticleSystemInstantiate = Instantiate(dashParticle, this.transform.position, quaternion.identity);
         yield return new WaitForSeconds(dashDuration);
+        Destroy(dashParticleSystemInstantiate.gameObject);
 
         isDashing = false;
         playerSpeed -= dashExtraSpeed;

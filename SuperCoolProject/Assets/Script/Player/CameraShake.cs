@@ -9,7 +9,7 @@ public class CameraShake : MonoBehaviour
     [Header("Camera Shake")]
     private CinemachineVirtualCamera CinemachineVirtualCamera;
     private CinemachineBasicMultiChannelPerlin cbmcp;
-    [SerializeField] private float shakeIntensity = 0.1f;
+    public float shakeIntensity = 0.1f;
 
 
     private void Start()
