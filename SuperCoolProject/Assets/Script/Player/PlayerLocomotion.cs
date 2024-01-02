@@ -29,7 +29,7 @@ public class PlayerLocomotion : MonoBehaviour
     public float dashRechargeSpeed = 3;
     [SerializeField] private ParticleSystem dashParticle;
     private ParticleSystem dashParticleSystemInstantiate;
-    
+
     public bool isDashing = false;
     private float dashDuration = 0.3f;
     private float dashExtraSpeed = 20f;
@@ -44,16 +44,9 @@ public class PlayerLocomotion : MonoBehaviour
     private PlayerManager playerManager;
     private InputHandler inputHandler;
 
-    [Header("Audio")] 
+    [Header("Audio")]
     [SerializeField] private AudioClip footstepAudio;
     private AudioSource audioSource;
-    //private void Awake()
-    //{
-    //    isJumping = false;
-    //    controller = GetComponent<CharacterController>();
-    //    inputHandler = GetComponent<InputHandler>();
-    //    playerManager = GetComponent<PlayerManager>();
-    //}
 
     private void OnEnable()
     {
@@ -108,7 +101,7 @@ public class PlayerLocomotion : MonoBehaviour
             {
                 dashUiGO.SetActive(false);
             }
-            
+
             //This is to make dash partcle system follow player for proper trail
             if (dashParticleSystemInstantiate != null)
             {
@@ -136,8 +129,8 @@ public class PlayerLocomotion : MonoBehaviour
     {
         Vector3 move = new Vector3(inputHandler.inputMovement.x, 0, inputHandler.inputMovement.y);
         controller.Move(move * Time.deltaTime * playerSpeed);
-        
-        
+
+
         if (currentFSSTimer < deltaFSS)
         {
             currentFSSTimer += Time.deltaTime;
@@ -147,7 +140,7 @@ public class PlayerLocomotion : MonoBehaviour
         if (move.magnitude > 0.1f && currentFSSTimer >= deltaFSS)
         {
             audioSource.PlayOneShot(footstepAudio, 1f);
-            
+
             // Spawn Footstep Smoke GO
             GameObject FSSGO = PoolManager.SharedInstance.GetPooledFSS();
             if (FSSGO != null)
