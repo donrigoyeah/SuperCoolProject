@@ -15,7 +15,7 @@ public class DevKitHandler : MonoBehaviour
     [Header("Canvas")]
     [SerializeField] private GameObject devKit;
     [SerializeField] private bool devKitOpen = true;
-    
+
     [Header("References")]
     [SerializeField] private PlayerLocomotion playerLocomotion;
     [SerializeField] private InputHandler inputHandler;
@@ -28,20 +28,20 @@ public class DevKitHandler : MonoBehaviour
 
     private void Update()
     {
-        if (inputHandler.inputDevKit)
-        {
-            if (devKitOpen)
-            {
-                devKit.SetActive(true);
-                StartCoroutine(DevKitOpener());    
-            }
-            
-            if (devKitOpen == false)
-            {
-                devKit.SetActive(false);
-                StartCoroutine(DevKitCloser());
-            }
-        }
+        //if (inputHandler.inputDevKit)
+        //{
+        //    if (devKitOpen)
+        //    {
+        //        devKit.SetActive(true);
+        //        StartCoroutine(DevKitOpener());    
+        //    }
+
+        //    if (devKitOpen == false)
+        //    {
+        //        devKit.SetActive(false);
+        //        StartCoroutine(DevKitCloser());
+        //    }
+        //}
     }
 
     //IEnumerator is used so that it does not double trigger
@@ -50,7 +50,7 @@ public class DevKitHandler : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         devKitOpen = true;
     }
-    
+
     private IEnumerator DevKitOpener()
     {
         yield return new WaitForSeconds(0.5f);
@@ -83,7 +83,7 @@ public class DevKitHandler : MonoBehaviour
     public void AlienAmountOfBabiesInput()
     {
         int.TryParse(alienAmountOfBabies.text, out int input);
-        
+
         for (int i = 0; i <= PoolManager.SharedInstance.AlienPool.Count; i++)
         {
             GameObject alien = PoolManager.SharedInstance.AlienPool[i];

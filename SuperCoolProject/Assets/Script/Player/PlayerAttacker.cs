@@ -149,7 +149,7 @@ public class PlayerAttacker : MonoBehaviour
                 audioSource.PlayOneShot(coolingDownAudio, 1f);
             }
             Debug.Log("Overheated");
-            CameraShake.ResetCameraPosition();
+            //CameraShake.ResetCameraPosition();
             hasOverheatedOnce = true;
         }
 
@@ -161,7 +161,7 @@ public class PlayerAttacker : MonoBehaviour
             }
             hasOverheatedOnce = false;
         }
-        
+
         // Return if current heat is 0
         if (currentWeaponHeat <= 0)
         {
