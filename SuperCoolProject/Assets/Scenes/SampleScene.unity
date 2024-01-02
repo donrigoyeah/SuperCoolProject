@@ -2050,7 +2050,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0.54215616, y: -0, z: -0, w: 0.8402778}
-  m_LocalPosition: {x: 12.2078705, y: -5.9581184, z: 36.514786}
+  m_LocalPosition: {x: 0, y: 0.97999954, z: 35.510002}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2846,7 +2846,7 @@ GameObject:
   m_Component:
   - component: {fileID: 433472538}
   m_Layer: 0
-  m_Name: Camera
+  m_Name: Player Cameras
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2868,6 +2868,7 @@ Transform:
   - {fileID: 330585546}
   - {fileID: 1180857004}
   - {fileID: 863491083}
+  - {fileID: 617314327}
   m_Father: {fileID: 1175532132}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &445433667
@@ -3333,6 +3334,8 @@ MonoBehaviour:
   triangleKillCounter: {fileID: 7695324479376580600}
   playtimeText: {fileID: 445591072}
   isPaused: 0
+  cameraShake: {fileID: 863491084}
+  cameraShakeSlider: {fileID: 0}
 --- !u!114 &506797203
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3351,8 +3354,6 @@ MonoBehaviour:
   alienAmountOfBabies: {fileID: 1625937988}
   devKit: {fileID: 1319182552}
   devKitOpen: 1
-  playerLocomotion: {fileID: 0}
-  inputHandler: {fileID: 0}
 --- !u!1 &521918131
 GameObject:
   m_ObjectHideFlags: 0
@@ -4624,6 +4625,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 611607583}
   m_CullTransparentMesh: 1
+--- !u!1 &617314326
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 617314327}
+  m_Layer: 0
+  m_Name: CineMachineTargetSpot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &617314327
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 617314326}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -20, z: 45}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 433472538}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &639037782
 GameObject:
   m_ObjectHideFlags: 0
@@ -5608,7 +5640,7 @@ Transform:
   m_GameObject: {fileID: 863491082}
   serializedVersion: 2
   m_LocalRotation: {x: 0.54215616, y: -0, z: -0, w: 0.8402778}
-  m_LocalPosition: {x: 12.2078705, y: -5.9581184, z: 36.514786}
+  m_LocalPosition: {x: 0, y: 0.97999954, z: 35.510002}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5647,7 +5679,7 @@ MonoBehaviour:
   m_Priority: 10
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 0}
-  m_Follow: {fileID: 0}
+  m_Follow: {fileID: 617314327}
   m_Lens:
     FieldOfView: 60.000004
     OrthographicSize: 5
@@ -11291,8 +11323,10 @@ MonoBehaviour:
   triangleKilled: 0
   playerLocomotion: {fileID: 0}
   map: {fileID: 1244808667}
-  playerInputManager: {fileID: 0}
+  playerInputManager: {fileID: 1325170218}
+  players: []
   GameOverScreen: {fileID: 0}
+  CameraFollowSpot: {fileID: 617314327}
 --- !u!1 &1821839598
 GameObject:
   m_ObjectHideFlags: 0

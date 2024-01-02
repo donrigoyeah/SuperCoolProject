@@ -16,9 +16,11 @@ public class DevKitHandler : MonoBehaviour
     [SerializeField] private GameObject devKit;
     [SerializeField] private bool devKitOpen = true;
 
-    [Header("References")]
-    [SerializeField] private PlayerLocomotion playerLocomotion;
-    [SerializeField] private InputHandler inputHandler;
+
+    // TODO: This is done now over the gameManager, where all players are registerd
+    //[Header("References")]
+    //[SerializeField] private PlayerLocomotion playerLocomotion;
+    //[SerializeField] private InputHandler inputHandler;
 
 
     private void Start()
@@ -33,7 +35,7 @@ public class DevKitHandler : MonoBehaviour
         //    if (devKitOpen)
         //    {
         //        devKit.SetActive(true);
-        //        StartCoroutine(DevKitOpener());    
+        //        StartCoroutine(DevKitOpener());
         //    }
 
         //    if (devKitOpen == false)
@@ -60,7 +62,12 @@ public class DevKitHandler : MonoBehaviour
     public void PlayerSpeedInput()
     {
         int.TryParse(playerSpeed.text, out int input);
-        playerLocomotion.playerSpeed = input;
+        foreach (var item in GameManager.SharedInstance.players
+)
+        {
+            PlayerLocomotion playerLocomotion = item.GetComponent<PlayerLocomotion>();
+            playerLocomotion.playerSpeed = input;
+        }
     }
 
     public void AlienHealthInput()

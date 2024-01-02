@@ -10,6 +10,7 @@ public class InputHandler : MonoBehaviour
 {
     private PlayerControls playerControls;
     private PlayerInput playerInput;
+    private PlayerManager playerManager;
     public Vector2 inputMovement;
     public Vector2 inputAim;
     public bool inputPrimaryFire;
@@ -30,7 +31,8 @@ public class InputHandler : MonoBehaviour
 
             playerInput = GetComponent<PlayerInput>();
             playerIndex = playerInput.playerIndex;
-            GameManager.SharedInstance.AddPlayer();
+            playerManager = GetComponent<PlayerManager>();
+            GameManager.SharedInstance.AddPlayer(playerManager);
             Debug.Log("Player Joined: " + playerIndex.ToString());
 
         }
