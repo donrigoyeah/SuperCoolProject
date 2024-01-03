@@ -43,7 +43,6 @@ public class GameManager : MonoBehaviour
     public int triangleKilled = 0;
 
     [Header("References")]
-    [SerializeField] private PlayerLocomotion playerLocomotion;
     [SerializeField] private GameObject map;
     [SerializeField] private PlayerInputManager playerInputManager;
     public List<PlayerManager> players;
@@ -54,7 +53,6 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-
         players = new List<PlayerManager>();
         SharedInstance = this;
         HandleSpawnShipParts();
