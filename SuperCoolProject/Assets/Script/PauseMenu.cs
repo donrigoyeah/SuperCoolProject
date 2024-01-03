@@ -18,7 +18,7 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] private Slider musicSlider;
     [SerializeField] private Slider sfxSlider;
     [SerializeField] private AudioMixer myMixer;
-    
+
     [Header("Kill Counter")]
     [SerializeField] private TextMeshProUGUI sphereKillCounter;
     [SerializeField] private TextMeshProUGUI squareKillCounter;
@@ -30,8 +30,8 @@ public class PauseMenu : MonoBehaviour
 
     [Header("Camera Shake")]
     [SerializeField] private CameraShake cameraShake;
-    [SerializeField] private Slider cameraShakeSlider;
-    
+    //[SerializeField] private Slider cameraShakeSlider;
+
     //TODO: mouse sensivity
 
     private void Awake()
@@ -109,14 +109,14 @@ public class PauseMenu : MonoBehaviour
         Debug.Log("Wish quitting would be this easy");
         Application.Quit();
     }
-    
+
     public void SetMusicVol()
     {
         float volume = musicSlider.value;
         myMixer.SetFloat("Music", Mathf.Log10(volume) * 20);
         PlayerPrefs.SetFloat("musicVolume", volume);
     }
-    
+
     public void SetSFXVol()
     {
         float volume = sfxSlider.value;
@@ -128,18 +128,19 @@ public class PauseMenu : MonoBehaviour
     {
         musicSlider.value = PlayerPrefs.GetFloat("musicVolume");
         sfxSlider.value = PlayerPrefs.GetFloat("SFXVolume");
-        cameraShakeSlider.value = PlayerPrefs.GetFloat("CameraShakeIntensity");
-        
-        CameraShakeController();
+        // TODO: Add this later when slider is found
+        //cameraShakeSlider.value = PlayerPrefs.GetFloat("CameraShakeIntensity");
+
+        //CameraShakeController();
         SetMusicVol();
         SetSFXVol();
     }
 
-    private void CameraShakeController()
-    {
-        float cameraShakeModifier = cameraShakeSlider.value * 2.5f;
-        cameraShake.shakeIntensity = cameraShakeModifier;
-        PlayerPrefs.SetFloat("CameraShakeIntensity",cameraShakeModifier);
-    }
+    //private void CameraShakeController()
+    //{
+    //    float cameraShakeModifier = cameraShakeSlider.value * 2.5f;
+    //    cameraShake.shakeIntensity = cameraShakeModifier;
+    //    PlayerPrefs.SetFloat("CameraShakeIntensity", cameraShakeModifier);
+    //}
 }
 

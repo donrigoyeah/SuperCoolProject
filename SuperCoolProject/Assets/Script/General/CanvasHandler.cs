@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class CanvasHandler : MonoBehaviour
 {
+    public Transform[] transforms;
     private void LateUpdate()
     {
         // Rotate the canvas at the end of player rotation etc.
-        transform.forward = Camera.main.transform.forward;
+        foreach (var item in transforms)
+        {
+            item.forward = Camera.main.transform.forward;
+        }
     }
 }

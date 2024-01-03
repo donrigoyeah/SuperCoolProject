@@ -107,6 +107,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""NavigationToggle"",
+                    ""type"": ""Button"",
+                    ""id"": ""be35b6ba-48fd-4cb9-82e3-b4cad9d2fe59"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -351,6 +360,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9356c993-1c72-4606-9346-bec1fbcd2f3c"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""GamePad"",
+                    ""action"": ""NavigationToggle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6a7b2ca9-64bb-4906-b52d-19123942635c"",
+                    ""path"": ""<Keyboard>/t"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mouse&KeyBoard"",
+                    ""action"": ""NavigationToggle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -396,6 +427,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_PlayerActionMap_Dash = m_PlayerActionMap.FindAction("Dash", throwIfNotFound: true);
         m_PlayerActionMap_Pause = m_PlayerActionMap.FindAction("Pause", throwIfNotFound: true);
         m_PlayerActionMap_DevKit = m_PlayerActionMap.FindAction("DevKit", throwIfNotFound: true);
+        m_PlayerActionMap_NavigationToggle = m_PlayerActionMap.FindAction("NavigationToggle", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -466,6 +498,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerActionMap_Dash;
     private readonly InputAction m_PlayerActionMap_Pause;
     private readonly InputAction m_PlayerActionMap_DevKit;
+    private readonly InputAction m_PlayerActionMap_NavigationToggle;
     public struct PlayerActionMapActions
     {
         private @PlayerControls m_Wrapper;
@@ -479,6 +512,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Dash => m_Wrapper.m_PlayerActionMap_Dash;
         public InputAction @Pause => m_Wrapper.m_PlayerActionMap_Pause;
         public InputAction @DevKit => m_Wrapper.m_PlayerActionMap_DevKit;
+        public InputAction @NavigationToggle => m_Wrapper.m_PlayerActionMap_NavigationToggle;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActionMap; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -515,6 +549,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @DevKit.started += instance.OnDevKit;
             @DevKit.performed += instance.OnDevKit;
             @DevKit.canceled += instance.OnDevKit;
+            @NavigationToggle.started += instance.OnNavigationToggle;
+            @NavigationToggle.performed += instance.OnNavigationToggle;
+            @NavigationToggle.canceled += instance.OnNavigationToggle;
         }
 
         private void UnregisterCallbacks(IPlayerActionMapActions instance)
@@ -546,6 +583,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @DevKit.started -= instance.OnDevKit;
             @DevKit.performed -= instance.OnDevKit;
             @DevKit.canceled -= instance.OnDevKit;
+            @NavigationToggle.started -= instance.OnNavigationToggle;
+            @NavigationToggle.performed -= instance.OnNavigationToggle;
+            @NavigationToggle.canceled -= instance.OnNavigationToggle;
         }
 
         public void RemoveCallbacks(IPlayerActionMapActions instance)
@@ -592,5 +632,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnDash(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
         void OnDevKit(InputAction.CallbackContext context);
+        void OnNavigationToggle(InputAction.CallbackContext context);
     }
 }

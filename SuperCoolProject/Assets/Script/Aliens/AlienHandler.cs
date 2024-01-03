@@ -37,6 +37,8 @@ public class AlienHandler : MonoBehaviour
     public float alienSpeed = 5;
     public float lookRadius = 10;
     public GameObject[] alienSpecies; // 0:Sphere > 1:Square > 2:Triangle  
+    public Material[] alienColors; // 0:Blue > 1:Green > 2:Red  
+    public Renderer alienMiniMapMarker;
     public GameObject resourceSteamGO;
     public ParticleSystem resourceSteam;
     private float delta;
@@ -450,35 +452,6 @@ public class AlienHandler : MonoBehaviour
 
     }
 
-    //public void HandleAging(float lifeTime)
-    //{
-    //    if (lifeTime < timeToChild)
-    //    {
-    //        currentAge = AlienAge.resource;
-    //        alienHealth = alienLifeResource;
-    //        transform.localScale = Vector3.one * 0.2f;
-    //    }
-    //    else if (lifeTime > timeToChild && lifeTime < timeToSexual && lifeTime < timeToFullGrown)
-    //    {
-    //        resourceSteamGO.SetActive(false);
-    //        currentAge = AlienAge.child;
-    //        alienHealth = alienLifeChild;
-    //        transform.localScale = Vector3.one * .5f;
-    //    }
-    //    else if (lifeTime > timeToSexual && lifeTime < timeToFullGrown)
-    //    {
-    //        currentAge = AlienAge.sexualActive;
-    //        alienHealth = alienLifeSexual;
-    //        transform.localScale = Vector3.one;
-    //    }
-    //    else if (lifeTime > timeToFullGrown)
-    //    {
-    //        currentAge = AlienAge.fullyGrown;
-    //        alienHealth = alienLifeFullGrown;
-    //        transform.localScale = Vector3.one * 1.2f;
-    //    }
-    //}
-
     private void HandleMovement(float step)
     {
         if (currentAge != AlienAge.resource && currentState != AlienState.looking)
@@ -646,14 +619,17 @@ public class AlienHandler : MonoBehaviour
         if (currentSpecies == 0)
         {
             ma.startColor = Color.blue;
+            alienMiniMapMarker.material = alienColors[0];
         }
         else if (currentSpecies == 1)
         {
             ma.startColor = Color.green;
+            alienMiniMapMarker.material = alienColors[1];
         }
         else if (currentSpecies == 2)
         {
             ma.startColor = Color.red;
+            alienMiniMapMarker.material = alienColors[2];
         }
         StartCoroutine(HandleAge());
     }
