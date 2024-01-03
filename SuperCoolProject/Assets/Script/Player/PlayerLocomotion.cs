@@ -110,14 +110,12 @@ public class PlayerLocomotion : MonoBehaviour
             // TODO: Check that it does not trigger double
             if (PauseMenu.SharedInstance.isPaused)
             {
-                PauseMenu.SharedInstance.Resume();
-
+                StartCoroutine(PauseMenu.SharedInstance.Resume());
             }
 
             if (PauseMenu.SharedInstance.isPaused == false)
             {
-                Debug.Log("Close Menu");
-                PauseMenu.SharedInstance.Pause();
+                StartCoroutine(PauseMenu.SharedInstance.Pause());
             }
         }
     }

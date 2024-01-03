@@ -28,7 +28,7 @@ public class DevKitHandler : MonoBehaviour
 
     private void Update()
     {
-        if (inputHandler.inputDevKit)
+        /*if (inputHandler.inputDevKit)
         {
             if (devKitOpen)
             {
@@ -41,21 +41,21 @@ public class DevKitHandler : MonoBehaviour
                 devKit.SetActive(false);
                 StartCoroutine(DevKitCloser());
             }
-        }
+        }*/
     }
 
     //IEnumerator is used so that it does not double trigger
-    private IEnumerator DevKitCloser()
-    {
-        yield return new WaitForSeconds(0.5f);
-        devKitOpen = true;
-    }
-    
-    private IEnumerator DevKitOpener()
-    {
-        yield return new WaitForSeconds(0.5f);
-        devKitOpen = false;
-    }
+    // private IEnumerator DevKitCloser()
+    // {
+    //     yield return new WaitForSeconds(0.5f);
+    //     devKitOpen = true;
+    // }
+    //
+    // private IEnumerator DevKitOpener()
+    // {
+    //     yield return new WaitForSeconds(0.5f);
+    //     devKitOpen = false;
+    // }
 
     public void PlayerSpeedInput()
     {

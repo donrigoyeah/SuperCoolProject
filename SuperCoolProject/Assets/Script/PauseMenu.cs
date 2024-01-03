@@ -14,7 +14,7 @@ public class PauseMenu : MonoBehaviour
     public static PauseMenu SharedInstance;
 
     [Header("Volume Settings")]
-    [SerializeField] private GameObject pauseMenu;
+    public GameObject pauseMenu;
     [SerializeField] private Slider musicSlider;
     [SerializeField] private Slider sfxSlider;
     [SerializeField] private AudioMixer myMixer;
@@ -75,13 +75,13 @@ public class PauseMenu : MonoBehaviour
     }
 
     // Gets called on playerLocomotion
-    public void Pause()
+    // This needs more refinement for waitforseconds wait time but we can take care of it eventually 
+    public IEnumerator Pause()
     {
-        Time.timeScale = 0;
-        Debug.Log("Moved to own function");
         UpdatePauseUI();
-
-        pauseMenu.SetActive(true);
+        PauseMenu.SharedInstance.pauseMenu.SetActive(true);
+        Time.timeScale = 0.01f;
+        yield return new WaitForSeconds(0.02f);
         isPaused = true;
     }
 
@@ -91,11 +91,19 @@ public class PauseMenu : MonoBehaviour
         squareKillCounter.text = GameManager.SharedInstance.squareKilled.ToString();
         triangleKillCounter.text = GameManager.SharedInstance.triangleKilled.ToString();
     }
-    public void Resume()
-    {
-        pauseMenu.SetActive(false);
+    public IEnumerator Resume()
+    {                
         Time.timeScale = 1;
+        PauseMenu.SharedInstance.pauseMenu.SetActive(false);
+        yield return new WaitForSeconds(0.2f);
         isPaused = false;
+    }
+
+    public void ResumeForButton() // UI buttons only works with void functions
+    {
+        isPaused = false;
+        Time.timeScale = 1;
+        PauseMenu.SharedInstance.pauseMenu.SetActive(false);
     }
 
     public void Restart()
