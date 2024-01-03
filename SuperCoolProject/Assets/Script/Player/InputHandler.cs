@@ -19,6 +19,7 @@ public class InputHandler : MonoBehaviour
     public bool inputJumping;
     public bool inputDashing;
     public bool inputPause;
+    public bool inputNavToggle;
     public bool inputDevKit;
     public bool isGamepad;
     public int playerIndex;
@@ -164,6 +165,21 @@ public class InputHandler : MonoBehaviour
         if (ctx.canceled)
         {
             inputPause = false;
+        }
+
+        //playerControls.PlayerActionMap.Pause.performed += ctx => inputPause = true;
+        //playerControls.PlayerActionMap.Pause.canceled += ctx => inputPause = false;
+    }
+
+    public void NavToggleInput(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed)
+        {
+            inputNavToggle = true;
+        }
+        if (ctx.canceled)
+        {
+            inputNavToggle = false;
         }
 
         //playerControls.PlayerActionMap.Pause.performed += ctx => inputPause = true;

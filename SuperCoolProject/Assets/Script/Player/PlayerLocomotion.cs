@@ -123,6 +123,10 @@ public class PlayerLocomotion : MonoBehaviour
                 PauseMenu.SharedInstance.Pause();
             }
         }
+        if (inputHandler.inputNavToggle)
+        {
+            HUDHandler.SharedInstance.ChangeHUD();
+        }
     }
 
     void Movement()
