@@ -55,8 +55,9 @@ public class PlayerAttacker : MonoBehaviour
     private InputHandler inputHandler;
     private PlayerManager playerManager;
 
-    [Header("Camera Shake")]
-    [SerializeField] private CameraShake CameraShake;
+    // TODO: Imlement again
+    //[Header("Camera Shake")]
+    //[SerializeField] private CameraShake CameraShake;
 
     [Header("Audio")]
     [SerializeField] private AudioClip coolingDownAudio;
@@ -120,13 +121,13 @@ public class PlayerAttacker : MonoBehaviour
                     SpawnLazer(bulletDamage);
                 }
 
-                CameraShake.ShakeCamera();
+                // CameraShake.ShakeCamera();
                 currentWeaponHeat += singleLazerHeat;
                 nextFireTime = 0;
             }
             else
             {
-                CameraShake.ResetCameraPosition();
+                // CameraShake.ResetCameraPosition();
             }
         }
     }
@@ -148,7 +149,7 @@ public class PlayerAttacker : MonoBehaviour
                 audioSource.PlayOneShot(coolingDownAudio, 1f);
             }
             Debug.Log("Overheated");
-            CameraShake.ResetCameraPosition();
+            //CameraShake.ResetCameraPosition();
             hasOverheatedOnce = true;
         }
 
@@ -160,7 +161,7 @@ public class PlayerAttacker : MonoBehaviour
             }
             hasOverheatedOnce = false;
         }
-        
+
         // Return if current heat is 0
         if (currentWeaponHeat <= 0)
         {
@@ -218,17 +219,17 @@ public class PlayerAttacker : MonoBehaviour
             muzzlePoolGo.transform.rotation = lazerSpawnLocation.rotation;
             muzzlePoolGo.SetActive(true);
             StartCoroutine(DisableAfterSeconds(1, muzzlePoolGo));
-        } 
+        }
     }
 
     void LaserSight()
     {
         // Debug.Log("Laser Sight");
         //TODO: Add Recoil
-        
+
         RaycastHit hit;
-        
-        if(Physics.Raycast(transform.position, transform.forward, out hit))
+
+        if (Physics.Raycast(transform.position, transform.forward, out hit))
         {
             if (hit.collider)
             {
@@ -294,7 +295,8 @@ public class PlayerAttacker : MonoBehaviour
 
     private void CreatePhysicsScene()
     {
-        simulateScene = SceneManager.CreateScene("Simulation", new CreateSceneParameters(LocalPhysicsMode.Physics3D));
+        string SimulationName = "Simulation" + inputHandler.playerIndex.ToString();
+        simulateScene = SceneManager.CreateScene(SimulationName, new CreateSceneParameters(LocalPhysicsMode.Physics3D));
         physicsScene = simulateScene.GetPhysicsScene();
     }
 

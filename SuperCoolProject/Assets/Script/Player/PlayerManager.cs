@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -16,6 +17,8 @@ public class PlayerManager : MonoBehaviour
     public GameObject currentPart;
     public GameObject playerShieldGO;
     public bool isAlive;
+    public bool isInteracting;
+
     private Material dissolve;
     public float dissolveRate = 0.0125f;
     public float refreshRate = 0.025f;

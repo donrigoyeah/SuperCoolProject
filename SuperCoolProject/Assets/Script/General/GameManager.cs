@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Serialization;
+using UnityEngine.InputSystem;
+using Cinemachine;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,7 +14,8 @@ public class GameManager : MonoBehaviour
     [Header("World")]
     public int worldRadius = 150;
     public bool hasLost;
-
+    public int numberOfPlayers;
+    public int maxPlayers = 2;
 
     [Header("Clone Juice")]
     [SerializeField] public Image cloneJuiceUI;
@@ -40,13 +43,17 @@ public class GameManager : MonoBehaviour
     public int triangleKilled = 0;
 
     [Header("References")]
-    [SerializeField] private PlayerLocomotion playerLocomotion;
     [SerializeField] private GameObject map;
+    [SerializeField] private PlayerInputManager playerInputManager;
+    public List<PlayerManager> players;
     public GameObject GameOverScreen;
+    public Transform CameraFollowSpot; // For Cinemachine
+
 
 
     private void Awake()
     {
+        players = new List<PlayerManager>();
         SharedInstance = this;
         HandleSpawnShipParts();
         currentSpaceShipParts = 0;
@@ -62,6 +69,47 @@ public class GameManager : MonoBehaviour
         if (currentCloneJuice < 0)
         {
             HandleLoss();
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (players.Count != 0)
+        {
+            HandleCameraTarget();
+        }
+    }
+
+    private void HandleCameraTarget()
+    {
+        float targetX = 0;
+        float targetY = 0;
+        float targetZ = 0;
+
+        foreach (var player in players)
+        {
+            targetX += player.transform.position.x;
+            targetY += player.transform.position.y;
+            targetZ += player.transform.position.z;
+        }
+
+        float targetXNorm = targetX / players.Count;
+        float targetYNorm = targetY / players.Count;
+        float targetZNorm = targetZ / players.Count;
+
+        //CameraFollowSpot.position = new Vector3(targetXNorm, targetYNorm, targetZNorm);
+        CameraFollowSpot.position = Vector3.Lerp(CameraFollowSpot.transform.position, new Vector3(targetXNorm, targetYNorm, targetZNorm), Time.deltaTime);
+    }
+
+
+    public void AddPlayer(PlayerManager pm)
+    {
+        numberOfPlayers++;
+        players.Add(pm);
+
+        if (numberOfPlayers == maxPlayers)
+        {
+            playerInputManager.DisableJoining();
         }
     }
 

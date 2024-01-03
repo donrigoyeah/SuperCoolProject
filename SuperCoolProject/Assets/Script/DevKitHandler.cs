@@ -15,10 +15,12 @@ public class DevKitHandler : MonoBehaviour
     [Header("Canvas")]
     [SerializeField] private GameObject devKit;
     [SerializeField] private bool devKitOpen = true;
-    
-    [Header("References")]
-    [SerializeField] private PlayerLocomotion playerLocomotion;
-    [SerializeField] private InputHandler inputHandler;
+
+
+    // TODO: This is done now over the gameManager, where all players are registerd
+    //[Header("References")]
+    //[SerializeField] private PlayerLocomotion playerLocomotion;
+    //[SerializeField] private InputHandler inputHandler;
 
 
     private void Start()
@@ -56,11 +58,44 @@ public class DevKitHandler : MonoBehaviour
     //     yield return new WaitForSeconds(0.5f);
     //     devKitOpen = false;
     // }
+        //if (inputHandler.inputDevKit)
+        //{
+        //    if (devKitOpen)
+        //    {
+        //        devKit.SetActive(true);
+        //        StartCoroutine(DevKitOpener());
+        //    }
+
+        //    if (devKitOpen == false)
+        //    {
+        //        devKit.SetActive(false);
+        //        StartCoroutine(DevKitCloser());
+        //    }
+        //}
+    }
+
+    //IEnumerator is used so that it does not double trigger
+    private IEnumerator DevKitCloser()
+    {
+        yield return new WaitForSeconds(0.5f);
+        devKitOpen = true;
+    }
+
+    private IEnumerator DevKitOpener()
+    {
+        yield return new WaitForSeconds(0.5f);
+        devKitOpen = false;
+    }
 
     public void PlayerSpeedInput()
     {
         int.TryParse(playerSpeed.text, out int input);
-        playerLocomotion.playerSpeed = input;
+        foreach (var item in GameManager.SharedInstance.players
+)
+        {
+            PlayerLocomotion playerLocomotion = item.GetComponent<PlayerLocomotion>();
+            playerLocomotion.playerSpeed = input;
+        }
     }
 
     public void AlienHealthInput()
@@ -83,7 +118,7 @@ public class DevKitHandler : MonoBehaviour
     public void AlienAmountOfBabiesInput()
     {
         int.TryParse(alienAmountOfBabies.text, out int input);
-        
+
         for (int i = 0; i <= PoolManager.SharedInstance.AlienPool.Count; i++)
         {
             GameObject alien = PoolManager.SharedInstance.AlienPool[i];
