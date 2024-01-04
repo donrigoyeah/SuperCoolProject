@@ -564,32 +564,6 @@ public class AlienHandler : MonoBehaviour
 
             return;
         }
-        //Debug.Log("Moved this to player so alien script get shortend");
-
-        //// Handle Player interaction && is also put in trigger / trigger state changes in HandleAging()
-        //else if (other.gameObject.CompareTag("Player"))
-        //{
-        //    // Less resources on all the alien instances
-
-        //    //if (hasInteractedWithPlayer == false)
-        //    //{
-        //    //    PlayerManager PM = other.gameObject.GetComponent<PlayerManager>();
-        //    //    // Handle Gathering resource
-        //    //    if (currentAge == AlienAge.resource)
-        //    //    {
-        //    //        // Check so script only runce once
-        //    //        hasInteractedWithPlayer = true;
-        //    //        PM.HandleGainResource(currentSpecies);
-        //    //        this.gameObject.SetActive(false);
-        //    //    }
-        //    //    else
-        //    //    {
-        //    //        hasInteractedWithPlayer = true;
-        //    //        PM.HandleHit();
-        //    //        this.gameObject.SetActive(false);
-        //    //    }
-        //    //}
-        //}
     }
 
     public void ActivateCurrentModels(int currentSpeziesIndex)
