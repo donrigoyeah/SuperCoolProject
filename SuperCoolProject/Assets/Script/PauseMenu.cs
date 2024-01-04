@@ -19,6 +19,13 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] private Slider sfxSlider;
     [SerializeField] private AudioMixer myMixer;
 
+    [Header("Resources Counter")]
+    [SerializeField] private Image ResourceSphere;
+    [SerializeField] private Image ResourceSquare;
+    [SerializeField] private Image ResourceTriangle;
+    [SerializeField] private Image CloneJuice;
+    [SerializeField] private TextMeshProUGUI spaceShipParts;
+
     [Header("Kill Counter")]
     [SerializeField] private TextMeshProUGUI sphereKillCounter;
     [SerializeField] private TextMeshProUGUI squareKillCounter;
@@ -90,9 +97,16 @@ public class PauseMenu : MonoBehaviour
         sphereKillCounter.text = GameManager.SharedInstance.sphereKilled.ToString();
         squareKillCounter.text = GameManager.SharedInstance.squareKilled.ToString();
         triangleKillCounter.text = GameManager.SharedInstance.triangleKilled.ToString();
+
+        ResourceSphere.fillAmount = GameManager.SharedInstance.players[0].currentSphereResource / GameManager.SharedInstance.players[0].maxSphereResource;
+        ResourceSquare.fillAmount = GameManager.SharedInstance.players[0].currentSquareResource / GameManager.SharedInstance.players[0].maxSquareResource;
+        ResourceTriangle.fillAmount = GameManager.SharedInstance.players[0].currentTriangleResource / GameManager.SharedInstance.players[0].maxTriangleResource;
+
+        spaceShipParts.text = GameManager.SharedInstance.currentSpaceShipParts.ToString() + "/" + GameManager.SharedInstance.totalSpaceShipParts.ToString();
+        CloneJuice.fillAmount = GameManager.SharedInstance.currentCloneJuice / GameManager.SharedInstance.maxCloneJuice;
     }
     public IEnumerator Resume()
-    {                
+    {
         Time.timeScale = 1;
         PauseMenu.SharedInstance.pauseMenu.SetActive(false);
         yield return new WaitForSeconds(0.2f);
