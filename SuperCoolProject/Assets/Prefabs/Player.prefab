@@ -415,7 +415,7 @@ MonoBehaviour:
   playerResourceScanRadius: 100
   aliensInRange: []
   resourceInRange: []
-  playerShield: 0
+  playerShield: 1
   shieldRechargeTime: 2
   isCarryingPart: 0
   currentPart: {fileID: 0}
@@ -1077,7 +1077,6 @@ RectTransform:
   - {fileID: 1566989501170283364}
   - {fileID: 4522037182476434306}
   - {fileID: 2175777831713071366}
-  - {fileID: 1804280546394976494}
   m_Father: {fileID: 8794882847261471613}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1161,9 +1160,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   transforms:
-  - {fileID: 6409773689940403714}
-  - {fileID: 2352655426427189093}
-  - {fileID: 1804280546394976494}
+  - {fileID: 1566989501170283364}
+  - {fileID: 4522037182476434306}
+  - {fileID: 2175777831713071366}
 --- !u!1 &2888927282901100856
 GameObject:
   m_ObjectHideFlags: 0
@@ -1232,7 +1231,7 @@ RectTransform:
   m_Children:
   - {fileID: 1073890523632106191}
   - {fileID: 490223642417339846}
-  m_Father: {fileID: 7200067826599491977}
+  m_Father: {fileID: 2175777831713071366}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1446,7 +1445,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1804280546394976494}
   m_Father: {fileID: 7200067826599491977}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -1896,7 +1896,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ce922caf2a96b7648876de7aa5cef3e2, type: 2}
+  - {fileID: 2100000, guid: d5b2fb1daa206294894f6eea03c042e4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -338,26 +338,18 @@ public class PlayerAttacker : MonoBehaviour
         // Less resources on all the alien instances
         if (other.gameObject.CompareTag("Alien"))
         {
-            bool hasInteractedWithPlayer = false;
-
-
             AlienHandler AH = other.gameObject.GetComponent<AlienHandler>();
             if (AH.currentAge == AlienAge.resource)
             {
-                if (hasInteractedWithPlayer) { return; }
                 playerManager.HandleGainResource(AH.currentSpecies);
-                hasInteractedWithPlayer = true;
             }
             else
             {
                 Debug.Log("Handle Hit");
-                if (hasInteractedWithPlayer) { return; }
-                other.gameObject.SetActive(false);
                 playerManager.HandleHit();
-                hasInteractedWithPlayer = true;
                 Debug.Log("@Kinshuk: Maybe write a function on the alienHander like hanldeDeath that gets triggered here");
             }
-
+            other.gameObject.SetActive(false);
         }
     }
     #endregion

@@ -356,7 +356,6 @@ public class AlienHandler : MonoBehaviour
         currentState = AlienState.looking;
     }
 
-
     public void HandleFleeing(GameObject targetAlien)
     {
         // Add +1 so i is out of the lookradius
@@ -412,13 +411,13 @@ public class AlienHandler : MonoBehaviour
                 GameObject alienPoolGo = PoolManager.SharedInstance.GetPooledAliens();
                 if (alienPoolGo != null)
                 {
-                    AlienHandler newBornAlien;
-                    newBornAlien = alienPoolGo.GetComponent<AlienHandler>();
+                    AlienHandler newBornAlien = alienPoolGo.GetComponent<AlienHandler>();
                     newBornAlien.currentSpecies = currentSpecies;
                     alienPoolGo.SetActive(true);
 
                     // TODO: Spawn them somewhere near, in the middle (?!)
-                    alienPoolGo.transform.position = new Vector3(transform.position.x, 0.5f, transform.position.z) + Vector3.forward;
+                    float randomOffSet = (UnityEngine.Random.Range(0, 5) - 2) / 4;
+                    alienPoolGo.transform.position = new Vector3(transform.position.x + randomOffSet, 0.5f, transform.position.z + randomOffSet) + Vector3.forward;
                 }
             }
         }
@@ -440,21 +439,21 @@ public class AlienHandler : MonoBehaviour
         currentAge = AlienAge.child;
         alienHealth = alienLifeChild;
         //transform.localScale = Vector3.one * .5f;
-        HandleGrowing(.2f, .5f);
+        StartCoroutine(HandleGrowing(.2f, .5f));
         yield return new WaitForSeconds(timeToSexual);
 
         // Sexual active Life
         currentAge = AlienAge.sexualActive;
         alienHealth = alienLifeSexual;
         //transform.localScale = Vector3.one;
-        HandleGrowing(.5f, 1f);
+        StartCoroutine(HandleGrowing(.5f, 1f));
         yield return new WaitForSeconds(timeToFullGrown);
 
         // Full Grown Life
         currentAge = AlienAge.fullyGrown;
         alienHealth = alienLifeFullGrown;
         //transform.localScale = Vector3.one * 1.2f;
-        HandleGrowing(1f, 1.2f);
+        StartCoroutine(HandleGrowing(1f, 1.2f));
     }
 
     private IEnumerator HandleGrowing(float oldFactor, float newFactor)
