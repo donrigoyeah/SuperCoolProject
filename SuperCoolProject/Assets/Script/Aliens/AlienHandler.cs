@@ -434,23 +434,38 @@ public class AlienHandler : MonoBehaviour
         alienHealth = alienLifeResource;
         transform.localScale = Vector3.one * 0.2f;
         yield return new WaitForSeconds(timeToChild);
+
         // Child Life
         resourceSteamGO.SetActive(false);
         currentAge = AlienAge.child;
         alienHealth = alienLifeChild;
-        transform.localScale = Vector3.one * .5f;
+        //transform.localScale = Vector3.one * .5f;
+        HandleGrowing(.2f, .5f);
         yield return new WaitForSeconds(timeToSexual);
+
         // Sexual active Life
         currentAge = AlienAge.sexualActive;
         alienHealth = alienLifeSexual;
-        transform.localScale = Vector3.one;
+        //transform.localScale = Vector3.one;
+        HandleGrowing(.5f, 1f);
         yield return new WaitForSeconds(timeToFullGrown);
+
         // Full Grown Life
         currentAge = AlienAge.fullyGrown;
         alienHealth = alienLifeFullGrown;
-        transform.localScale = Vector3.one * 1.2f;
-
+        //transform.localScale = Vector3.one * 1.2f;
+        HandleGrowing(1f, 1.2f);
     }
+
+    private IEnumerator HandleGrowing(float oldFactor, float newFactor)
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            yield return new WaitForSeconds(.5f / 10); // Total duration of transform 0.5f seconds
+            transform.localScale = Vector3.one * oldFactor + Vector3.one * newFactor * i / 10;
+        }
+    }
+
 
     private void HandleMovement(float step)
     {
@@ -536,7 +551,7 @@ public class AlienHandler : MonoBehaviour
             // Handle Alien Death
             if (alienHealth <= 0)
             {
-
+                anim[currentSpecies].Stop();
                 // TODO: Add Coroutine & Ragdoll to show impact/force of bullets
                 //EnableRagdoll();
                 if (currentSpecies == 0) { GameManager.SharedInstance.sphereKilled++; }
@@ -545,8 +560,8 @@ public class AlienHandler : MonoBehaviour
 
                 StartCoroutine(Dissolve());
                 return;
-                // this.gameObject.SetActive(false);
             };
+
             return;
         }
         //Debug.Log("Moved this to player so alien script get shortend");

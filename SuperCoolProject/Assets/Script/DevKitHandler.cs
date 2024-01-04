@@ -28,23 +28,25 @@ public class DevKitHandler : MonoBehaviour
         Debug.Log("DevKit Ready");
     }
 
+    /*
     private void Update()
     {
-        /*if (inputHandler.inputDevKit)
+     if (inputHandler.inputDevKit)
         {
-            if (devKitOpen)
-            {
-                devKit.SetActive(true);
-                StartCoroutine(DevKitOpener());    
-            }
-            
-            if (devKitOpen == false)
-            {
-                devKit.SetActive(false);
-                StartCoroutine(DevKitCloser());
-            }
-        }*/
+        if (devKitOpen)
+        {
+            devKit.SetActive(true);
+            StartCoroutine(DevKitOpener());    
+        }
+
+        if (devKitOpen == false)
+        {
+            devKit.SetActive(false);
+            StartCoroutine(DevKitCloser());
+        }
     }
+    }
+    */
 
     //IEnumerator is used so that it does not double trigger
     // private IEnumerator DevKitCloser()
@@ -58,21 +60,21 @@ public class DevKitHandler : MonoBehaviour
     //     yield return new WaitForSeconds(0.5f);
     //     devKitOpen = false;
     // }
-        //if (inputHandler.inputDevKit)
-        //{
-        //    if (devKitOpen)
-        //    {
-        //        devKit.SetActive(true);
-        //        StartCoroutine(DevKitOpener());
-        //    }
+    //if (inputHandler.inputDevKit)
+    //{
+    //    if (devKitOpen)
+    //    {
+    //        devKit.SetActive(true);
+    //        StartCoroutine(DevKitOpener());
+    //    }
 
-        //    if (devKitOpen == false)
-        //    {
-        //        devKit.SetActive(false);
-        //        StartCoroutine(DevKitCloser());
-        //    }
-        //}
-    }
+    //    if (devKitOpen == false)
+    //    {
+    //        devKit.SetActive(false);
+    //        StartCoroutine(DevKitCloser());
+    //    }
+    //}
+    //}
 
     //IEnumerator is used so that it does not double trigger
     private IEnumerator DevKitCloser()
@@ -91,7 +93,7 @@ public class DevKitHandler : MonoBehaviour
     {
         int.TryParse(playerSpeed.text, out int input);
         foreach (var item in GameManager.SharedInstance.players
-)
+    )
         {
             PlayerLocomotion playerLocomotion = item.GetComponent<PlayerLocomotion>();
             playerLocomotion.playerSpeed = input;

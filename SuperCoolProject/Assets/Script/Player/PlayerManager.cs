@@ -22,8 +22,8 @@ public class PlayerManager : MonoBehaviour
     private Material dissolve;
     public float dissolveRate = 0.0125f;
     public float refreshRate = 0.025f;
-    
-    
+
+
     [Header("Resource Variables")]
     float maxSphereResource = 100;
     float maxSquareResource = 100;
@@ -31,6 +31,9 @@ public class PlayerManager : MonoBehaviour
     public float currentSphereResource;
     public float currentSquareResource;
     public float currentTriangleResource;
+    bool sphereUnfolded = false;
+    bool squareUnfolded = false;
+    bool triangleUnfolded = false;
 
     public float resourceDrain = .1f;
     public float resourceGain = 5;
@@ -44,12 +47,12 @@ public class PlayerManager : MonoBehaviour
     public GameObject DeathScreen;
     public Image DeathScreenCloneJuiceUI;
 
-    [Header("Audio")] 
+    [Header("Audio")]
     [SerializeField] private AudioClip shieldRechargeAudio;
     [SerializeField] private AudioClip shieldBreakAudio;
     [SerializeField] private AudioClip deathAudio;
     private AudioSource audioSource;
-    
+
     private InputHandler inputHandler;
 
     private void Awake()
@@ -65,8 +68,8 @@ public class PlayerManager : MonoBehaviour
         HandleAlienDetection();
         HandleRespawn();
         HandleGameOver();
-        
-        
+
+
         Debug.Log("HandleHit is here");
     }
 
@@ -132,15 +135,50 @@ public class PlayerManager : MonoBehaviour
 
     private void HandleResource()
     {
+
         // 0:Sphere, 1:Square, 2:Triangle
         if (currentSphereResource > 0) { currentSphereResource -= resourceDrain; }
         if (currentSquareResource > 0) { currentSquareResource -= resourceDrain; }
         if (currentTriangleResource > 0) { currentTriangleResource -= resourceDrain; }
 
         // Only show resource UI if below 75%
-        if (currentSphereResource < 3 * maxSphereResource / 4) { ResourceUISphere.SetActive(true); } else { ResourceUISphere.SetActive(false); }
-        if (currentSquareResource < 3 * maxSquareResource / 4) { ResourceUISquare.SetActive(true); } else { ResourceUISquare.SetActive(false); }
-        if (currentTriangleResource < 3 * maxTriangleResource / 4) { ResourceUITriangle.SetActive(true); } else { ResourceUITriangle.SetActive(false); }
+        if (currentSphereResource < 3 * maxSphereResource / 4)
+        {
+            if (sphereUnfolded) { return; }
+            UnfoldResource(sphereUnfolded, ResourceUISphere, 50);
+            //ResourceUISphere.SetActive(true);
+
+        }
+        else
+        {
+            if (!sphereUnfolded) { return; }
+            FoldResource(sphereUnfolded, ResourceUISphere);
+            //ResourceUISphere.SetActive(false);
+        }
+        if (currentSquareResource < 3 * maxSquareResource / 4)
+        {
+            if (squareUnfolded) { return; }
+            UnfoldResource(squareUnfolded, ResourceUISquare, 25);
+            //ResourceUISquare.SetActive(true);
+        }
+        else
+        {
+            if (!squareUnfolded) { return; }
+            FoldResource(squareUnfolded, ResourceUISquare);
+            //ResourceUISquare.SetActive(false);
+        }
+        if (currentTriangleResource < 3 * maxTriangleResource / 4)
+        {
+            if (triangleUnfolded) { return; }
+            UnfoldResource(triangleUnfolded, ResourceUITriangle, 0);
+            //ResourceUITriangle.SetActive(true);
+        }
+        else
+        {
+            if (!triangleUnfolded) { return; }
+            FoldResource(triangleUnfolded, ResourceUITriangle);
+            //ResourceUITriangle.SetActive(false);
+        }
 
         // Update UI
         resourcePieCharts[0].fillAmount = currentSphereResource / maxSphereResource;
@@ -154,6 +192,33 @@ public class PlayerManager : MonoBehaviour
         {
             HandleDeath();
         }
+    }
+
+    IEnumerator UnfoldResource(bool isUnfolding, GameObject Resource, float degree)
+    {
+        isUnfolding = true;
+        Resource.gameObject.SetActive(true);
+        RectTransform GORT = Resource.GetComponent<RectTransform>();
+        GORT.localScale = Vector3.zero;
+        for (int i = 0; i < 10; i++)
+        {
+            yield return new WaitForSeconds(.5f / 10);
+            GORT.localScale = Vector3.one * i / 10;
+            GORT.localEulerAngles = new Vector3(0, 0, degree / 10);
+        }
+    }
+    IEnumerator FoldResource(bool isUnfolding, GameObject Resource)
+    {
+        isUnfolding = false;
+        RectTransform GORT = Resource.GetComponent<RectTransform>();
+        GORT.localScale = Vector3.one;
+        for (int i = 0; i < 10; i++)
+        {
+            yield return new WaitForSeconds(.5f / 10);
+            GORT.localScale = Vector3.one - Vector3.one * i / 10;
+        }
+        GORT.localEulerAngles = Vector3.zero;
+        Resource.gameObject.SetActive(false);
     }
 
     public void HandleGainResource(int rescourseIndex)
@@ -220,7 +285,7 @@ public class PlayerManager : MonoBehaviour
                 yield return new WaitForSeconds(refreshRate);
             }
         }
-        
+
         playerShield = false;
         audioSource.PlayOneShot(shieldBreakAudio, 1f);
         playerShieldGO.SetActive(false);

@@ -144,7 +144,14 @@ public class GameManager : MonoBehaviour
     {
         spaceShipPartsDisplay.text = currentSpaceShipParts.ToString() + "/" + totalSpaceShipParts.ToString();
 
-        if (hasFuelCanister) { Debug.Log("worked"); playerLocomotion.playerSpeed = 13f; }
+        if (hasFuelCanister)
+        {
+            Debug.Log("worked");
+            foreach (var item in players)
+            {
+                item.GetComponent<PlayerLocomotion>().playerSpeed = 13f;
+            }
+        }
 
         if (hasAntenna) { Debug.Log("Found Antenna"); map.SetActive(true); }
 
