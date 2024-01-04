@@ -13,6 +13,7 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Assets/Script/General/TimeManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/Player/CameraShake.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@14.0.8/Shaders/Lit.shader" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProblemsViewState">
@@ -198,6 +199,10 @@
       <workItem from="1704250216790" duration="1193000" />
       <workItem from="1704299226358" duration="91000" />
       <workItem from="1704299335739" duration="83000" />
+      <workItem from="1704299711277" duration="1039000" />
+      <workItem from="1704308103694" duration="1763000" />
+      <workItem from="1704322191860" duration="2883000" />
+      <workItem from="1704365511858" duration="1644000" />
     </task>
     <servers />
   </component>

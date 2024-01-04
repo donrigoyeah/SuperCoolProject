@@ -4,7 +4,6 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
-using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 public class InputHandler : MonoBehaviour
 {
@@ -67,6 +66,11 @@ public class InputHandler : MonoBehaviour
         Debug.Log("Player Joined: " + playerIndex.ToString());
         playerControls.Enable();
     }
+
+    // private void OnEnable()
+    // {
+    //     playerControls.Enable();
+    // }
 
     private void OnDisable()
     {

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -15,7 +16,8 @@ public class SpaceShipPartHandler : MonoBehaviour
     public float playerSpeedReduction = 0f;
     public float previousPlayerSpeed = 10f;
     public TextMeshProUGUI tmp;
-
+    [SerializeField] private ParticleSystem collectingResourcesParticle;
+    public bool particleSpawned = false;
     private AudioSource audioSource;
     [SerializeField] private AudioClip draggingAudio;
     
@@ -30,11 +32,6 @@ public class SpaceShipPartHandler : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
-    private void Start()
-    {
-        // linerenderer.positionCount = 2;
-    }
-
     private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -44,9 +41,15 @@ public class SpaceShipPartHandler : MonoBehaviour
             playerManager = other.gameObject.GetComponent<PlayerManager>();
             
             playerSpeedReduction = spaceShipData.mass / 2.0f;
-
+            
             if (inputHandler.inputInteracting)
             {
+                if (!particleSpawned)
+                {
+                    collectingResourcesParticle.gameObject.SetActive(true);
+                    particleSpawned = true;
+                }
+                
                 if (!audioSource.isPlaying)
                 {
                     audioSource.PlayOneShot(draggingAudio, 1f);
@@ -58,6 +61,8 @@ public class SpaceShipPartHandler : MonoBehaviour
             }
             else if (!inputHandler.inputInteracting)
             {
+                collectingResourcesParticle.gameObject.SetActive(false);
+                particleSpawned = false;
                 if (playerManager == null)
                 {
                     playerManager = other.gameObject.GetComponent<PlayerManager>();
@@ -74,12 +79,6 @@ public class SpaceShipPartHandler : MonoBehaviour
     private void Update()
     {
         tmp.text = spaceShipData.partName;
-        
     }
-
-    private void LineCreator()
-    {
-        // linerenderer.SetPosition(0, position1.position); connect the player with the variable from the code
-        // linerenderer.SetPosition(1, position2.position); 
-    }
+    
 }

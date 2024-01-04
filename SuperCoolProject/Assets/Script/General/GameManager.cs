@@ -45,6 +45,7 @@ public class GameManager : MonoBehaviour
     [Header("References")]
     [SerializeField] private GameObject map;
     [SerializeField] private PlayerInputManager playerInputManager;
+    [SerializeField] private PlayerLocomotion playerLocomotion;
     public List<PlayerManager> players;
     public Transform CameraFollowSpot; // For Cinemachine
 

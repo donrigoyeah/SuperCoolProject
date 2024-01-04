@@ -16,13 +16,6 @@ public class DevKitHandler : MonoBehaviour
     [SerializeField] private GameObject devKit;
     [SerializeField] private bool devKitOpen = true;
 
-
-    // TODO: This is done now over the gameManager, where all players are registerd
-    //[Header("References")]
-    //[SerializeField] private PlayerLocomotion playerLocomotion;
-    //[SerializeField] private InputHandler inputHandler;
-
-
     private void Start()
     {
         Debug.Log("DevKit Ready");

@@ -437,9 +437,9 @@ MonoBehaviour:
   ResourceUITriangle: {fileID: 5180734292164752012}
   DeathScreen: {fileID: 0}
   DeathScreenCloneJuiceUI: {fileID: 0}
-  shieldRechargeAudio: {fileID: 0}
-  shieldBreakAudio: {fileID: 0}
-  deathAudio: {fileID: 0}
+  shieldRechargeAudio: {fileID: 8300000, guid: 7c4072b1b16aa7c47ac7c00b4e89bc31, type: 3}
+  shieldBreakAudio: {fileID: 8300000, guid: ed490b7c5f0392e4eb9d586baf5045a8, type: 3}
+  deathAudio: {fileID: 8300000, guid: fb8cde1c02d901c48bff064d2c4a6a2b, type: 3}
 --- !u!114 &7595266375327355587
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -465,7 +465,7 @@ MonoBehaviour:
   dashParticle: {fileID: 0}
   isDashing: 0
   deltaFSS: 0.2
-  footstepAudio: {fileID: 0}
+  footstepAudio: {fileID: 8300000, guid: da2a6eb0d4102284abdc66f885d4a59b, type: 3}
 --- !u!114 &9130882823596995695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -510,9 +510,9 @@ MonoBehaviour:
   grenadeCooldownMax: 10
   grenadeAvailable: 0
   PhysicsFrame: 62
-  coolingDownAudio: {fileID: 0}
-  gunReadyAudio: {fileID: 0}
-  gunOverheatedAudio: {fileID: 0}
+  coolingDownAudio: {fileID: 8300000, guid: 768114da9783619489d3a27a79174be0, type: 3}
+  gunReadyAudio: {fileID: 8300000, guid: a2cee32e3e45fb447b19fa9965de9962, type: 3}
+  gunOverheatedAudio: {fileID: 8300000, guid: d5976fbf954fad7428c906af1458f483, type: 3}
 --- !u!114 &6940714301392089187
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -725,7 +725,8 @@ AudioSource:
   m_GameObject: {fileID: 1123791489352467104}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 2266403996617237174, guid: 3067df7eb9e53804eb6bac7a7694931c,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
