@@ -17,7 +17,6 @@ public class SpaceShipHandler : MonoBehaviour
             SpaceShipPartHandler spaceShipPartHandler = PM.currentPart.GetComponent<SpaceShipPartHandler>();
             if (PM != null && PM.isCarryingPart)
             {
-                // While I have you here, I was thinking maybe we can spawn 2-3 of the Particle system. That might look better - Delete the comment once you read it please
                 Debug.Log("Added Particle System here upon object completion");
                 ParticleSystem objectCompleted = Instantiate(ParticleSystem, new Vector3(0, 0, 5), Quaternion.Euler(-90, 0, 0));
                 Destroy(objectCompleted, 1.2f);

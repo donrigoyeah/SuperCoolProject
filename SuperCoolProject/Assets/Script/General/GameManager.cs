@@ -45,6 +45,7 @@ public class GameManager : MonoBehaviour
     [Header("References")]
     [SerializeField] private GameObject map;
     [SerializeField] private PlayerInputManager playerInputManager;
+    [SerializeField] private PlayerLocomotion playerLocomotion;
     public List<PlayerManager> players;
     public GameObject GameOverScreen;
     public Transform CameraFollowSpot; // For Cinemachine
@@ -144,7 +145,12 @@ public class GameManager : MonoBehaviour
     {
         spaceShipPartsDisplay.text = currentSpaceShipParts.ToString() + "/" + totalSpaceShipParts.ToString();
 
-        if (hasFuelCanister) { Debug.Log("worked"); playerLocomotion.playerSpeed = 13f; }
+        if (hasFuelCanister)
+        { 
+            Debug.Log("worked"); 
+            playerLocomotion.playerSpeed = 13f;
+        }
+        
 
         if (hasAntenna) { Debug.Log("Found Antenna"); map.SetActive(true); }
 

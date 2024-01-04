@@ -16,77 +16,11 @@ public class DevKitHandler : MonoBehaviour
     [SerializeField] private GameObject devKit;
     [SerializeField] private bool devKitOpen = true;
 
-
-    // TODO: This is done now over the gameManager, where all players are registerd
-    //[Header("References")]
-    //[SerializeField] private PlayerLocomotion playerLocomotion;
-    //[SerializeField] private InputHandler inputHandler;
-
-
     private void Start()
     {
         Debug.Log("DevKit Ready");
     }
-
-    private void Update()
-    {
-        /*if (inputHandler.inputDevKit)
-        {
-            if (devKitOpen)
-            {
-                devKit.SetActive(true);
-                StartCoroutine(DevKitOpener());    
-            }
-            
-            if (devKitOpen == false)
-            {
-                devKit.SetActive(false);
-                StartCoroutine(DevKitCloser());
-            }
-        }*/
-    }
-
-    //IEnumerator is used so that it does not double trigger
-    // private IEnumerator DevKitCloser()
-    // {
-    //     yield return new WaitForSeconds(0.5f);
-    //     devKitOpen = true;
-    // }
-    //
-    // private IEnumerator DevKitOpener()
-    // {
-    //     yield return new WaitForSeconds(0.5f);
-    //     devKitOpen = false;
-    // }
-        //if (inputHandler.inputDevKit)
-        //{
-        //    if (devKitOpen)
-        //    {
-        //        devKit.SetActive(true);
-        //        StartCoroutine(DevKitOpener());
-        //    }
-
-        //    if (devKitOpen == false)
-        //    {
-        //        devKit.SetActive(false);
-        //        StartCoroutine(DevKitCloser());
-        //    }
-        //}
-    }
-
-    //IEnumerator is used so that it does not double trigger
-    private IEnumerator DevKitCloser()
-    {
-        yield return new WaitForSeconds(0.5f);
-        devKitOpen = true;
-    }
-
-    private IEnumerator DevKitOpener()
-    {
-        yield return new WaitForSeconds(0.5f);
-        devKitOpen = false;
-    }
-
+    
     public void PlayerSpeedInput()
     {
         int.TryParse(playerSpeed.text, out int input);

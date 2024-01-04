@@ -4,7 +4,6 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
-using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 public class InputHandler : MonoBehaviour
 {
@@ -36,27 +35,27 @@ public class InputHandler : MonoBehaviour
             GameManager.SharedInstance.AddPlayer(playerManager);
             Debug.Log("Player Joined: " + playerIndex.ToString());
 
-        playerControls.PlayerActionMap.Dash.performed += ctx => inputDashing = true;
-        playerControls.PlayerActionMap.Dash.canceled += ctx => inputDashing = false;
+            playerControls.PlayerActionMap.Dash.performed += ctx => inputDashing = true;
+            playerControls.PlayerActionMap.Dash.canceled += ctx => inputDashing = false;
 
-        playerControls.PlayerActionMap.Interaction.performed += ctx => inputInteracting = true;
-        playerControls.PlayerActionMap.Interaction.canceled += ctx => inputInteracting = false;
+            playerControls.PlayerActionMap.Interaction.performed += ctx => inputInteracting = true;
+            playerControls.PlayerActionMap.Interaction.canceled += ctx => inputInteracting = false;
 
-        playerControls.PlayerActionMap.PrimaryFire.performed += ctx => inputPrimaryFire = true;
-        playerControls.PlayerActionMap.PrimaryFire.canceled += ctx => inputPrimaryFire = false;
+            playerControls.PlayerActionMap.PrimaryFire.performed += ctx => inputPrimaryFire = true;
+            playerControls.PlayerActionMap.PrimaryFire.canceled += ctx => inputPrimaryFire = false;
 
-        playerControls.PlayerActionMap.SecondaryFire.performed += ctx => inputSecondaryFire = true;
-        playerControls.PlayerActionMap.SecondaryFire.canceled += ctx => inputSecondaryFire = false;
+            playerControls.PlayerActionMap.SecondaryFire.performed += ctx => inputSecondaryFire = true;
+            playerControls.PlayerActionMap.SecondaryFire.canceled += ctx => inputSecondaryFire = false;
 
-        playerControls.PlayerActionMap.Pause.performed += ctx => inputPause = true;
-        playerControls.PlayerActionMap.Pause.canceled += ctx => inputPause = false;
-    }
-
-    private void OnEnable()
-    {
+            playerControls.PlayerActionMap.Pause.performed += ctx => inputPause = true;
+            playerControls.PlayerActionMap.Pause.canceled += ctx => inputPause = false;
         }
-        playerControls.Enable();
     }
+
+    // private void OnEnable()
+    // {
+    //     playerControls.Enable();
+    // }
 
     private void OnDisable()
     {
