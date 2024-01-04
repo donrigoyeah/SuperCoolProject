@@ -203,6 +203,7 @@ public class PlayerAttacker : MonoBehaviour
             BH.bulletDamage = damage;
             bulletPoolGo.SetActive(true);
             Debug.Log("Moved to BulletHandler:");
+            BH.rb.velocity = Vector3.zero;
             BH.rb.velocity = lazerSpawnLocation.forward * bulletSpeed;
             //Rigidbody rb = bulletPoolGo.GetComponent<Rigidbody>();
             //if (rb != null)

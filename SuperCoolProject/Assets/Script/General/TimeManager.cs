@@ -15,22 +15,22 @@ public class TimeManager : MonoBehaviour
     [SerializeField] private int minutesinHour = 60;
     [SerializeField] private float timeBoost = 150f; //1min cycle completes in 25seconds
 
-    [Header("Light")] 
+    [Header("Light")]
     [SerializeField] private TextMeshProUGUI displayTime;
-    
+
     [Header("Light")]
     [SerializeField] private Light sun;
-    
+
     [Header("Colors")]
     [SerializeField] private Gradient nightToSunrise;
     [SerializeField] private Gradient sunriseToDay;
     [SerializeField] private Gradient dayToSunSet;
     [SerializeField] private Gradient sunsetToNight;
-    
+
     private void Update()
     {
         timeCounter += Time.deltaTime * timeBoost;
-        
+
         if (timeCounter >= secondsInMinutes)
         {
             minutes++;
@@ -43,10 +43,10 @@ public class TimeManager : MonoBehaviour
             minutes = 0;
             HourSettings(hours);
         }
-        
+
         DisplayTimeText();
     }
-    
+
     private void HourSettings(int hour)
     {
         if (hour == 6)
@@ -68,7 +68,7 @@ public class TimeManager : MonoBehaviour
             days++;
         }
     }
-    
+
     private IEnumerator ChangeColor(Gradient sunColor, float time, float initialSunIntensity, float finalSunIntensity)
     {
         for (float i = 0; i < time; i += Time.deltaTime)
@@ -79,10 +79,10 @@ public class TimeManager : MonoBehaviour
             yield return null;
         }
     }
-    
+
     private void DisplayTimeText()
     {
         string formattedTime = $"{hours:D2}:{minutes:D2}";
-        displayTime.text ="Day: " + days + "  Time: " + formattedTime;
+        displayTime.text = "Day: " + days + "\n" + formattedTime;
     }
 }

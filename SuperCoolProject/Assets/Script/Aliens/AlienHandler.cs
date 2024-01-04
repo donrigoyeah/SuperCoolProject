@@ -29,18 +29,39 @@ public class AlienHandler : MonoBehaviour
         fullyGrown
     }
 
-    [Header("Tick stats")]
-    public float tickTimer;
-    public float tickTimerMax = .5f;
+    [Header("This Alien")]
+    private Rigidbody rb;
+    private Collider coll;
+    public AlienAge currentAge;
+    public AlienState currentState;
+    public int currentSpecies;
+    public bool isFemale;
+    public float alienHealth;
+    public float lifeTime = 0;
+    public float lustTimer = 0;
+    public float hungerTimer = 0;
+    public float lustTimerThreshold = 5;
+    public int maxAmountOfBabies = 10;
+    public float hungerTimerThreshold = 5;
+    public RawImage currentStateIcon;
+    public Texture[] allStateIcons; // 0: eye, 1: crosshair, 2: wind, 3: heart, 4: shield
+    private Vector3 targetPosition = Vector3.one * 1000;
+
+    [Header("Target Alien")]
+    public GameObject closestAlien = null;
+    public GameObject lastClosestAlien = null;
+    private AlienHandler closestAlienHandler = null;
+    int closestAlienIndex;
 
     [Header("General AlienStuff")]
-    public float alienSpeed = 5;
-    public float lookRadius = 10;
     public GameObject[] alienSpecies; // 0:Sphere > 1:Square > 2:Triangle  
     public Material[] alienColors; // 0:Blue > 1:Green > 2:Red  
+    public Animation[] anim;
     public Renderer alienMiniMapMarker;
     public GameObject resourceSteamGO;
     public ParticleSystem resourceSteam;
+    public float alienSpeed = 5;
+    public float lookRadius = 10;
     private float delta;
     private float step;
     private int alienLifeResource = 1;
@@ -60,33 +81,9 @@ public class AlienHandler : MonoBehaviour
     public float dissolveRate = 0.0125f;
     public float refreshRate = 0.025f;
 
-    [Header("This Alien")]
-    public bool isFemale;
-    public int maxAmountOfBabies = 10;
-    public int currentSpecies;
-    public AlienState currentState;
-    public AlienAge currentAge;
-    Rigidbody rb;
-    Collider coll;
-    public RawImage currentStateIcon;
-    public Texture[] allStateIcons; // 0: eye, 1: crosshair, 2: wind, 3: heart, 4: shield
-    public float alienHealth;
-    public float lifeTime = 0;
-    public float lustTimer = 0;
-    public float hungerTimer = 0;
-    public float lustTimerThreshold = 5;
-    public float hungerTimerThreshold = 5;
-    Vector3 targetPosition = Vector3.one * 1000;
-    bool hasInteractedWithPlayer;
-
-    [Header("Target Alien")]
-    public GameObject closestAlien = null;
-    public GameObject lastClosestAlien = null;
-    AlienHandler closestAlienHandler = null;
-    int closestAlienIndex;
-
-
-    public Animation[] anim;
+    [Header("Tick stats")]
+    public float tickTimer;
+    public float tickTimerMax = .5f;
 
     #endregion
 
@@ -413,11 +410,10 @@ public class AlienHandler : MonoBehaviour
                 {
                     AlienHandler newBornAlien = alienPoolGo.GetComponent<AlienHandler>();
                     newBornAlien.currentSpecies = currentSpecies;
-                    alienPoolGo.SetActive(true);
-
-                    // TODO: Spawn them somewhere near, in the middle (?!)
+                    newBornAlien.ResetVariable(); // TODO: This is doubled and being triggered on awake. but bug showed wrong particle color so this will test it
                     float randomOffSet = (UnityEngine.Random.Range(0, 5) - 2) / 4;
                     alienPoolGo.transform.position = new Vector3(transform.position.x + randomOffSet, 0.5f, transform.position.z + randomOffSet) + Vector3.forward;
+                    alienPoolGo.SetActive(true);
                 }
             }
         }
@@ -619,7 +615,10 @@ public class AlienHandler : MonoBehaviour
             ma.startColor = Color.red;
             alienMiniMapMarker.material = alienColors[2];
         }
-        StartCoroutine(HandleAge());
+        if (this.gameObject.activeInHierarchy)
+        {
+            StartCoroutine(HandleAge());
+        }
     }
 
     void DisableRagdoll()
