@@ -110,7 +110,6 @@ public class PlayerAttacker : MonoBehaviour
             overheatUI.color = Color.Lerp(Color.green, Color.red, overheatUI.fillAmount / 0.70f);
             if (inputHandler.inputPrimaryFire && !playerManager.isCarryingPart && !PauseMenu.SharedInstance.isPaused)
             {
-                Debug.Log("3");
                 if (currentWeaponHeat > boostWeaponHeatThreshold)
                 {
                     Debug.Log("Code Explanation for Extra Damage");
@@ -339,22 +338,26 @@ public class PlayerAttacker : MonoBehaviour
         // Less resources on all the alien instances
         if (other.gameObject.CompareTag("Alien"))
         {
-            //bool hasInteractedWithPlayer = false;
+            bool hasInteractedWithPlayer = false;
 
-            //if (hasInteractedWithPlayer) { return; }
 
             AlienHandler AH = other.gameObject.GetComponent<AlienHandler>();
             if (AH.currentAge == AlienAge.resource)
             {
+                if (hasInteractedWithPlayer) { return; }
                 playerManager.HandleGainResource(AH.currentSpecies);
+                hasInteractedWithPlayer = true;
             }
             else
             {
-                playerManager.HandleHit();
-                Debug.Log("@Kinshuk: Maybe write a function on the alienHander like hanldeDeath that gets triggered here");
+                Debug.Log("Handle Hit");
+                if (hasInteractedWithPlayer) { return; }
                 other.gameObject.SetActive(false);
+                playerManager.HandleHit();
+                hasInteractedWithPlayer = true;
+                Debug.Log("@Kinshuk: Maybe write a function on the alienHander like hanldeDeath that gets triggered here");
             }
-            //hasInteractedWithPlayer = true;
+
         }
     }
     #endregion

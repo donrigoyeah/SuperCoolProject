@@ -10,7 +10,9 @@ public class PlayerManager : MonoBehaviour
 {
     [Header("Player Variables")]
     public float playerDetectionRadius = 10;
+    public float playerResourceScanRadius = 100;
     public Collider[] aliensInRange;
+    public Collider[] resourceInRange;
     public bool playerShield;
     public float shieldRechargeTime = 2;
     public bool isCarryingPart;
@@ -18,6 +20,7 @@ public class PlayerManager : MonoBehaviour
     public GameObject playerShieldGO;
     public bool isAlive;
     public bool isInteracting;
+    public float invincibleFrames = .5f;
 
     private Material dissolve;
     public float dissolveRate = 0.0125f;
@@ -34,6 +37,8 @@ public class PlayerManager : MonoBehaviour
     public bool sphereUnfolded = false;
     public bool squareUnfolded = false;
     public bool triangleUnfolded = false;
+    AlienHandler[] closestResource = new AlienHandler[] { null, null, null };  // 0:Sphere, 1:Square, 2:Triangle
+
 
     public float resourceDrain = .1f;
     public float resourceGain = 5;
@@ -44,6 +49,7 @@ public class PlayerManager : MonoBehaviour
     public GameObject ResourceUISphere;
     public GameObject ResourceUISquare;
     public GameObject ResourceUITriangle;
+    public GameObject[] closestResourceIndicator;  // 0:Sphere, 1:Square, 2:Triangle
 
     [Header("Audio")]
     [SerializeField] private AudioClip shieldRechargeAudio;
@@ -96,13 +102,17 @@ public class PlayerManager : MonoBehaviour
         // Enable UI Element
         // TODO: Check if all players are dead. otherwise maybe make deathscreen on playerHUD as well
 
+        if (GameManager.SharedInstance.currentCloneJuice < 0)
+        {
+            GameManager.SharedInstance.hasLost = true;
+            return;
+        }
+
         if (GameManager.SharedInstance.players.Count == 1)
         {
             GameManager.SharedInstance.DeathScreen.SetActive(true);
             GameManager.SharedInstance.DeathScreenCloneJuiceUI.fillAmount = GameManager.SharedInstance.currentCloneJuice / GameManager.SharedInstance.maxCloneJuice;
         }
-
-
 
         // Reset all resource variables back to max on new clone
         currentSphereResource = maxSphereResource;
@@ -113,6 +123,8 @@ public class PlayerManager : MonoBehaviour
 
     private void HandleAlienDetection()
     {
+        // TODO: This is possible quite cost intense!!!
+
         int layerMask = 1 << 9; // Lyer 9 is Alien
 
         aliensInRange = Physics.OverlapSphere(this.transform.position, playerDetectionRadius, layerMask);
@@ -120,21 +132,75 @@ public class PlayerManager : MonoBehaviour
         foreach (var item in aliensInRange)
         {
             AlienHandler AH = item.gameObject.GetComponent<AlienHandler>();
-            if (AH != null)
-            {
-                AH.closestAlien = this.gameObject;
+            if (AH.currentAge == AlienHandler.AlienAge.resource) { return; }
 
-                if (AH.currentAge != AlienHandler.AlienAge.fullyGrown)
-                {
-                    AH.HandleFleeing(this.gameObject); // this time its not an alienGO but the player
-                }
-                else if (AH.currentAge == AlienHandler.AlienAge.fullyGrown)
-                {
-                    AH.HandleAttacking(this.gameObject); // this time its not an alienGO but the player
-                }
+            AH.closestAlien = this.gameObject;
+
+            if (AH.currentAge == AlienHandler.AlienAge.fullyGrown)
+            {
+                AH.HandleAttacking(this.gameObject); // this time its not an alienGO but the player
+            }
+            else
+            {
+                AH.HandleFleeing(this.gameObject); // this time its not an alienGO but the player
             }
         }
     }
+
+    private void HandleResourceDetection(int neededResource)
+    {
+        // TODO: This is possible quite cost intense!!!
+        int layerMask = 1 << 9; // Lyer 9 is Alien
+        float distanceToResource = playerResourceScanRadius;
+
+        if (closestResource[neededResource] != null)
+        {
+            if (closestResource[neededResource].currentAge != AlienHandler.AlienAge.resource)
+            {
+                closestResource[neededResource] = null;
+                Debug.Log("Resource became unavailable");
+                return;
+            }
+            HandleResourceDetectionIndicator(closestResource[neededResource].transform.position, neededResource);
+        }
+        else
+        {
+            Debug.Log("Search for Closest Resource");
+            resourceInRange = Physics.OverlapSphere(this.transform.position, playerResourceScanRadius, layerMask);
+            foreach (var item in aliensInRange)
+            {
+                AlienHandler AH = item.gameObject.GetComponent<AlienHandler>();
+                if (AH.currentAge != AlienHandler.AlienAge.resource) { continue; }
+                if (AH.currentSpecies != neededResource) { continue; }
+
+                float tmpDistance = Vector3.Distance(AH.transform.position, this.transform.position);
+                Debug.Log("Distance to Resource: " + tmpDistance);
+                if (tmpDistance > distanceToResource) { continue; }
+
+                distanceToResource = tmpDistance;
+                closestResource[neededResource] = AH;
+                Debug.Log("Found Closest Resource");
+            }
+        }
+    }
+
+    private void HandleResourceDetectionIndicator(Vector3 targetResource, int neededResource)
+    {
+        Debug.Log("Enable Resource Indicator");
+
+        // 0:Sphere, 1:Square, 2:Triangle
+        closestResourceIndicator[neededResource].SetActive(true);
+        Vector3 targetRotation = targetResource - this.transform.position;
+        Quaternion rotation = Quaternion.LookRotation(targetRotation, Vector3.up);
+        closestResourceIndicator[neededResource].transform.rotation = rotation;
+    }
+
+    private void DeactivateResourceDetectionIndicator(int neededResource)
+    {
+        // 0:Sphere, 1:Square, 2:Triangle
+        closestResourceIndicator[neededResource].SetActive(false);
+    }
+
 
     private void HandleResource()
     {
@@ -147,6 +213,7 @@ public class PlayerManager : MonoBehaviour
         // Only show resource UI if below 75%
         if (currentSphereResource < 3 * maxSphereResource / 4)
         {
+            HandleResourceDetection(0);
             if (sphereUnfolded != true)
             {
                 StartCoroutine(UnfoldResource(ResourceUISphere, 50));
@@ -158,7 +225,7 @@ public class PlayerManager : MonoBehaviour
         {
             if (sphereUnfolded != false)
             {
-
+                DeactivateResourceDetectionIndicator(0);
                 StartCoroutine(FoldResource(ResourceUISphere));
                 sphereUnfolded = false;
                 //ResourceUISphere.SetActive(false);
@@ -168,6 +235,7 @@ public class PlayerManager : MonoBehaviour
         // Only show resource UI if below 75%
         if (currentSquareResource < 3 * maxSquareResource / 4)
         {
+            HandleResourceDetection(1);
             if (squareUnfolded != true)
             {
                 StartCoroutine(UnfoldResource(ResourceUISquare, 25));
@@ -179,6 +247,7 @@ public class PlayerManager : MonoBehaviour
         {
             if (squareUnfolded != false)
             {
+                DeactivateResourceDetectionIndicator(1);
                 StartCoroutine(FoldResource(ResourceUISquare));
                 squareUnfolded = false;
                 //ResourceUISquare.SetActive(false);
@@ -188,6 +257,7 @@ public class PlayerManager : MonoBehaviour
         // Only show resource UI if below 75%
         if (currentTriangleResource < 3 * maxTriangleResource / 4)
         {
+            HandleResourceDetection(2);
             if (triangleUnfolded != true)
             {
                 StartCoroutine(UnfoldResource(ResourceUITriangle, 0));
@@ -199,6 +269,7 @@ public class PlayerManager : MonoBehaviour
         {
             if (triangleUnfolded != false)
             {
+                DeactivateResourceDetectionIndicator(2);
                 StartCoroutine(FoldResource(ResourceUITriangle));
                 triangleUnfolded = false;
                 //ResourceUITriangle.SetActive(false);
@@ -282,10 +353,11 @@ public class PlayerManager : MonoBehaviour
                 GameManager.SharedInstance.DeathScreen.SetActive(false);
             }
 
-            GameManager.SharedInstance.HandleCloneJuiceDrain();
 
+            GameManager.SharedInstance.HandleCloneJuiceDrain();
             // TODO: Add Transition/ Fade to black/ camera shutter effect?!
             this.gameObject.transform.position = Vector3.zero;
+            isAlive = true;
         }
     }
 
