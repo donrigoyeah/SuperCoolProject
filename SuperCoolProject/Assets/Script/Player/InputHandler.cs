@@ -75,7 +75,6 @@ public class InputHandler : MonoBehaviour
 
     public void MoveInput(InputAction.CallbackContext ctx)
     {
-        Debug.Log("Should move");
         if (ctx.performed)
         {
             inputMovement = ctx.ReadValue<Vector2>();

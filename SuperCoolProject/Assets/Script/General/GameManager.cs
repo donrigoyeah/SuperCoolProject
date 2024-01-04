@@ -46,8 +46,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject map;
     [SerializeField] private PlayerInputManager playerInputManager;
     public List<PlayerManager> players;
-    public GameObject GameOverScreen;
     public Transform CameraFollowSpot; // For Cinemachine
+
+    public GameObject DeathScreen;
+    public GameObject GameOverScreen;
+    public Image DeathScreenCloneJuiceUI;
 
 
 
