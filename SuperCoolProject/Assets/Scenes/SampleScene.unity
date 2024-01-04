@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.1727685, g: 0.21589223, b: 0.29782578, a: 1}
+  m_IndirectSpecularColor: {r: 0.17276807, g: 0.21589197, b: 0.29782572, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4093,6 +4093,11 @@ MonoBehaviour:
   musicSlider: {fileID: 1749814452}
   sfxSlider: {fileID: 1274779574}
   myMixer: {fileID: 24100000, guid: 3067df7eb9e53804eb6bac7a7694931c, type: 2}
+  ResourceSphere: {fileID: 521918133}
+  ResourceSquare: {fileID: 521918133}
+  ResourceTriangle: {fileID: 521918133}
+  CloneJuice: {fileID: 521918133}
+  spaceShipParts: {fileID: 611607585}
   sphereKillCounter: {fileID: 7395736146297960181}
   squareKillCounter: {fileID: 7843412327415577885}
   triangleKillCounter: {fileID: 7695324479376580600}
@@ -14561,8 +14566,10 @@ MonoBehaviour:
   playerInputManager: {fileID: 1325170218}
   playerLocomotion: {fileID: 0}
   players: []
-  GameOverScreen: {fileID: 0}
   CameraFollowSpot: {fileID: 617314327}
+  DeathScreen: {fileID: 0}
+  GameOverScreen: {fileID: 0}
+  DeathScreenCloneJuiceUI: {fileID: 0}
 --- !u!1 &1821839598
 GameObject:
   m_ObjectHideFlags: 0

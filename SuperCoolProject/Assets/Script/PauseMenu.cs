@@ -98,6 +98,7 @@ public class PauseMenu : MonoBehaviour
         squareKillCounter.text = GameManager.SharedInstance.squareKilled.ToString();
         triangleKillCounter.text = GameManager.SharedInstance.triangleKilled.ToString();
 
+        // TODO: This only shows the stats of the first player / Maybe check which player opend the pause menu?!
         ResourceSphere.fillAmount = GameManager.SharedInstance.players[0].currentSphereResource / GameManager.SharedInstance.players[0].maxSphereResource;
         ResourceSquare.fillAmount = GameManager.SharedInstance.players[0].currentSquareResource / GameManager.SharedInstance.players[0].maxSquareResource;
         ResourceTriangle.fillAmount = GameManager.SharedInstance.players[0].currentTriangleResource / GameManager.SharedInstance.players[0].maxTriangleResource;

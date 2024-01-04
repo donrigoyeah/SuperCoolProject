@@ -1813,7 +1813,7 @@ GameObject:
   - component: {fileID: 294961784}
   - component: {fileID: 294961783}
   m_Layer: 0
-  m_Name: Fill
+  m_Name: Square Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3411,6 +3411,11 @@ MonoBehaviour:
   musicSlider: {fileID: 1749814452}
   sfxSlider: {fileID: 1274779574}
   myMixer: {fileID: 24100000, guid: 3067df7eb9e53804eb6bac7a7694931c, type: 2}
+  ResourceSphere: {fileID: 521918133}
+  ResourceSquare: {fileID: 294961783}
+  ResourceTriangle: {fileID: 1657384100}
+  CloneJuice: {fileID: 1291986191}
+  spaceShipParts: {fileID: 1962154445}
   sphereKillCounter: {fileID: 7395736146297960181}
   squareKillCounter: {fileID: 7843412327415577885}
   triangleKillCounter: {fileID: 7695324479376580600}
@@ -3465,7 +3470,7 @@ GameObject:
   - component: {fileID: 521918134}
   - component: {fileID: 521918133}
   m_Layer: 0
-  m_Name: Fill
+  m_Name: Sphere Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10171,7 +10176,7 @@ GameObject:
   - component: {fileID: 1291986192}
   - component: {fileID: 1291986191}
   m_Layer: 0
-  m_Name: Fill
+  m_Name: Clone Juice Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12331,7 +12336,7 @@ GameObject:
   - component: {fileID: 1657384101}
   - component: {fileID: 1657384100}
   m_Layer: 0
-  m_Name: Fill
+  m_Name: Triangle Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
