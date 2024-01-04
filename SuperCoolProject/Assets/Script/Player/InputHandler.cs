@@ -23,33 +23,48 @@ public class InputHandler : MonoBehaviour
     public bool isGamepad;
     public int playerIndex;
 
-    public void OnEnable()
+    //public void OnEnable()
+    //{
+    //    if (playerControls == null)
+    //    {
+    //        playerControls = new PlayerControls();
+
+    //        playerInput = GetComponent<PlayerInput>();
+    //        playerIndex = playerInput.playerIndex;
+    //        playerManager = GetComponent<PlayerManager>();
+    //        GameManager.SharedInstance.AddPlayer(playerManager);
+    //        Debug.Log("Player Joined: " + playerIndex.ToString());
+
+    //    playerControls.PlayerActionMap.Dash.performed += ctx => inputDashing = true;
+    //    playerControls.PlayerActionMap.Dash.canceled += ctx => inputDashing = false;
+
+    //    playerControls.PlayerActionMap.Interaction.performed += ctx => inputInteracting = true;
+    //    playerControls.PlayerActionMap.Interaction.canceled += ctx => inputInteracting = false;
+
+    //    playerControls.PlayerActionMap.PrimaryFire.performed += ctx => inputPrimaryFire = true;
+    //    playerControls.PlayerActionMap.PrimaryFire.canceled += ctx => inputPrimaryFire = false;
+
+    //    playerControls.PlayerActionMap.SecondaryFire.performed += ctx => inputSecondaryFire = true;
+    //    playerControls.PlayerActionMap.SecondaryFire.canceled += ctx => inputSecondaryFire = false;
+
+    //    playerControls.PlayerActionMap.Pause.performed += ctx => inputPause = true;
+    //    playerControls.PlayerActionMap.Pause.canceled += ctx => inputPause = false;
+    //}
+
+
+    private void OnEnable()
     {
         if (playerControls == null)
         {
             playerControls = new PlayerControls();
-
-            playerInput = GetComponent<PlayerInput>();
-            playerIndex = playerInput.playerIndex;
-            playerManager = GetComponent<PlayerManager>();
-            GameManager.SharedInstance.AddPlayer(playerManager);
-            Debug.Log("Player Joined: " + playerIndex.ToString());
-
-            playerControls.PlayerActionMap.Dash.performed += ctx => inputDashing = true;
-            playerControls.PlayerActionMap.Dash.canceled += ctx => inputDashing = false;
-
-            playerControls.PlayerActionMap.Interaction.performed += ctx => inputInteracting = true;
-            playerControls.PlayerActionMap.Interaction.canceled += ctx => inputInteracting = false;
-
-            playerControls.PlayerActionMap.PrimaryFire.performed += ctx => inputPrimaryFire = true;
-            playerControls.PlayerActionMap.PrimaryFire.canceled += ctx => inputPrimaryFire = false;
-
-            playerControls.PlayerActionMap.SecondaryFire.performed += ctx => inputSecondaryFire = true;
-            playerControls.PlayerActionMap.SecondaryFire.canceled += ctx => inputSecondaryFire = false;
-
-            playerControls.PlayerActionMap.Pause.performed += ctx => inputPause = true;
-            playerControls.PlayerActionMap.Pause.canceled += ctx => inputPause = false;
         }
+
+        playerInput = GetComponent<PlayerInput>();
+        playerIndex = playerInput.playerIndex;
+        playerManager = GetComponent<PlayerManager>();
+        GameManager.SharedInstance.AddPlayer(playerManager);
+        Debug.Log("Player Joined: " + playerIndex.ToString());
+        playerControls.Enable();
     }
 
     // private void OnEnable()
@@ -202,57 +217,4 @@ public class InputHandler : MonoBehaviour
         //playerControls.PlayerActionMap.Pause.performed += ctx => inputPause = true;
         //playerControls.PlayerActionMap.Pause.canceled += ctx => inputPause = false;
     }
-
-
-    //private void HandleInput()
-    //{
-    //    playerControls.PlayerActionMap.Movement.performed += ctx => inputMovement = ctx.ReadValue<Vector2>();
-    //    playerControls.PlayerActionMap.Aim.performed += ctx =>
-    //    {
-    //        inputAim = ctx.ReadValue<Vector2>();
-    //        if (ctx.control.device is Gamepad)
-    //        {
-    //            isGamepad = true;
-    //        }
-    //    };
-
-
-
-    //    playerControls.PlayerActionMap.Jump.performed += ctx => inputJumping = true;
-    //    playerControls.PlayerActionMap.Jump.canceled += ctx => inputJumping = false;
-
-    //    playerControls.PlayerActionMap.Dash.performed += ctx => inputDashing = true;
-    //    playerControls.PlayerActionMap.Dash.canceled += ctx => inputDashing = false;
-
-    //    playerControls.PlayerActionMap.Interaction.performed += ctx => inputInteracting = true;
-    //    playerControls.PlayerActionMap.Interaction.canceled += ctx => inputInteracting = false;
-
-    //    playerControls.PlayerActionMap.PrimaryFire.performed += ctx => inputPrimaryFire = true;
-    //    playerControls.PlayerActionMap.PrimaryFire.canceled += ctx => inputPrimaryFire = false;
-
-    //    playerControls.PlayerActionMap.SecondaryFire.performed += ctx => inputSecondaryFire = true;
-    //    playerControls.PlayerActionMap.SecondaryFire.canceled += ctx => inputSecondaryFire = false;
-
-    //    playerControls.PlayerActionMap.Pause.performed += ctx => inputPause = true;
-    //    playerControls.PlayerActionMap.Pause.canceled += ctx => inputPause = false;
-
-    //    playerControls.PlayerActionMap.DevKit.performed += ctx => inputDevKit = true;
-    //    playerControls.PlayerActionMap.DevKit.canceled += ctx => inputDevKit = false;
-    //}
-
-    //private void Update()
-    //{
-    //    if (playerControls == null)
-    //    {
-    //        playerControls = new PlayerControls();
-    //    }
-    //    else
-    //    {
-    //        HandleInput();
-    //    }
-    //}
-
-
-
-
 }

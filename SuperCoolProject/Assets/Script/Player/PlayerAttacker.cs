@@ -336,36 +336,26 @@ public class PlayerAttacker : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Moved this to player so alien script get shortend");
         // Less resources on all the alien instances
         if (other.gameObject.CompareTag("Alien"))
         {
+            //bool hasInteractedWithPlayer = false;
+
+            //if (hasInteractedWithPlayer) { return; }
+
             AlienHandler AH = other.gameObject.GetComponent<AlienHandler>();
             if (AH.currentAge == AlienAge.resource)
             {
                 playerManager.HandleGainResource(AH.currentSpecies);
             }
+            else
+            {
+                playerManager.HandleHit();
+                Debug.Log("@Kinshuk: Maybe write a function on the alienHander like hanldeDeath that gets triggered here");
+                other.gameObject.SetActive(false);
+            }
+            //hasInteractedWithPlayer = true;
         }
-
-        //if (hasInteractedWithPlayer == false)
-        //{
-        //    PlayerManager PM = other.gameObject.GetComponent<PlayerManager>();
-        //    // Handle Gathering resource
-        //    if (currentAge == AlienAge.resource)
-        //    {
-        //        // Check so script only runce once
-        //        hasInteractedWithPlayer = true;
-        //        PM.HandleGainResource(currentSpecies);
-        //        this.gameObject.SetActive(false);
-        //    }
-        //    else
-        //    {
-        //        hasInteractedWithPlayer = true;
-        //        PM.HandleHit();
-        //        this.gameObject.SetActive(false);
-        //    }
-        //}
-
     }
     #endregion
 

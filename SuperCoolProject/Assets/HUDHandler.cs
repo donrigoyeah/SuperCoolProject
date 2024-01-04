@@ -30,9 +30,12 @@ public class HUDHandler : MonoBehaviour
 
         if (lastInputTimer > timeThreshold)  // && HUDScaler.localScale != Vector3.one * .5f && !isResizing
         {
-            HUDScaler.localScale = Vector3.one * .5f;
+            //HUDScaler.localScale = Vector3.one * .5f;
             //TODO: Make it smooth
-            //StartCoroutine(ScaleDown());
+            if (HUDScaler.localScale == Vector3.one)
+            {
+                StartCoroutine(ScaleDown());
+            }
         }
     }
 
@@ -42,11 +45,11 @@ public class HUDHandler : MonoBehaviour
         if (lastInputTimer < minWaitDuration) return;
         lastInputTimer = 0;
 
-        if (HUDScaler.localScale != Vector3.one) // && !isResizing
+        if (HUDScaler.localScale == Vector3.one * .5f) // && !isResizing
         {
             HUDScaler.localScale = Vector3.one;
             //TODO: Make it smooth
-            //StartCoroutine(ScaleUp());
+            StartCoroutine(ScaleUp());
         }
         else
         {
@@ -77,7 +80,7 @@ public class HUDHandler : MonoBehaviour
         for (int i = 0; i < 10; i++)
         {
             yield return new WaitForSeconds(transitionDuration / 10);
-            HUDScaler.localScale = Vector3.one * .5f + Vector3.one * .5f * transitionDuration / 10;
+            HUDScaler.localScale = Vector3.one * .5f + Vector3.one * i * transitionDuration / 10;
         }
 
         isResizing = false;
@@ -90,7 +93,7 @@ public class HUDHandler : MonoBehaviour
         for (int i = 0; i < 10; i++)
         {
             yield return new WaitForSeconds(transitionDuration / 10);
-            HUDScaler.localScale = Vector3.one - Vector3.one * .5f * transitionDuration / 10;
+            HUDScaler.localScale = Vector3.one - Vector3.one * i * transitionDuration / 10;
         }
 
         isResizing = false;
