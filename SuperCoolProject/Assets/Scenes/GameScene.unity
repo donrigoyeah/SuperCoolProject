@@ -18784,7 +18784,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animationSteps: 100
-  animationDuration: 3
+  animationDuration: 1
   SpaceShipCanvas: {fileID: 1502285134}
   DamageParticlesGO: {fileID: 1980782423}
   ExhaustParticlesGO: {fileID: 1810522167}
