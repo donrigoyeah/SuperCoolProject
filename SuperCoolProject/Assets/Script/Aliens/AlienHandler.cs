@@ -9,7 +9,7 @@ using UnityEngine.UI;
 using UnityEngine.VFX;
 using Random = UnityEngine.Random;
 
-public class AlienHandler : MonoBehaviour 
+public class AlienHandler : MonoBehaviour
 {
     #region Variables
 
@@ -82,45 +82,18 @@ public class AlienHandler : MonoBehaviour
     public float dissolveRate = 0.0125f;
     public float refreshRate = 0.025f;
 
-    [Header("This Alien")]
-    public bool isFemale;
-    public int maxAmountOfBabies = 10;
-    public int currentSpecies;
-    public AlienState currentState;
-    public AlienAge currentAge;
-    Rigidbody rb;
-    Collider coll;
-    public RawImage currentStateIcon;
-    public Texture[] allStateIcons; // 0: eye, 1: crosshair, 2: wind, 3: heart, 4: shield
-    public float alienHealth;
-    public float lifeTime = 0;
-    public float lustTimer = 0;
-    public float hungerTimer = 0;
-    public float lustTimerThreshold = 5;
-    public float hungerTimerThreshold = 5;
-    Vector3 targetPosition = Vector3.one * 1000;
-    bool hasInteractedWithPlayer;
-
-    [Header("Target Alien")]
-    public GameObject closestAlien = null;
-    public GameObject lastClosestAlien = null;
-    AlienHandler closestAlienHandler = null;
-    int closestAlienIndex;
-    
     [Header("Alien Audio")]
     private bool playClipSpawned = false;
 
     [SerializeField] private AudioSource audioSource;
-    
-    [Header("Water Alien Audio")] 
+
+    [Header("Water Alien Audio")]
     [SerializeField] private AudioClip[] attackAudio;
     [SerializeField] private AudioClip[] dyingAudio;
     [SerializeField] private AudioClip[] beingAttackedAudio;
     [SerializeField] private AudioClip[] loveMakingAudio;
     [SerializeField] private AudioClip[] evadingAudio;
 
-
-    public Animation[] anim;
     [Header("Tick stats")]
     public float tickTimer;
     public float tickTimerMax = .5f;
@@ -139,7 +112,6 @@ public class AlienHandler : MonoBehaviour
         //if (coll == null) { coll = this.GetComponent<Collider>(); }
         ////DisableRagdoll();
         //coll.isTrigger = true;
-
     }
 
     private void OnEnable()
@@ -406,7 +378,7 @@ public class AlienHandler : MonoBehaviour
 
         HandleStateIcon(2); // 0: eye, 1: crosshair, 2: wind, 3: heart, 4: shield, 5: clock, 6: loader
         targetPosition = this.transform.position + (this.transform.position - targetAlien.transform.position);
-        
+
         if (!audioSource.isPlaying)
         {
             audioSource.PlayOneShot(RandomAudioSelector(evadingAudio), 1f);
@@ -425,7 +397,7 @@ public class AlienHandler : MonoBehaviour
         if (targetAlien.CompareTag("Player"))
         {
             HandleStateIcon(4); // 0: eye, 1: crosshair, 2: wind, 3: heart, 4: shield, 5: clock, 6: loader
-            
+
             if (!audioSource.isPlaying)
             {
                 audioSource.PlayOneShot(RandomAudioSelector(attackAudio), 1f);
@@ -454,8 +426,8 @@ public class AlienHandler : MonoBehaviour
         if (isFemale)
         {
             int amountOfBabies = UnityEngine.Random.Range(1, maxAmountOfBabies);
-            
-             RandomAudioSelector(loveMakingAudio);
+
+            RandomAudioSelector(loveMakingAudio);
 
             for (var i = 0; i < amountOfBabies; i++)
             {
@@ -588,17 +560,17 @@ public class AlienHandler : MonoBehaviour
         {
             // Cannot shoot resource
             if (currentAge == AlienAge.resource) { return; }
-            
+
             //Debug.Log("Handle Bullet damage to alien here");
             BulletHandler BH = other.gameObject.GetComponent<BulletHandler>();
             alienHealth -= BH.bulletDamage;
             // Needs to deactivate this here so it does not trigger multiple times
             // Maybe deactive the Collider on the Bullet and then make sure to enable it again if new spawned
-            
-             if (!audioSource.isPlaying)
-             {
-                 audioSource.PlayOneShot(RandomAudioSelector(beingAttackedAudio), 1f);
-             }
+
+            if (!audioSource.isPlaying)
+            {
+                audioSource.PlayOneShot(RandomAudioSelector(beingAttackedAudio), 1f);
+            }
 
             other.gameObject.SetActive(false);
 
@@ -748,5 +720,5 @@ public class AlienHandler : MonoBehaviour
 
         return selectedAudio;
     }
-    
+
 }
