@@ -12,6 +12,14 @@ public class SpaceShipGameAnimation : MonoBehaviour
     Vector3 startPosition = new Vector3(-260, 130, 15);
 
     public GameObject SpaceShipCanvas;
+    public GameObject DamageParticlesGO;
+    ParticleSystem DamageParticles;
+    private ParticleSystem.MainModule DamageParticlesMain;
+
+    public GameObject ExhaustParticlesGO;
+    ParticleSystem ExhaustParticles;
+    private ParticleSystem.MainModule ExhaustParticlesMain;
+
     [SerializeField] private PlayerInputManager playerInputManager;
 
 
@@ -19,6 +27,13 @@ public class SpaceShipGameAnimation : MonoBehaviour
     private void Awake()
     {
         this.transform.position = startPosition;
+
+        DamageParticles = DamageParticlesGO.GetComponent<ParticleSystem>();
+        DamageParticlesMain = DamageParticles.main;
+
+        ExhaustParticles = ExhaustParticlesGO.GetComponent<ParticleSystem>();
+        ExhaustParticlesMain = ExhaustParticles.main;
+
         SpaceShipCanvas.SetActive(false);
         playerInputManager.DisableJoining();
         StartCoroutine(CrashAnimation(animationDuration));
@@ -35,8 +50,17 @@ public class SpaceShipGameAnimation : MonoBehaviour
             elapsedTime += Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
+        // TODO: Add cameraShake
         this.transform.position = endPosition;
         SpaceShipCanvas.SetActive(true);
         playerInputManager.EnableJoining();
+
+        DamageParticlesGO.transform.rotation = Quaternion.Euler(-90, 90, 90);
+        DamageParticlesMain.startSpeed = 0.5f;
+        DamageParticlesMain.startLifetime = 6f;
+
+        ExhaustParticlesGO.transform.rotation = Quaternion.Euler(-90, 90, 90);
+        ExhaustParticlesMain.startSpeed = 0.5f;
+        ExhaustParticlesMain.startLifetime = 6f;
     }
 }

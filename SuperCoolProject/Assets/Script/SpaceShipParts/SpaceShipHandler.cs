@@ -2,10 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class SpaceShipHandler : MonoBehaviour
 {
     public ParticleSystem ParticleSystem;
+    [SerializeField] private PlayerInputManager playerInputManager;
+
 
     private void OnTriggerEnter(Collider other)
     {
