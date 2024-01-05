@@ -11349,6 +11349,12 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -20, y: -20}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1502285134 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1675704904367416502, guid: 04d1705c49be2ff449668c9f21cbf177,
+    type: 3}
+  m_PrefabInstance: {fileID: 1866789224722557377}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1535658790
 GameObject:
   m_ObjectHideFlags: 0
@@ -15025,6 +15031,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpaceShipCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 1675704904367416502, guid: 04d1705c49be2ff449668c9f21cbf177,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2532741127938772720, guid: 04d1705c49be2ff449668c9f21cbf177,
         type: 3}
       propertyPath: m_Name
@@ -15038,12 +15049,12 @@ PrefabInstance:
     - target: {fileID: 6825165279061734110, guid: 04d1705c49be2ff449668c9f21cbf177,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -260
       objectReference: {fileID: 0}
     - target: {fileID: 6825165279061734110, guid: 04d1705c49be2ff449668c9f21cbf177,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 130
       objectReference: {fileID: 0}
     - target: {fileID: 6825165279061734110, guid: 04d1705c49be2ff449668c9f21cbf177,
         type: 3}
@@ -15117,6 +15128,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddf4cdf00678c78408239dc7a9270b54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animationSteps: 100
+  animationDuration: 3
+  SpaceShipCanvas: {fileID: 1502285134}
+  playerInputManager: {fileID: 1325170218}
 --- !u!222 &2763850522474930616
 CanvasRenderer:
   m_ObjectHideFlags: 0
