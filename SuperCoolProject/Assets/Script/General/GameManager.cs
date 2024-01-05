@@ -45,9 +45,9 @@ public class GameManager : MonoBehaviour
     [Header("References")]
     [SerializeField] private GameObject map;
     [SerializeField] private PlayerInputManager playerInputManager;
-    [SerializeField] private PlayerLocomotion playerLocomotion;
     public List<PlayerManager> players;
     public Transform CameraFollowSpot; // For Cinemachine
+    public GameObject PlayerHUD;
 
     public GameObject DeathScreen;
     public GameObject GameOverScreen;
@@ -110,6 +110,7 @@ public class GameManager : MonoBehaviour
     {
         numberOfPlayers++;
         players.Add(pm);
+        PlayerHUD.SetActive(true);
 
         if (numberOfPlayers == maxPlayers)
         {

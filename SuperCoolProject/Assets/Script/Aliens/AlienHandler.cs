@@ -9,7 +9,7 @@ using UnityEngine.UI;
 using UnityEngine.VFX;
 using Random = UnityEngine.Random;
 
-public class AlienHandler : MonoBehaviour 
+public class AlienHandler : MonoBehaviour
 {
     #region Variables
 
@@ -121,7 +121,6 @@ public class AlienHandler : MonoBehaviour
         //if (coll == null) { coll = this.GetComponent<Collider>(); }
         ////DisableRagdoll();
         //coll.isTrigger = true;
-
     }
 
     private void Start()
@@ -396,7 +395,7 @@ public class AlienHandler : MonoBehaviour
 
         HandleStateIcon(2); // 0: eye, 1: crosshair, 2: wind, 3: heart, 4: shield, 5: clock, 6: loader
         targetPosition = this.transform.position + (this.transform.position - targetAlien.transform.position);
-        
+
         if (!audioSource.isPlaying)
         {
             // audioSource.PlayOneShot(RandomAudioSelector(waterEvadingAudio, currentSpecies), 1f);
@@ -415,7 +414,7 @@ public class AlienHandler : MonoBehaviour
         if (targetAlien.CompareTag("Player"))
         {
             HandleStateIcon(4); // 0: eye, 1: crosshair, 2: wind, 3: heart, 4: shield, 5: clock, 6: loader
-            
+
             if (!audioSource.isPlaying)
             {
                 audioSource.PlayOneShot(RandomAudioSelector(attackAudioList, currentSpecies), 1f);
@@ -578,7 +577,7 @@ public class AlienHandler : MonoBehaviour
         {
             // Cannot shoot resource
             if (currentAge == AlienAge.resource) { return; }
-            
+
             //Debug.Log("Handle Bullet damage to alien here");
             BulletHandler BH = other.gameObject.GetComponent<BulletHandler>();
             alienHealth -= BH.bulletDamage;
