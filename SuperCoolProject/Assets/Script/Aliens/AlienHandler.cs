@@ -30,18 +30,39 @@ public class AlienHandler : MonoBehaviour
         fullyGrown
     }
 
-    [Header("Tick stats")]
-    public float tickTimer;
-    public float tickTimerMax = .5f;
+    [Header("This Alien")]
+    private Rigidbody rb;
+    private Collider coll;
+    public AlienAge currentAge;
+    public AlienState currentState;
+    public int currentSpecies;
+    public bool isFemale;
+    public float alienHealth;
+    public float lifeTime = 0;
+    public float lustTimer = 0;
+    public float hungerTimer = 0;
+    public float lustTimerThreshold = 5;
+    public int maxAmountOfBabies = 10;
+    public float hungerTimerThreshold = 5;
+    public RawImage currentStateIcon;
+    public Texture[] allStateIcons; // 0: eye, 1: crosshair, 2: wind, 3: heart, 4: shield
+    private Vector3 targetPosition = Vector3.one * 1000;
+
+    [Header("Target Alien")]
+    public GameObject closestAlien = null;
+    public GameObject lastClosestAlien = null;
+    private AlienHandler closestAlienHandler = null;
+    int closestAlienIndex;
 
     [Header("General AlienStuff")]
-    public float alienSpeed = 5;
-    public float lookRadius = 10;
     public GameObject[] alienSpecies; // 0:Sphere > 1:Square > 2:Triangle  
     public Material[] alienColors; // 0:Blue > 1:Green > 2:Red  
+    public Animation[] anim;
     public Renderer alienMiniMapMarker;
     public GameObject resourceSteamGO;
     public ParticleSystem resourceSteam;
+    public float alienSpeed = 5;
+    public float lookRadius = 10;
     private float delta;
     private float step;
     private int alienLifeResource = 1;
@@ -100,6 +121,9 @@ public class AlienHandler : MonoBehaviour
 
 
     public Animation[] anim;
+    [Header("Tick stats")]
+    public float tickTimer;
+    public float tickTimerMax = .5f;
 
     #endregion
 
@@ -371,7 +395,6 @@ public class AlienHandler : MonoBehaviour
         currentState = AlienState.looking;
     }
 
-
     public void HandleFleeing(GameObject targetAlien)
     {
         // Add +1 so i is out of the lookradius
@@ -439,13 +462,12 @@ public class AlienHandler : MonoBehaviour
                 GameObject alienPoolGo = PoolManager.SharedInstance.GetPooledAliens();
                 if (alienPoolGo != null)
                 {
-                    AlienHandler newBornAlien;
-                    newBornAlien = alienPoolGo.GetComponent<AlienHandler>();
+                    AlienHandler newBornAlien = alienPoolGo.GetComponent<AlienHandler>();
                     newBornAlien.currentSpecies = currentSpecies;
+                    newBornAlien.ResetVariable(); // TODO: This is doubled and being triggered on awake. but bug showed wrong particle color so this will test it
+                    float randomOffSet = (UnityEngine.Random.Range(0, 5) - 2) / 4;
+                    alienPoolGo.transform.position = new Vector3(transform.position.x + randomOffSet, 0.5f, transform.position.z + randomOffSet) + Vector3.forward;
                     alienPoolGo.SetActive(true);
-
-                    // TODO: Spawn them somewhere near, in the middle (?!)
-                    alienPoolGo.transform.position = new Vector3(transform.position.x, 0.5f, transform.position.z) + Vector3.forward;
                 }
             }
         }
@@ -467,21 +489,21 @@ public class AlienHandler : MonoBehaviour
         currentAge = AlienAge.child;
         alienHealth = alienLifeChild;
         //transform.localScale = Vector3.one * .5f;
-        HandleGrowing(.2f, .5f);
+        StartCoroutine(HandleGrowing(.2f, .5f));
         yield return new WaitForSeconds(timeToSexual);
 
         // Sexual active Life
         currentAge = AlienAge.sexualActive;
         alienHealth = alienLifeSexual;
         //transform.localScale = Vector3.one;
-        HandleGrowing(.5f, 1f);
+        StartCoroutine(HandleGrowing(.5f, 1f));
         yield return new WaitForSeconds(timeToFullGrown);
 
         // Full Grown Life
         currentAge = AlienAge.fullyGrown;
         alienHealth = alienLifeFullGrown;
         //transform.localScale = Vector3.one * 1.2f;
-        HandleGrowing(1f, 1.2f);
+        StartCoroutine(HandleGrowing(1f, 1.2f));
     }
 
     private IEnumerator HandleGrowing(float oldFactor, float newFactor)
@@ -653,7 +675,10 @@ public class AlienHandler : MonoBehaviour
             ma.startColor = Color.red;
             alienMiniMapMarker.material = alienColors[2];
         }
-        StartCoroutine(HandleAge());
+        if (this.gameObject.activeInHierarchy)
+        {
+            StartCoroutine(HandleAge());
+        }
     }
 
     void DisableRagdoll()

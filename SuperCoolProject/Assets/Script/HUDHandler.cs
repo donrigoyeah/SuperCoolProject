@@ -10,10 +10,13 @@ public class HUDHandler : MonoBehaviour
     public int currentHUD;
     public GameObject[] HUDS;
     public RectTransform HUDScaler;
+    public Camera MiniMapCamera;
+    public float cameraZoomOut = 200; // TODO: This is entire Island. Maybe Have it follow the player instead
+    public float cameraZoomIn = 50;
 
     private float lastInputTimer;
     private float minWaitDuration = .5f;
-    private float timeThreshold = 1;
+    private float timeThreshold = 2;
     private bool isResizing = false;
     private float transitionDuration = .5f;
 
@@ -28,10 +31,8 @@ public class HUDHandler : MonoBehaviour
     {
         lastInputTimer += Time.deltaTime;
 
-        if (lastInputTimer > timeThreshold)  // && HUDScaler.localScale != Vector3.one * .5f && !isResizing
+        if (lastInputTimer > timeThreshold)
         {
-            //HUDScaler.localScale = Vector3.one * .5f;
-            //TODO: Make it smooth
             if (HUDScaler.localScale == Vector3.one)
             {
                 StartCoroutine(ScaleDown());
@@ -45,16 +46,16 @@ public class HUDHandler : MonoBehaviour
         if (lastInputTimer < minWaitDuration) return;
         lastInputTimer = 0;
 
-        if (HUDScaler.localScale == Vector3.one * .5f) // && !isResizing
+        if (HUDScaler.localScale != Vector3.one)
         {
-            HUDScaler.localScale = Vector3.one;
-            //TODO: Make it smooth
             StartCoroutine(ScaleUp());
+            if (currentHUD == 1) { StartCoroutine(MiniMapCameraZoomOut()); } // Is MiniMap
         }
         else
         {
             currentHUD++;
-            if (currentHUD == HUDS.Length) { currentHUD = 0; }
+            if (currentHUD == 1) { StartCoroutine(MiniMapCameraZoomOut()); } // Is MiniMap
+            else if (currentHUD == HUDS.Length) { currentHUD = 0; } // loop back to 0
             EnableCurrentHUD(currentHUD);
         }
     }
@@ -73,11 +74,21 @@ public class HUDHandler : MonoBehaviour
         HUDS[index].SetActive(true);
     }
 
+    IEnumerator MiniMapCameraZoomOut()
+    {
+        int zoomiSteps = 40;
+        for (int i = 0; i <= zoomiSteps; i++)
+        {
+            yield return new WaitForSeconds(timeThreshold / zoomiSteps);
+            MiniMapCamera.orthographicSize = cameraZoomIn + ((cameraZoomOut - cameraZoomIn) * i / zoomiSteps);
+        }
+    }
+
     IEnumerator ScaleUp()
     {
         isResizing = true;
 
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i <= 10; i++)
         {
             yield return new WaitForSeconds(transitionDuration / 10);
             HUDScaler.localScale = Vector3.one * .5f + Vector3.one * i * transitionDuration / 10;
@@ -90,7 +101,7 @@ public class HUDHandler : MonoBehaviour
     {
         isResizing = true;
 
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i <= 10; i++)
         {
             yield return new WaitForSeconds(transitionDuration / 10);
             HUDScaler.localScale = Vector3.one - Vector3.one * i * transitionDuration / 10;

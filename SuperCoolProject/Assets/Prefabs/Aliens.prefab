@@ -5374,8 +5374,8 @@ MonoBehaviour:
   resourceSteamGO: {fileID: 4705887365241048240}
   resourceSteam: {fileID: 3915903878569315107}
   timeToChild: 10
-  timeToSexual: 1
-  timeToFullGrown: 1
+  timeToSexual: 2
+  timeToFullGrown: 5
   dissolve: {fileID: 2100000, guid: d5b2fb1daa206294894f6eea03c042e4, type: 2}
   skinRenderer1: {fileID: 8215740853866470798}
   skinRenderer2: {fileID: 8202699833278670185}

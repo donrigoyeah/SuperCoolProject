@@ -110,7 +110,6 @@ public class PlayerAttacker : MonoBehaviour
             overheatUI.color = Color.Lerp(Color.green, Color.red, overheatUI.fillAmount / 0.70f);
             if (inputHandler.inputPrimaryFire && !playerManager.isCarryingPart && !PauseMenu.SharedInstance.isPaused)
             {
-                Debug.Log("3");
                 if (currentWeaponHeat > boostWeaponHeatThreshold)
                 {
                     Debug.Log("Code Explanation for Extra Damage");
@@ -204,6 +203,7 @@ public class PlayerAttacker : MonoBehaviour
             BH.bulletDamage = damage;
             bulletPoolGo.SetActive(true);
             Debug.Log("Moved to BulletHandler:");
+            BH.rb.velocity = Vector3.zero;
             BH.rb.velocity = lazerSpawnLocation.forward * bulletSpeed;
             //Rigidbody rb = bulletPoolGo.GetComponent<Rigidbody>();
             //if (rb != null)
@@ -339,10 +339,6 @@ public class PlayerAttacker : MonoBehaviour
         // Less resources on all the alien instances
         if (other.gameObject.CompareTag("Alien"))
         {
-            //bool hasInteractedWithPlayer = false;
-
-            //if (hasInteractedWithPlayer) { return; }
-
             AlienHandler AH = other.gameObject.GetComponent<AlienHandler>();
             if (AH.currentAge == AlienAge.resource)
             {
@@ -350,11 +346,11 @@ public class PlayerAttacker : MonoBehaviour
             }
             else
             {
+                Debug.Log("Handle Hit");
                 playerManager.HandleHit();
                 Debug.Log("@Kinshuk: Maybe write a function on the alienHander like hanldeDeath that gets triggered here");
-                other.gameObject.SetActive(false);
             }
-            //hasInteractedWithPlayer = true;
+            other.gameObject.SetActive(false);
         }
     }
     #endregion
