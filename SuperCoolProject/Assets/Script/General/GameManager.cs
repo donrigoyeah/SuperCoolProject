@@ -150,7 +150,6 @@ public class GameManager : MonoBehaviour
 
         if (hasFuelCanister)
         {
-            Debug.Log("worked");
             foreach (var item in players)
             {
                 item.GetComponent<PlayerLocomotion>().playerSpeed = 13f;

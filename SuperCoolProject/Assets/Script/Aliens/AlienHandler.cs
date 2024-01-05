@@ -7,8 +7,9 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 using UnityEngine.VFX;
+using Random = UnityEngine.Random;
 
-public class AlienHandler : MonoBehaviour
+public class AlienHandler : MonoBehaviour 
 {
     #region Variables
 
@@ -84,6 +85,18 @@ public class AlienHandler : MonoBehaviour
     public GameObject lastClosestAlien = null;
     AlienHandler closestAlienHandler = null;
     int closestAlienIndex;
+    
+    [Header("Alien Audio")]
+    private bool playClipSpawned = false;
+
+    [SerializeField] private AudioSource audioSource;
+    
+    [Header("Water Alien Audio")] 
+    [SerializeField] private AudioClip[] attackAudio;
+    [SerializeField] private AudioClip[] dyingAudio;
+    [SerializeField] private AudioClip[] beingAttackedAudio;
+    [SerializeField] private AudioClip[] loveMakingAudio;
+    [SerializeField] private AudioClip[] evadingAudio;
 
 
     public Animation[] anim;
@@ -92,6 +105,9 @@ public class AlienHandler : MonoBehaviour
 
     private void Awake()
     {
+        // GameObject audioManagerObject = GameObject.Find("AudioManager");
+        // audioSource = audioManagerObject.GetComponent<AudioSource>();
+
         //ResetVariable();
         //DisgardClosestAlien();
         //ActivateCurrentModels(currentSpecies);
@@ -179,7 +195,6 @@ public class AlienHandler : MonoBehaviour
         }
         // Finaly process movement
         HandleMovement(step);
-
     }
 
     public void HandleLooking()
@@ -368,6 +383,11 @@ public class AlienHandler : MonoBehaviour
 
         HandleStateIcon(2); // 0: eye, 1: crosshair, 2: wind, 3: heart, 4: shield, 5: clock, 6: loader
         targetPosition = this.transform.position + (this.transform.position - targetAlien.transform.position);
+        
+        if (!audioSource.isPlaying)
+        {
+            audioSource.PlayOneShot(RandomAudioSelector(evadingAudio), 1f);
+        }
         //Debug.Log("Escaping Vecotr: " + targetPosition);
         //Debug.DrawLine(this.transform.position, this.transform.position + (this.transform.position - targetAlien.transform.position), Color.green);
     } // Use this here on the player as well to scare the aliens away
@@ -382,6 +402,11 @@ public class AlienHandler : MonoBehaviour
         if (targetAlien.CompareTag("Player"))
         {
             HandleStateIcon(4); // 0: eye, 1: crosshair, 2: wind, 3: heart, 4: shield, 5: clock, 6: loader
+            
+            if (!audioSource.isPlaying)
+            {
+                audioSource.PlayOneShot(RandomAudioSelector(attackAudio), 1f);
+            }
         }
         else
         {
@@ -406,6 +431,8 @@ public class AlienHandler : MonoBehaviour
         if (isFemale)
         {
             int amountOfBabies = UnityEngine.Random.Range(1, maxAmountOfBabies);
+            
+             RandomAudioSelector(loveMakingAudio);
 
             for (var i = 0; i < amountOfBabies; i++)
             {
@@ -539,12 +566,18 @@ public class AlienHandler : MonoBehaviour
         {
             // Cannot shoot resource
             if (currentAge == AlienAge.resource) { return; }
-
+            
             //Debug.Log("Handle Bullet damage to alien here");
             BulletHandler BH = other.gameObject.GetComponent<BulletHandler>();
             alienHealth -= BH.bulletDamage;
             // Needs to deactivate this here so it does not trigger multiple times
             // Maybe deactive the Collider on the Bullet and then make sure to enable it again if new spawned
+            
+             if (!audioSource.isPlaying)
+             {
+                 audioSource.PlayOneShot(RandomAudioSelector(beingAttackedAudio), 1f);
+             }
+
             other.gameObject.SetActive(false);
 
 
@@ -663,6 +696,7 @@ public class AlienHandler : MonoBehaviour
             }
         }
         dissolve.SetFloat("_DissolveAmount", 0);
+        audioSource.PlayOneShot(RandomAudioSelector(dyingAudio), 1f);
         this.gameObject.SetActive(false);
 
         switch (currentSpecies)
@@ -679,4 +713,15 @@ public class AlienHandler : MonoBehaviour
         }
 
     }
+
+    AudioClip RandomAudioSelector(AudioClip[] audioArray) // incase we plan to add more audio for each state
+    {
+        // TODO: think of something to have ot play an audio only 50% of the time?
+        int random = UnityEngine.Random.Range(0, audioArray.Length);
+        AudioClip selectedAudio = audioArray[random];
+        // AudioClip selectedAudio = audioArray[currentSpecies][random];
+
+        return selectedAudio;
+    }
+    
 }

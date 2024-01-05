@@ -423,9 +423,15 @@ MonoBehaviour:
   isInteracting: 0
   dissolveRate: 0.0125
   refreshRate: 0.025
+  maxSphereResource: 100
+  maxSquareResource: 100
+  maxTriangleResource: 100
   currentSphereResource: 100
   currentSquareResource: 100
   currentTriangleResource: 100
+  sphereUnfolded: 0
+  squareUnfolded: 0
+  triangleUnfolded: 0
   resourceDrain: 0.02
   resourceGain: 20
   resourcePieCharts:
@@ -435,8 +441,6 @@ MonoBehaviour:
   ResourceUISphere: {fileID: 4379426908928487387}
   ResourceUISquare: {fileID: 5059296771400489165}
   ResourceUITriangle: {fileID: 5180734292164752012}
-  DeathScreen: {fileID: 0}
-  DeathScreenCloneJuiceUI: {fileID: 0}
   shieldRechargeAudio: {fileID: 8300000, guid: 7c4072b1b16aa7c47ac7c00b4e89bc31, type: 3}
   shieldBreakAudio: {fileID: 8300000, guid: ed490b7c5f0392e4eb9d586baf5045a8, type: 3}
   deathAudio: {fileID: 8300000, guid: fb8cde1c02d901c48bff064d2c4a6a2b, type: 3}
@@ -1767,7 +1771,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ce922caf2a96b7648876de7aa5cef3e2, type: 2}
+  - {fileID: 2100000, guid: d5b2fb1daa206294894f6eea03c042e4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
