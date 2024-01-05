@@ -5358,10 +5358,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92d37729e291b4349b07b3bdacec80ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tickTimer: 0
-  tickTimerMax: 0.5
-  alienSpeed: 3
-  lookRadius: 10
+  currentAge: 0
+  currentState: 0
+  currentSpecies: 0
+  isFemale: 0
+  alienHealth: 0
+  lifeTime: 0
+  lustTimer: 0
+  hungerTimer: 0
+  lustTimerThreshold: 10
+  maxAmountOfBabies: 3
+  hungerTimerThreshold: 2
+  currentStateIcon: {fileID: 3589108659310432011}
+  allStateIcons:
+  - {fileID: 2800000, guid: 779c3e5de35892b4bb177dc04da3ab35, type: 3}
+  - {fileID: 2800000, guid: d20a338ebe5736440a9348e60610879b, type: 3}
+  - {fileID: 2800000, guid: e48dc123625ca1140b78149f448e8a65, type: 3}
+  - {fileID: 2800000, guid: 8e4964368d2561a4cbf316a5ef35fd36, type: 3}
+  - {fileID: 2800000, guid: 1cc0d735338a78849b58c8881c86f4aa, type: 3}
+  - {fileID: 2800000, guid: 5f2b6bd99efada040b7a9a5f0a909fac, type: 3}
+  - {fileID: 2800000, guid: 2ddc0a0c158f6354985b0c000189f295, type: 3}
+  closestAlien: {fileID: 0}
+  lastClosestAlien: {fileID: 0}
   alienSpecies:
   - {fileID: 8329259287624427090}
   - {fileID: 6981288141397108614}
@@ -5370,9 +5388,15 @@ MonoBehaviour:
   - {fileID: 2100000, guid: bd93952cbcfb3e643989a7b2336965d5, type: 2}
   - {fileID: 2100000, guid: 8c5530671ba218743894b79eac0e24c8, type: 2}
   - {fileID: 2100000, guid: 50e87ee599495614d9103dc7be4d5128, type: 2}
+  anim:
+  - {fileID: 5963850295929243108}
+  - {fileID: 1449686039756169074}
+  - {fileID: 4000616983802165593}
   alienMiniMapMarker: {fileID: 2548553898403178801}
   resourceSteamGO: {fileID: 4705887365241048240}
   resourceSteam: {fileID: 3915903878569315107}
+  alienSpeed: 3
+  lookRadius: 10
   timeToChild: 10
   timeToSexual: 2
   timeToFullGrown: 5
@@ -5386,48 +5410,30 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 50e87ee599495614d9103dc7be4d5128, type: 2}
   dissolveRate: 0.3
   refreshRate: 0.0025
-  isFemale: 0
-  maxAmountOfBabies: 3
-  currentSpecies: 0
-  currentState: 0
-  currentAge: 0
-  currentStateIcon: {fileID: 3589108659310432011}
-  allStateIcons:
-  - {fileID: 2800000, guid: 779c3e5de35892b4bb177dc04da3ab35, type: 3}
-  - {fileID: 2800000, guid: d20a338ebe5736440a9348e60610879b, type: 3}
-  - {fileID: 2800000, guid: e48dc123625ca1140b78149f448e8a65, type: 3}
-  - {fileID: 2800000, guid: 8e4964368d2561a4cbf316a5ef35fd36, type: 3}
-  - {fileID: 2800000, guid: 1cc0d735338a78849b58c8881c86f4aa, type: 3}
-  - {fileID: 2800000, guid: 5f2b6bd99efada040b7a9a5f0a909fac, type: 3}
-  - {fileID: 2800000, guid: 2ddc0a0c158f6354985b0c000189f295, type: 3}
-  alienHealth: 0
-  lifeTime: 0
-  lustTimer: 0
-  hungerTimer: 0
-  lustTimerThreshold: 10
-  hungerTimerThreshold: 2
-  closestAlien: {fileID: 0}
-  lastClosestAlien: {fileID: 0}
   audioSource: {fileID: 7896665144413220727}
-  attackAudio:
+  waterAttackAudio:
   - {fileID: 8300000, guid: 897389d0c6f60f442a0b38dc2caec62d, type: 3}
   - {fileID: 8300000, guid: 68ef82fb747120e428b77558dc1ca803, type: 3}
-  dyingAudio:
+  waterDyingAudio:
   - {fileID: 8300000, guid: 94d13dcb3e3f97f4782522d363079c3e, type: 3}
   - {fileID: 8300000, guid: 8825a3ce22f12c4478ec30d1e1afbb4c, type: 3}
-  beingAttackedAudio:
+  waterBeingAttackedAudio:
   - {fileID: 8300000, guid: 69b264261d1dba146898b4a56e413a4d, type: 3}
   - {fileID: 8300000, guid: f19c7784b774b0444a6f4b27987cac04, type: 3}
-  loveMakingAudio:
+  waterLoveMakingAudio:
   - {fileID: 8300000, guid: e6c212c295b917c409f9107a638daf90, type: 3}
   - {fileID: 8300000, guid: 70bc1e62da40974429e8d3d29000c524, type: 3}
-  evadingAudio:
+  waterEvadingAudio:
   - {fileID: 8300000, guid: f7ef59f3b41c32647958cf0c640b1ad4, type: 3}
   - {fileID: 8300000, guid: 404aa2f2cdd6d27468dbfd17bba63b7e, type: 3}
-  anim:
-  - {fileID: 5963850295929243108}
-  - {fileID: 1449686039756169074}
-  - {fileID: 4000616983802165593}
+  oxygenAttackAudio:
+  - {fileID: 8300000, guid: 6c2381c38c8baa14faa81ad1e11b7a7e, type: 3}
+  - {fileID: 8300000, guid: 7dd9f251e7d47c34aba2dd661ee0b757, type: 3}
+  meatAttackAudio:
+  - {fileID: 8300000, guid: 2eff191479af41246a4d7eb9b333d66f, type: 3}
+  - {fileID: 8300000, guid: 766cf36c0c2d0e94b92f41b168d79f1a, type: 3}
+  tickTimer: 0
+  tickTimerMax: 0.5
 --- !u!65 &4775806378367602359
 BoxCollider:
   m_ObjectHideFlags: 0
