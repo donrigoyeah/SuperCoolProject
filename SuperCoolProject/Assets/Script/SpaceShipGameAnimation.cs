@@ -20,7 +20,8 @@ public class SpaceShipGameAnimation : MonoBehaviour
     ParticleSystem ExhaustParticles;
     private ParticleSystem.MainModule ExhaustParticlesMain;
 
-    [SerializeField] private PlayerInputManager playerInputManager;
+    public PlayerInputManager playerInputManager;
+    public GameObject TutorialGameObject;
 
 
 
@@ -62,5 +63,7 @@ public class SpaceShipGameAnimation : MonoBehaviour
         ExhaustParticlesGO.transform.rotation = Quaternion.Euler(-90, 90, 90);
         ExhaustParticlesMain.startSpeed = 0.5f;
         ExhaustParticlesMain.startLifetime = 6f;
+
+        TutorialGameObject.SetActive(true);
     }
 }
