@@ -43,6 +43,7 @@ public class PlayerLocomotion : MonoBehaviour
     private PlayerInput playerInput;
     private PlayerManager playerManager;
     private InputHandler inputHandler;
+    private Animator playerAnim;
 
     [Header("Audio")]
     [SerializeField] private AudioClip footstepAudio;
@@ -55,6 +56,7 @@ public class PlayerLocomotion : MonoBehaviour
         controller = GetComponent<CharacterController>();
         inputHandler = GetComponent<InputHandler>();
         playerManager = GetComponent<PlayerManager>();
+        playerAnim = GetComponentInChildren<Animator>();
     }
 
     void Update()
@@ -64,8 +66,13 @@ public class PlayerLocomotion : MonoBehaviour
         {
             if (inputHandler.inputMovement != Vector2.zero && !playerManager.isInteracting)
             {
+                playerAnim.SetBool("IsWalking", true);
                 Movement();
                 Rotation();
+            }
+            else
+            {
+                playerAnim.SetBool("IsWalking", false);
             }
 
             if (inputHandler.inputJumping && isJumping)

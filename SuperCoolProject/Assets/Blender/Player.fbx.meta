@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: cfeb425fbc4b9ba48bb91865eee95221
+guid: 6c349d905fa95d54882b16457121704a
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -33,18 +33,18 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Armature|IDLE
-      takeName: Armature|IDLE
-      internalID: 2876981554226286365
+      name: Player|IDLE
+      takeName: Armature.003|Armature|Armature|IDLE
+      internalID: 4947595773608714909
       firstFrame: 0
-      lastFrame: 28
+      lastFrame: 17
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
-      loop: 1
+      loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -62,18 +62,18 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Armature|WALK
-      takeName: Armature|WALK
-      internalID: 4540250025106317447
+      name: Player|WALK
+      takeName: Armature.003|Armature|Armature|WALK
+      internalID: 401134647482039442
       firstFrame: 0
-      lastFrame: 40
+      lastFrame: 12
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
-      loop: 1
+      loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -151,11 +151,11 @@ ModelImporter:
     globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
-    hasExtraRoot: 1
+    hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1
-  animationType: 1
+  animationType: 2
   humanoidOversampling: 1
   avatarSetup: 0
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
