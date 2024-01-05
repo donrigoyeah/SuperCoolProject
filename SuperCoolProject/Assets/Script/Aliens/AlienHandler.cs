@@ -81,50 +81,32 @@ public class AlienHandler : MonoBehaviour
     public Material[] orignalMaterial;
     public float dissolveRate = 0.0125f;
     public float refreshRate = 0.025f;
-
-    [Header("This Alien")]
-    public bool isFemale;
-    public int maxAmountOfBabies = 10;
-    public int currentSpecies;
-    public AlienState currentState;
-    public AlienAge currentAge;
-    Rigidbody rb;
-    Collider coll;
-    public RawImage currentStateIcon;
-    public Texture[] allStateIcons; // 0: eye, 1: crosshair, 2: wind, 3: heart, 4: shield
-    public float alienHealth;
-    public float lifeTime = 0;
-    public float lustTimer = 0;
-    public float hungerTimer = 0;
-    public float lustTimerThreshold = 5;
-    public float hungerTimerThreshold = 5;
-    Vector3 targetPosition = Vector3.one * 1000;
-    bool hasInteractedWithPlayer;
-
-    [Header("Target Alien")]
-    public GameObject closestAlien = null;
-    public GameObject lastClosestAlien = null;
-    AlienHandler closestAlienHandler = null;
-    int closestAlienIndex;
     
     [Header("Alien Audio")]
     private bool playClipSpawned = false;
-
     [SerializeField] private AudioSource audioSource;
     
+
     [Header("Water Alien Audio")] 
-    [SerializeField] private AudioClip[] attackAudio;
-    [SerializeField] private AudioClip[] dyingAudio;
-    [SerializeField] private AudioClip[] beingAttackedAudio;
-    [SerializeField] private AudioClip[] loveMakingAudio;
-    [SerializeField] private AudioClip[] evadingAudio;
+    [SerializeField] private AudioClip[] waterAttackAudio;
+    [SerializeField] private AudioClip[] waterDyingAudio;
+    [SerializeField] private AudioClip[] waterBeingAttackedAudio;
+    [SerializeField] private AudioClip[] waterLoveMakingAudio;
+    [SerializeField] private AudioClip[] waterEvadingAudio;
 
+    [Header("Oxygen Alien Audio")] 
+    [SerializeField] private AudioClip[] oxygenAttackAudio;
 
-    public Animation[] anim;
+    [Header("Meat Alien Audio")] 
+    [SerializeField] private AudioClip[] meatAttackAudio;
+    
+    [Header("Array of all alien state")] 
+    private List<AudioClip[]> attackAudioList = new List<AudioClip[]>();
+    
     [Header("Tick stats")]
     public float tickTimer;
     public float tickTimerMax = .5f;
-
+    
     #endregion
 
     private void Awake()
@@ -140,6 +122,14 @@ public class AlienHandler : MonoBehaviour
         ////DisableRagdoll();
         //coll.isTrigger = true;
 
+    }
+
+    private void Start()
+    {
+        attackAudioList.Add(waterAttackAudio);
+        attackAudioList.Add(oxygenAttackAudio);
+        attackAudioList.Add(meatAttackAudio);
+        
     }
 
     private void OnEnable()
@@ -409,7 +399,7 @@ public class AlienHandler : MonoBehaviour
         
         if (!audioSource.isPlaying)
         {
-            audioSource.PlayOneShot(RandomAudioSelector(evadingAudio), 1f);
+            // audioSource.PlayOneShot(RandomAudioSelector(waterEvadingAudio, currentSpecies), 1f);
         }
         //Debug.Log("Escaping Vecotr: " + targetPosition);
         //Debug.DrawLine(this.transform.position, this.transform.position + (this.transform.position - targetAlien.transform.position), Color.green);
@@ -428,7 +418,7 @@ public class AlienHandler : MonoBehaviour
             
             if (!audioSource.isPlaying)
             {
-                audioSource.PlayOneShot(RandomAudioSelector(attackAudio), 1f);
+                audioSource.PlayOneShot(RandomAudioSelector(attackAudioList, currentSpecies), 1f);
             }
         }
         else
@@ -455,7 +445,7 @@ public class AlienHandler : MonoBehaviour
         {
             int amountOfBabies = UnityEngine.Random.Range(1, maxAmountOfBabies);
             
-             RandomAudioSelector(loveMakingAudio);
+            // RandomAudioSelector(waterLoveMakingAudio, currentSpecies);
 
             for (var i = 0; i < amountOfBabies; i++)
             {
@@ -597,7 +587,7 @@ public class AlienHandler : MonoBehaviour
             
              if (!audioSource.isPlaying)
              {
-                 audioSource.PlayOneShot(RandomAudioSelector(beingAttackedAudio), 1f);
+                 // audioSource.PlayOneShot(RandomAudioSelector(waterBeingAttackedAudio, currentSpecies), 1f);
              }
 
             other.gameObject.SetActive(false);
@@ -721,7 +711,7 @@ public class AlienHandler : MonoBehaviour
             }
         }
         dissolve.SetFloat("_DissolveAmount", 0);
-        audioSource.PlayOneShot(RandomAudioSelector(dyingAudio), 1f);
+        // audioSource.PlayOneShot(RandomAudioSelector(waterDyingAudio, currentSpecies), 1f);
         this.gameObject.SetActive(false);
 
         switch (currentSpecies)
@@ -739,14 +729,29 @@ public class AlienHandler : MonoBehaviour
 
     }
 
-    AudioClip RandomAudioSelector(AudioClip[] audioArray) // incase we plan to add more audio for each state
+    // AudioClip RandomAudioSelector(AudioClip[][] audioArray, int state) // incase we plan to add more audio for each state
+    // {
+    //     // TODO: think of something to have ot play an audio only 50% of the time?
+    //     
+    //     int random = UnityEngine.Random.Range(0,audioArray[state].Length);
+    //     AudioClip selectedAudio = audioArray[state][random];
+    //
+    //     return selectedAudio;
+    //     // AudioClip selectedAudio = audioArray[currentSpecies][random];
+    //
+    // }
+    
+    AudioClip RandomAudioSelector(List<AudioClip[]> audioList, int state) // incase we plan to add more audio for each state
     {
         // TODO: think of something to have ot play an audio only 50% of the time?
-        int random = UnityEngine.Random.Range(0, audioArray.Length);
-        AudioClip selectedAudio = audioArray[random];
-        // AudioClip selectedAudio = audioArray[currentSpecies][random];
+
+        AudioClip[] selectedAudioArray = audioList[state];
+
+        int randomIndex = Random.Range(0, selectedAudioArray.Length);
+        AudioClip selectedAudio = selectedAudioArray[randomIndex];
 
         return selectedAudio;
+        // AudioClip selectedAudio = audioArray[currentSpecies][random];
+
     }
-    
 }
