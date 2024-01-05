@@ -56,6 +56,8 @@ public class AlienHandler : MonoBehaviour
 
     [Header("General AlienStuff")]
     public GameObject[] alienSpecies; // 0:Sphere > 1:Square > 2:Triangle  
+    public GameObject[] alienSpeciesChild; // 0:Sphere > 1:Square > 2:Triangle  
+    public GameObject[] alienSpeciesAdult; // 0:Sphere > 1:Square > 2:Triangle  
     public Material[] alienColors; // 0:Blue > 1:Green > 2:Red  
     public Animation[] anim;
     public Renderer alienMiniMapMarker;
@@ -81,32 +83,32 @@ public class AlienHandler : MonoBehaviour
     public Material[] orignalMaterial;
     public float dissolveRate = 0.0125f;
     public float refreshRate = 0.025f;
-    
+
     [Header("Alien Audio")]
     private bool playClipSpawned = false;
     [SerializeField] private AudioSource audioSource;
-    
 
-    [Header("Water Alien Audio")] 
+
+    [Header("Water Alien Audio")]
     [SerializeField] private AudioClip[] waterAttackAudio;
     [SerializeField] private AudioClip[] waterDyingAudio;
     [SerializeField] private AudioClip[] waterBeingAttackedAudio;
     [SerializeField] private AudioClip[] waterLoveMakingAudio;
     [SerializeField] private AudioClip[] waterEvadingAudio;
 
-    [Header("Oxygen Alien Audio")] 
+    [Header("Oxygen Alien Audio")]
     [SerializeField] private AudioClip[] oxygenAttackAudio;
 
-    [Header("Meat Alien Audio")] 
+    [Header("Meat Alien Audio")]
     [SerializeField] private AudioClip[] meatAttackAudio;
-    
-    [Header("Array of all alien state")] 
+
+    [Header("Array of all alien state")]
     private List<AudioClip[]> attackAudioList = new List<AudioClip[]>();
-    
+
     [Header("Tick stats")]
     public float tickTimer;
     public float tickTimerMax = .5f;
-    
+
     #endregion
 
     private void Awake()
@@ -128,7 +130,7 @@ public class AlienHandler : MonoBehaviour
         attackAudioList.Add(waterAttackAudio);
         attackAudioList.Add(oxygenAttackAudio);
         attackAudioList.Add(meatAttackAudio);
-        
+
     }
 
     private void OnEnable()
@@ -443,7 +445,7 @@ public class AlienHandler : MonoBehaviour
         if (isFemale)
         {
             int amountOfBabies = UnityEngine.Random.Range(1, maxAmountOfBabies);
-            
+
             // RandomAudioSelector(waterLoveMakingAudio, currentSpecies);
 
             for (var i = 0; i < amountOfBabies; i++)
@@ -468,6 +470,9 @@ public class AlienHandler : MonoBehaviour
     {
         // Resource Life
         resourceSteamGO.SetActive(true);
+
+        alienSpeciesChild[currentSpecies].SetActive(true);
+        alienSpeciesAdult[currentSpecies].SetActive(false);
         currentAge = AlienAge.resource;
         alienHealth = alienLifeResource;
         transform.localScale = Vector3.one * 0.2f;
@@ -477,8 +482,8 @@ public class AlienHandler : MonoBehaviour
         resourceSteamGO.SetActive(false);
         currentAge = AlienAge.child;
         alienHealth = alienLifeChild;
-        //transform.localScale = Vector3.one * .5f;
-        StartCoroutine(HandleGrowing(.2f, .5f));
+        alienSpeciesChild[currentSpecies].SetActive(false);
+        alienSpeciesAdult[currentSpecies].SetActive(true);
         yield return new WaitForSeconds(timeToSexual);
 
         // Sexual active Life
@@ -583,11 +588,11 @@ public class AlienHandler : MonoBehaviour
             alienHealth -= BH.bulletDamage;
             // Needs to deactivate this here so it does not trigger multiple times
             // Maybe deactive the Collider on the Bullet and then make sure to enable it again if new spawned
-            
-             if (!audioSource.isPlaying)
-             {
-                 // audioSource.PlayOneShot(RandomAudioSelector(waterBeingAttackedAudio, currentSpecies), 1f);
-             }
+
+            if (!audioSource.isPlaying)
+            {
+                // audioSource.PlayOneShot(RandomAudioSelector(waterBeingAttackedAudio, currentSpecies), 1f);
+            }
 
             other.gameObject.SetActive(false);
 
@@ -739,7 +744,7 @@ public class AlienHandler : MonoBehaviour
     //     // AudioClip selectedAudio = audioArray[currentSpecies][random];
     //
     // }
-    
+
     AudioClip RandomAudioSelector(List<AudioClip[]> audioList, int state) // incase we plan to add more audio for each state
     {
         // TODO: think of something to have ot play an audio only 50% of the time?
