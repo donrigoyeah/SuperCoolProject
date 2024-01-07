@@ -23,6 +23,17 @@ public class GameManager : MonoBehaviour
     public float currentCloneJuice;
     public float maxCloneJuice;
 
+    [Header("Cops & Taxes")]
+    public bool hasBeenServed = false;
+    public int paidFine = 0;
+    public bool isFineEvading = false;
+    public int currentFineRequested;
+    public List<CopHandler> currentCops;
+    public GameObject CopCar;
+    public GameObject CopScreenGO;
+    public TextMeshProUGUI fineDescribtion;
+    public TextMeshProUGUI fineCost;
+
     [Header("SpaceshipParts")]
     public GameObject SpaceShipPart;
     public Transform SpaceShipPartContainer;
@@ -48,12 +59,11 @@ public class GameManager : MonoBehaviour
     public List<PlayerManager> players;
     public Transform CameraFollowSpot; // For Cinemachine
     public GameObject PlayerHUD;
+    public CopScreenHandler CopScreenHandler;
 
     public GameObject DeathScreen;
     public GameObject GameOverScreen;
     public Image DeathScreenCloneJuiceUI;
-
-
 
     private void Awake()
     {
@@ -64,16 +74,6 @@ public class GameManager : MonoBehaviour
         spaceShipPartsDisplay.text = currentSpaceShipParts.ToString() + "/" + totalSpaceShipParts.ToString();
         currentCloneJuice = maxCloneJuice;
         cloneJuiceUI.fillAmount = currentCloneJuice / maxCloneJuice;
-    }
-
-    public void HandleCloneJuiceDrain()
-    {
-        currentCloneJuice -= cloneCost;
-        cloneJuiceUI.fillAmount = currentCloneJuice / maxCloneJuice;
-        if (currentCloneJuice < 0)
-        {
-            HandleLoss();
-        }
     }
 
     private void FixedUpdate()
@@ -106,6 +106,8 @@ public class GameManager : MonoBehaviour
     }
 
 
+    #region Handle Add Players
+
     public void AddPlayer(PlayerManager pm)
     {
         numberOfPlayers++;
@@ -117,6 +119,36 @@ public class GameManager : MonoBehaviour
             playerInputManager.DisableJoining();
         }
     }
+
+    public void HandleCloneJuiceDrain()
+    {
+        currentCloneJuice -= cloneCost;
+        cloneJuiceUI.fillAmount = currentCloneJuice / maxCloneJuice;
+        if (currentCloneJuice < 0)
+        {
+            HandleLoss();
+        }
+    }
+
+    #endregion
+
+    #region Handle Game State
+
+    private void HandleWin()
+    {
+        Debug.Log("Player won");
+    }
+
+    private void HandleLoss()
+    {
+        Debug.Log("You Lost");
+        hasLost = true;
+        GameOverScreen.SetActive(true);
+    }
+
+    #endregion
+
+    #region Handle SpaceShip Parts
 
     private void HandleSpawnShipParts()
     {
@@ -165,17 +197,58 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void HandleWin()
+
+    #endregion
+
+    #region Handle Cops
+
+    public void HandleSpawnCopCar(int copAmount)
     {
-        Debug.Log("Player won");
+        hasBeenServed = false;
+
+        currentFineRequested = (sphereKilled + squareKilled + triangleKilled) * 50;
+        fineCost.text = currentFineRequested.ToString();
+        fineDescribtion.text = "You killed " + sphereKilled + squareKilled + triangleKilled + " Aliens";
+
+        GameObject CurrentCopCar = Instantiate(CopCar);
+
+        if (CurrentCopCar.transform.position.y <= 0)
+        {
+            for (var i = 0; i < copAmount; i++)
+            {
+                GameObject copPoolGo = PoolManager.SharedInstance.GetPooledCop();
+                if (copPoolGo != null)
+                {
+                    copPoolGo.transform.position = lazerSpawnLocation.position;
+                    CopHandler CH = copPoolGo.GetComponent<CopHandler>();
+                    CH.isAggro = false;
+
+                }
+            }
+        }
+
     }
 
-    private void HandleLoss()
+    public void FineServed()
     {
-        Debug.Log("You Lost");
-        hasLost = true;
-        GameOverScreen.SetActive(true);
+        hasBeenServed = true;
     }
+
+    public void FinePay()
+    {
+        paidFine += currentFineRequested;
+    }
+
+    public void FineNotPaying()
+    {
+        isFineEvading = true;
+        foreach (var cop in currentCops)
+        {
+            cop.isAggro = true;
+        }
+    }
+
+    #endregion
 
     // TODO: Handle stuff like day/night cycle here
     // Handle spaceship parts collected

@@ -200,17 +200,11 @@ public class PlayerAttacker : MonoBehaviour
             bulletPoolGo.transform.position = lazerSpawnLocation.position;
             bulletPoolGo.transform.rotation = lazerSpawnLocation.rotation;
             BulletHandler BH = bulletPoolGo.GetComponent<BulletHandler>();
+            BH.isPlayerBullet = true;
             BH.bulletDamage = damage;
             bulletPoolGo.SetActive(true);
-            Debug.Log("Moved to BulletHandler:");
             BH.rb.velocity = Vector3.zero;
             BH.rb.velocity = lazerSpawnLocation.forward * bulletSpeed;
-            //Rigidbody rb = bulletPoolGo.GetComponent<Rigidbody>();
-            //if (rb != null)
-            //{
-            //    rb.velocity = lazerSpawnLocation.forward * bulletSpeed;
-            //}
-
         }
         GameObject muzzlePoolGo = PoolManager.SharedInstance.GetPooledMuzzle();
         if (muzzlePoolGo != null)

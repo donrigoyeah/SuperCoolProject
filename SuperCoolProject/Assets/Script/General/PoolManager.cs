@@ -40,6 +40,24 @@ public class PoolManager : MonoBehaviour
     public List<GameObject> MuzzlePool;
     public GameObject MuzzleContainer;
 
+    [Header("Cops")]
+    public int copAmount;
+    public List<GameObject> CopPool;
+    public GameObject Cop;
+    public GameObject CopContainer;
+
+    [Header("Cop Bullets")]
+    public int copBulletAmount;
+    public List<GameObject> CopBulletPool;
+    public GameObject CopBullet;
+    public GameObject CopBulletContainer;
+
+    [Header("Cop Muzzle Flash")]
+    public int copMuzzleAmount;
+    public GameObject copMuzzle;
+    public List<GameObject> CopMuzzlePool;
+    public GameObject CopMuzzleContainer;
+
     [Header("Foot Step Smoke")]
     public int FSSAmount;
     public List<GameObject> FSSPool;
@@ -49,14 +67,22 @@ public class PoolManager : MonoBehaviour
     private void Awake()
     {
         SharedInstance = this;
+        // Alien Stuff
         AlienPooling();
+
+        // Player Stuff
         BulletPooling();
         BulletExpPooling();
         MuzzlePooling();
-        FSSPooling();
+        FSSPooling(); // FootStepSmoke
+
+        // Cop Stuff
+        CopPooling();
+        CopBulletPooling();
+        CopMuzzlePooling();
     }
 
-    #region AlienPooling
+    #region Alien Pooling
     public GameObject GetPooledAliens()
     {
         // Debug.Log("Code Explanation for AlienPooling");
@@ -114,7 +140,7 @@ public class PoolManager : MonoBehaviour
     }
     #endregion
 
-    #region BulletPooling
+    #region Bullet Pooling
     public GameObject GetPooledBullets()
     {
         for (int i = 0; i < bulletAmount; i++)
@@ -200,6 +226,96 @@ public class PoolManager : MonoBehaviour
             tmp.transform.SetParent(MuzzleContainer.transform);
             tmp.SetActive(false);
             MuzzlePool.Add(tmp);
+        }
+    }
+    #endregion
+
+    #region Cop Pooling
+    public GameObject GetPooledCop()
+    {
+        for (int i = 0; i < copAmount; i++)
+        {
+            if (!CopPool[i].activeInHierarchy)
+            {
+                return CopPool[i];
+            }
+        }
+
+        return null;
+    }
+
+    private void CopPooling()
+    {
+        CopPool = new List<GameObject>();
+        GameObject tmp;
+        for (int i = 0; i < copAmount; i++)
+        {
+            tmp = Instantiate(Cop);
+            tmp.transform.SetParent(CopContainer.transform);
+            tmp.SetActive(false);
+            CopPool.Add(tmp);
+        }
+    }
+    #endregion
+
+    #region Cop Bullet Pooling
+    public GameObject GetPooledCopBullets()
+    {
+        for (int i = 0; i < copBulletAmount; i++)
+        {
+            if (!CopBulletPool[i].activeInHierarchy)
+            {
+                return CopBulletPool[i];
+            }
+        }
+
+        // Add only when no more are available
+        Debug.Log("Add additionl alien to the pool");
+        GameObject tmp;
+        tmp = Instantiate(CopBullet);
+        tmp.transform.SetParent(CopBulletContainer.transform);
+        CopBulletPool.Add(tmp);
+        copBulletAmount++;
+        return tmp;
+    }
+    private void CopBulletPooling()
+    {
+        CopBulletPool = new List<GameObject>();
+        GameObject tmp;
+        for (int i = 0; i < copBulletAmount; i++)
+        {
+            tmp = Instantiate(CopBullet);
+            tmp.transform.SetParent(CopBulletContainer.transform);
+            tmp.SetActive(false);
+            CopBulletPool.Add(tmp);
+        }
+    }
+    #endregion
+
+    #region Cop Muzzle Pooling
+    public GameObject GetPooledCopMuzzle()
+    {
+        for (int i = 0; i < copMuzzleAmount; i++)
+        {
+            if (!CopMuzzlePool[i].activeInHierarchy)
+            {
+                return CopMuzzlePool[i];
+            }
+        }
+
+        return null;
+    }
+
+    private void CopMuzzlePooling()
+    {
+        CopMuzzlePool = new List<GameObject>();
+        GameObject tmp;
+        for (int i = 0; i < copMuzzleAmount; i++)
+        {
+            tmp = Instantiate(copMuzzle);
+            tmp.transform.SetParent(CopMuzzleContainer.transform);
+            tmp.SetActive(false);
+            CopMuzzlePool.Add(tmp);
         }
     }
     #endregion
