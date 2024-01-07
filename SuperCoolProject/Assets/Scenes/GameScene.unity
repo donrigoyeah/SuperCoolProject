@@ -2336,7 +2336,7 @@ GameObject:
   - component: {fileID: 322605005}
   - component: {fileID: 322605004}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: Fine Description
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5751,9 +5751,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1794483521}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: FinePay
+      - m_Target: {fileID: 648900137}
+        m_TargetAssemblyTypeName: CopManager, Assembly-CSharp
+        m_MethodName: FineServed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5763,9 +5763,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1794483521}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: FineServed
+      - m_Target: {fileID: 648900137}
+        m_TargetAssemblyTypeName: CopManager, Assembly-CSharp
+        m_MethodName: FinePay
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6610,6 +6610,62 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 639037782}
   m_CullTransparentMesh: 1
+--- !u!1 &648900135
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 648900136}
+  - component: {fileID: 648900137}
+  m_Layer: 0
+  m_Name: CopManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &648900136
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 648900135}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 890592820}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &648900137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 648900135}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 595f6de336028e545895bcad93d48eb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hasBeenServed: 0
+  paidFine: 0
+  isFineEvading: 0
+  currentFineRequested: 0
+  currentCops: []
+  CopCar: {fileID: 225413343758127419, guid: 38e21f0f9e6817f4c82d159291768793, type: 3}
+  CopCarCurrent: {fileID: 0}
+  CopScreenGO: {fileID: 681135233}
+  fineDescribtion: {fileID: 322605004}
+  fineCost: {fileID: 628767546}
+  costPerKill: 50
+  copCarSpeed: 30
 --- !u!1 &663558759
 GameObject:
   m_ObjectHideFlags: 0
@@ -6785,7 +6841,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &681135234
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9012,10 +9068,11 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 454318530}
-  - {fileID: 1544536867}
-  - {fileID: 1794483520}
   - {fileID: 1325170217}
+  - {fileID: 1794483520}
+  - {fileID: 1544536867}
+  - {fileID: 454318530}
+  - {fileID: 648900136}
   - {fileID: 351517390}
   - {fileID: 851505486}
   m_Father: {fileID: 0}
@@ -13564,7 +13621,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: You owe your last planet some taxes
+  m_text: 'You naughty person:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -16754,126 +16811,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1759578256}
   m_CullTransparentMesh: 1
---- !u!1 &1762925746
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1762925751}
-  - component: {fileID: 1762925750}
-  - component: {fileID: 1762925749}
-  - component: {fileID: 1762925748}
-  - component: {fileID: 1762925747}
-  m_Layer: 0
-  m_Name: CopCar
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &1762925747
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1762925746}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c82e78fbfbfcce347a9b6020d4df2558, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!136 &1762925748
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1762925746}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
---- !u!23 &1762925749
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1762925746}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &1762925750
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1762925746}
-  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &1762925751
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1762925746}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.7, y: 3.9, z: -0.6797962}
-  m_LocalScale: {x: 5, y: 5, z: 5}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1766635288
 GameObject:
   m_ObjectHideFlags: 0
@@ -17091,15 +17028,6 @@ MonoBehaviour:
   cloneCost: 20
   currentCloneJuice: 0
   maxCloneJuice: 100
-  hasBeenServed: 0
-  paidFine: 0
-  isFineEvading: 0
-  currentFineRequested: 0
-  currentCops: []
-  CopCar: {fileID: 0}
-  CopScreenGO: {fileID: 0}
-  fineDescribtion: {fileID: 0}
-  fineCost: {fileID: 0}
   SpaceShipPart: {fileID: 621607558053313764, guid: 3bf27bdc90cd48e4c87d44d31e595876,
     type: 3}
   SpaceShipPartContainer: {fileID: 122145116}
@@ -17124,7 +17052,6 @@ MonoBehaviour:
   players: []
   CameraFollowSpot: {fileID: 617314327}
   PlayerHUD: {fileID: 1413876526}
-  CopScreenHandler: {fileID: 0}
   DeathScreen: {fileID: 703073541}
   GameOverScreen: {fileID: 872527411}
   DeathScreenCloneJuiceUI: {fileID: 668524824}
@@ -17766,9 +17693,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1794483521}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: FineNotPaying
+      - m_Target: {fileID: 648900137}
+        m_TargetAssemblyTypeName: CopManager, Assembly-CSharp
+        m_MethodName: FineServed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -17778,9 +17705,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1794483521}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: FineServed
+      - m_Target: {fileID: 648900137}
+        m_TargetAssemblyTypeName: CopManager, Assembly-CSharp
+        m_MethodName: FineNotPaying
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -20915,4 +20842,3 @@ SceneRoots:
   - {fileID: 506797201}
   - {fileID: 890592820}
   - {fileID: 1175532132}
-  - {fileID: 1762925751}

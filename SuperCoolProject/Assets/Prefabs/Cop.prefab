@@ -54,7 +54,7 @@ MonoBehaviour:
   copHealthCurrent: 0
   copHealthMax: 100
   copSpeed: 5
-  attackRange: 10
+  attackRange: 12
   leftGun: {fileID: 3303449995781016168}
   rightGun: {fileID: 7866437030150991179}
   fireRate: 0.5
@@ -385,10 +385,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.8537064
-  m_Height: 1.7074132
+  m_Radius: 1
+  m_Height: 1
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!4 &6779755372947315871 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: fadce4d7baa58ec45b944121f3be8b62,

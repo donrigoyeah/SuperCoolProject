@@ -46,6 +46,13 @@ public class BulletHandler : MonoBehaviour
                 {
                     CH.copHealthCurrent -= bulletDamage;
                 }
+
+                // Aggro all cops
+                foreach (var item in CopManager.SharedInstance.currentCops)
+                {
+                    item.isAggro = true;
+                }
+
             }
 
             this.gameObject.SetActive(false);
@@ -53,6 +60,11 @@ public class BulletHandler : MonoBehaviour
         else if (isPlayerBullet == false) // Cop Bullet
         {
             if (other.CompareTag("Cop")) { return; }
+            if (other.CompareTag("Player"))
+            {
+                Debug.Log("Got hit by cop");
+                other.gameObject.GetComponent<PlayerManager>().HandleHit();
+            }
         }
         // TODO: Make cop Bullet Explosion
 

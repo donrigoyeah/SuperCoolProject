@@ -23,17 +23,6 @@ public class GameManager : MonoBehaviour
     public float currentCloneJuice;
     public float maxCloneJuice;
 
-    [Header("Cops & Taxes")]
-    public bool hasBeenServed = false;
-    public int paidFine = 0;
-    public bool isFineEvading = false;
-    public int currentFineRequested;
-    public List<CopHandler> currentCops;
-    public GameObject CopCar;
-    public GameObject CopScreenGO;
-    public TextMeshProUGUI fineDescribtion;
-    public TextMeshProUGUI fineCost;
-
     [Header("SpaceshipParts")]
     public GameObject SpaceShipPart;
     public Transform SpaceShipPartContainer;
@@ -59,7 +48,6 @@ public class GameManager : MonoBehaviour
     public List<PlayerManager> players;
     public Transform CameraFollowSpot; // For Cinemachine
     public GameObject PlayerHUD;
-    public CopScreenHandler CopScreenHandler;
 
     public GameObject DeathScreen;
     public GameObject GameOverScreen;
@@ -67,14 +55,15 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        players = new List<PlayerManager>();
         SharedInstance = this;
+        players = new List<PlayerManager>();
         HandleSpawnShipParts();
         currentSpaceShipParts = 0;
         spaceShipPartsDisplay.text = currentSpaceShipParts.ToString() + "/" + totalSpaceShipParts.ToString();
         currentCloneJuice = maxCloneJuice;
         cloneJuiceUI.fillAmount = currentCloneJuice / maxCloneJuice;
     }
+
 
     private void FixedUpdate()
     {
@@ -200,55 +189,7 @@ public class GameManager : MonoBehaviour
 
     #endregion
 
-    #region Handle Cops
 
-    public void HandleSpawnCopCar(int copAmount)
-    {
-        hasBeenServed = false;
-
-        currentFineRequested = (sphereKilled + squareKilled + triangleKilled) * 50;
-        fineCost.text = currentFineRequested.ToString();
-        fineDescribtion.text = "You killed " + sphereKilled + squareKilled + triangleKilled + " Aliens";
-
-        GameObject CurrentCopCar = Instantiate(CopCar);
-
-        if (CurrentCopCar.transform.position.y <= 0)
-        {
-            for (var i = 0; i < copAmount; i++)
-            {
-                GameObject copPoolGo = PoolManager.SharedInstance.GetPooledCop();
-                if (copPoolGo != null)
-                {
-                    copPoolGo.transform.position = lazerSpawnLocation.position;
-                    CopHandler CH = copPoolGo.GetComponent<CopHandler>();
-                    CH.isAggro = false;
-
-                }
-            }
-        }
-
-    }
-
-    public void FineServed()
-    {
-        hasBeenServed = true;
-    }
-
-    public void FinePay()
-    {
-        paidFine += currentFineRequested;
-    }
-
-    public void FineNotPaying()
-    {
-        isFineEvading = true;
-        foreach (var cop in currentCops)
-        {
-            cop.isAggro = true;
-        }
-    }
-
-    #endregion
 
     // TODO: Handle stuff like day/night cycle here
     // Handle spaceship parts collected

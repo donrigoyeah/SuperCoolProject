@@ -9,7 +9,7 @@ public class CopHandler : MonoBehaviour
     public bool canShoot;
     public float copHealthCurrent;
     public float copHealthMax = 100;
-    public float copSpeed = 10;
+    public float copSpeed = 5;
     public float attackRange = 10;
 
     PlayerManager closestPlayer;
@@ -19,7 +19,7 @@ public class CopHandler : MonoBehaviour
 
     public float fireRate = .5f;
     public float fireTimer = 0;
-    public float copBulletSpeed = 10;
+    public float copBulletSpeed = 30;
     public float copBulletDamage = 10;
     private bool leftRightSwitch;
 
@@ -78,7 +78,15 @@ public class CopHandler : MonoBehaviour
     {
         if (closestPlayer == null) { return; }
 
-        float step = (copSpeed) * Time.deltaTime;
+        float step = copSpeed * Time.deltaTime;
+
+        if (CopManager.SharedInstance.hasBeenServed == true && isAggro == false)
+        {
+            transform.LookAt(CopCar.transform.position, Vector3.up);
+            transform.position = Vector3.MoveTowards(transform.position, CopCar.transform.position, step);
+            return;
+        }
+
         transform.LookAt(closestPlayer.transform.position, Vector3.up);
 
         if (Vector3.Distance(this.transform.position, closestPlayer.transform.position) > attackRange)
@@ -87,9 +95,9 @@ public class CopHandler : MonoBehaviour
         }
         else
         {
-            if (GameManager.SharedInstance.hasBeenServed == false)
+            if (CopManager.SharedInstance.hasBeenServed == false)
             {
-                GameManager.SharedInstance.CopScreenGO.SetActive(true);
+                CopManager.SharedInstance.CopScreenGO.SetActive(true);
             }
             canShoot = true;
         }
@@ -120,6 +128,7 @@ public class CopHandler : MonoBehaviour
     private void HandleDeath()
     {
         // TODO: Make nicer
+        CopManager.SharedInstance.currentCops.Remove(this);
         this.gameObject.SetActive(false);
     }
 
@@ -133,9 +142,10 @@ public class CopHandler : MonoBehaviour
             BulletHandler BH = copBulletPoolGo.GetComponent<BulletHandler>();
             BH.bulletDamage = copBulletDamage;
             BH.isPlayerBullet = false;
-            copBulletPoolGo.SetActive(true);
             BH.rb.velocity = Vector3.zero;
             BH.rb.velocity = lazerSpawnLocation.forward * copBulletSpeed;
+
+            copBulletPoolGo.SetActive(true);
         }
         GameObject copMuzzlePoolGo = PoolManager.SharedInstance.GetPooledCopMuzzle();
         if (copMuzzlePoolGo != null)
