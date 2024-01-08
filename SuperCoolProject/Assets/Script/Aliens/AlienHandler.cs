@@ -109,15 +109,15 @@ public class AlienHandler : MonoBehaviour
     [SerializeField] private AudioClip[] triangleBeingAttackedAudio;
     [SerializeField] private AudioClip[] triangleLovemakingAudio;
     [SerializeField] private AudioClip[] triangleEvadingAudio;
-    
+
     [Header("Array of all alien state")]
     private List<AudioClip[]> attackAudioList = new List<AudioClip[]>();
-    private List<AudioClip[]> dyingAudioList = new List<AudioClip[]>(); 
+    private List<AudioClip[]> dyingAudioList = new List<AudioClip[]>();
     private List<AudioClip[]> beingAttackedAudioList = new List<AudioClip[]>();
     private List<AudioClip[]> lovemakingAudioList = new List<AudioClip[]>();
     private List<AudioClip[]> evadingAudioList = new List<AudioClip[]>();
 
-    [Header("Tick stats")] 
+    [Header("Tick stats")]
     public float tickTimer;
     public float tickTimerMax = .5f;
 
@@ -146,15 +146,15 @@ public class AlienHandler : MonoBehaviour
         dyingAudioList.Add(sphereDyingAudio);
         dyingAudioList.Add(squareDyingAudio);
         dyingAudioList.Add(triangleDyingAudio);
-        
+
         beingAttackedAudioList.Add(sphereBeingAttackedAudio);
         beingAttackedAudioList.Add(squareBeingAttackedAudio);
         beingAttackedAudioList.Add(triangleBeingAttackedAudio);
-        
+
         lovemakingAudioList.Add(sphereLovemakingAudio);
         lovemakingAudioList.Add(squareLovemakingAudio);
         lovemakingAudioList.Add(triangleLovemakingAudio);
-        
+
         evadingAudioList.Add(sphereEvadingAudio);
         evadingAudioList.Add(squareEvadingAudio);
         evadingAudioList.Add(triangleEvadingAudio);
@@ -473,7 +473,7 @@ public class AlienHandler : MonoBehaviour
         {
             int amountOfBabies = UnityEngine.Random.Range(1, maxAmountOfBabies);
 
-            audioSource.PlayOneShot( RandomAudioSelector(lovemakingAudioList, currentSpecies), 1f);
+            audioSource.PlayOneShot(RandomAudioSelector(lovemakingAudioList, currentSpecies), 1f);
 
             for (var i = 0; i < amountOfBabies; i++)
             {
@@ -511,21 +511,20 @@ public class AlienHandler : MonoBehaviour
         alienHealth = alienLifeChild;
         alienSpeciesChild[currentSpecies].SetActive(false);
         alienSpeciesAdult[currentSpecies].SetActive(true);
-        //transform.localScale = Vector3.one * 0.6f;
+        transform.localScale = Vector3.one * .8f;
         yield return new WaitForSeconds(timeToSexual);
 
         // Sexual active Life
         currentAge = AlienAge.sexualActive;
         alienHealth = alienLifeSexual;
-        //transform.localScale = Vector3.one;
-        //StartCoroutine(HandleGrowing(.6f, .7f));
+        StartCoroutine(HandleGrowing(.8f, 1f));
         yield return new WaitForSeconds(timeToFullGrown);
 
         // Full Grown Life
         currentAge = AlienAge.fullyGrown;
         alienHealth = alienLifeFullGrown;
+        StartCoroutine(HandleGrowing(1f, 1.1f));
         //transform.localScale = Vector3.one * 1.2f;
-        //StartCoroutine(HandleGrowing(.7f, .8f));
     }
 
     private IEnumerator HandleGrowing(float oldFactor, float newFactor)
