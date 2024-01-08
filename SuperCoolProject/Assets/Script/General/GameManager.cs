@@ -56,12 +56,19 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         SharedInstance = this;
+        LoadingScreenHandler.SharedInstance.totalAwakeCalls++;
+
+
         players = new List<PlayerManager>();
-        HandleSpawnShipParts();
         currentSpaceShipParts = 0;
         spaceShipPartsDisplay.text = currentSpaceShipParts.ToString() + "/" + totalSpaceShipParts.ToString();
         currentCloneJuice = maxCloneJuice;
         cloneJuiceUI.fillAmount = currentCloneJuice / maxCloneJuice;
+    }
+
+    private void Start()
+    {
+        HandleSpawnShipParts();
     }
 
 
@@ -163,6 +170,8 @@ public class GameManager : MonoBehaviour
                 DataAssign.spaceShipData = spaceShipScriptable[i];
             }
         }
+        // After loading all aliens sent finished state to Loading Screen
+        LoadingScreenHandler.SharedInstance.currentAwakeCalls++;
     }
 
     //Space Ships parts are collected and abilities are unlocked here

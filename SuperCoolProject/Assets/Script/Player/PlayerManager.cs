@@ -17,15 +17,14 @@ public class PlayerManager : MonoBehaviour
     public float shieldRechargeTime = 2;
     public bool isCarryingPart;
     public GameObject currentPart;
-    public GameObject playerShieldGO;
     public bool isAlive;
     public bool isInteracting;
     public float invincibleFrames = .5f;
 
-    private Material dissolve;
+    public GameObject playerShieldGO;
+    //private Material dissolve;
     public float dissolveRate = 0.0125f;
     public float refreshRate = 0.025f;
-
 
     [Header("Resource Variables")]
     public float maxSphereResource = 100;
@@ -38,7 +37,6 @@ public class PlayerManager : MonoBehaviour
     public bool squareUnfolded = false;
     public bool triangleUnfolded = false;
     AlienHandler[] closestResource = new AlienHandler[] { null, null, null };  // 0:Sphere, 1:Square, 2:Triangle
-
 
     public float resourceDrain = .1f;
     public float resourceGain = 5;
@@ -61,7 +59,7 @@ public class PlayerManager : MonoBehaviour
 
     private void Awake()
     {
-        dissolve = GetComponent<Material>();
+        //dissolve = ShieldGO.gameObject.GetComponent<Renderer>().material;
         audioSource = GetComponent<AudioSource>();
         inputHandler = GetComponent<InputHandler>();
     }
@@ -304,18 +302,18 @@ public class PlayerManager : MonoBehaviour
         for (int i = 0; i < 10; i++)
         {
             yield return new WaitForSeconds(.5f / 10);
-            GORT.localScale = Vector3.one * i / 10;
+            GORT.localScale = Vector3.one * 2 * i / 10;
             GORT.localEulerAngles = new Vector3(0, 0, degree * i / 10);
         }
     }
     IEnumerator FoldResource(GameObject Resource)
     {
         RectTransform GORT = Resource.GetComponent<RectTransform>();
-        GORT.localScale = Vector3.one;
+        GORT.localScale = Vector3.one * 2;
         for (int i = 0; i < 10; i++)
         {
             yield return new WaitForSeconds(.5f / 10);
-            GORT.localScale = Vector3.one - Vector3.one * i / 10;
+            GORT.localScale = Vector3.one * 2 - Vector3.one * 2 * i / 10;
         }
         GORT.localEulerAngles = Vector3.zero;
         Resource.gameObject.SetActive(false);
@@ -377,21 +375,21 @@ public class PlayerManager : MonoBehaviour
     IEnumerator ShieldRespawn(float timeToRecharge)
     {
         float counter = 0;
-        while (dissolve.GetFloat("_DissolveAmount") < 1)
-        {
-            counter += dissolveRate;
-            for (int i = 0; i <= 10; i++)
-            {
-                dissolve.SetFloat("_DissolveAmount", counter);
-                yield return new WaitForSeconds(refreshRate);
-            }
-        }
+        //while (dissolve.GetFloat("_DissolveAmount") < 1)
+        //{
+        //    counter += dissolveRate;
+        //    for (int i = 0; i <= 10; i++)
+        //    {
+        //        dissolve.SetFloat("_DissolveAmount", counter);
+        //        yield return new WaitForSeconds(refreshRate);
+        //    }
+        //}
 
         playerShield = false;
         audioSource.PlayOneShot(shieldBreakAudio, 1f);
         playerShieldGO.SetActive(false);
         yield return new WaitForSeconds(timeToRecharge);
-        dissolve.SetFloat("_DissolveAmount", 0);
+        //dissolve.SetFloat("_DissolveAmount", 0);
         playerShield = true;
         audioSource.PlayOneShot(shieldRechargeAudio, 1f);
         playerShieldGO.SetActive(true);

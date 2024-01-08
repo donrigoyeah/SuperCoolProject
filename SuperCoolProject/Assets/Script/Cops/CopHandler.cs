@@ -42,6 +42,11 @@ public class CopHandler : MonoBehaviour
         HandleMovement();
         if (isAggro)
         {
+            if (!closestPlayer.isAlive)
+            {
+                isAggro = false;
+                return;
+            }
             anim.Play("Armature|Attack");
             if (canShoot)
             {

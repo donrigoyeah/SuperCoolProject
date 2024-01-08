@@ -9,6 +9,7 @@ public class CopManager : MonoBehaviour
     public static CopManager SharedInstance;
 
     public bool hasBeenServed = false;
+    public bool hasLanded = false;
     public int paidFine = 0;
     public bool isFineEvading = false;
     public int currentFineRequested;
@@ -28,43 +29,40 @@ public class CopManager : MonoBehaviour
 
     private void Start()
     {
-        HandleSpawnCopCar(3);
+        HandleSpawnCopCar();
     }
 
     private void FixedUpdate()
     {
+        if (hasLanded == false)
+        {
+            HandleLandCopCar();
+            return;
+        }
         if (currentCops.Count > 0 && hasBeenServed == true)
         {
             HandleReturnCops();
+            return;
         }
         if (currentCops.Count == 0 && CopCarCurrent != null)
         {
             HandleReturnCopCar();
+            return;
         }
     }
 
-    public void HandleSpawnCopCar(int copAmount)
+    public void HandleLandCopCar()
     {
-        hasBeenServed = false;
+        CopCarCurrent.transform.position = Vector3.MoveTowards(CopCarCurrent.transform.position, new Vector3(CopCarCurrent.transform.position.x, 0, CopCarCurrent.transform.position.z), Time.deltaTime * copCarSpeed);
+        if (CopCarCurrent.transform.position.y <= 0)
+        {
+            hasLanded = true;
+            HandleSpawnCops(1);
+        }
+    }
 
-        int amountKilled = GameManager.SharedInstance.sphereKilled + GameManager.SharedInstance.squareKilled + GameManager.SharedInstance.triangleKilled;
-        currentFineRequested = (amountKilled) * costPerKill;
-        fineCost.text = currentFineRequested.ToString();
-        fineDescribtion.text = "You killed " + amountKilled + " Aliens";
-
-        CopCarCurrent = Instantiate(CopCar);
-        CopCarCurrent.gameObject.transform.SetParent(this.transform);
-        float rCar = Random.Range(20, 30);
-        float angleCar = Random.Range(0, 360);
-
-        float randPosXCar = rCar * Mathf.Cos(Mathf.Deg2Rad * angleCar);
-        float randPosZCar = rCar * Mathf.Sin(Mathf.Deg2Rad * angleCar);
-
-        CopCarCurrent.transform.position = new Vector3(randPosXCar, 0, randPosZCar);
-
-        // TODO: Add landing animation
-        //if (CurrentCopCar.transform.position.y <= 0)
-        //{
+    public void HandleSpawnCops(int copAmount)
+    {
         for (int i = 0; i < copAmount; i++)
         {
             GameObject copPoolGo = PoolManager.SharedInstance.GetPooledCop();
@@ -86,8 +84,27 @@ public class CopManager : MonoBehaviour
                 CH.gameObject.SetActive(true);
             }
         }
-        //}
+    }
 
+    public void HandleSpawnCopCar()
+    {
+        hasBeenServed = false;
+        hasLanded = false;
+
+        int amountKilled = GameManager.SharedInstance.sphereKilled + GameManager.SharedInstance.squareKilled + GameManager.SharedInstance.triangleKilled;
+        currentFineRequested = (amountKilled) * costPerKill;
+        fineCost.text = currentFineRequested.ToString();
+        fineDescribtion.text = "You killed " + amountKilled + " Aliens";
+
+        CopCarCurrent = Instantiate(CopCar);
+        CopCarCurrent.gameObject.transform.SetParent(this.transform);
+        float rCar = Random.Range(20, 30);
+        float angleCar = Random.Range(0, 360);
+
+        float randPosXCar = rCar * Mathf.Cos(Mathf.Deg2Rad * angleCar);
+        float randPosZCar = rCar * Mathf.Sin(Mathf.Deg2Rad * angleCar);
+
+        CopCarCurrent.transform.position = new Vector3(randPosXCar, 100, randPosZCar);
     }
 
     public void HandleReturnCops()
