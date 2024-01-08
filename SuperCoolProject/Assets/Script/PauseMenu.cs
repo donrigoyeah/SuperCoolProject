@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -17,6 +18,7 @@ public class PauseMenu : MonoBehaviour
     public GameObject pauseMenu;
     public GameObject stats;
     public GameObject options;
+    public Button resumeButton;
     [SerializeField] private Slider musicSlider;
     [SerializeField] private Slider sfxSlider;
     [SerializeField] private AudioMixer myMixer;
@@ -88,6 +90,7 @@ public class PauseMenu : MonoBehaviour
         UpdatePauseUI();
         PauseMenu.SharedInstance.pauseMenu.SetActive(true);
         PauseMenu.SharedInstance.stats.SetActive(true);
+        resumeButton.Select();
         Time.timeScale = 0.01f;
         yield return new WaitForSeconds(0.02f);
         isPaused = true;
@@ -116,6 +119,15 @@ public class PauseMenu : MonoBehaviour
         isPaused = false;
     }
 
+    public void PauseForButton()
+    {
+        PauseMenu.SharedInstance.pauseMenu.SetActive(true);
+        PauseMenu.SharedInstance.stats.SetActive(true);
+        resumeButton.Select();
+        Time.timeScale = 0.01f;
+        isPaused = true;
+    }
+    
     public void ResumeForButton() // UI buttons only works with void functions
     {
         isPaused = false;
@@ -167,6 +179,11 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 1;
     }
 
+    public void ChangeSelectedButton()
+    {
+        musicSlider.Select();
+    }
+    
     //private void CameraShakeController()
     //{
     //    float cameraShakeModifier = cameraShakeSlider.value * 2.5f;
