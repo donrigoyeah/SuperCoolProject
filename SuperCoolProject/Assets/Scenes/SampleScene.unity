@@ -3716,8 +3716,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2009364461}
   m_HandleRect: {fileID: 2009364460}
   m_Direction: 2
-  m_Value: -0.000001188861
-  m_Size: 0.51262975
+  m_Value: -0.00000071331664
+  m_Size: 0.51262873
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4086,6 +4086,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseMenu: {fileID: 985243444}
+  stats: {fileID: 0}
+  options: {fileID: 0}
   musicSlider: {fileID: 1749814452}
   sfxSlider: {fileID: 1274779574}
   myMixer: {fileID: 24100000, guid: 3067df7eb9e53804eb6bac7a7694931c, type: 2}
@@ -5733,7 +5735,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.0009734945, y: 1026.7848}
+  m_AnchoredPosition: {x: 0.0009734945, y: 1026.7844}
   m_SizeDelta: {x: 0, y: 2106.7837}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &678600488
@@ -6980,7 +6982,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000024035, y: 656.44745}
+  m_AnchoredPosition: {x: 0.000024035, y: 656.4476}
   m_SizeDelta: {x: 0, y: 1736.447}
   m_Pivot: {x: 0, y: 1}
 --- !u!1001 &874841526
@@ -11633,7 +11635,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 756947078}
   m_Direction: 2
   m_Value: -0.00000074382433
-  m_Size: 0.6219597
+  m_Size: 0.6219588
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -12512,6 +12514,18 @@ MonoBehaviour:
   muzzle: {fileID: 457618160108708804, guid: 68e3f1f0c9a54fe43b3f4eb7c9a41637, type: 3}
   MuzzlePool: []
   MuzzleContainer: {fileID: 522928294}
+  copAmount: 0
+  CopPool: []
+  Cop: {fileID: 0}
+  CopContainer: {fileID: 0}
+  copBulletAmount: 0
+  CopBulletPool: []
+  CopBullet: {fileID: 0}
+  CopBulletContainer: {fileID: 0}
+  copMuzzleAmount: 0
+  copMuzzle: {fileID: 0}
+  CopMuzzlePool: []
+  CopMuzzleContainer: {fileID: 0}
   FSSAmount: 20
   FSSPool: []
   FSS: {fileID: 2354723089683057679, guid: 4d0061d7986e2904d889419773d320d5, type: 3}

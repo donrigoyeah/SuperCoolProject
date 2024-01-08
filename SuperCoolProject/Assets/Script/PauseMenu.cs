@@ -162,6 +162,11 @@ public class PauseMenu : MonoBehaviour
         SetSFXVol();
     }
 
+    public void ResumeTIme()
+    {
+        Time.timeScale = 1;
+    }
+
     //private void CameraShakeController()
     //{
     //    float cameraShakeModifier = cameraShakeSlider.value * 2.5f;
