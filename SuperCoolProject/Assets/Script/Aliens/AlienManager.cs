@@ -33,6 +33,7 @@ public class AlienManager : MonoBehaviour
 
     private void Start()
     {
+        LoadingScreenHandler.SharedInstance.totalAwakeCalls++;
         SpawnAlien();
     }
 
@@ -40,6 +41,7 @@ public class AlienManager : MonoBehaviour
     {
         PopulationUI();
     }
+
     private void SpawnAlien()
     {
         int oneSegmentOfPoulation = Mathf.RoundToInt(PoolManager.SharedInstance.alienAmount / segmentAmount);
@@ -78,6 +80,8 @@ public class AlienManager : MonoBehaviour
                 alienPoolGo.transform.position = new Vector3(randPosX, 0.1f, randPosZ);
             }
         }
+        // After loading all aliens sent finished state to Loading Screen
+        LoadingScreenHandler.SharedInstance.currentAwakeCalls++;
     }
 
     private void PopulationUI()

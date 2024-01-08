@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.VFX;
+
 
 public class PoolManager : MonoBehaviour
 {
@@ -13,8 +13,8 @@ public class PoolManager : MonoBehaviour
     [Header("Aliens")]
     // Amount of initial Spawned Aliens
     public int alienAmount;
-    // Amount of max possible with extras
-    public int alienAmountMax;
+    // Amount of max possible extras
+    public int alienAmountExtra;
     // Actualy Pool of all GameObjects
     public List<GameObject> AlienPool;
     // The prefab
@@ -98,7 +98,7 @@ public class PoolManager : MonoBehaviour
             }
         }
         // Buffer check / spawn only this amount of additionals
-        if (alienAmount < alienAmountMax)
+        if (alienAmount < alienAmount + alienAmountExtra)
         {
             // Add only when no more are available
             // Debug.Log("Add additionl alien to the pool");
@@ -137,6 +137,8 @@ public class PoolManager : MonoBehaviour
             // Add to List/Object Pool
             AlienPool.Add(tmp);
         }
+        // Send info to loading screen that this pool is ready
+        LoadingScreenHandler.SharedInstance.currentLoadedPools++;
     }
     #endregion
 
@@ -171,6 +173,7 @@ public class PoolManager : MonoBehaviour
             tmp.SetActive(false);
             BulletPool.Add(tmp);
         }
+        LoadingScreenHandler.SharedInstance.currentLoadedPools++;
     }
     #endregion
 
@@ -199,6 +202,7 @@ public class PoolManager : MonoBehaviour
             tmp.SetActive(false);
             BulletExpPool.Add(tmp);
         }
+        LoadingScreenHandler.SharedInstance.currentLoadedPools++;
     }
     #endregion
 
@@ -227,6 +231,7 @@ public class PoolManager : MonoBehaviour
             tmp.SetActive(false);
             MuzzlePool.Add(tmp);
         }
+        LoadingScreenHandler.SharedInstance.currentLoadedPools++;
     }
     #endregion
 
@@ -255,6 +260,7 @@ public class PoolManager : MonoBehaviour
             tmp.SetActive(false);
             CopPool.Add(tmp);
         }
+        LoadingScreenHandler.SharedInstance.currentLoadedPools++;
     }
     #endregion
 
@@ -289,6 +295,7 @@ public class PoolManager : MonoBehaviour
             tmp.SetActive(false);
             CopBulletPool.Add(tmp);
         }
+        LoadingScreenHandler.SharedInstance.currentLoadedPools++;
     }
     #endregion
 
@@ -317,6 +324,7 @@ public class PoolManager : MonoBehaviour
             tmp.SetActive(false);
             CopMuzzlePool.Add(tmp);
         }
+        LoadingScreenHandler.SharedInstance.currentLoadedPools++;
     }
     #endregion
 
@@ -345,6 +353,7 @@ public class PoolManager : MonoBehaviour
             tmp.SetActive(false);
             FSSPool.Add(tmp);
         }
+        LoadingScreenHandler.SharedInstance.currentLoadedPools++;
     }
     #endregion
 }

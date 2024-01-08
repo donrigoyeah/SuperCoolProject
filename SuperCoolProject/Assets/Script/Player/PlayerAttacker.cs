@@ -13,7 +13,9 @@ using static AlienHandler;
 public class PlayerAttacker : MonoBehaviour
 {
     [Header("Lazer Gun Stuff")]
-    [SerializeField] public Transform lazerSpawnLocation;
+    [SerializeField] public Transform lazerSpawnLocationRight;
+    [SerializeField] public Transform lazerSpawnLocationLeft;
+    private bool leftRightSwitch;
     [SerializeField] public GameObject overheatUIGO;
     [SerializeField] public Image overheatUI;
     [SerializeField] private float fireRate = 0.5f;
@@ -28,7 +30,8 @@ public class PlayerAttacker : MonoBehaviour
     [SerializeField] private float bulletSpeed = 50;
     [SerializeField] private float bulletDamage = 10;
     [SerializeField] private float bulletDamageBoost = 2;
-    [SerializeField] private LineRenderer laserSight;
+    [SerializeField] private LineRenderer laserSightLeft;
+    [SerializeField] private LineRenderer laserSightRight;
     [SerializeField] private bool isLaserSight = true;
 
     [Header("Grenade stuff")]
@@ -85,12 +88,14 @@ public class PlayerAttacker : MonoBehaviour
 
         if (isLaserSight)
         {
-            laserSight.enabled = true;
+            laserSightLeft.enabled = true;
+            laserSightRight.enabled = true;
             LaserSight();
         }
         else
         {
-            laserSight.enabled = false;
+            laserSightLeft.enabled = false;
+            laserSightRight.enabled = false;
         }
     }
 
@@ -194,47 +199,68 @@ public class PlayerAttacker : MonoBehaviour
 
     private void SpawnLazer(float damage)
     {
+        //TODO: Add Recoil
+
         GameObject bulletPoolGo = PoolManager.SharedInstance.GetPooledBullets();
+        GameObject muzzlePoolGo = PoolManager.SharedInstance.GetPooledMuzzle();
+
         if (bulletPoolGo != null)
         {
-            bulletPoolGo.transform.position = lazerSpawnLocation.position;
-            bulletPoolGo.transform.rotation = lazerSpawnLocation.rotation;
+            if (leftRightSwitch == true)
+            {
+                // Instantiate Bullet left
+                bulletPoolGo.transform.position = lazerSpawnLocationLeft.position;
+                bulletPoolGo.transform.rotation = lazerSpawnLocationLeft.rotation;
+                if (muzzlePoolGo != null)
+                {
+                    muzzlePoolGo.transform.position = lazerSpawnLocationLeft.position;
+                    muzzlePoolGo.transform.rotation = lazerSpawnLocationLeft.rotation;
+                    muzzlePoolGo.SetActive(true);
+                    StartCoroutine(DisableAfterSeconds(1, muzzlePoolGo));
+                }
+            }
+            else
+            {
+                // Instantiate Bullet right
+                bulletPoolGo.transform.position = lazerSpawnLocationRight.position;
+                bulletPoolGo.transform.rotation = lazerSpawnLocationRight.rotation;
+                if (muzzlePoolGo != null)
+                {
+                    muzzlePoolGo.transform.position = lazerSpawnLocationRight.position;
+                    muzzlePoolGo.transform.rotation = lazerSpawnLocationRight.rotation;
+                    muzzlePoolGo.SetActive(true);
+                    StartCoroutine(DisableAfterSeconds(1, muzzlePoolGo));
+                }
+            }
+            leftRightSwitch = !leftRightSwitch;
+
             BulletHandler BH = bulletPoolGo.GetComponent<BulletHandler>();
             BH.isPlayerBullet = true;
             BH.bulletDamage = damage;
             bulletPoolGo.SetActive(true);
             BH.rb.velocity = Vector3.zero;
-            BH.rb.velocity = lazerSpawnLocation.forward * bulletSpeed;
-        }
-        GameObject muzzlePoolGo = PoolManager.SharedInstance.GetPooledMuzzle();
-        if (muzzlePoolGo != null)
-        {
-            muzzlePoolGo.transform.position = lazerSpawnLocation.position;
-            muzzlePoolGo.transform.rotation = lazerSpawnLocation.rotation;
-            muzzlePoolGo.SetActive(true);
-            StartCoroutine(DisableAfterSeconds(1, muzzlePoolGo));
+            BH.rb.velocity = bulletPoolGo.transform.forward * bulletSpeed;
         }
     }
 
     void LaserSight()
     {
-        // Debug.Log("Laser Sight");
-        //TODO: Add Recoil
-
         RaycastHit hit;
+        laserSightLeft.SetPosition(0, lazerSpawnLocationLeft.transform.position);
+        laserSightRight.SetPosition(0, lazerSpawnLocationRight.transform.position);
 
-        if (Physics.Raycast(transform.position, transform.forward, out hit))
+        if (Physics.Raycast(transform.position + Vector3.up / 2, transform.forward, out hit, 15))
         {
             if (hit.collider)
             {
-                laserSight.SetPosition(1, new Vector3(0, 0, hit.distance));
-            }
-            else
-            {
-                laserSight.SetPosition(0, transform.position);
-                laserSight.SetPosition(1, transform.position + transform.forward * 40);
+                laserSightLeft.SetPosition(1, hit.transform.position);
+                laserSightRight.SetPosition(1, hit.transform.position);
+                return;
             }
         }
+
+        laserSightLeft.SetPosition(1, lazerSpawnLocationLeft.transform.position + Vector3.forward * 40);
+        laserSightRight.SetPosition(1, lazerSpawnLocationRight.transform.position + Vector3.forward * 40);
     }
 
     #endregion

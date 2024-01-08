@@ -475,7 +475,7 @@ public class AlienHandler : MonoBehaviour
         alienSpeciesAdult[currentSpecies].SetActive(false);
         currentAge = AlienAge.resource;
         alienHealth = alienLifeResource;
-        transform.localScale = Vector3.one * 0.2f;
+        transform.localScale = Vector3.one;
         yield return new WaitForSeconds(timeToChild);
 
         // Child Life
@@ -484,13 +484,14 @@ public class AlienHandler : MonoBehaviour
         alienHealth = alienLifeChild;
         alienSpeciesChild[currentSpecies].SetActive(false);
         alienSpeciesAdult[currentSpecies].SetActive(true);
+        transform.localScale = Vector3.one * 0.7f;
         yield return new WaitForSeconds(timeToSexual);
 
         // Sexual active Life
         currentAge = AlienAge.sexualActive;
         alienHealth = alienLifeSexual;
         //transform.localScale = Vector3.one;
-        StartCoroutine(HandleGrowing(.5f, 1f));
+        StartCoroutine(HandleGrowing(0.7f, 1f));
         yield return new WaitForSeconds(timeToFullGrown);
 
         // Full Grown Life
