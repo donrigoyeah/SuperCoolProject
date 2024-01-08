@@ -473,7 +473,10 @@ public class AlienHandler : MonoBehaviour
         {
             int amountOfBabies = UnityEngine.Random.Range(1, maxAmountOfBabies);
 
-            audioSource.PlayOneShot( RandomAudioSelector(lovemakingAudioList, currentSpecies), 1f);
+            if (!audioSource.isPlaying)
+            {
+                audioSource.PlayOneShot( RandomAudioSelector(lovemakingAudioList, currentSpecies), 1f);
+            }
 
             for (var i = 0; i < amountOfBabies; i++)
             {
