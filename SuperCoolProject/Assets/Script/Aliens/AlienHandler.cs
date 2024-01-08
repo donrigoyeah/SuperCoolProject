@@ -36,7 +36,7 @@ public class AlienHandler : MonoBehaviour
     public AlienAge currentAge;
     public AlienState currentState;
     public int currentSpecies;
-    public bool isFemale;
+    public bool hasUterus;
     public float alienHealth;
     public float lifeTime = 0;
     public float lustTimer = 0;
@@ -277,7 +277,7 @@ public class AlienHandler : MonoBehaviour
                     DisgardClosestAlien();
                     continue;
                 }
-                else if (isFemale != closestAlienHandler.isFemale) // Opposite Sex
+                else if (hasUterus != closestAlienHandler.hasUterus) // Opposite Sex
                 {
                     if (currentAge == AlienAge.sexualActive)
                     {
@@ -469,7 +469,7 @@ public class AlienHandler : MonoBehaviour
 
     private void HandleMating()
     {
-        if (isFemale)
+        if (hasUterus)
         {
             int amountOfBabies = UnityEngine.Random.Range(1, maxAmountOfBabies);
 
@@ -676,7 +676,7 @@ public class AlienHandler : MonoBehaviour
         currentAge = AlienAge.resource;
         lustTimer = 0;
         hungerTimer = 0;
-        isFemale = UnityEngine.Random.Range(0, 2) == 1;
+        hasUterus = UnityEngine.Random.Range(0, 2) == 1;
         HandleStateIcon(6); // 0: eye, 1: crosshair, 2: wind, 3: heart, 4: shield, 5: clock, 6: loader
 
         // TODO: Place this at better location

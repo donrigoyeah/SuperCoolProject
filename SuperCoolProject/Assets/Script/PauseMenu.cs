@@ -46,8 +46,6 @@ public class PauseMenu : MonoBehaviour
     private void Awake()
     {
         SharedInstance = this;
-        Debug.Log("Maybe UI update here?");
-        Debug.Log("Redid volume and audio mixer is being used to handle volume slider for music and sfx");
         // Handle entire UI from this script? Add values of resourceUI and other displays here"); 
     }
 

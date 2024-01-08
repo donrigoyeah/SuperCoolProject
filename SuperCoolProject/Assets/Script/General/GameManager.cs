@@ -53,12 +53,10 @@ public class GameManager : MonoBehaviour
     public GameObject GameOverScreen;
     public Image DeathScreenCloneJuiceUI;
 
-
-
     private void Awake()
     {
-        players = new List<PlayerManager>();
         SharedInstance = this;
+        players = new List<PlayerManager>();
         HandleSpawnShipParts();
         currentSpaceShipParts = 0;
         spaceShipPartsDisplay.text = currentSpaceShipParts.ToString() + "/" + totalSpaceShipParts.ToString();
@@ -66,15 +64,6 @@ public class GameManager : MonoBehaviour
         cloneJuiceUI.fillAmount = currentCloneJuice / maxCloneJuice;
     }
 
-    public void HandleCloneJuiceDrain()
-    {
-        currentCloneJuice -= cloneCost;
-        cloneJuiceUI.fillAmount = currentCloneJuice / maxCloneJuice;
-        if (currentCloneJuice < 0)
-        {
-            HandleLoss();
-        }
-    }
 
     private void FixedUpdate()
     {
@@ -106,6 +95,8 @@ public class GameManager : MonoBehaviour
     }
 
 
+    #region Handle Add Players
+
     public void AddPlayer(PlayerManager pm)
     {
         numberOfPlayers++;
@@ -117,6 +108,36 @@ public class GameManager : MonoBehaviour
             playerInputManager.DisableJoining();
         }
     }
+
+    public void HandleCloneJuiceDrain()
+    {
+        currentCloneJuice -= cloneCost;
+        cloneJuiceUI.fillAmount = currentCloneJuice / maxCloneJuice;
+        if (currentCloneJuice < 0)
+        {
+            HandleLoss();
+        }
+    }
+
+    #endregion
+
+    #region Handle Game State
+
+    private void HandleWin()
+    {
+        Debug.Log("Player won");
+    }
+
+    private void HandleLoss()
+    {
+        Debug.Log("You Lost");
+        hasLost = true;
+        GameOverScreen.SetActive(true);
+    }
+
+    #endregion
+
+    #region Handle SpaceShip Parts
 
     private void HandleSpawnShipParts()
     {
@@ -165,17 +186,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void HandleWin()
-    {
-        Debug.Log("Player won");
-    }
 
-    private void HandleLoss()
-    {
-        Debug.Log("You Lost");
-        hasLost = true;
-        GameOverScreen.SetActive(true);
-    }
+    #endregion
+
+
 
     // TODO: Handle stuff like day/night cycle here
     // Handle spaceship parts collected
