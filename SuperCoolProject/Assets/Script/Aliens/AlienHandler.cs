@@ -89,23 +89,35 @@ public class AlienHandler : MonoBehaviour
     [SerializeField] private AudioSource audioSource;
 
 
-    [Header("Water Alien Audio")]
-    [SerializeField] private AudioClip[] waterAttackAudio;
-    [SerializeField] private AudioClip[] waterDyingAudio;
-    [SerializeField] private AudioClip[] waterBeingAttackedAudio;
-    [SerializeField] private AudioClip[] waterLoveMakingAudio;
-    [SerializeField] private AudioClip[] waterEvadingAudio;
+    [Header("Water / Sphere Alien Audio")]
+    [SerializeField] private AudioClip[] sphereAttackAudio;
+    [SerializeField] private AudioClip[] sphereDyingAudio;
+    [SerializeField] private AudioClip[] sphereBeingAttackedAudio;
+    [SerializeField] private AudioClip[] sphereLovemakingAudio;
+    [SerializeField] private AudioClip[] sphereEvadingAudio;
 
-    [Header("Oxygen Alien Audio")]
-    [SerializeField] private AudioClip[] oxygenAttackAudio;
+    [Header("Oxygen / Square Alien Audio")]
+    [SerializeField] private AudioClip[] squareAttackAudio;
+    [SerializeField] private AudioClip[] squareDyingAudio;
+    [SerializeField] private AudioClip[] squareBeingAttackedAudio;
+    [SerializeField] private AudioClip[] squareLovemakingAudio;
+    [SerializeField] private AudioClip[] squareEvadingAudio;
 
-    [Header("Meat Alien Audio")]
-    [SerializeField] private AudioClip[] meatAttackAudio;
-
+    [Header("Meat / Triangle Alien Audio")]
+    [SerializeField] private AudioClip[] triangleAttackAudio;
+    [SerializeField] private AudioClip[] triangleDyingAudio;
+    [SerializeField] private AudioClip[] triangleBeingAttackedAudio;
+    [SerializeField] private AudioClip[] triangleLovemakingAudio;
+    [SerializeField] private AudioClip[] triangleEvadingAudio;
+    
     [Header("Array of all alien state")]
     private List<AudioClip[]> attackAudioList = new List<AudioClip[]>();
+    private List<AudioClip[]> dyingAudioList = new List<AudioClip[]>(); 
+    private List<AudioClip[]> beingAttackedAudioList = new List<AudioClip[]>();
+    private List<AudioClip[]> lovemakingAudioList = new List<AudioClip[]>();
+    private List<AudioClip[]> evadingAudioList = new List<AudioClip[]>();
 
-    [Header("Tick stats")]
+    [Header("Tick stats")] 
     public float tickTimer;
     public float tickTimerMax = .5f;
 
@@ -127,10 +139,25 @@ public class AlienHandler : MonoBehaviour
 
     private void Start()
     {
-        attackAudioList.Add(waterAttackAudio);
-        attackAudioList.Add(oxygenAttackAudio);
-        attackAudioList.Add(meatAttackAudio);
+        attackAudioList.Add(sphereAttackAudio);
+        attackAudioList.Add(squareAttackAudio);
+        attackAudioList.Add(triangleAttackAudio);
 
+        dyingAudioList.Add(sphereDyingAudio);
+        dyingAudioList.Add(squareDyingAudio);
+        dyingAudioList.Add(triangleDyingAudio);
+        
+        beingAttackedAudioList.Add(sphereBeingAttackedAudio);
+        beingAttackedAudioList.Add(squareBeingAttackedAudio);
+        beingAttackedAudioList.Add(triangleBeingAttackedAudio);
+        
+        lovemakingAudioList.Add(sphereLovemakingAudio);
+        lovemakingAudioList.Add(squareLovemakingAudio);
+        lovemakingAudioList.Add(triangleLovemakingAudio);
+        
+        evadingAudioList.Add(sphereEvadingAudio);
+        evadingAudioList.Add(squareEvadingAudio);
+        evadingAudioList.Add(triangleEvadingAudio);
     }
 
     private void OnEnable()
@@ -400,7 +427,7 @@ public class AlienHandler : MonoBehaviour
 
         if (!audioSource.isPlaying)
         {
-            // audioSource.PlayOneShot(RandomAudioSelector(waterEvadingAudio, currentSpecies), 1f);
+            audioSource.PlayOneShot(RandomAudioSelector(evadingAudioList, currentSpecies), 1f);
         }
         //Debug.Log("Escaping Vecotr: " + targetPosition);
         //Debug.DrawLine(this.transform.position, this.transform.position + (this.transform.position - targetAlien.transform.position), Color.green);
@@ -446,7 +473,7 @@ public class AlienHandler : MonoBehaviour
         {
             int amountOfBabies = UnityEngine.Random.Range(1, maxAmountOfBabies);
 
-            // RandomAudioSelector(waterLoveMakingAudio, currentSpecies);
+            audioSource.PlayOneShot( RandomAudioSelector(lovemakingAudioList, currentSpecies), 1f);
 
             for (var i = 0; i < amountOfBabies; i++)
             {
@@ -591,7 +618,7 @@ public class AlienHandler : MonoBehaviour
 
             if (!audioSource.isPlaying)
             {
-                // audioSource.PlayOneShot(RandomAudioSelector(waterBeingAttackedAudio, currentSpecies), 1f);
+                audioSource.PlayOneShot(RandomAudioSelector(beingAttackedAudioList, currentSpecies), 1f);
             }
 
             other.gameObject.SetActive(false);
@@ -715,7 +742,7 @@ public class AlienHandler : MonoBehaviour
             }
         }
         dissolve.SetFloat("_DissolveAmount", 0);
-        // audioSource.PlayOneShot(RandomAudioSelector(waterDyingAudio, currentSpecies), 1f);
+        audioSource.PlayOneShot(RandomAudioSelector(dyingAudioList, currentSpecies), 1f);
         this.gameObject.SetActive(false);
 
         switch (currentSpecies)
@@ -733,29 +760,14 @@ public class AlienHandler : MonoBehaviour
 
     }
 
-    // AudioClip RandomAudioSelector(AudioClip[][] audioArray, int state) // incase we plan to add more audio for each state
-    // {
-    //     // TODO: think of something to have ot play an audio only 50% of the time?
-    //     
-    //     int random = UnityEngine.Random.Range(0,audioArray[state].Length);
-    //     AudioClip selectedAudio = audioArray[state][random];
-    //
-    //     return selectedAudio;
-    //     // AudioClip selectedAudio = audioArray[currentSpecies][random];
-    //
-    // }
-
     AudioClip RandomAudioSelector(List<AudioClip[]> audioList, int state) // incase we plan to add more audio for each state
     {
         // TODO: think of something to have ot play an audio only 50% of the time?
-
         AudioClip[] selectedAudioArray = audioList[state];
 
         int randomIndex = Random.Range(0, selectedAudioArray.Length);
         AudioClip selectedAudio = selectedAudioArray[randomIndex];
 
         return selectedAudio;
-        // AudioClip selectedAudio = audioArray[currentSpecies][random];
-
     }
 }

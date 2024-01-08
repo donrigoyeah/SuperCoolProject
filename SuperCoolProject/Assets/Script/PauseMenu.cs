@@ -15,6 +15,8 @@ public class PauseMenu : MonoBehaviour
 
     [Header("Volume Settings")]
     public GameObject pauseMenu;
+    public GameObject stats;
+    public GameObject options;
     [SerializeField] private Slider musicSlider;
     [SerializeField] private Slider sfxSlider;
     [SerializeField] private AudioMixer myMixer;
@@ -87,6 +89,7 @@ public class PauseMenu : MonoBehaviour
     {
         UpdatePauseUI();
         PauseMenu.SharedInstance.pauseMenu.SetActive(true);
+        PauseMenu.SharedInstance.stats.SetActive(true);
         Time.timeScale = 0.01f;
         yield return new WaitForSeconds(0.02f);
         isPaused = true;
@@ -110,6 +113,7 @@ public class PauseMenu : MonoBehaviour
     {
         Time.timeScale = 1;
         PauseMenu.SharedInstance.pauseMenu.SetActive(false);
+        PauseMenu.SharedInstance.options.SetActive(false);
         yield return new WaitForSeconds(0.2f);
         isPaused = false;
     }

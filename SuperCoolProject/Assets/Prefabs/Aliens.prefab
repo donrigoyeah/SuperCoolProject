@@ -113,27 +113,51 @@ MonoBehaviour:
   dissolveRate: 0.3
   refreshRate: 0.0025
   audioSource: {fileID: 9042210739735769762}
-  waterAttackAudio:
+  sphereAttackAudio:
   - {fileID: 8300000, guid: 897389d0c6f60f442a0b38dc2caec62d, type: 3}
   - {fileID: 8300000, guid: 68ef82fb747120e428b77558dc1ca803, type: 3}
-  waterDyingAudio:
+  sphereDyingAudio:
   - {fileID: 8300000, guid: 94d13dcb3e3f97f4782522d363079c3e, type: 3}
   - {fileID: 8300000, guid: 8825a3ce22f12c4478ec30d1e1afbb4c, type: 3}
-  waterBeingAttackedAudio:
+  sphereBeingAttackedAudio:
   - {fileID: 8300000, guid: 69b264261d1dba146898b4a56e413a4d, type: 3}
   - {fileID: 8300000, guid: f19c7784b774b0444a6f4b27987cac04, type: 3}
-  waterLoveMakingAudio:
+  sphereLovemakingAudio:
   - {fileID: 8300000, guid: e6c212c295b917c409f9107a638daf90, type: 3}
   - {fileID: 8300000, guid: 70bc1e62da40974429e8d3d29000c524, type: 3}
-  waterEvadingAudio:
+  sphereEvadingAudio:
   - {fileID: 8300000, guid: f7ef59f3b41c32647958cf0c640b1ad4, type: 3}
   - {fileID: 8300000, guid: 404aa2f2cdd6d27468dbfd17bba63b7e, type: 3}
-  oxygenAttackAudio:
+  squareAttackAudio:
   - {fileID: 8300000, guid: 6c2381c38c8baa14faa81ad1e11b7a7e, type: 3}
   - {fileID: 8300000, guid: 7dd9f251e7d47c34aba2dd661ee0b757, type: 3}
-  meatAttackAudio:
+  squareDyingAudio:
+  - {fileID: 8300000, guid: 5a07f54bd5c18f847898d99f08e5ce5b, type: 3}
+  - {fileID: 8300000, guid: 1a7bf873e0cf74c4993c6b4fd5ab847b, type: 3}
+  squareBeingAttackedAudio:
+  - {fileID: 8300000, guid: 2630f3688d85cae4ebce40c454b6cd20, type: 3}
+  - {fileID: 8300000, guid: 19978e984c364c1478f834c4a9249aef, type: 3}
+  squareLovemakingAudio:
+  - {fileID: 8300000, guid: b037d86e5ba4ef14aa090637018e919b, type: 3}
+  - {fileID: 8300000, guid: 40086cdae73af87418208298773d3e75, type: 3}
+  squareEvadingAudio:
+  - {fileID: 8300000, guid: 037bc63cad21f894e99e28649673aa35, type: 3}
+  - {fileID: 8300000, guid: 12b03e9eb5abe964b879210f0baa764e, type: 3}
+  triangleAttackAudio:
   - {fileID: 8300000, guid: 2eff191479af41246a4d7eb9b333d66f, type: 3}
   - {fileID: 8300000, guid: 766cf36c0c2d0e94b92f41b168d79f1a, type: 3}
+  triangleDyingAudio:
+  - {fileID: 8300000, guid: 5468e92e8ea803a42baa6209cd2d3867, type: 3}
+  - {fileID: 8300000, guid: 4102126669fda394382d6f87117c9071, type: 3}
+  triangleBeingAttackedAudio:
+  - {fileID: 8300000, guid: 4f7ad141ecf304c4ea60fec7db27f70a, type: 3}
+  - {fileID: 8300000, guid: 2097d6de71ddba94eb0d971db90ddbb5, type: 3}
+  triangleLovemakingAudio:
+  - {fileID: 8300000, guid: f7f8931e616861c4f9731ca1207776f8, type: 3}
+  - {fileID: 8300000, guid: 7f269d7291ec4384da4e0966b0a5c813, type: 3}
+  triangleEvadingAudio:
+  - {fileID: 8300000, guid: 443d74a979995df4689059679e3f096c, type: 3}
+  - {fileID: 8300000, guid: e872bd16213a44b4c965915f62ec1b02, type: 3}
   tickTimer: 0
   tickTimerMax: 0.5
 --- !u!65 &4775806378367602359
