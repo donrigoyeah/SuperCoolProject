@@ -78,6 +78,16 @@ public class GameManager : MonoBehaviour
         {
             HandleCameraTarget();
         }
+
+        if (sphereKilled + sphereKilled + triangleKilled == 1)
+        {
+            CopManager.SharedInstance.HandleSpawnCopCar(1);
+        }
+        if (sphereKilled + sphereKilled + triangleKilled % 5 == 0) // Every 10 killed aliens
+        {
+            CopManager.SharedInstance.HandleSpawnCopCar(3);
+        }
+
     }
 
     private void HandleCameraTarget()
