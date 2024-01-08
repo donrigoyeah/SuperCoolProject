@@ -268,6 +268,8 @@ public class PlayerAttacker : MonoBehaviour
         AimTargetLocation = Vector3.zero;
         laserSightLeft.SetPosition(1, lazerSpawnLocationLeft.transform.position + Vector3.forward * 40);
         laserSightRight.SetPosition(1, lazerSpawnLocationRight.transform.position + Vector3.forward * 40);
+
+
     }
 
     #endregion
@@ -380,6 +382,7 @@ public class PlayerAttacker : MonoBehaviour
             other.gameObject.SetActive(false);
         }
     }
+
     #endregion
 
     IEnumerator DisableAfterSeconds(int sec, GameObject objectToDeactivate)

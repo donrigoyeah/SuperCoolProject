@@ -21,6 +21,8 @@ public class SpaceShipHandler : MonoBehaviour
             if (PM != null && PM.isCarryingPart)
             {
                 Debug.Log("Added Particle System here upon object completion");
+                PlayerLocomotion PL = PM.GetComponent<PlayerLocomotion>();
+                PL.playerSpeed = spaceShipPartHandler.previousPlayerSpeed;
                 ParticleSystem objectCompleted = Instantiate(ParticleSystem, new Vector3(0, 0, 5), Quaternion.Euler(-90, 0, 0));
                 Destroy(objectCompleted, 1.2f);
 

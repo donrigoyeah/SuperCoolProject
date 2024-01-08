@@ -11,7 +11,7 @@ public class SpaceShipPartHandler : MonoBehaviour
     private InputHandler inputHandler;
     private PlayerManager playerManager;
     private PlayerLocomotion playerLocomotion;
-    
+
     public SpaceShipScriptable spaceShipData;
     public float playerSpeedReduction = 0f;
     public float previousPlayerSpeed = 10f;
@@ -20,9 +20,9 @@ public class SpaceShipPartHandler : MonoBehaviour
     public bool particleSpawned = false;
     private AudioSource audioSource;
     [SerializeField] private AudioClip draggingAudio;
-    
-    
-    
+
+
+
     // public LineRenderer linerenderer;
     // public Transform position1;
     // public Transform position2;
@@ -39,9 +39,9 @@ public class SpaceShipPartHandler : MonoBehaviour
             inputHandler = other.gameObject.GetComponent<InputHandler>();
             playerLocomotion = other.gameObject.GetComponent<PlayerLocomotion>();
             playerManager = other.gameObject.GetComponent<PlayerManager>();
-            
+
             playerSpeedReduction = spaceShipData.mass / 2.0f;
-            
+
             if (inputHandler.inputInteracting)
             {
                 if (!particleSpawned)
@@ -49,12 +49,13 @@ public class SpaceShipPartHandler : MonoBehaviour
                     collectingResourcesParticle.gameObject.SetActive(true);
                     particleSpawned = true;
                 }
-                
+
                 if (!audioSource.isPlaying)
                 {
                     audioSource.PlayOneShot(draggingAudio, 1f);
                 }
                 playerManager.currentPart = this.gameObject;
+                previousPlayerSpeed = playerLocomotion.playerSpeed;
                 playerLocomotion.playerSpeed = playerSpeedReduction;
                 playerManager.isCarryingPart = true;
                 this.transform.parent = other.transform;
@@ -75,10 +76,10 @@ public class SpaceShipPartHandler : MonoBehaviour
             }
         }
     }
-    
+
     private void Update()
     {
         tmp.text = spaceShipData.partName;
     }
-    
+
 }
