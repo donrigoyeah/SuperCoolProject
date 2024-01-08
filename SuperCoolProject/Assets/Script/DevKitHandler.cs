@@ -16,10 +16,6 @@ public class DevKitHandler : MonoBehaviour
     [SerializeField] private GameObject devKit;
     [SerializeField] private bool devKitOpen = true;
 
-    private void Start()
-    {
-        Debug.Log("DevKit Ready");
-    }
 
     /*
     private void Update()

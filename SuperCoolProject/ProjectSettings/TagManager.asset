@@ -12,6 +12,7 @@ TagManager:
   - SpaceShipDoor
   - Part
   - Grenade
+  - Cop
   layers:
   - Default
   - TransparentFX

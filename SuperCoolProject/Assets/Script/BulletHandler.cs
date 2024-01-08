@@ -10,6 +10,7 @@ public class BulletHandler : MonoBehaviour
     public float bulletDamage = 1;
     public float bulletSpeed = 1;
     public float lifeTime = 2;
+    public bool isPlayerBullet;
 
     // To make in available in other script. Probably not very secure for competitive online play but here should be fine :)
     public Rigidbody rb;
@@ -26,19 +27,51 @@ public class BulletHandler : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        GameObject BulletExp = PoolManager.SharedInstance.GetPooledBulletExplosion();
-
-        if (BulletExp != null)
+        if (isPlayerBullet)
         {
-            BulletExp.transform.position = other.transform.position;
-            BulletExp.transform.rotation = other.transform.rotation;
-            BulletExp.SetActive(true);
+            GameObject BulletExp = PoolManager.SharedInstance.GetPooledBulletExplosion();
+
+            if (BulletExp != null)
+            {
+                BulletExp.transform.position = other.transform.position;
+                BulletExp.transform.rotation = other.transform.rotation;
+                BulletExp.SetActive(true);
+            }
+
+            if (other.CompareTag("Cop"))
+            {
+                Debug.Log("Hit Cop");
+                CopHandler CH = other.gameObject.GetComponent<CopHandler>();
+                if (CH != null)
+                {
+                    CH.copHealthCurrent -= bulletDamage;
+                }
+
+                // Aggro all cops
+                foreach (var item in CopManager.SharedInstance.currentCops)
+                {
+                    item.isAggro = true;
+                }
+
+            }
+
+            this.gameObject.SetActive(false);
         }
-        this.gameObject.SetActive(false);
+        else if (isPlayerBullet == false) // Cop Bullet
+        {
+            if (other.CompareTag("Cop")) { return; }
+            if (other.CompareTag("Player"))
+            {
+                Debug.Log("Got hit by cop");
+                other.gameObject.GetComponent<PlayerManager>().HandleHit();
+            }
+        }
+        // TODO: Make cop Bullet Explosion
+
     }
 
-    
-    
+
+
     IEnumerator DisableAfterSeconds(float sec, GameObject objectToDeactivate)
     {
         // VisualEffect explosionParticleEffect = Instantiate(bulletImpactExplosion, transform.position, Quaternion.identity);
