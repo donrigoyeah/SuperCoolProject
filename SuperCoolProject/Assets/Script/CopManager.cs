@@ -31,6 +31,8 @@ public class CopManager : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (CopCarCurrent == null) { return; }
+
         if (hasLanded == false)
         {
             HandleLandCopCar();

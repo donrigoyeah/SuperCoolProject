@@ -83,7 +83,7 @@ public class GameManager : MonoBehaviour
         {
             CopManager.SharedInstance.HandleSpawnCopCar(1);
         }
-        if (sphereKilled + sphereKilled + triangleKilled % 5 == 0) // Every 10 killed aliens
+        if (sphereKilled + sphereKilled + triangleKilled > 0 && sphereKilled + sphereKilled + triangleKilled % 5 == 0) // Every 5 killed aliens
         {
             CopManager.SharedInstance.HandleSpawnCopCar(3);
         }

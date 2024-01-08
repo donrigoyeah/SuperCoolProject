@@ -532,10 +532,9 @@ public class AlienHandler : MonoBehaviour
         for (int i = 0; i < 10; i++)
         {
             yield return new WaitForSeconds(.5f / 10); // Total duration of transform 0.5f seconds
-            transform.localScale = Vector3.one * oldFactor + Vector3.one * newFactor * i / 10;
+            transform.localScale = Vector3.one * ((oldFactor + newFactor * i / 10) - (oldFactor * i / 10));
         }
     }
-
 
     private void HandleMovement(float step)
     {

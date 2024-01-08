@@ -9,6 +9,7 @@ using UnityEngine.VFX;
 using static UnityEngine.Rendering.DebugUI;
 using Unity.VisualScripting;
 using static AlienHandler;
+using TMPro;
 
 public class PlayerAttacker : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class PlayerAttacker : MonoBehaviour
     [SerializeField] public Transform lazerSpawnLocationRight;
     [SerializeField] public Transform lazerSpawnLocationLeft;
     private bool leftRightSwitch;
+    public Vector3 AimTargetLocation;
     [SerializeField] public GameObject overheatUIGO;
     [SerializeField] public Image overheatUI;
     [SerializeField] private float fireRate = 0.5f;
@@ -232,6 +234,10 @@ public class PlayerAttacker : MonoBehaviour
                     StartCoroutine(DisableAfterSeconds(1, muzzlePoolGo));
                 }
             }
+            if (AimTargetLocation != Vector3.zero)
+            {
+                bulletPoolGo.transform.LookAt(AimTargetLocation, Vector3.up);
+            }
             leftRightSwitch = !leftRightSwitch;
 
             BulletHandler BH = bulletPoolGo.GetComponent<BulletHandler>();
@@ -255,10 +261,11 @@ public class PlayerAttacker : MonoBehaviour
             {
                 laserSightLeft.SetPosition(1, hit.transform.position);
                 laserSightRight.SetPosition(1, hit.transform.position);
+                AimTargetLocation = hit.transform.position;
                 return;
             }
         }
-
+        AimTargetLocation = Vector3.zero;
         laserSightLeft.SetPosition(1, lazerSpawnLocationLeft.transform.position + Vector3.forward * 40);
         laserSightRight.SetPosition(1, lazerSpawnLocationRight.transform.position + Vector3.forward * 40);
     }
