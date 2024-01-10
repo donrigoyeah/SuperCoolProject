@@ -6,28 +6,35 @@ using UnityEngine;
 
 public class TimeManager : MonoBehaviour
 {
+    public static TimeManager SharedInstance;
+
     [Header("Time")]
-    [SerializeField] private int minutes;
-    [SerializeField] private int hours;
-    [SerializeField] private int days = 1;
-    [SerializeField] private float timeCounter;
-    [SerializeField] private int secondsInMinutes = 60;
-    [SerializeField] private int minutesinHour = 60;
-    [SerializeField] private float timeBoost = 150f; //1min cycle completes in 25seconds
+    public int minutes;
+    public int hours;
+    private int days = 1;
+    private float timeCounter;
+    private int secondsInMinutes = 60;
+    private int minutesinHour = 60;
+    public float timeBoost = 150f; //1min cycle completes in 25seconds
 
     [Header("Light")]
-    [SerializeField] private TextMeshProUGUI displayTime;
+    public TextMeshProUGUI displayTime;
 
     [Header("Light")]
-    [SerializeField] private Light sun;
+    public Light sun;
 
     [Header("Colors")]
-    [SerializeField] private Gradient nightToSunrise;
-    [SerializeField] private Gradient sunriseToDay;
-    [SerializeField] private Gradient dayToSunSet;
-    [SerializeField] private Gradient sunsetToNight;
+    public Gradient nightToSunrise;
+    public Gradient sunriseToDay;
+    public Gradient dayToSunSet;
+    public Gradient sunsetToNight;
 
-    private void Update()
+    private void Awake()
+    {
+        SharedInstance = this;
+    }
+
+    private void FixedUpdate()
     {
         timeCounter += Time.deltaTime * timeBoost;
 

@@ -11,7 +11,6 @@ public class SpaceShipMenuAnimation : MonoBehaviour
     private void FixedUpdate()
     {
         float verticleBobMovement = bobbleAmplitude * Mathf.Sin(Time.time / bobbleSpeed) + bobbleStart;
-        Debug.Log(verticleBobMovement);
         transform.position = new Vector3(transform.position.x, verticleBobMovement, transform.position.z);
     }
 }

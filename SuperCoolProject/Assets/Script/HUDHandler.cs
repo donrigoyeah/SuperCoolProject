@@ -8,13 +8,20 @@ public class HUDHandler : MonoBehaviour
     public static HUDHandler SharedInstance;
 
     public int currentHUD;
-    public GameObject[] HUDS;
+    public GameObject[] HUDS; // 0: Population 1: Minimap 2: Time
     public RectTransform HUDScaler;
     public Camera MiniMapCamera;
     public float cameraZoomOut = 200; // TODO: This is entire Island. Maybe Have it follow the player instead
     public float cameraZoomIn = 50;
 
-    private float lastInputTimer;
+    public RectTransform DayNightCircle;
+    public RectTransform SunNMoonCircle;
+    public int currentMinute = 0;
+    public int currentHours = 0;
+    public int currentTotalMinutes = 0;
+    public float currentPercentage = 0;
+
+    private float lastInputTimer = 100;
     private float minWaitDuration = .5f;
     private float timeThreshold = 2;
     private bool isResizing = false;
@@ -38,18 +45,25 @@ public class HUDHandler : MonoBehaviour
                 StartCoroutine(ScaleDown());
             }
         }
+        if (currentHUD == 2)
+        {
+            HandleDisplayTimeOfDay();
+        }
     }
 
     public void ChangeHUD()
     {
         // Prevent double clicking
+        if (isResizing) { return; }
         if (lastInputTimer < minWaitDuration) return;
+
         lastInputTimer = 0;
 
         if (HUDScaler.localScale != Vector3.one)
         {
-            StartCoroutine(ScaleUp());
             if (currentHUD == 1) { StartCoroutine(MiniMapCameraZoomOut()); } // Is MiniMap
+            StartCoroutine(ScaleUp());
+            EnableCurrentHUD(currentHUD);
         }
         else
         {
@@ -73,6 +87,29 @@ public class HUDHandler : MonoBehaviour
         DisbaleAllHUDS();
         HUDS[index].SetActive(true);
     }
+
+    private void HandleDisplayTimeOfDay()
+    {
+        currentMinute = TimeManager.SharedInstance.minutes;
+        currentHours = TimeManager.SharedInstance.hours;
+
+        currentTotalMinutes = currentMinute + currentHours * 60;
+        currentPercentage = (currentTotalMinutes * 100) / (24 * 60);
+
+        SunNMoonCircle.transform.rotation = Quaternion.Euler(0, 0, 360 * currentPercentage / 100);
+
+        if (currentTotalMinutes > (5 * 60) && currentTotalMinutes <= 6 * 60)
+        {
+            Debug.Log("Sun Rise");
+            DayNightCircle.transform.rotation = Quaternion.Euler(0, 0, (180 * (currentTotalMinutes - (5 * 60)) / 60) + 180);
+        }
+        if (currentTotalMinutes > (17 * 60) && currentTotalMinutes <= 18 * 60)
+        {
+            Debug.Log("Sun Set");
+            DayNightCircle.transform.rotation = Quaternion.Euler(0, 0, 180 * (currentTotalMinutes - (17 * 60)) / 60);
+        }
+    }
+
 
     IEnumerator MiniMapCameraZoomOut()
     {

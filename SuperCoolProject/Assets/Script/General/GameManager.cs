@@ -81,6 +81,7 @@ public class GameManager : MonoBehaviour
 
         if (sphereKilled + sphereKilled + triangleKilled == 1)
         {
+            Debug.Log("Spawned Initial Cops");
             CopManager.SharedInstance.HandleSpawnCopCar(1);
         }
         if (sphereKilled + sphereKilled + triangleKilled > 0 && sphereKilled + sphereKilled + triangleKilled % 5 == 0) // Every 5 killed aliens
