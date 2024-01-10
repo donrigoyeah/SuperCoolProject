@@ -353,6 +353,8 @@ MonoBehaviour:
   invincibleFrames: 0.5
   LightBeam: {fileID: 934595259696851748}
   playerShieldGO: {fileID: 6422262875128791845}
+  player: {fileID: 0}
+  dissolve: {fileID: 0}
   dissolveRate: 0.0125
   refreshRate: 0.025
   maxSphereResource: 100
@@ -377,6 +379,7 @@ MonoBehaviour:
   - {fileID: 5274793693502322082}
   - {fileID: 7991882302808134556}
   - {fileID: 7860369408348699713}
+  resourceIndicatorLight: {fileID: 0}
   shieldRechargeAudio: {fileID: 8300000, guid: 7c4072b1b16aa7c47ac7c00b4e89bc31, type: 3}
   shieldBreakAudio: {fileID: 8300000, guid: ed490b7c5f0392e4eb9d586baf5045a8, type: 3}
   deathAudio: {fileID: 8300000, guid: fb8cde1c02d901c48bff064d2c4a6a2b, type: 3}
@@ -420,6 +423,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lazerSpawnLocationRight: {fileID: 7666627156274332060}
   lazerSpawnLocationLeft: {fileID: 1037275037013140508}
+  lazerSightRange: 20
   AimTargetLocation: {x: 0, y: 0, z: 0}
   overheatUIGO: {fileID: 339469481652884982}
   overheatUI: {fileID: 8228046787694399299}

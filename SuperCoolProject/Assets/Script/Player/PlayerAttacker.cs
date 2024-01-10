@@ -280,18 +280,20 @@ public class PlayerAttacker : MonoBehaviour
             if (hit.collider)
             {
                 // If not Alien or Cop, return
-                if (!hit.collider.gameObject.CompareTag("Alien") || !hit.collider.gameObject.CompareTag("Cop")) { return; }
+                if (hit.collider.gameObject.CompareTag("Alien") || hit.collider.gameObject.CompareTag("Cop"))
+                {
+                    laserSightLeft.useWorldSpace = true;
+                    laserSightRight.useWorldSpace = true;
 
-                laserSightLeft.useWorldSpace = true;
-                laserSightRight.useWorldSpace = true;
+                    laserSightLeft.SetPosition(0, lazerSpawnLocationLeft.transform.position);
+                    laserSightRight.SetPosition(0, lazerSpawnLocationRight.transform.position);
+                    laserSightLeft.SetPosition(1, hit.transform.position);
+                    laserSightRight.SetPosition(1, hit.transform.position);
 
-                laserSightLeft.SetPosition(0, lazerSpawnLocationLeft.transform.position);
-                laserSightRight.SetPosition(0, lazerSpawnLocationRight.transform.position);
-                laserSightLeft.SetPosition(1, hit.transform.position);
-                laserSightRight.SetPosition(1, hit.transform.position);
+                    AimTargetLocation = hit.transform.position;
+                    return;
+                }
 
-                AimTargetLocation = hit.transform.position;
-                return;
             }
         }
         laserSightLeft.useWorldSpace = false;
