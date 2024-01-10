@@ -8,6 +8,7 @@ public class CopManager : MonoBehaviour
     public static CopManager SharedInstance;
 
     public bool hasBeenServed = false;
+    public int copAmount = 0;
     public bool hasLanded = false;
     public int paidFine = 0;
     public bool isFineEvading = false;
@@ -21,19 +22,20 @@ public class CopManager : MonoBehaviour
     public int costPerKill = 50;
     public float copCarSpeed = 100;
 
-    
+    public int amountOfKilledAliensPaid = 0;
+    public int currentAmountOfKilledAliens = 0;
+
+
     private void Awake()
     {
         SharedInstance = this;
     }
 
-    private void Start()
-    {
-        HandleSpawnCopCar();
-    }
 
     private void FixedUpdate()
     {
+        if (CopCarCurrent == null) { return; }
+
         if (hasLanded == false)
         {
             HandleLandCopCar();
@@ -59,11 +61,11 @@ public class CopManager : MonoBehaviour
         if (CopCarCurrent.transform.position.y <= 0)
         {
             hasLanded = true;
-            HandleSpawnCops(1);
+            HandleSpawnCops();
         }
     }
 
-    public void HandleSpawnCops(int copAmount)
+    public void HandleSpawnCops()
     {
         for (int i = 0; i < copAmount; i++)
         {
@@ -88,15 +90,16 @@ public class CopManager : MonoBehaviour
         }
     }
 
-    public void HandleSpawnCopCar()
+    public void HandleSpawnCopCar(int newCopAmount)
     {
         hasBeenServed = false;
         hasLanded = false;
+        copAmount = newCopAmount;
 
-        int amountKilled = GameManager.SharedInstance.sphereKilled + GameManager.SharedInstance.squareKilled + GameManager.SharedInstance.triangleKilled;
-        currentFineRequested = (amountKilled) * costPerKill;
+        currentAmountOfKilledAliens = AlienManager.SharedInstance.totalKillCount - amountOfKilledAliensPaid;
+        currentFineRequested = (currentAmountOfKilledAliens) * costPerKill;
         fineCost.text = currentFineRequested.ToString();
-        fineDescribtion.text = "You killed " + amountKilled + " Aliens";
+        fineDescribtion.text = "You killed " + currentAmountOfKilledAliens + " Aliens";
 
         CopCarCurrent = Instantiate(CopCar);
         CopCarCurrent.gameObject.transform.SetParent(this.transform);
@@ -151,6 +154,7 @@ public class CopManager : MonoBehaviour
     public void FinePay()
     {
         paidFine += currentFineRequested;
+        amountOfKilledAliensPaid = currentAmountOfKilledAliens;
     }
 
     public void FineNotPaying()

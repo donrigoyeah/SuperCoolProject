@@ -27,8 +27,7 @@ public class PlayerLocomotion : MonoBehaviour
     public float dashCurrentCharge = 0;
     public float dashCost = 33;
     public float dashRechargeSpeed = 3;
-    [SerializeField] private ParticleSystem dashParticle;
-    private ParticleSystem dashParticleSystemInstantiate;
+    public GameObject dashParticle;
 
     public bool isDashing = false;
     private float dashDuration = 0.3f;
@@ -108,12 +107,6 @@ public class PlayerLocomotion : MonoBehaviour
             {
                 dashUiGO.SetActive(false);
             }
-
-            //This is to make dash partcle system follow player for proper trail
-            if (dashParticleSystemInstantiate != null)
-            {
-                dashParticleSystemInstantiate.transform.position = this.transform.position;
-            }
         }
 
         // Handle Pause Input
@@ -132,8 +125,11 @@ public class PlayerLocomotion : MonoBehaviour
                 PauseMenu.SharedInstance.Pause();
             }
         }
+
+        // Handle toggle HUD 
         if (inputHandler.inputNavToggle)
         {
+            Debug.Log("Pressed toggle");
             HUDHandler.SharedInstance.ChangeHUD();
         }
     }
@@ -218,9 +214,9 @@ public class PlayerLocomotion : MonoBehaviour
         dashCurrentCharge -= dashCost;
 
         //Instantiate particle system for dash
-        dashParticleSystemInstantiate = Instantiate(dashParticle, this.transform.position, quaternion.identity);
+        dashParticle.SetActive(true);
         yield return new WaitForSeconds(dashDuration);
-        Destroy(dashParticleSystemInstantiate.gameObject);
+        dashParticle.SetActive(false);
 
         isDashing = false;
         playerSpeed -= dashExtraSpeed;

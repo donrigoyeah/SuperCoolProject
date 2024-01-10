@@ -38,6 +38,7 @@ public class AlienHandler : MonoBehaviour
     public int currentSpecies;
     public bool hasUterus;
     public float alienHealth;
+    public bool isDead = false;
     public float lifeTime = 0;
     public float lustTimer = 0;
     public float hungerTimer = 0;
@@ -109,15 +110,15 @@ public class AlienHandler : MonoBehaviour
     [SerializeField] private AudioClip[] triangleBeingAttackedAudio;
     [SerializeField] private AudioClip[] triangleLovemakingAudio;
     [SerializeField] private AudioClip[] triangleEvadingAudio;
-    
+
     [Header("Array of all alien state")]
     private List<AudioClip[]> attackAudioList = new List<AudioClip[]>();
-    private List<AudioClip[]> dyingAudioList = new List<AudioClip[]>(); 
+    private List<AudioClip[]> dyingAudioList = new List<AudioClip[]>();
     private List<AudioClip[]> beingAttackedAudioList = new List<AudioClip[]>();
     private List<AudioClip[]> lovemakingAudioList = new List<AudioClip[]>();
     private List<AudioClip[]> evadingAudioList = new List<AudioClip[]>();
 
-    [Header("Tick stats")] 
+    [Header("Tick stats")]
     public float tickTimer;
     public float tickTimerMax = .5f;
 
@@ -146,15 +147,15 @@ public class AlienHandler : MonoBehaviour
         dyingAudioList.Add(sphereDyingAudio);
         dyingAudioList.Add(squareDyingAudio);
         dyingAudioList.Add(triangleDyingAudio);
-        
+
         beingAttackedAudioList.Add(sphereBeingAttackedAudio);
         beingAttackedAudioList.Add(squareBeingAttackedAudio);
         beingAttackedAudioList.Add(triangleBeingAttackedAudio);
-        
+
         lovemakingAudioList.Add(sphereLovemakingAudio);
         lovemakingAudioList.Add(squareLovemakingAudio);
         lovemakingAudioList.Add(triangleLovemakingAudio);
-        
+
         evadingAudioList.Add(sphereEvadingAudio);
         evadingAudioList.Add(squareEvadingAudio);
         evadingAudioList.Add(triangleEvadingAudio);
@@ -185,6 +186,9 @@ public class AlienHandler : MonoBehaviour
 
     private void FixedUpdate()
     {
+        // If is dead, skip everytthing
+        if (isDead == true) { return; }
+
         delta = Time.deltaTime;
         lifeTime += delta;
         lustTimer += delta;
@@ -237,6 +241,7 @@ public class AlienHandler : MonoBehaviour
         }
         // Finaly process movement
         HandleMovement(step);
+
     }
 
     public void HandleLooking()
@@ -473,10 +478,7 @@ public class AlienHandler : MonoBehaviour
         {
             int amountOfBabies = UnityEngine.Random.Range(1, maxAmountOfBabies);
 
-            if (!audioSource.isPlaying)
-            {
-                audioSource.PlayOneShot( RandomAudioSelector(lovemakingAudioList, currentSpecies), 1f);
-            }
+            audioSource.PlayOneShot(RandomAudioSelector(lovemakingAudioList, currentSpecies), 1f);
 
             for (var i = 0; i < amountOfBabies; i++)
             {
@@ -494,6 +496,16 @@ public class AlienHandler : MonoBehaviour
         }
         lustTimer = 0;
         DisgardClosestAlien();
+    }
+
+    public void HandleDeath()
+    {
+        isDead = true;
+        anim[currentSpecies].Stop();
+        AlienManager.SharedInstance.KillAlien(currentSpecies);
+        StartCoroutine(Dissolve());
+        // TODO: Add Coroutine & Ragdoll to show impact/force of bullets
+        //EnableRagdoll();
     }
 
     public IEnumerator HandleAge()
@@ -514,21 +526,20 @@ public class AlienHandler : MonoBehaviour
         alienHealth = alienLifeChild;
         alienSpeciesChild[currentSpecies].SetActive(false);
         alienSpeciesAdult[currentSpecies].SetActive(true);
-        //transform.localScale = Vector3.one * 0.6f;
+        transform.localScale = Vector3.one * .8f;
         yield return new WaitForSeconds(timeToSexual);
 
         // Sexual active Life
         currentAge = AlienAge.sexualActive;
         alienHealth = alienLifeSexual;
-        //transform.localScale = Vector3.one;
-        //StartCoroutine(HandleGrowing(.6f, .7f));
+        StartCoroutine(HandleGrowing(.8f, 1f));
         yield return new WaitForSeconds(timeToFullGrown);
 
         // Full Grown Life
         currentAge = AlienAge.fullyGrown;
         alienHealth = alienLifeFullGrown;
+        StartCoroutine(HandleGrowing(1f, 1.1f));
         //transform.localScale = Vector3.one * 1.2f;
-        //StartCoroutine(HandleGrowing(.7f, .8f));
     }
 
     private IEnumerator HandleGrowing(float oldFactor, float newFactor)
@@ -536,10 +547,9 @@ public class AlienHandler : MonoBehaviour
         for (int i = 0; i < 10; i++)
         {
             yield return new WaitForSeconds(.5f / 10); // Total duration of transform 0.5f seconds
-            transform.localScale = Vector3.one * oldFactor + Vector3.one * newFactor * i / 10;
+            transform.localScale = Vector3.one * ((oldFactor + newFactor * i / 10) - (oldFactor * i / 10));
         }
     }
-
 
     private void HandleMovement(float step)
     {
@@ -629,16 +639,9 @@ public class AlienHandler : MonoBehaviour
 
 
             // Handle Alien Death
-            if (alienHealth <= 0)
+            if (alienHealth <= 0 && isDead == false)
             {
-                anim[currentSpecies].Stop();
-                // TODO: Add Coroutine & Ragdoll to show impact/force of bullets
-                //EnableRagdoll();
-                if (currentSpecies == 0) { GameManager.SharedInstance.sphereKilled++; }
-                if (currentSpecies == 1) { GameManager.SharedInstance.squareKilled++; }
-                if (currentSpecies == 2) { GameManager.SharedInstance.triangleKilled++; }
-
-                StartCoroutine(Dissolve());
+                HandleDeath();
                 return;
             };
 
@@ -676,6 +679,7 @@ public class AlienHandler : MonoBehaviour
     void ResetVariable()
     {
         timeToChild += UnityEngine.Random.Range(0, 10);
+        isDead = false;
         alienHealth = alienLifeResource;
         currentAge = AlienAge.resource;
         lustTimer = 0;

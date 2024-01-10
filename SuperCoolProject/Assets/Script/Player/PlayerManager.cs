@@ -21,6 +21,8 @@ public class PlayerManager : MonoBehaviour
     public bool isAlive;
     public bool isInteracting;
     public float invincibleFrames = .5f;
+    public GameObject LightBeam;
+
     public GameObject playerShieldGO;
     public GameObject player;
     
@@ -161,7 +163,7 @@ public class PlayerManager : MonoBehaviour
             if (closestResource[neededResource].currentAge != AlienHandler.AlienAge.resource)
             {
                 closestResource[neededResource] = null;
-                Debug.Log("Resource became unavailable");
+                //Debug.Log("Resource became unavailable");
                 return;
             }
 
@@ -173,7 +175,7 @@ public class PlayerManager : MonoBehaviour
         }
         closestResourceIndicator[neededResource].SetActive(false);
 
-        Debug.Log("Search for Closest Resource");
+        //Debug.Log("Search for Closest Resource");
         resourceInRange = Physics.OverlapSphere(this.transform.position, playerResourceScanRadius, layerMask);
         foreach (var item in aliensInRange)
         {
@@ -182,12 +184,12 @@ public class PlayerManager : MonoBehaviour
             if (AH.currentSpecies != neededResource) { continue; }
 
             float tmpDistance = Vector3.Distance(AH.transform.position, this.transform.position);
-            Debug.Log("Distance to Resource: " + tmpDistance);
+            //Debug.Log("Distance to Resource: " + tmpDistance);
             if (tmpDistance > distanceToResource) { continue; }
 
             distanceToResource = tmpDistance;
             closestResource[neededResource] = AH;
-            Debug.Log("Found Closest Resource");
+            //Debug.Log("Found Closest Resource");
         }
     }
 
