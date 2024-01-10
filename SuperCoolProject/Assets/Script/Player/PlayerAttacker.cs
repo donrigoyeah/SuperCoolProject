@@ -16,8 +16,9 @@ public class PlayerAttacker : MonoBehaviour
     [Header("Lazer Gun Stuff")]
     [SerializeField] public Transform lazerSpawnLocationRight;
     [SerializeField] public Transform lazerSpawnLocationLeft;
-
     public float lazerSightRange = 20;
+    private float lastTimeSinceLazer = 0;
+    private float disableLazerAfterNoInput = 1f;
 
     private bool leftRightSwitch;
     public Vector3 AimTargetLocation;
@@ -93,9 +94,26 @@ public class PlayerAttacker : MonoBehaviour
 
         if (isLaserSight)
         {
-            laserSightLeft.enabled = true;
-            laserSightRight.enabled = true;
-            LaserSight();
+            if (inputHandler.inputAim != Vector2.zero)
+            {
+                lastTimeSinceLazer = 0;
+            }
+            else
+            {
+                lastTimeSinceLazer += Time.deltaTime;
+            }
+
+            if (lastTimeSinceLazer < disableLazerAfterNoInput)
+            {
+                laserSightLeft.enabled = true;
+                laserSightRight.enabled = true;
+                LaserSight();
+            }
+            else
+            {
+                laserSightLeft.enabled = false;
+                laserSightRight.enabled = false;
+            }
         }
         else
         {
@@ -261,6 +279,9 @@ public class PlayerAttacker : MonoBehaviour
         {
             if (hit.collider)
             {
+                // If not Alien or Cop, return
+                if (!hit.collider.gameObject.CompareTag("Alien") || !hit.collider.gameObject.CompareTag("Cop")) { return; }
+
                 laserSightLeft.useWorldSpace = true;
                 laserSightRight.useWorldSpace = true;
 
