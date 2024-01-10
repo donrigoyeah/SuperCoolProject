@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -20,9 +21,11 @@ public class PlayerManager : MonoBehaviour
     public bool isAlive;
     public bool isInteracting;
     public float invincibleFrames = .5f;
-
     public GameObject playerShieldGO;
-    //private Material dissolve;
+    public GameObject player;
+    
+    [Header("Dissolve")]
+    public Material dissolve;
     public float dissolveRate = 0.0125f;
     public float refreshRate = 0.025f;
 
@@ -48,6 +51,7 @@ public class PlayerManager : MonoBehaviour
     public GameObject ResourceUISquare;
     public GameObject ResourceUITriangle;
     public GameObject[] closestResourceIndicator;  // 0:Sphere, 1:Square, 2:Triangle
+    public Light resourceIndicatorLight;
 
     [Header("Audio")]
     [SerializeField] private AudioClip shieldRechargeAudio;
@@ -59,9 +63,9 @@ public class PlayerManager : MonoBehaviour
 
     private void Awake()
     {
-        //dissolve = ShieldGO.gameObject.GetComponent<Renderer>().material;
         audioSource = GetComponent<AudioSource>();
         inputHandler = GetComponent<InputHandler>();
+        dissolve.SetFloat("_DissolveAmount", 0);
     }
 
     private void FixedUpdate()
@@ -216,6 +220,7 @@ public class PlayerManager : MonoBehaviour
         // Only show resource UI if below 75%
         if (currentSphereResource < 3 * maxSphereResource / 4)
         {
+            StartCoroutine(HandleResourceLightIndicator(0));
             HandleResourceDetection(0);
             if (sphereUnfolded != true)
             {
@@ -238,6 +243,7 @@ public class PlayerManager : MonoBehaviour
         // Only show resource UI if below 75%
         if (currentSquareResource < 3 * maxSquareResource / 4)
         {
+            StartCoroutine(HandleResourceLightIndicator(1));
             HandleResourceDetection(1);
             if (squareUnfolded != true)
             {
@@ -260,6 +266,7 @@ public class PlayerManager : MonoBehaviour
         // Only show resource UI if below 75%
         if (currentTriangleResource < 3 * maxTriangleResource / 4)
         {
+            StartCoroutine(HandleResourceLightIndicator(2));
             HandleResourceDetection(2);
             if (triangleUnfolded != true)
             {
@@ -355,12 +362,13 @@ public class PlayerManager : MonoBehaviour
             {
                 GameManager.SharedInstance.DeathScreen.SetActive(false);
             }
-
-
+            
             GameManager.SharedInstance.HandleCloneJuiceDrain();
             // TODO: Add Transition/ Fade to black/ camera shutter effect?!
-            this.gameObject.transform.position = Vector3.zero;
+    
             isAlive = true;
+
+            this.gameObject.transform.position = Vector3.zero;
         }
     }
 
@@ -375,23 +383,52 @@ public class PlayerManager : MonoBehaviour
     IEnumerator ShieldRespawn(float timeToRecharge)
     {
         float counter = 0;
-        //while (dissolve.GetFloat("_DissolveAmount") < 1)
-        //{
-        //    counter += dissolveRate;
-        //    for (int i = 0; i <= 10; i++)
-        //    {
-        //        dissolve.SetFloat("_DissolveAmount", counter);
-        //        yield return new WaitForSeconds(refreshRate);
-        //    }
-        //}
+        while (dissolve.GetFloat("_DissolveAmount") < 1)
+        {
+            counter += dissolveRate;
+            for (int i = 0; i <= 10; i++)
+            {
+                dissolve.SetFloat("_DissolveAmount", counter);
+                yield return new WaitForSeconds(refreshRate);
+            }
+        }
 
         playerShield = false;
         audioSource.PlayOneShot(shieldBreakAudio, 1f);
         playerShieldGO.SetActive(false);
         yield return new WaitForSeconds(timeToRecharge);
-        //dissolve.SetFloat("_DissolveAmount", 0);
+        dissolve.SetFloat("_DissolveAmount", 0);
         playerShield = true;
         audioSource.PlayOneShot(shieldRechargeAudio, 1f);
         playerShieldGO.SetActive(true);
     }
+
+    private IEnumerator HandleResourceLightIndicator(int resource)
+    {
+        switch (resource)
+        {
+            case 0:
+                resourceIndicatorLight.color = Color.blue;
+                Debug.Log("blue");
+                break;
+            case 1:
+                resourceIndicatorLight.color = Color.green;
+                Debug.Log("green");
+                break;
+            case 2:
+                resourceIndicatorLight.color = Color.red;
+                Debug.Log("red");
+                break;
+        }
+
+        resourceIndicatorLight.enabled = true;
+        
+        yield return new WaitForSeconds(3f); // Light on
+        resourceIndicatorLight.enabled = false;
+        
+        yield return new WaitForSeconds(3); // Light off
+        resourceIndicatorLight.enabled = true;
+        resourceIndicatorLight.enabled = false;
+    }
+    
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -26,12 +27,23 @@ public class CopHandler : MonoBehaviour
     public Transform CopCar;
     public Animation anim;
 
+    
+    [Header("Audio")] 
+    public AudioClip copMumbling;
+    public AudioClip copShooting;
+    private AudioSource audioSource;
+    
     private void OnEnable()
     {
         copHealthCurrent = copHealthMax;
         isAggro = false;
         canShoot = false;
         fireTimer = 0;
+    }
+
+    private void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void FixedUpdate()
@@ -81,6 +93,11 @@ public class CopHandler : MonoBehaviour
 
     private void HandleMovement()
     {
+        if (!audioSource.isPlaying && !canShoot)
+        {
+            audioSource.PlayOneShot(copMumbling, 1f);
+        }
+
         if (closestPlayer == null) { return; }
 
         float step = copSpeed * Time.deltaTime;
@@ -118,6 +135,7 @@ public class CopHandler : MonoBehaviour
                 // Instantiate Bullet left
                 HandleSpawnCopLazer(leftGun);
                 leftRightSwitch = false;
+                audioSource.PlayOneShot(copShooting, 1f);
                 return;
             }
             else
@@ -125,6 +143,7 @@ public class CopHandler : MonoBehaviour
                 // Instantiate Bullet right
                 HandleSpawnCopLazer(rightGun);
                 leftRightSwitch = true;
+                audioSource.PlayOneShot(copShooting, 1f);
                 return;
             }
         }

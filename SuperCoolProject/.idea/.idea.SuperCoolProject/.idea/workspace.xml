@@ -11,8 +11,10 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Assets/LoadingScreenHandler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/General/TimeManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/Player/CameraShake.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Script/Player/PlayerDeadBodyHandler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@14.0.8/Shaders/Lit.shader" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
@@ -212,7 +214,16 @@
       <workItem from="1704480958493" duration="314000" />
       <workItem from="1704629768014" duration="3979000" />
       <workItem from="1704646983742" duration="963000" />
-      <workItem from="1704715544882" duration="7384000" />
+      <workItem from="1704715544882" duration="7942000" />
+      <workItem from="1704728187932" duration="2283000" />
+      <workItem from="1704756379517" duration="1690000" />
+      <workItem from="1704766300512" duration="3053000" />
+      <workItem from="1704811625023" duration="2853000" />
+      <workItem from="1704823336192" duration="3377000" />
+      <workItem from="1704845953300" duration="4206000" />
+      <workItem from="1704850234189" duration="209000" />
+      <workItem from="1704893326064" duration="2445000" />
+      <workItem from="1704896953081" duration="58000" />
     </task>
     <servers />
   </component>

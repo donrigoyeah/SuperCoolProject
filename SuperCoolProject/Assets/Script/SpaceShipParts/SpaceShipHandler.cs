@@ -7,7 +7,6 @@ using UnityEngine.InputSystem;
 public class SpaceShipHandler : MonoBehaviour
 {
     public ParticleSystem ParticleSystem;
-    [SerializeField] private PlayerInputManager playerInputManager;
 
 
     private void OnTriggerEnter(Collider other)
@@ -29,6 +28,11 @@ public class SpaceShipHandler : MonoBehaviour
                 PM.currentPart = null;
                 PM.isCarryingPart = false;
 
+                if (other.gameObject.CompareTag("Player"))
+                {
+                    //Increase clone juice here
+                }
+                
                 //This is to check which spaceship part player is holding
                 if (spaceShipPartHandler.spaceShipData.partName == "AmmoBox") { GameManager.SharedInstance.hasAmmoBox = true; }
 

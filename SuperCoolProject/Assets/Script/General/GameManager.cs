@@ -70,8 +70,7 @@ public class GameManager : MonoBehaviour
     {
         HandleSpawnShipParts();
     }
-
-
+    
     private void FixedUpdate()
     {
         if (players.Count != 0)

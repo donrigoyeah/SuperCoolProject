@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 public class CopManager : MonoBehaviour
 {
@@ -22,6 +21,7 @@ public class CopManager : MonoBehaviour
     public int costPerKill = 50;
     public float copCarSpeed = 100;
 
+    
     private void Awake()
     {
         SharedInstance = this;
@@ -49,6 +49,8 @@ public class CopManager : MonoBehaviour
             HandleReturnCopCar();
             return;
         }
+
+
     }
 
     public void HandleLandCopCar()
@@ -140,8 +142,7 @@ public class CopManager : MonoBehaviour
 
         CopCarCurrent.transform.position = Vector3.MoveTowards(CopCarCurrent.transform.position, CopCarCurrent.transform.position + Vector3.up * 100, Time.deltaTime * copCarSpeed);
     }
-
-
+    
     public void FineServed()
     {
         hasBeenServed = true;
