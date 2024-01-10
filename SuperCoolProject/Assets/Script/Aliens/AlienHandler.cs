@@ -38,6 +38,7 @@ public class AlienHandler : MonoBehaviour
     public int currentSpecies;
     public bool hasUterus;
     public float alienHealth;
+    public bool isDead = false;
     public float lifeTime = 0;
     public float lustTimer = 0;
     public float hungerTimer = 0;
@@ -185,6 +186,9 @@ public class AlienHandler : MonoBehaviour
 
     private void FixedUpdate()
     {
+        // If is dead, skip everytthing
+        if (isDead == true) { return; }
+
         delta = Time.deltaTime;
         lifeTime += delta;
         lustTimer += delta;
@@ -237,6 +241,7 @@ public class AlienHandler : MonoBehaviour
         }
         // Finaly process movement
         HandleMovement(step);
+
     }
 
     public void HandleLooking()
@@ -493,6 +498,16 @@ public class AlienHandler : MonoBehaviour
         DisgardClosestAlien();
     }
 
+    public void HandleDeath()
+    {
+        isDead = true;
+        anim[currentSpecies].Stop();
+        AlienManager.SharedInstance.KillAlien(currentSpecies);
+        StartCoroutine(Dissolve());
+        // TODO: Add Coroutine & Ragdoll to show impact/force of bullets
+        //EnableRagdoll();
+    }
+
     public IEnumerator HandleAge()
     {
         // Resource Life
@@ -624,16 +639,9 @@ public class AlienHandler : MonoBehaviour
 
 
             // Handle Alien Death
-            if (alienHealth <= 0)
+            if (alienHealth <= 0 && isDead == false)
             {
-                anim[currentSpecies].Stop();
-                // TODO: Add Coroutine & Ragdoll to show impact/force of bullets
-                //EnableRagdoll();
-                if (currentSpecies == 0) { GameManager.SharedInstance.sphereKilled++; }
-                if (currentSpecies == 1) { GameManager.SharedInstance.squareKilled++; }
-                if (currentSpecies == 2) { GameManager.SharedInstance.triangleKilled++; }
-
-                StartCoroutine(Dissolve());
+                HandleDeath();
                 return;
             };
 
@@ -671,6 +679,7 @@ public class AlienHandler : MonoBehaviour
     void ResetVariable()
     {
         timeToChild += UnityEngine.Random.Range(0, 10);
+        isDead = false;
         alienHealth = alienLifeResource;
         currentAge = AlienAge.resource;
         lustTimer = 0;

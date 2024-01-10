@@ -25,6 +25,13 @@ public class AlienManager : MonoBehaviour
     public int maxRadius = 70;
     public int maxSleepDelay = 10;
 
+    [Header("Kill Stuff")]
+    public int totalKillCount = 0;
+    public int currentPaidKillCount = 0;
+    public int sphereKilled = 0;
+    public int squareKilled = 0;
+    public int triangleKilled = 0;
+
 
     private void Awake()
     {
@@ -119,6 +126,23 @@ public class AlienManager : MonoBehaviour
         SetPieChart(values);
     }
 
+
+    public void KillAlien(int killedAlienIndex)
+    {
+        if (killedAlienIndex == 0) { sphereKilled++; totalKillCount++; }
+        if (killedAlienIndex == 1) { squareKilled++; totalKillCount++; }
+        if (killedAlienIndex == 2) { squareKilled++; totalKillCount++; }
+
+        if (totalKillCount == 1)
+        {
+            CopManager.SharedInstance.HandleSpawnCopCar(1);
+        }
+        if (totalKillCount > 1 && totalKillCount % 5 == 0) // Every 5 killed aliens
+        {
+            CopManager.SharedInstance.HandleSpawnCopCar(3);
+        }
+
+    }
 
     private void SetPieChart(float[] valuesToSet)
     {

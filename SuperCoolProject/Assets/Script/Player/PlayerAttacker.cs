@@ -16,6 +16,9 @@ public class PlayerAttacker : MonoBehaviour
     [Header("Lazer Gun Stuff")]
     [SerializeField] public Transform lazerSpawnLocationRight;
     [SerializeField] public Transform lazerSpawnLocationLeft;
+
+    public float lazerSightRange = 20;
+
     private bool leftRightSwitch;
     public Vector3 AimTargetLocation;
     [SerializeField] public GameObject overheatUIGO;
@@ -252,24 +255,34 @@ public class PlayerAttacker : MonoBehaviour
     void LaserSight()
     {
         RaycastHit hit;
-        laserSightLeft.SetPosition(0, lazerSpawnLocationLeft.transform.position);
-        laserSightRight.SetPosition(0, lazerSpawnLocationRight.transform.position);
 
-        if (Physics.Raycast(transform.position + Vector3.up / 2, transform.forward, out hit, 15))
+        // Use Spherecast here instead of ray to have a better detactionChance
+        if (Physics.SphereCast(transform.position + Vector3.up / 2, 2, transform.forward, out hit, lazerSightRange))
         {
             if (hit.collider)
             {
+                laserSightLeft.useWorldSpace = true;
+                laserSightRight.useWorldSpace = true;
+
+                laserSightLeft.SetPosition(0, lazerSpawnLocationLeft.transform.position);
+                laserSightRight.SetPosition(0, lazerSpawnLocationRight.transform.position);
                 laserSightLeft.SetPosition(1, hit.transform.position);
                 laserSightRight.SetPosition(1, hit.transform.position);
+
                 AimTargetLocation = hit.transform.position;
                 return;
             }
         }
+        laserSightLeft.useWorldSpace = false;
+        laserSightRight.useWorldSpace = false;
+
+        laserSightLeft.SetPosition(0, Vector3.zero);
+        laserSightRight.SetPosition(0, Vector3.zero);
+        laserSightLeft.SetPosition(1, Vector3.forward * lazerSightRange);
+        laserSightRight.SetPosition(1, Vector3.forward * lazerSightRange);
+
         AimTargetLocation = Vector3.zero;
-        laserSightLeft.SetPosition(1, lazerSpawnLocationLeft.transform.position + Vector3.forward * 40);
-        laserSightRight.SetPosition(1, lazerSpawnLocationRight.transform.position + Vector3.forward * 40);
-
-
+        return;
     }
 
     #endregion
@@ -369,17 +382,17 @@ public class PlayerAttacker : MonoBehaviour
         if (other.gameObject.CompareTag("Alien"))
         {
             AlienHandler AH = other.gameObject.GetComponent<AlienHandler>();
+            if (AH.isDead) { return; }
+
             if (AH.currentAge == AlienAge.resource)
             {
                 playerManager.HandleGainResource(AH.currentSpecies);
             }
             else
             {
-                Debug.Log("Handle Hit");
                 playerManager.HandleHit();
-                Debug.Log("@Kinshuk: Maybe write a function on the alienHander like hanldeDeath that gets triggered here");
+                AH.HandleDeath();
             }
-            other.gameObject.SetActive(false);
         }
     }
 

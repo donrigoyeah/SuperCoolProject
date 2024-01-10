@@ -23,6 +23,10 @@ public class CopManager : MonoBehaviour
     public int costPerKill = 50;
     public float copCarSpeed = 100;
 
+    public int amountOfKilledAliensPaid = 0;
+    public int currentAmountOfKilledAliens = 0;
+
+
     private void Awake()
     {
         SharedInstance = this;
@@ -91,10 +95,10 @@ public class CopManager : MonoBehaviour
         hasLanded = false;
         copAmount = newCopAmount;
 
-        int amountKilled = GameManager.SharedInstance.sphereKilled + GameManager.SharedInstance.squareKilled + GameManager.SharedInstance.triangleKilled;
-        currentFineRequested = (amountKilled) * costPerKill;
+        currentAmountOfKilledAliens = AlienManager.SharedInstance.totalKillCount - amountOfKilledAliensPaid;
+        currentFineRequested = (currentAmountOfKilledAliens) * costPerKill;
         fineCost.text = currentFineRequested.ToString();
-        fineDescribtion.text = "You killed " + amountKilled + " Aliens";
+        fineDescribtion.text = "You killed " + currentAmountOfKilledAliens + " Aliens";
 
         CopCarCurrent = Instantiate(CopCar);
         CopCarCurrent.gameObject.transform.SetParent(this.transform);
@@ -150,6 +154,7 @@ public class CopManager : MonoBehaviour
     public void FinePay()
     {
         paidFine += currentFineRequested;
+        amountOfKilledAliensPaid = currentAmountOfKilledAliens;
     }
 
     public void FineNotPaying()

@@ -20,6 +20,7 @@ public class PlayerManager : MonoBehaviour
     public bool isAlive;
     public bool isInteracting;
     public float invincibleFrames = .5f;
+    public GameObject LightBeam;
 
     public GameObject playerShieldGO;
     //private Material dissolve;

@@ -98,9 +98,9 @@ public class PauseMenu : MonoBehaviour
 
     private void UpdatePauseUI()
     {
-        sphereKillCounter.text = GameManager.SharedInstance.sphereKilled.ToString();
-        squareKillCounter.text = GameManager.SharedInstance.squareKilled.ToString();
-        triangleKillCounter.text = GameManager.SharedInstance.triangleKilled.ToString();
+        sphereKillCounter.text = AlienManager.SharedInstance.sphereKilled.ToString();
+        squareKillCounter.text = AlienManager.SharedInstance.squareKilled.ToString();
+        triangleKillCounter.text = AlienManager.SharedInstance.triangleKilled.ToString();
 
         // TODO: This only shows the stats of the first player / Maybe check which player opend the pause menu?!
         ResourceSphere.fillAmount = GameManager.SharedInstance.players[0].currentSphereResource / GameManager.SharedInstance.players[0].maxSphereResource;
@@ -127,7 +127,7 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 0.01f;
         isPaused = true;
     }
-    
+
     public void ResumeForButton() // UI buttons only works with void functions
     {
         isPaused = false;
@@ -183,7 +183,7 @@ public class PauseMenu : MonoBehaviour
     {
         musicSlider.Select();
     }
-    
+
     //private void CameraShakeController()
     //{
     //    float cameraShakeModifier = cameraShakeSlider.value * 2.5f;

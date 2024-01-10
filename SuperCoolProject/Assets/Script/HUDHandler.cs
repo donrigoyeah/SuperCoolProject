@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class HUDHandler : MonoBehaviour
 {
-
     public static HUDHandler SharedInstance;
 
     public int currentHUD;

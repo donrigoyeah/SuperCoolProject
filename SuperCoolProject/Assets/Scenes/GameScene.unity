@@ -3713,6 +3713,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 123fa7901cc957444bfa18abb24cc579, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentState: 0
   minutes: 0
   hours: 0
   timeBoost: 1000
@@ -3750,8 +3751,8 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   sunriseToDay:
     serializedVersion: 2
-    key0: {r: 0.764151, g: 0.5729819, b: 0.13456741, a: 1}
-    key1: {r: 0.7264151, g: 0.7264151, b: 0.7264151, a: 1}
+    key0: {r: 1, g: 0.6901961, b: 0, a: 1}
+    key1: {r: 1, g: 0.8674851, b: 0.48742133, a: 1}
     key2: {r: 0, g: 0, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
@@ -3780,8 +3781,8 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   dayToSunSet:
     serializedVersion: 2
-    key0: {r: 1, g: 1, b: 1, a: 1}
-    key1: {r: 0.8113208, g: 0.7461203, b: 0.5944583, a: 1}
+    key0: {r: 1, g: 0.8666667, b: 0.4862745, a: 1}
+    key1: {r: 0.3882353, g: 0.27450982, b: 0, a: 1}
     key2: {r: 0, g: 0, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
@@ -3811,7 +3812,7 @@ MonoBehaviour:
   sunsetToNight:
     serializedVersion: 2
     key0: {r: 0.38679248, g: 0.27302998, b: 0, a: 1}
-    key1: {r: 0.08235294, g: 0.121568635, b: 0.40784317, a: 1}
+    key1: {r: 0.047058824, g: 0.09803922, b: 0.42352942, a: 1}
     key2: {r: 0, g: 0, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
@@ -4372,7 +4373,7 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 0.4325086, g: 0.44234818, b: 0.5754717, a: 1}
+  m_Color: {r: 0.047058824, g: 0.09803922, b: 0.42352942, a: 1}
   m_Intensity: 2
   m_Range: 10
   m_SpotAngle: 30
@@ -5008,6 +5009,11 @@ MonoBehaviour:
   minRadius: 50
   maxRadius: 180
   maxSleepDelay: 10
+  totalKillCount: 0
+  currentPaidKillCount: 0
+  sphereKilled: 0
+  squareKilled: 0
+  triangleKilled: 0
 --- !u!1 &472793326
 GameObject:
   m_ObjectHideFlags: 0
@@ -8205,6 +8211,8 @@ MonoBehaviour:
   fineCost: {fileID: 628767546}
   costPerKill: 50
   copCarSpeed: 30
+  amountOfKilledAliensPaid: 0
+  currentAmountOfKilledAliens: 0
 --- !u!224 &656785174 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6680292650503350825, guid: f25dcd618d3acd64795bf8bb32edb6c9,
@@ -22200,7 +22208,7 @@ Terrain:
   m_StaticShadowCaster: 0
   m_IgnoreQualitySettings: 0
   m_ReflectionProbeUsage: 1
-  m_MaterialTemplate: {fileID: -876546973899608171, guid: 65e3ba929739c574187bdff087134776,
+  m_MaterialTemplate: {fileID: -876546973899608171, guid: 88d0c22ef7916314a8be5ec0c02027ee,
     type: 3}
   m_BakeLightProbesForTrees: 1
   m_PreserveTreePrototypeLayers: 0
@@ -22629,9 +22637,6 @@ MonoBehaviour:
   hasAmmoBox: 0
   hasShieldGenerator: 0
   hasAntenna: 0
-  sphereKilled: 0
-  squareKilled: 0
-  triangleKilled: 0
   map: {fileID: 1244808667}
   playerInputManager: {fileID: 1325170218}
   players: []
@@ -22640,6 +22645,10 @@ MonoBehaviour:
   DeathScreen: {fileID: 703073541}
   GameOverScreen: {fileID: 872527411}
   DeathScreenCloneJuiceUI: {fileID: 668524824}
+  cameraSpeed: 1
+  cameraSpeedRaiseBuffer: 2
+  cameraSpeedRaiseDuration: 2
+  cameraSpeedMultiplier: 4
 --- !u!1 &1798444296
 GameObject:
   m_ObjectHideFlags: 0

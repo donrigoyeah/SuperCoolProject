@@ -37,10 +37,6 @@ public class GameManager : MonoBehaviour
     public bool hasShieldGenerator = false;
     public bool hasAntenna = false;
 
-    [Header("KillCounter")]
-    public int sphereKilled = 0;
-    public int squareKilled = 0;
-    public int triangleKilled = 0;
 
     [Header("References")]
     [SerializeField] private GameObject map;
@@ -52,6 +48,12 @@ public class GameManager : MonoBehaviour
     public GameObject DeathScreen;
     public GameObject GameOverScreen;
     public Image DeathScreenCloneJuiceUI;
+
+    [Header("Camera")]
+    public int cameraSpeed = 1;
+    public int cameraSpeedRaiseBuffer = 2;
+    public int cameraSpeedRaiseDuration = 2;
+    public int cameraSpeedMultiplier = 3;
 
     private void Awake()
     {
@@ -78,17 +80,6 @@ public class GameManager : MonoBehaviour
         {
             HandleCameraTarget();
         }
-
-        if (sphereKilled + sphereKilled + triangleKilled == 1)
-        {
-            Debug.Log("Spawned Initial Cops");
-            CopManager.SharedInstance.HandleSpawnCopCar(1);
-        }
-        if (sphereKilled + sphereKilled + triangleKilled > 0 && sphereKilled + sphereKilled + triangleKilled % 5 == 0) // Every 5 killed aliens
-        {
-            CopManager.SharedInstance.HandleSpawnCopCar(3);
-        }
-
     }
 
     private void HandleCameraTarget()
@@ -109,7 +100,7 @@ public class GameManager : MonoBehaviour
         float targetZNorm = targetZ / players.Count;
 
         //CameraFollowSpot.position = new Vector3(targetXNorm, targetYNorm, targetZNorm);
-        CameraFollowSpot.position = Vector3.Lerp(CameraFollowSpot.transform.position, new Vector3(targetXNorm, targetYNorm, targetZNorm), Time.deltaTime);
+        CameraFollowSpot.position = Vector3.Lerp(CameraFollowSpot.transform.position, new Vector3(targetXNorm, targetYNorm, targetZNorm), Time.deltaTime * cameraSpeed);
     }
 
 
@@ -121,9 +112,37 @@ public class GameManager : MonoBehaviour
         players.Add(pm);
         PlayerHUD.SetActive(true);
 
+        // Enable Light Beams on Player
+        if (TimeManager.SharedInstance.currentState == TimeManager.DayState.sunsetToNight || TimeManager.SharedInstance.currentState == TimeManager.DayState.dayToSunSet)
+        {
+            pm.LightBeam.SetActive(true);
+        }
+        else
+        {
+            pm.LightBeam.SetActive(false);
+        }
+
         if (numberOfPlayers == maxPlayers)
         {
             playerInputManager.DisableJoining();
+        }
+        if (numberOfPlayers == 1)
+        {
+            StartCoroutine(RaiseCameraSpeed(cameraSpeedRaiseDuration));
+        }
+
+    }
+
+    IEnumerator RaiseCameraSpeed(float duration)
+    {
+        int steps = 10;
+
+        yield return new WaitForSeconds(cameraSpeedRaiseBuffer);
+
+        for (int i = 0; i <= steps; i++)
+        {
+            yield return new WaitForSeconds(duration / steps);
+            cameraSpeed = 1 + cameraSpeedMultiplier * i / steps;
         }
     }
 
