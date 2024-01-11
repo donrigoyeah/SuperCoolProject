@@ -6,22 +6,32 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.VFX;
-using static UnityEngine.Rendering.DebugUI;
 using Unity.VisualScripting;
-using static AlienHandler;
 using TMPro;
+using UnityEditor.Experimental.GraphView;
+using static AlienHandler;
 
 public class PlayerAttacker : MonoBehaviour
 {
-    [Header("Lazer Gun Stuff")]
-    [SerializeField] public Transform lazerSpawnLocationRight;
-    [SerializeField] public Transform lazerSpawnLocationLeft;
+    [Header("Lazer Sight Stuff")]
+    [SerializeField] private LineRenderer laserSightLeft;
+    [SerializeField] private LineRenderer laserSightRight;
+    [SerializeField] private bool isLaserSight = true;
+    public Transform lazerSpawnLocationRight;
+    public Transform lazerSpawnLocationLeft;
+    public bool isEnabled = false;
+    public bool isDisabled = false;
     public float lazerSightRange = 20;
-    private float lastTimeSinceLazer = 0;
-    private float disableLazerAfterNoInput = 1f;
+    public float lastTimeSinceLazer = 0;
+    public float disableLazerAfterNoInput = 1f;
+    public GameObject currentTargetEnemy;
+    public GameObject AimTargetIndicatorGO;
+    public RectTransform AimTargetIndicator;
+    private Vector2 lastInput;
+    private Vector3 AimTargetLocation;
 
-    private bool leftRightSwitch;
-    public Vector3 AimTargetLocation;
+
+    [Header("Lazer Gun Stuff")]
     [SerializeField] public GameObject overheatUIGO;
     [SerializeField] public Image overheatUI;
     [SerializeField] private float fireRate = 0.5f;
@@ -36,9 +46,7 @@ public class PlayerAttacker : MonoBehaviour
     [SerializeField] private float bulletSpeed = 50;
     [SerializeField] private float bulletDamage = 10;
     [SerializeField] private float bulletDamageBoost = 2;
-    [SerializeField] private LineRenderer laserSightLeft;
-    [SerializeField] private LineRenderer laserSightRight;
-    [SerializeField] private bool isLaserSight = true;
+    [SerializeField] private bool leftRightSwitch;
 
     [Header("Grenade stuff")]
     [SerializeField] private Transform grenadeSpawnLocation;
@@ -91,35 +99,6 @@ public class PlayerAttacker : MonoBehaviour
     {
         HandleShootLazer();
         HandleGrenadeThrow();
-
-        if (isLaserSight)
-        {
-            if (inputHandler.inputAim != Vector2.zero)
-            {
-                lastTimeSinceLazer = 0;
-            }
-            else
-            {
-                lastTimeSinceLazer += Time.deltaTime;
-            }
-
-            if (lastTimeSinceLazer < disableLazerAfterNoInput)
-            {
-                laserSightLeft.enabled = true;
-                laserSightRight.enabled = true;
-                LaserSight();
-            }
-            else
-            {
-                laserSightLeft.enabled = false;
-                laserSightRight.enabled = false;
-            }
-        }
-        else
-        {
-            laserSightLeft.enabled = false;
-            laserSightRight.enabled = false;
-        }
     }
 
     private void FixedUpdate()
@@ -127,6 +106,7 @@ public class PlayerAttacker : MonoBehaviour
         float delta = Time.deltaTime;
         HandleWeaponHeat(delta);
         HandleGrenadeCooldown(delta);
+        HandleEnableLazerSight();
     }
 
     #region Handle Lazer
@@ -270,7 +250,101 @@ public class PlayerAttacker : MonoBehaviour
         }
     }
 
-    void LaserSight()
+    private void HandleEnableLazerSight()
+    {
+        //Debug.Log("Round inputHandler.inputAim.x): " + Mathf.RoundToInt(inputHandler.inputAim.x));
+        //Debug.Log("Round lastInput.x): " + Mathf.RoundToInt(lastInput.x));
+
+
+        if (isLaserSight)
+        {
+            lastInput = inputHandler.inputAim;
+            lastTimeSinceLazer += Time.deltaTime;
+
+            // Check if on Mouse and has not moved the mouse enough btw aimInput of controller
+            if (inputHandler.inputAim != Vector2.zero ||
+                    (inputHandler.isGamepad == false &&
+                    Mathf.RoundToInt(inputHandler.inputAim.x) != Mathf.RoundToInt(lastInput.x) ||
+                    Mathf.RoundToInt(inputHandler.inputAim.y) != Mathf.RoundToInt(lastInput.y))
+                )
+            {
+                lastTimeSinceLazer = 0;
+            }
+
+
+
+            if (lastTimeSinceLazer < disableLazerAfterNoInput)
+            {
+                if (isEnabled == false)
+                {
+                    StartCoroutine(EnableLazers());
+                    isEnabled = true;
+                    isDisabled = false;
+                }
+                LaserSight();
+                return;
+            }
+            else
+            {
+                if (isDisabled == false)
+                {
+                    StartCoroutine(DisableLazers());
+                    isDisabled = true;
+                    isEnabled = false;
+                    return;
+                }
+            }
+        }
+        else
+        {
+            laserSightLeft.enabled = false;
+            laserSightRight.enabled = false;
+        }
+    }
+
+    IEnumerator EnableLazers()
+    {
+        laserSightLeft.enabled = true;
+        laserSightRight.enabled = true;
+        laserSightLeft.SetPosition(0, Vector3.zero);
+        laserSightRight.SetPosition(0, Vector3.zero);
+        laserSightLeft.SetPosition(1, Vector3.zero);
+        laserSightRight.SetPosition(1, Vector3.zero);
+
+        int steps = 30;
+        float durationOfAnimation = 0.2f;
+        for (int i = 0; i < steps; i++)
+        {
+            yield return new WaitForSeconds(durationOfAnimation / steps);
+
+            laserSightLeft.SetPosition(1, (Vector3.forward * lazerSightRange * i) / steps);
+            laserSightRight.SetPosition(1, (Vector3.forward * lazerSightRange * i) / steps);
+        }
+
+    }
+    IEnumerator DisableLazers()
+    {
+        laserSightLeft.SetPosition(0, Vector3.zero);
+        laserSightRight.SetPosition(0, Vector3.zero);
+
+        int steps = 30;
+        float durationOfAnimation = 0.2f;
+
+        for (int i = 0; i < steps; i++)
+        {
+            yield return new WaitForSeconds(durationOfAnimation / steps);
+
+            laserSightLeft.SetPosition(1, (Vector3.forward * lazerSightRange) - (Vector3.forward * lazerSightRange * i / steps));
+            laserSightRight.SetPosition(1, (Vector3.forward * lazerSightRange) - (Vector3.forward * lazerSightRange * i / steps));
+        }
+        laserSightLeft.SetPosition(1, Vector3.zero);
+        laserSightRight.SetPosition(1, Vector3.zero);
+
+        laserSightLeft.enabled = false;
+        laserSightRight.enabled = false;
+    }
+
+    private void LaserSight()
     {
         RaycastHit hit;
 
@@ -279,7 +353,7 @@ public class PlayerAttacker : MonoBehaviour
         {
             if (hit.collider)
             {
-                // If not Alien or Cop, return
+                // If Alien or Cop
                 if (hit.collider.gameObject.CompareTag("Alien") || hit.collider.gameObject.CompareTag("Cop"))
                 {
                     laserSightLeft.useWorldSpace = true;
@@ -291,11 +365,21 @@ public class PlayerAttacker : MonoBehaviour
                     laserSightRight.SetPosition(1, hit.transform.position);
 
                     AimTargetLocation = hit.transform.position;
+                    AimTargetIndicator.position = AimTargetLocation;
+
+                    if (currentTargetEnemy != hit.collider.gameObject)
+                    {
+                        currentTargetEnemy = hit.collider.gameObject;
+                        StartCoroutine(CloseAimIndicator());
+                    }
+
                     return;
                 }
-
             }
         }
+        currentTargetEnemy = null;
+        AimTargetIndicatorGO.SetActive(false);
+
         laserSightLeft.useWorldSpace = false;
         laserSightRight.useWorldSpace = false;
 
@@ -306,6 +390,23 @@ public class PlayerAttacker : MonoBehaviour
 
         AimTargetLocation = Vector3.zero;
         return;
+    }
+
+    IEnumerator CloseAimIndicator()
+    {
+        AimTargetIndicatorGO.SetActive(true);
+        AimTargetIndicator.localScale = Vector3.one;
+        AimTargetIndicator.localRotation = Quaternion.Euler(0, 0, 0);
+
+        int steps = 30;
+        float durationOfAnimation = 0.5f;
+
+        for (int i = 0; i < steps; i++)
+        {
+            yield return new WaitForSeconds(durationOfAnimation / steps);
+            AimTargetIndicator.localScale = Vector3.one - (Vector3.one * i / (2 * steps)); // Results in Vector3.one/2
+            AimTargetIndicator.localRotation = Quaternion.Euler(0, 0, 90 * i / steps);
+        }
     }
 
     #endregion
@@ -410,6 +511,8 @@ public class PlayerAttacker : MonoBehaviour
             if (AH.currentAge == AlienAge.resource)
             {
                 playerManager.HandleGainResource(AH.currentSpecies);
+                AlienManager.SharedInstance.RemoveFromResourceList(AH);
+                AH.gameObject.SetActive(false);
             }
             else
             {

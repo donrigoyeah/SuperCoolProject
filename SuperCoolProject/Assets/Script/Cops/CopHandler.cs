@@ -27,12 +27,12 @@ public class CopHandler : MonoBehaviour
     public Transform CopCar;
     public Animation anim;
 
-    
-    [Header("Audio")] 
+
+    [Header("Audio")]
     public AudioClip copMumbling;
     public AudioClip copShooting;
     private AudioSource audioSource;
-    
+
     private void OnEnable()
     {
         copHealthCurrent = copHealthMax;
@@ -120,6 +120,7 @@ public class CopHandler : MonoBehaviour
             if (CopManager.SharedInstance.hasBeenServed == false)
             {
                 CopManager.SharedInstance.CopScreenGO.SetActive(true);
+                Time.timeScale = 0;
             }
             canShoot = true;
         }

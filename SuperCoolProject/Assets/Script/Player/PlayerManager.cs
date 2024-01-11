@@ -25,7 +25,7 @@ public class PlayerManager : MonoBehaviour
 
     public GameObject playerShieldGO;
     public GameObject player;
-    
+
     [Header("Dissolve")]
     public Material dissolve;
     public float dissolveRate = 0.0125f;
@@ -67,6 +67,7 @@ public class PlayerManager : MonoBehaviour
     {
         audioSource = GetComponent<AudioSource>();
         inputHandler = GetComponent<InputHandler>();
+        dissolve = playerShieldGO.gameObject.GetComponent<Renderer>().material;
         dissolve.SetFloat("_DissolveAmount", 0);
     }
 
@@ -153,17 +154,56 @@ public class PlayerManager : MonoBehaviour
         // TODO: This is possible quite cost intense!!!
         // TODO: Make an Array of resources, add aliens to it after spawning, remove when eaten or evolved
 
-        int layerMask = 1 << 9; // Lyer 9 is Alien
-        float distanceToResource = playerResourceScanRadius;
+        #region Find via OverlappingSphere
+
+        //int layerMask = 1 << 9; // Lyer 9 is Alien
+        //float distanceToResource = playerResourceScanRadius;
+
+        //if (closestResource[neededResource] != null)
+        //{
+        //    closestResourceIndicator[neededResource].SetActive(true);
+        //    HandleResourceDetectionIndicator(closestResource[neededResource].transform.position, neededResource);
+        //    if (closestResource[neededResource].currentAge != AlienHandler.AlienAge.resource)
+        //    {
+        //        closestResource[neededResource] = null;
+        //        //Debug.Log("Resource became unavailable");
+        //        return;
+        //    }
+
+        //    if (closestResource[neededResource].gameObject.activeInHierarchy == false)
+        //    {
+        //        closestResource[neededResource] = null;
+        //    }
+        //    return;
+        //}
+        //closestResourceIndicator[neededResource].SetActive(false);
+
+        ////Debug.Log("Search for Closest Resource");
+        //resourceInRange = Physics.OverlapSphere(this.transform.position, playerResourceScanRadius, layerMask);
+        //foreach (var item in aliensInRange)
+        //{
+        //    AlienHandler AH = item.gameObject.GetComponent<AlienHandler>();
+        //    if (AH.currentAge != AlienHandler.AlienAge.resource) { continue; }
+        //    if (AH.currentSpecies != neededResource) { continue; }
+
+        //    float tmpDistance = Vector3.Distance(AH.transform.position, this.transform.position);
+        //    //Debug.Log("Distance to Resource: " + tmpDistance);
+        //    if (tmpDistance > distanceToResource) { continue; }
+
+        //    distanceToResource = tmpDistance;
+        //    closestResource[neededResource] = AH;
+        //    //Debug.Log("Found Closest Resource");
+        //}
+
+        #endregion
+
+        #region Find via ListScan
 
         if (closestResource[neededResource] != null)
         {
-            closestResourceIndicator[neededResource].SetActive(true);
-            HandleResourceDetectionIndicator(closestResource[neededResource].transform.position, neededResource);
             if (closestResource[neededResource].currentAge != AlienHandler.AlienAge.resource)
             {
                 closestResource[neededResource] = null;
-                //Debug.Log("Resource became unavailable");
                 return;
             }
 
@@ -171,31 +211,52 @@ public class PlayerManager : MonoBehaviour
             {
                 closestResource[neededResource] = null;
             }
+
+            closestResourceIndicator[neededResource].SetActive(true);
+            HandleResourceDetectionIndicator(closestResource[neededResource].transform.position, neededResource);
             return;
         }
-        closestResourceIndicator[neededResource].SetActive(false);
 
-        //Debug.Log("Search for Closest Resource");
-        resourceInRange = Physics.OverlapSphere(this.transform.position, playerResourceScanRadius, layerMask);
-        foreach (var item in aliensInRange)
+        if (closestResource[neededResource] == null)
         {
-            AlienHandler AH = item.gameObject.GetComponent<AlienHandler>();
-            if (AH.currentAge != AlienHandler.AlienAge.resource) { continue; }
-            if (AH.currentSpecies != neededResource) { continue; }
+            closestResourceIndicator[neededResource].SetActive(false);
 
-            float tmpDistance = Vector3.Distance(AH.transform.position, this.transform.position);
-            //Debug.Log("Distance to Resource: " + tmpDistance);
-            if (tmpDistance > distanceToResource) { continue; }
+            float dist = 1000;
+            float currentDist;
 
-            distanceToResource = tmpDistance;
-            closestResource[neededResource] = AH;
-            //Debug.Log("Found Closest Resource");
+            int loopAmount =
+                neededResource == 0 ? AlienManager.SharedInstance.resourceSphere.Count :
+                neededResource == 1 ? AlienManager.SharedInstance.resourceSquare.Count :
+                neededResource == 2 ? AlienManager.SharedInstance.resourceTriangle.Count : 0;
+
+            List<AlienHandler> ResourceList =
+               neededResource == 0 ? AlienManager.SharedInstance.resourceSphere :
+               neededResource == 1 ? AlienManager.SharedInstance.resourceSquare :
+               neededResource == 2 ? AlienManager.SharedInstance.resourceTriangle : null;
+
+            for (int i = 0; i < loopAmount; i++)
+            {
+                currentDist = Vector3.Distance(ResourceList[i].transform.position, this.transform.position);
+                if (currentDist < dist)
+                {
+                    dist = currentDist;
+                    closestResource[neededResource] = ResourceList[i];
+
+                    if (dist < 10)
+                    {
+                        break;
+                    }
+                }
+            }
         }
+
+        #endregion
+
     }
 
     private void HandleResourceDetectionIndicator(Vector3 targetResource, int neededResource)
     {
-        Debug.Log("Enable Resource Indicator");
+        if (targetResource == null) { return; }
 
         // 0:Sphere, 1:Square, 2:Triangle
         closestResourceIndicator[neededResource].SetActive(true);
@@ -222,7 +283,7 @@ public class PlayerManager : MonoBehaviour
         // Only show resource UI if below 75%
         if (currentSphereResource < 3 * maxSphereResource / 4)
         {
-            StartCoroutine(HandleResourceLightIndicator(0));
+            //StartCoroutine(HandleResourceLightIndicator(0));
             HandleResourceDetection(0);
             if (sphereUnfolded != true)
             {
@@ -245,7 +306,7 @@ public class PlayerManager : MonoBehaviour
         // Only show resource UI if below 75%
         if (currentSquareResource < 3 * maxSquareResource / 4)
         {
-            StartCoroutine(HandleResourceLightIndicator(1));
+            //StartCoroutine(HandleResourceLightIndicator(1));
             HandleResourceDetection(1);
             if (squareUnfolded != true)
             {
@@ -268,7 +329,7 @@ public class PlayerManager : MonoBehaviour
         // Only show resource UI if below 75%
         if (currentTriangleResource < 3 * maxTriangleResource / 4)
         {
-            StartCoroutine(HandleResourceLightIndicator(2));
+            //StartCoroutine(HandleResourceLightIndicator(2));
             HandleResourceDetection(2);
             if (triangleUnfolded != true)
             {
@@ -304,25 +365,29 @@ public class PlayerManager : MonoBehaviour
 
     IEnumerator UnfoldResource(GameObject Resource, float degree)
     {
+        int steps = 50;
+        float animationDuration = .5f;
         Resource.gameObject.SetActive(true);
-
         RectTransform GORT = Resource.GetComponent<RectTransform>();
         GORT.localScale = Vector3.zero;
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < steps; i++)
         {
-            yield return new WaitForSeconds(.5f / 10);
-            GORT.localScale = Vector3.one * 2 * i / 10;
-            GORT.localEulerAngles = new Vector3(0, 0, degree * i / 10);
+            yield return new WaitForSeconds(animationDuration / steps);
+            GORT.localScale = Vector3.one * 3 * i / steps;
+            GORT.localEulerAngles = new Vector3(0, 0, degree * i / steps);
         }
     }
     IEnumerator FoldResource(GameObject Resource)
     {
+        int steps = 50;
+        float animationDuration = .5f;
+
         RectTransform GORT = Resource.GetComponent<RectTransform>();
         GORT.localScale = Vector3.one * 2;
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < steps; i++)
         {
-            yield return new WaitForSeconds(.5f / 10);
-            GORT.localScale = Vector3.one * 2 - Vector3.one * 2 * i / 10;
+            yield return new WaitForSeconds(animationDuration / steps);
+            GORT.localScale = Vector3.one * 2 - Vector3.one * 2 * i / steps;
         }
         GORT.localEulerAngles = Vector3.zero;
         Resource.gameObject.SetActive(false);
@@ -364,10 +429,10 @@ public class PlayerManager : MonoBehaviour
             {
                 GameManager.SharedInstance.DeathScreen.SetActive(false);
             }
-            
+
             GameManager.SharedInstance.HandleCloneJuiceDrain();
             // TODO: Add Transition/ Fade to black/ camera shutter effect?!
-    
+
             isAlive = true;
 
             this.gameObject.transform.position = Vector3.zero;
@@ -385,10 +450,11 @@ public class PlayerManager : MonoBehaviour
     IEnumerator ShieldRespawn(float timeToRecharge)
     {
         float counter = 0;
+        int steps = 30;
         while (dissolve.GetFloat("_DissolveAmount") < 1)
         {
             counter += dissolveRate;
-            for (int i = 0; i <= 10; i++)
+            for (int i = 0; i <= steps; i++)
             {
                 dissolve.SetFloat("_DissolveAmount", counter);
                 yield return new WaitForSeconds(refreshRate);
@@ -424,13 +490,13 @@ public class PlayerManager : MonoBehaviour
         }
 
         resourceIndicatorLight.enabled = true;
-        
+
         yield return new WaitForSeconds(3f); // Light on
         resourceIndicatorLight.enabled = false;
-        
+
         yield return new WaitForSeconds(3); // Light off
         resourceIndicatorLight.enabled = true;
         resourceIndicatorLight.enabled = false;
     }
-    
+
 }

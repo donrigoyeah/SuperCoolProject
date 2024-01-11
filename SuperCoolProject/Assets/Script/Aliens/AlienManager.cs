@@ -18,6 +18,13 @@ public class AlienManager : MonoBehaviour
     public Image[] imagesPieChart;
     public float[] values;
 
+    [Header("Current Alien Resources")]
+    public List<AlienHandler> resourceSphere = new List<AlienHandler>(100);
+    public List<AlienHandler> resourceSquare = new List<AlienHandler>(100);
+    public List<AlienHandler> resourceTriangle = new List<AlienHandler>(100);
+
+    // TODO: List of List better?!
+
     [Header("Spawn Settings")]
     public int segmentAmount = 6;
     public int segmentWidthRange = 10;
@@ -41,7 +48,7 @@ public class AlienManager : MonoBehaviour
     private void Start()
     {
         LoadingScreenHandler.SharedInstance.totalAwakeCalls++;
-        SpawnAlien();
+        InitalSpawnAliens();
     }
 
     private void FixedUpdate()
@@ -49,8 +56,17 @@ public class AlienManager : MonoBehaviour
         PopulationUI();
     }
 
-    private void SpawnAlien()
+    private void ClearResourceList()
     {
+        // When spawned in object Pool, The list is already filled with only spheres.
+        resourceSphere.Clear();
+        resourceSquare.Clear();
+        resourceTriangle.Clear();
+    }
+
+    private void InitalSpawnAliens()
+    {
+        ClearResourceList();
         int oneSegmentOfPoulation = Mathf.RoundToInt(PoolManager.SharedInstance.alienAmount / segmentAmount);
         int currentPopulationSegment = oneSegmentOfPoulation;
         int pieSliceSize = 360 / segmentAmount;
@@ -81,15 +97,54 @@ public class AlienManager : MonoBehaviour
                 AlienHandler alienPoolGoHandler = alienPoolGo.GetComponent<AlienHandler>();
                 alienPoolGoHandler.currentSpecies = currentSpieziesForArea;
                 alienPoolGoHandler.lifeTime = Random.Range(0, maxSleepDelay);
-                alienPoolGoHandler.transform.localScale = Vector3.one * 0.2f; // Resource scale
-                alienPoolGo.SetActive(true);
-
                 alienPoolGo.transform.position = new Vector3(randPosX, 0.1f, randPosZ);
+                alienPoolGo.SetActive(true);
             }
         }
         // After loading all aliens sent finished state to Loading Screen
         LoadingScreenHandler.SharedInstance.currentAwakeCalls++;
+        return;
     }
+
+
+    public void AddToResourceList(AlienHandler currentAlien)
+    {
+        if (currentAlien.currentSpecies == 0)
+        {
+            resourceSphere.Add(currentAlien);
+            return;
+        }
+        else if (currentAlien.currentSpecies == 1)
+        {
+            resourceSquare.Add(currentAlien);
+            return;
+        }
+        else if (currentAlien.currentSpecies == 2)
+        {
+            resourceTriangle.Add(currentAlien);
+            return;
+        }
+    }
+
+    public void RemoveFromResourceList(AlienHandler currentAlien)
+    {
+        if (currentAlien.currentSpecies == 0)
+        {
+            resourceSphere.Remove(currentAlien);
+            return;
+        }
+        else if (currentAlien.currentSpecies == 1)
+        {
+            resourceSquare.Remove(currentAlien);
+            return;
+        }
+        else if (currentAlien.currentSpecies == 2)
+        {
+            resourceTriangle.Remove(currentAlien);
+            return;
+        }
+    }
+
 
     private void PopulationUI()
     {

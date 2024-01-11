@@ -72,7 +72,7 @@ public class GameManager : MonoBehaviour
     {
         HandleSpawnShipParts();
     }
-    
+
     private void FixedUpdate()
     {
         if (players.Count != 0)
@@ -183,7 +183,7 @@ public class GameManager : MonoBehaviour
         {
             int distanceIncrease = i * 10;
 
-            radius = Random.Range(40 + distanceIncrease, 60 + distanceIncrease);
+            radius = Random.Range(50 + distanceIncrease, 80 + distanceIncrease);
 
             float randPosX = radius * Mathf.Cos(angle);
             float randPosZ = radius * Mathf.Sin(angle);
