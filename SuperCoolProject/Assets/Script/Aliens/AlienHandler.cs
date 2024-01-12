@@ -177,6 +177,7 @@ public class AlienHandler : MonoBehaviour
     void OnBecameInvisible()
     {
         alienSpecies[currentSpecies].SetActive(false);
+        Debug.Log("Hide Mesh");
     }
 
     // Enable this script when the GameObject moves into the camera's view
@@ -189,6 +190,9 @@ public class AlienHandler : MonoBehaviour
     {
         // If is dead, skip everytthing
         if (isDead == true) { return; }
+        //Keep alien on the floor (y)
+        if (transform.position.y > .2f) { transform.position = new Vector3(transform.position.x, 0.1f, transform.position.z); }
+
 
         delta = Time.deltaTime;
         lifeTime += delta;
@@ -197,19 +201,13 @@ public class AlienHandler : MonoBehaviour
         tickTimer += delta;
         step = (alienSpeed + lifeTime / 25) * delta;
 
-        //Keep alien on the floor (y)
-        if (transform.position.y > .2f) { transform.position = new Vector3(transform.position.x, 0.1f, transform.position.z); }
-        // Keep Alien on the island
-        if (transform.position.x * transform.position.x + transform.position.z * transform.position.z > GameManager.SharedInstance.worldRadius * GameManager.SharedInstance.worldRadius)
-        {
-            // TODO: better placement than this
-            this.gameObject.SetActive(false);
-        }
-
+        HandleMovement(step);
 
         // Only Render on Tick condition
         while (tickTimer >= tickTimerMax)
         {
+            tickTimer -= tickTimerMax;
+
             // Handle Aging now with coroutine
             //HandleAging(lifeTime);
 
@@ -218,31 +216,31 @@ public class AlienHandler : MonoBehaviour
                 if (currentState == AlienState.hunting)
                 {
                     HandleAttacking(closestAlien);
+                    return;
                 }
                 else if (currentState == AlienState.evading)
                 {
                     HandleFleeing(closestAlien);
+                    return;
                 }
                 else if (currentState == AlienState.loving)
                 {
                     HandleLoveApproach(closestAlien);
+                    return;
                 }
             }
 
             if (currentState == AlienState.looking)
             {
                 HandleLooking();
+                return;
             }
             else if (currentState == AlienState.roaming)
             {
                 HandleRoaming(delta);
+                return;
             }
-
-            tickTimer -= tickTimerMax;
         }
-        // Finaly process movement
-        HandleMovement(step);
-
     }
 
     public void HandleLooking()
@@ -486,12 +484,12 @@ public class AlienHandler : MonoBehaviour
                 GameObject alienPoolGo = PoolManager.SharedInstance.GetPooledAliens();
                 if (alienPoolGo != null)
                 {
+                    float randomOffSet = (UnityEngine.Random.Range(0, 5) - 2) / 4;
+
                     AlienHandler newBornAlien = alienPoolGo.GetComponent<AlienHandler>();
                     newBornAlien.currentSpecies = currentSpecies;
-                    newBornAlien.ResetVariable(); // TODO: This is doubled and being triggered on awake. but bug showed wrong particle color so this will test it
-                    float randomOffSet = (UnityEngine.Random.Range(0, 5) - 2) / 4;
-                    alienPoolGo.transform.position = new Vector3(transform.position.x + randomOffSet, 0.5f, transform.position.z + randomOffSet) + Vector3.forward;
-                    alienPoolGo.SetActive(true);
+                    newBornAlien.transform.position = new Vector3(transform.position.x + randomOffSet, 0.5f, transform.position.z + randomOffSet) + Vector3.forward;
+                    newBornAlien.gameObject.SetActive(true);
                 }
             }
         }
@@ -513,12 +511,12 @@ public class AlienHandler : MonoBehaviour
     {
         // Resource Life
         resourceSteamGO.SetActive(true);
-
         alienSpeciesChild[currentSpecies].SetActive(true);
         alienSpeciesAdult[currentSpecies].SetActive(false);
         currentAge = AlienAge.resource;
         alienHealth = alienLifeResource;
         transform.localScale = Vector3.one * 0.7f;
+        AlienManager.SharedInstance.AddToResourceList(this);
         yield return new WaitForSeconds(timeToChild);
 
         // Child Life
@@ -528,17 +526,23 @@ public class AlienHandler : MonoBehaviour
         alienSpeciesChild[currentSpecies].SetActive(false);
         alienSpeciesAdult[currentSpecies].SetActive(true);
         transform.localScale = Vector3.one * .8f;
+        // TODO: Check if available in List?!
+        AlienManager.SharedInstance.RemoveFromResourceList(this);
         yield return new WaitForSeconds(timeToSexual);
 
         // Sexual active Life
         currentAge = AlienAge.sexualActive;
         alienHealth = alienLifeSexual;
+        alienSpeciesChild[currentSpecies].SetActive(false);
+        alienSpeciesAdult[currentSpecies].SetActive(true);
         StartCoroutine(HandleGrowing(.8f, 1f));
         yield return new WaitForSeconds(timeToFullGrown);
 
         // Full Grown Life
         currentAge = AlienAge.fullyGrown;
         alienHealth = alienLifeFullGrown;
+        alienSpeciesChild[currentSpecies].SetActive(false);
+        alienSpeciesAdult[currentSpecies].SetActive(true);
         StartCoroutine(HandleGrowing(1f, 1.1f));
         //transform.localScale = Vector3.one * 1.2f;
     }
@@ -565,8 +569,11 @@ public class AlienHandler : MonoBehaviour
 
             if (Vector3.Distance(transform.position, targetPosition) < .1f)
             {
-                currentState = AlienState.looking;
-                DisgardClosestAlien();
+                if (currentState == AlienState.roaming)
+                {
+                    currentState = AlienState.looking;
+                    DisgardClosestAlien();
+                }
             }
 
             transform.LookAt(targetPosition, Vector3.up);
@@ -583,6 +590,7 @@ public class AlienHandler : MonoBehaviour
             {
                 if (currentSpecies != otherAlien.currentSpecies) // You the resource gets trampled
                 {
+                    AlienManager.SharedInstance.RemoveFromResourceList(this);
                     this.gameObject.SetActive(false);
                 }
             }
@@ -685,6 +693,7 @@ public class AlienHandler : MonoBehaviour
         currentAge = AlienAge.resource;
         lustTimer = 0;
         hungerTimer = 0;
+        lifeTime = 0;
         hasUterus = UnityEngine.Random.Range(0, 2) == 1;
         HandleStateIcon(6); // 0: eye, 1: crosshair, 2: wind, 3: heart, 4: shield, 5: clock, 6: loader
 

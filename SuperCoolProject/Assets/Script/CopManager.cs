@@ -145,7 +145,7 @@ public class CopManager : MonoBehaviour
 
         CopCarCurrent.transform.position = Vector3.MoveTowards(CopCarCurrent.transform.position, CopCarCurrent.transform.position + Vector3.up * 100, Time.deltaTime * copCarSpeed);
     }
-    
+
     public void FineServed()
     {
         hasBeenServed = true;
@@ -155,6 +155,7 @@ public class CopManager : MonoBehaviour
     {
         paidFine += currentFineRequested;
         amountOfKilledAliensPaid = currentAmountOfKilledAliens;
+        Time.timeScale = 1;
     }
 
     public void FineNotPaying()
@@ -164,6 +165,7 @@ public class CopManager : MonoBehaviour
         {
             cop.isAggro = true;
         }
+        Time.timeScale = 1;
     }
 
 }
