@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 414676901202353711}
   - component: {fileID: -8448674911683521753}
-  - component: {fileID: 4775806378367602359}
+  - component: {fileID: 1753352926865818878}
   - component: {fileID: -5414810399389503451}
   - component: {fileID: 9042210739735769762}
   m_Layer: 9
@@ -52,6 +52,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92d37729e291b4349b07b3bdacec80ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MyTransform: {fileID: 414676901202353711}
   currentAge: 0
   currentState: 0
   currentSpecies: 0
@@ -162,8 +163,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: e872bd16213a44b4c965915f62ec1b02, type: 3}
   tickTimer: 0
   tickTimerMax: 0.5
---- !u!65 &4775806378367602359
-BoxCollider:
+--- !u!136 &1753352926865818878
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -177,12 +178,14 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 2.4767919, y: 2.842231, z: 2.4368734}
-  m_Center: {x: 0, y: 1.3714472, z: -0.123078585}
+  serializedVersion: 2
+  m_Radius: 2.5
+  m_Height: 8
+  m_Direction: 1
+  m_Center: {x: 0, y: 2, z: 0}
 --- !u!54 &-5414810399389503451
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5420,6 +5423,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7376151145612584595}
+  - component: {fileID: 5356344968068921494}
   m_Layer: 0
   m_Name: Square
   m_TagString: square
@@ -5443,6 +5447,29 @@ Transform:
   - {fileID: 4553984127504924616}
   m_Father: {fileID: 414676901202353711}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &5356344968068921494
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6981288141397108614}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.35
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!1 &8329259287624427090
 GameObject:
   m_ObjectHideFlags: 0
@@ -5452,6 +5479,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8466971964781309730}
+  - component: {fileID: 7543505279742811787}
   m_Layer: 0
   m_Name: Sphere
   m_TagString: sphere
@@ -5475,6 +5503,29 @@ Transform:
   - {fileID: 4916166493148011476}
   m_Father: {fileID: 414676901202353711}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &7543505279742811787
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8329259287624427090}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.35
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!1 &9077744314663935623
 GameObject:
   m_ObjectHideFlags: 0
@@ -5484,6 +5535,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7750546258101309282}
+  - component: {fileID: 1970980452987584353}
   m_Layer: 0
   m_Name: Triangle
   m_TagString: triangle
@@ -5507,6 +5559,29 @@ Transform:
   - {fileID: 6419693020473779313}
   m_Father: {fileID: 414676901202353711}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &1970980452987584353
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9077744314663935623}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.35
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!1001 &4087501627635783715
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -311,8 +311,8 @@ public class PlayerAttacker : MonoBehaviour
         laserSightLeft.SetPosition(1, Vector3.zero);
         laserSightRight.SetPosition(1, Vector3.zero);
 
-        int steps = 30;
-        float durationOfAnimation = 0.2f;
+        int steps = 10;
+        float durationOfAnimation = 0.1f;
         for (int i = 0; i < steps; i++)
         {
             yield return new WaitForSeconds(durationOfAnimation / steps);
@@ -326,16 +326,21 @@ public class PlayerAttacker : MonoBehaviour
     {
         laserSightLeft.SetPosition(0, Vector3.zero);
         laserSightRight.SetPosition(0, Vector3.zero);
+        laserSightLeft.SetPosition(1, (Vector3.forward * lazerSightRange));
+        laserSightRight.SetPosition(1, (Vector3.forward * lazerSightRange));
 
-        int steps = 30;
-        float durationOfAnimation = 0.2f;
+        int steps = 10;
+        float durationOfAnimation = 0.1f;
 
         for (int i = 0; i < steps; i++)
         {
             yield return new WaitForSeconds(durationOfAnimation / steps);
+            laserSightLeft.SetPosition(0, (Vector3.forward * lazerSightRange * i) / steps);
+            laserSightRight.SetPosition(0, (Vector3.forward * lazerSightRange * i) / steps);
 
-            laserSightLeft.SetPosition(1, (Vector3.forward * lazerSightRange) - (Vector3.forward * lazerSightRange * i / steps));
-            laserSightRight.SetPosition(1, (Vector3.forward * lazerSightRange) - (Vector3.forward * lazerSightRange * i / steps));
+            // Remove Laser from end to start
+            //laserSightLeft.SetPosition(1, (Vector3.forward * lazerSightRange) - (Vector3.forward * lazerSightRange * i / steps));
+            //laserSightRight.SetPosition(1, (Vector3.forward * lazerSightRange) - (Vector3.forward * lazerSightRange * i / steps));
         }
         laserSightLeft.SetPosition(1, Vector3.zero);
         laserSightRight.SetPosition(1, Vector3.zero);

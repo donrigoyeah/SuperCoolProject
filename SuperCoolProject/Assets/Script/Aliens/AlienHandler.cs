@@ -31,10 +31,12 @@ public class AlienHandler : MonoBehaviour
     }
 
     [Header("This Alien")]
+    public Transform MyTransform;
     private Rigidbody rb;
     private Collider coll;
     public AlienAge currentAge;
     public AlienState currentState;
+    public bool isRendered = true;
     public int currentSpecies;
     public bool hasUterus;
     public float alienHealth;
@@ -125,20 +127,6 @@ public class AlienHandler : MonoBehaviour
 
     #endregion
 
-    private void Awake()
-    {
-        // GameObject audioManagerObject = GameObject.Find("AudioManager");
-        // audioSource = audioManagerObject.GetComponent<AudioSource>();
-
-        //ResetVariable();
-        //DisgardClosestAlien();
-        //ActivateCurrentModels(currentSpecies);
-        //if (rb == null) { rb = this.GetComponent<Rigidbody>(); }
-        //if (coll == null) { coll = this.GetComponent<Collider>(); }
-        ////DisableRagdoll();
-        //coll.isTrigger = true;
-    }
-
     private void Start()
     {
         attackAudioList.Add(sphereAttackAudio);
@@ -169,6 +157,7 @@ public class AlienHandler : MonoBehaviour
         ActivateCurrentModels(currentSpecies);
         if (rb == null) { rb = this.GetComponent<Rigidbody>(); }
         if (coll == null) { coll = this.GetComponent<Collider>(); }
+        if (MyTransform == null) { MyTransform = this.GetComponent<Transform>(); }
         //DisableRagdoll();
         coll.isTrigger = true;
     }
@@ -191,7 +180,26 @@ public class AlienHandler : MonoBehaviour
         // If is dead, skip everytthing
         if (isDead == true) { return; }
         //Keep alien on the floor (y)
-        if (transform.position.y > .2f) { transform.position = new Vector3(transform.position.x, 0.1f, transform.position.z); }
+        if (MyTransform.position.y > .2f) { MyTransform.position = new Vector3(MyTransform.position.x, 0.1f, MyTransform.position.z); }
+
+
+        if (Vector3.Distance(MyTransform.position, GameManager.SharedInstance.CameraFollowSpot.position) > 50)
+        {
+            if (isRendered == true)
+            {
+                DeactivateAllModels();
+                isRendered = false;
+            }
+        }
+        else
+        {
+            if (isRendered == false)
+            {
+                ActivateCurrentModels(currentSpecies);
+                isRendered = true;
+            }
+        }
+
 
 
         delta = Time.deltaTime;
@@ -259,7 +267,7 @@ public class AlienHandler : MonoBehaviour
         #region Find closest Alien
         int layerMask = 1 << 9; // Lyer 9 is Alien
         Collider[] aliensInRange;
-        aliensInRange = Physics.OverlapSphere(this.transform.position, lookRadius, layerMask);
+        aliensInRange = Physics.OverlapSphere(MyTransform.position, lookRadius, layerMask);
 
         float closestDistance = lookRadius; ;
 
@@ -313,7 +321,7 @@ public class AlienHandler : MonoBehaviour
             }
 
             // Ensures to act upon the closest alien
-            float dist = Vector3.Distance(aliensInRange[i].transform.position, transform.position);
+            float dist = Vector3.Distance(aliensInRange[i].transform.position, MyTransform.position);
             if (dist < closestDistance)
             {
                 closestDistance = dist;
@@ -391,12 +399,12 @@ public class AlienHandler : MonoBehaviour
         {
             float randDirX = UnityEngine.Random.Range(0, 2) - .5f;
             float randDirZ = UnityEngine.Random.Range(0, 2) - .5f;
-            targetPosition = transform.position + new Vector3(randDirX, 0, randDirZ) * 10;
+            targetPosition = MyTransform.position + new Vector3(randDirX, 0, randDirZ) * 10;
 
         }
 
         // When arrived at position, chill for a bit then look again
-        if (Vector3.Distance(transform.position, targetPosition) < .1f)
+        if (Vector3.Distance(MyTransform.position, targetPosition) < .1f)
         {
             StartCoroutine(DoNothingForRandomTime());
             currentState = AlienState.looking;
@@ -420,14 +428,14 @@ public class AlienHandler : MonoBehaviour
     public void HandleFleeing(GameObject targetAlien)
     {
         // Add +1 so i is out of the lookradius
-        if (!targetAlien.activeInHierarchy || Vector3.Distance(targetAlien.transform.position, transform.position) > lookRadius + 1)
+        if (!targetAlien.activeInHierarchy || Vector3.Distance(targetAlien.transform.position, MyTransform.position) > lookRadius + 1)
         {
             closestAlien = null;
             currentState = AlienState.looking;
         }
 
         HandleStateIcon(2); // 0: eye, 1: crosshair, 2: wind, 3: heart, 4: shield, 5: clock, 6: loader
-        targetPosition = this.transform.position + (this.transform.position - targetAlien.transform.position);
+        targetPosition = MyTransform.position + (MyTransform.position - targetAlien.transform.position);
 
         if (!audioSource.isPlaying)
         {
@@ -488,7 +496,7 @@ public class AlienHandler : MonoBehaviour
 
                     AlienHandler newBornAlien = alienPoolGo.GetComponent<AlienHandler>();
                     newBornAlien.currentSpecies = currentSpecies;
-                    newBornAlien.transform.position = new Vector3(transform.position.x + randomOffSet, 0.5f, transform.position.z + randomOffSet) + Vector3.forward;
+                    newBornAlien.transform.position = new Vector3(MyTransform.position.x + randomOffSet, 0.5f, MyTransform.position.z + randomOffSet) + Vector3.forward;
                     newBornAlien.gameObject.SetActive(true);
                 }
             }
@@ -515,7 +523,7 @@ public class AlienHandler : MonoBehaviour
         alienSpeciesAdult[currentSpecies].SetActive(false);
         currentAge = AlienAge.resource;
         alienHealth = alienLifeResource;
-        transform.localScale = Vector3.one * 0.7f;
+        MyTransform.localScale = Vector3.one * 0.7f;
         AlienManager.SharedInstance.AddToResourceList(this);
         yield return new WaitForSeconds(timeToChild);
 
@@ -525,7 +533,7 @@ public class AlienHandler : MonoBehaviour
         alienHealth = alienLifeChild;
         alienSpeciesChild[currentSpecies].SetActive(false);
         alienSpeciesAdult[currentSpecies].SetActive(true);
-        transform.localScale = Vector3.one * .8f;
+        MyTransform.localScale = Vector3.one * .6f;
         // TODO: Check if available in List?!
         AlienManager.SharedInstance.RemoveFromResourceList(this);
         yield return new WaitForSeconds(timeToSexual);
@@ -535,7 +543,7 @@ public class AlienHandler : MonoBehaviour
         alienHealth = alienLifeSexual;
         alienSpeciesChild[currentSpecies].SetActive(false);
         alienSpeciesAdult[currentSpecies].SetActive(true);
-        StartCoroutine(HandleGrowing(.8f, 1f));
+        StartCoroutine(HandleGrowing(.6f, .8f));
         yield return new WaitForSeconds(timeToFullGrown);
 
         // Full Grown Life
@@ -543,7 +551,7 @@ public class AlienHandler : MonoBehaviour
         alienHealth = alienLifeFullGrown;
         alienSpeciesChild[currentSpecies].SetActive(false);
         alienSpeciesAdult[currentSpecies].SetActive(true);
-        StartCoroutine(HandleGrowing(1f, 1.1f));
+        StartCoroutine(HandleGrowing(.8f, 1f));
         //transform.localScale = Vector3.one * 1.2f;
     }
 
@@ -552,7 +560,7 @@ public class AlienHandler : MonoBehaviour
         for (int i = 0; i < 10; i++)
         {
             yield return new WaitForSeconds(.5f / 10); // Total duration of transform 0.5f seconds
-            transform.localScale = Vector3.one * ((oldFactor + newFactor * i / 10) - (oldFactor * i / 10));
+            MyTransform.localScale = Vector3.one * ((oldFactor + newFactor * i / 10) - (oldFactor * i / 10));
         }
     }
 
@@ -565,7 +573,7 @@ public class AlienHandler : MonoBehaviour
                 anim[currentSpecies].Play("Armature|WALK");
             }
 
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, step);
+            MyTransform.position = Vector3.MoveTowards(MyTransform.position, targetPosition, step);
 
             if (Vector3.Distance(transform.position, targetPosition) < .1f)
             {
@@ -576,7 +584,7 @@ public class AlienHandler : MonoBehaviour
                 }
             }
 
-            transform.LookAt(targetPosition, Vector3.up);
+            MyTransform.LookAt(targetPosition, Vector3.up);
         }
     }
 
@@ -658,13 +666,17 @@ public class AlienHandler : MonoBehaviour
         }
     }
 
-    public void ActivateCurrentModels(int currentSpeziesIndex)
+    public void DeactivateAllModels()
     {
         foreach (var item in alienSpecies)
         {
             item.SetActive(false);
         }
+    }
 
+    public void ActivateCurrentModels(int currentSpeziesIndex)
+    {
+        DeactivateAllModels();
         alienSpecies[currentSpeziesIndex].SetActive(true);
     }
 

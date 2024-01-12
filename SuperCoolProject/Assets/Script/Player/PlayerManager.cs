@@ -42,6 +42,7 @@ public class PlayerManager : MonoBehaviour
     public bool squareUnfolded = false;
     public bool triangleUnfolded = false;
     AlienHandler[] closestResource = new AlienHandler[] { null, null, null };  // 0:Sphere, 1:Square, 2:Triangle
+    Transform MyTransform;
 
     public float resourceDrain = .1f;
     public float resourceGain = 5;
@@ -67,6 +68,7 @@ public class PlayerManager : MonoBehaviour
     {
         audioSource = GetComponent<AudioSource>();
         inputHandler = GetComponent<InputHandler>();
+        MyTransform = GetComponent<Transform>();
         dissolve = playerShieldGO.gameObject.GetComponent<Renderer>().material;
         dissolve.SetFloat("_DissolveAmount", 0);
     }
@@ -102,8 +104,8 @@ public class PlayerManager : MonoBehaviour
         // Set Variable to disable movement/input
         isAlive = false;
         audioSource.PlayOneShot(deathAudio, 1f);
-        GameObject deadPlayerInstance = Instantiate(deadPlayer, transform.position, Quaternion.identity);
-        
+        GameObject deadPlayerInstance = Instantiate(deadPlayer, MyTransform.position, Quaternion.identity);
+
         Rigidbody deadPlayerRigidbody = deadPlayerInstance.GetComponent<Rigidbody>();
         if (deadPlayerRigidbody != null)
         {
@@ -111,7 +113,7 @@ public class PlayerManager : MonoBehaviour
             float forceMagnitude = 1f;
             deadPlayerRigidbody.AddForce(forceDirection * forceMagnitude, ForceMode.Impulse);
         }
-        
+
         // Enable UI Element
         // TODO: Check if all players are dead. otherwise maybe make deathscreen on playerHUD as well
 
@@ -140,12 +142,16 @@ public class PlayerManager : MonoBehaviour
 
         int layerMask = 1 << 9; // Lyer 9 is Alien
 
-        aliensInRange = Physics.OverlapSphere(this.transform.position, playerDetectionRadius, layerMask);
+        aliensInRange = Physics.OverlapSphere(MyTransform.position, playerDetectionRadius, layerMask);
 
         foreach (var item in aliensInRange)
         {
             AlienHandler AH = item.gameObject.GetComponent<AlienHandler>();
-            if (AH.currentAge == AlienHandler.AlienAge.resource) { return; }
+            if (AH.currentAge == AlienHandler.AlienAge.resource)
+            {
+                closestResource[AH.currentSpecies] = AH;
+                return;
+            }
 
             AH.closestAlien = this.gameObject;
 
@@ -212,15 +218,11 @@ public class PlayerManager : MonoBehaviour
 
         if (closestResource[neededResource] != null)
         {
-            if (closestResource[neededResource].currentAge != AlienHandler.AlienAge.resource)
+            if (closestResource[neededResource].currentAge != AlienHandler.AlienAge.resource ||
+                closestResource[neededResource].gameObject.activeInHierarchy == false)
             {
                 closestResource[neededResource] = null;
                 return;
-            }
-
-            if (closestResource[neededResource].gameObject.activeInHierarchy == false)
-            {
-                closestResource[neededResource] = null;
             }
 
             closestResourceIndicator[neededResource].SetActive(true);
@@ -247,7 +249,7 @@ public class PlayerManager : MonoBehaviour
 
             for (int i = 0; i < loopAmount; i++)
             {
-                currentDist = Vector3.Distance(ResourceList[i].transform.position, this.transform.position);
+                currentDist = Vector3.Distance(ResourceList[i].transform.position, MyTransform.position);
                 if (currentDist < dist)
                 {
                     dist = currentDist;
@@ -271,7 +273,7 @@ public class PlayerManager : MonoBehaviour
 
         // 0:Sphere, 1:Square, 2:Triangle
         closestResourceIndicator[neededResource].SetActive(true);
-        Vector3 targetRotation = targetResource - this.transform.position;
+        Vector3 targetRotation = targetResource - MyTransform.position;
         Quaternion rotation = Quaternion.LookRotation(targetRotation, Vector3.up);
         closestResourceIndicator[neededResource].transform.rotation = rotation;
     }
@@ -281,7 +283,6 @@ public class PlayerManager : MonoBehaviour
         // 0:Sphere, 1:Square, 2:Triangle
         closestResourceIndicator[neededResource].SetActive(false);
     }
-
 
     private void HandleResource()
     {
@@ -446,7 +447,7 @@ public class PlayerManager : MonoBehaviour
 
             isAlive = true;
 
-            this.gameObject.transform.position = Vector3.zero;
+            MyTransform.position = Vector3.zero;
         }
     }
 

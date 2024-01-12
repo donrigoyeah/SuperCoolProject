@@ -11,6 +11,9 @@ public class PoolManager : MonoBehaviour
 
     // Header In Inspector
     [Header("Aliens")]
+
+    // Amount of currently Spawned Aliens
+    public int currentAlienAmount;
     // Amount of initial Spawned Aliens
     public int alienAmount;
     // Amount of max possible extras
@@ -97,8 +100,9 @@ public class PoolManager : MonoBehaviour
                 return AlienPool[i];
             }
         }
+
         // Buffer check / spawn only this amount of additionals
-        if (alienAmount < alienAmount + alienAmountExtra)
+        if (currentAlienAmount < alienAmount + alienAmountExtra)
         {
             // Add only when no more are available
             // Debug.Log("Add additionl alien to the pool");
@@ -111,7 +115,7 @@ public class PoolManager : MonoBehaviour
             // Add to pre defined List
             AlienPool.Add(tmp);
             // Add total amount for looping to find active
-            alienAmount++;
+            currentAlienAmount++;
             // Return newly generated GO
             return tmp;
         }
@@ -136,6 +140,8 @@ public class PoolManager : MonoBehaviour
             tmp.SetActive(false);
             // Add to List/Object Pool
             AlienPool.Add(tmp);
+            // Set currently Spawned Alien Amount
+            currentAlienAmount++;
         }
         // Send info to loading screen that this pool is ready
         LoadingScreenHandler.SharedInstance.currentLoadedPools++;

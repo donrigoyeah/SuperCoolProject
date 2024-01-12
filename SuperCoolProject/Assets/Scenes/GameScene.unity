@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.1727685, g: 0.21589223, b: 0.29782578, a: 1}
+  m_IndirectSpecularColor: {r: 0.17276807, g: 0.21589197, b: 0.29782572, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2153,7 +2153,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!64 &218710416
 MeshCollider:
@@ -3715,7 +3715,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentState: 0
   minutes: 0
-  hours: 0
+  hours: 3
   timeBoost: 1000
   displayTime: {fileID: 1821839599}
   sun: {fileID: 410087040}
@@ -4374,7 +4374,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 0.047058824, g: 0.09803922, b: 0.42352942, a: 1}
-  m_Intensity: 2
+  m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -4411,7 +4411,7 @@ Light:
   m_RenderMode: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 785
   m_RenderingLayerMask: 1
   m_Lightmapping: 4
   m_LightShadowCasterMode: 0
@@ -5340,6 +5340,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 826bb7972129f284aa24b9d2a168af96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HUDSystemGO: {fileID: 1413876526}
   currentHUD: 0
   HUDS:
   - {fileID: 1171402647}
@@ -18663,7 +18664,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1413876527
 RectTransform:
   m_ObjectHideFlags: 0
@@ -19837,7 +19838,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fa559ac463c37d4b9d2ed5215ac221e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  alienAmount: 100
+  currentAlienAmount: 0
+  alienAmount: 300
   alienAmountExtra: 50
   AlienPool: []
   Alien: {fileID: 1047908099467871381, guid: d934f14e333eefc4697225457031ccaa, type: 3}
@@ -19871,7 +19873,7 @@ MonoBehaviour:
   CopMuzzleContainer: {fileID: 1283110845}
   FSSAmount: 30
   FSSPool: []
-  FSS: {fileID: 2354723089683057679, guid: 4d0061d7986e2904d889419773d320d5, type: 3}
+  FSS: {fileID: 1508112924898509174, guid: 55ea6eb2110f40441aabc76f408bd266, type: 3}
   FSSContainer: {fileID: 1265197036}
 --- !u!1 &1564206088
 GameObject:
@@ -22881,7 +22883,6 @@ MonoBehaviour:
   playerInputManager: {fileID: 1325170218}
   players: []
   CameraFollowSpot: {fileID: 617314327}
-  PlayerHUD: {fileID: 1413876526}
   DeathScreen: {fileID: 703073541}
   GameOverScreen: {fileID: 872527411}
   DeathScreenCloneJuiceUI: {fileID: 668524824}
@@ -28233,7 +28234,7 @@ PrefabInstance:
     - target: {fileID: 5079972631807635160, guid: 9aa565877ecff9045b5de8c22120623f,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 5.22
       objectReference: {fileID: 0}
     - target: {fileID: 5079972631807635160, guid: 9aa565877ecff9045b5de8c22120623f,
         type: 3}

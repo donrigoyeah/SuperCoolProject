@@ -8,6 +8,10 @@ using UnityEngine.UI;
 
 public class PlayerLocomotion : MonoBehaviour
 {
+    Transform myTransform;
+    Camera MainCamera;
+    private float horizontalInput;
+    private float verticalInput;
     public float playerSpeed;
     [SerializeField] private float gravityValue;
     [SerializeField] private float jumpForce;
@@ -33,7 +37,9 @@ public class PlayerLocomotion : MonoBehaviour
     private float dashDuration = 0.3f;
     private float dashExtraSpeed = 20f;
 
-    [Header("Footstep Smoke Particle System")]
+    [Header("Foot step Smoke Particle System")]
+    GameObject FSSGO;
+    Transform FSSTransform;
     [SerializeField] private float deltaFSS;
     private float currentFSSTimer;
 
@@ -56,6 +62,8 @@ public class PlayerLocomotion : MonoBehaviour
         inputHandler = GetComponent<InputHandler>();
         playerManager = GetComponent<PlayerManager>();
         playerAnim = GetComponentInChildren<Animator>();
+        myTransform = GetComponent<Transform>();
+        MainCamera = Camera.main;
     }
 
     void Update()
@@ -151,14 +159,15 @@ public class PlayerLocomotion : MonoBehaviour
             audioSource.PlayOneShot(footstepAudio, 1f);
 
             // Spawn Footstep Smoke GO
-            GameObject FSSGO = PoolManager.SharedInstance.GetPooledFSS();
+            FSSGO = PoolManager.SharedInstance.GetPooledFSS();
             if (FSSGO != null)
             {
-                FSSGO.transform.position = transform.position;
-                FSSGO.transform.rotation = transform.rotation;
+                FSSTransform = FSSGO.GetComponent<Transform>();
+                FSSTransform.position = myTransform.position;
+                FSSTransform.rotation = myTransform.rotation;
                 FSSGO.SetActive(true);
-                // Disable again after 1 second
                 StartCoroutine(DisableAfterSeconds(1, FSSGO));
+                FSSGO = null;
             }
             // Reset timer to limit spawns
             currentFSSTimer = 0;
@@ -174,15 +183,15 @@ public class PlayerLocomotion : MonoBehaviour
         // Handle Gamepad rotation
         if (inputHandler.isGamepad)
         {
-            float horizontal = inputHandler.inputAim.x;
-            float vertical = inputHandler.inputAim.y;
+            horizontalInput = inputHandler.inputAim.x;
+            verticalInput = inputHandler.inputAim.y;
 
-            LookAt(new Vector3(transform.position.x + horizontal, 0, transform.position.z + vertical));
+            LookAt(new Vector3(myTransform.position.x + horizontalInput, 0, myTransform.position.z + verticalInput));
         }
         // Handle Mouse Input
         else
         {
-            Ray ray = Camera.main.ScreenPointToRay(inputHandler.inputAim);
+            Ray ray = MainCamera.ScreenPointToRay(inputHandler.inputAim);
             Plane groundPlane = new Plane(Vector3.up, Vector3.zero); // represent a plane in 3D space
             float rayDistance;
 
@@ -196,8 +205,8 @@ public class PlayerLocomotion : MonoBehaviour
 
     private void LookAt(Vector3 lookPoint)
     {
-        targetAimPosition = new Vector3(lookPoint.x, transform.position.y, lookPoint.z);
-        transform.LookAt(targetAimPosition);
+        targetAimPosition = new Vector3(lookPoint.x, myTransform.position.y, lookPoint.z);
+        myTransform.LookAt(targetAimPosition);
     }
 
     private void Jump()

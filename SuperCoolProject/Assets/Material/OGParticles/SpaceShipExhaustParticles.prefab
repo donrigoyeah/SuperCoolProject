@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3789617332006944436}
   - component: {fileID: 1360779393498835420}
   m_Layer: 0
-  m_Name: exhaustParticles
+  m_Name: SpaceShipExhaustParticles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
