@@ -60,6 +60,7 @@ public class AlienHandler : MonoBehaviour
     public GameObject[] alienSpeciesChild; // 0:Sphere > 1:Square > 2:Triangle  
     public GameObject[] alienSpeciesAdult; // 0:Sphere > 1:Square > 2:Triangle  
     public Material[] alienColors; // 0:Blue > 1:Green > 2:Red  
+    public GameObject[] deadAliens;
     public Animation[] anim;
     public Renderer alienMiniMapMarker;
     public GameObject resourceSteamGO;

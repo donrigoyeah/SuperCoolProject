@@ -352,8 +352,12 @@ MonoBehaviour:
   isInteracting: 0
   invincibleFrames: 0.5
   LightBeam: {fileID: 934595259696851748}
+  deadPlayer: {fileID: 6718371516913241609, guid: fb851b72f52ffba48b9ceb897753eec5,
+    type: 3}
   playerShieldGO: {fileID: 6422262875128791845}
-  dissolveRate: 0.0125
+  player: {fileID: 0}
+  dissolve: {fileID: 2100000, guid: 3fd07a00262bc7f429deffe941b1078d, type: 2}
+  dissolveRate: 0.125
   refreshRate: 0.025
   maxSphereResource: 100
   maxSquareResource: 100
@@ -377,6 +381,7 @@ MonoBehaviour:
   - {fileID: 5274793693502322082}
   - {fileID: 7991882302808134556}
   - {fileID: 7860369408348699713}
+  resourceIndicatorLight: {fileID: 0}
   shieldRechargeAudio: {fileID: 8300000, guid: 7c4072b1b16aa7c47ac7c00b4e89bc31, type: 3}
   shieldBreakAudio: {fileID: 8300000, guid: ed490b7c5f0392e4eb9d586baf5045a8, type: 3}
   deathAudio: {fileID: 8300000, guid: fb8cde1c02d901c48bff064d2c4a6a2b, type: 3}
@@ -420,6 +425,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lazerSpawnLocationRight: {fileID: 7666627156274332060}
   lazerSpawnLocationLeft: {fileID: 1037275037013140508}
+  lazerSightRange: 20
   AimTargetLocation: {x: 0, y: 0, z: 0}
   overheatUIGO: {fileID: 339469481652884982}
   overheatUI: {fileID: 8228046787694399299}
@@ -2463,7 +2469,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ce922caf2a96b7648876de7aa5cef3e2, type: 2}
+  - {fileID: 2100000, guid: 3fd07a00262bc7f429deffe941b1078d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

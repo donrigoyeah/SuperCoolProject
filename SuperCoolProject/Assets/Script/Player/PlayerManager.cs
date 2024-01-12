@@ -22,7 +22,7 @@ public class PlayerManager : MonoBehaviour
     public bool isInteracting;
     public float invincibleFrames = .5f;
     public GameObject LightBeam;
-
+    public GameObject deadPlayer;
     public GameObject playerShieldGO;
     public GameObject player;
     
@@ -92,6 +92,7 @@ public class PlayerManager : MonoBehaviour
 
     private void HandleDeath()
     {
+        Debug.Log("One TODO left here, remove already done TODO once you verify that they are alright");
         // TODO: Instanciate GameObject like (deadPlayerBody)
         // Add draggable script to it
         // WHen returned to spaceship, enable upgrades again
@@ -100,6 +101,16 @@ public class PlayerManager : MonoBehaviour
         // Set Variable to disable movement/input
         isAlive = false;
         audioSource.PlayOneShot(deathAudio, 1f);
+        GameObject deadPlayerInstance = Instantiate(deadPlayer, transform.position, Quaternion.identity);
+        
+        Rigidbody deadPlayerRigidbody = deadPlayerInstance.GetComponent<Rigidbody>();
+        if (deadPlayerRigidbody != null)
+        {
+            Vector3 forceDirection = Vector3.up;
+            float forceMagnitude = 1f;
+            deadPlayerRigidbody.AddForce(forceDirection * forceMagnitude, ForceMode.Impulse);
+        }
+        
         // Enable UI Element
         // TODO: Check if all players are dead. otherwise maybe make deathscreen on playerHUD as well
 
@@ -222,7 +233,7 @@ public class PlayerManager : MonoBehaviour
         // Only show resource UI if below 75%
         if (currentSphereResource < 3 * maxSphereResource / 4)
         {
-            StartCoroutine(HandleResourceLightIndicator(0));
+            // StartCoroutine(HandleResourceLightIndicator(0));
             HandleResourceDetection(0);
             if (sphereUnfolded != true)
             {
@@ -245,7 +256,7 @@ public class PlayerManager : MonoBehaviour
         // Only show resource UI if below 75%
         if (currentSquareResource < 3 * maxSquareResource / 4)
         {
-            StartCoroutine(HandleResourceLightIndicator(1));
+            // StartCoroutine(HandleResourceLightIndicator(1));
             HandleResourceDetection(1);
             if (squareUnfolded != true)
             {
@@ -268,7 +279,7 @@ public class PlayerManager : MonoBehaviour
         // Only show resource UI if below 75%
         if (currentTriangleResource < 3 * maxTriangleResource / 4)
         {
-            StartCoroutine(HandleResourceLightIndicator(2));
+            // StartCoroutine(HandleResourceLightIndicator(2));
             HandleResourceDetection(2);
             if (triangleUnfolded != true)
             {

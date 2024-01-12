@@ -55,6 +55,9 @@ public class GameManager : MonoBehaviour
     public int cameraSpeedRaiseDuration = 2;
     public int cameraSpeedMultiplier = 3;
 
+    [Header("Dead Body")]
+    public bool playerDeadBody = false;
+    
     private void Awake()
     {
         SharedInstance = this;
