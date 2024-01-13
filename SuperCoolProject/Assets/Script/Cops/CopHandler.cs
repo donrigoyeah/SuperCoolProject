@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class CopHandler : MonoBehaviour
@@ -26,7 +27,7 @@ public class CopHandler : MonoBehaviour
 
     public Transform CopCar;
     public Animation anim;
-
+    public GameObject copCorpse;
 
     [Header("Audio")]
     public AudioClip copMumbling;
@@ -153,6 +154,8 @@ public class CopHandler : MonoBehaviour
     private void HandleDeath()
     {
         // TODO: Make nicer
+        GameObject deadCop = Instantiate(copCorpse, transform.position, quaternion.identity);
+        Destroy(deadCop, 2f);
         CopManager.SharedInstance.currentCops.Remove(this);
         this.gameObject.SetActive(false);
     }

@@ -70,7 +70,7 @@ public class PlayerManager : MonoBehaviour
         inputHandler = GetComponent<InputHandler>();
         MyTransform = GetComponent<Transform>();
         dissolve = playerShieldGO.gameObject.GetComponent<Renderer>().material;
-        dissolve.SetFloat("_DissolveAmount", 0);
+        // dissolve.SetFloat("_DissolveAmount", 0);
     }
 
     private void FixedUpdate()
