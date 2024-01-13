@@ -43,7 +43,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private PlayerInputManager playerInputManager;
     public List<PlayerManager> players;
     public Transform CameraFollowSpot; // For Cinemachine
-    public GameObject PlayerHUD;
 
     public GameObject DeathScreen;
     public GameObject GameOverScreen;
@@ -57,7 +56,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Dead Body")]
     public bool playerDeadBody = false;
-    
+
     private void Awake()
     {
         SharedInstance = this;
@@ -112,7 +111,8 @@ public class GameManager : MonoBehaviour
     {
         numberOfPlayers++;
         players.Add(pm);
-        PlayerHUD.SetActive(true);
+        HUDHandler.SharedInstance.HUDSystemGO.SetActive(true);
+        HUDHandler.SharedInstance.EnableCurrentHUD(2); // Enable Time Display
 
         // Enable Light Beams on Player
         if (TimeManager.SharedInstance.currentState == TimeManager.DayState.sunsetToNight || TimeManager.SharedInstance.currentState == TimeManager.DayState.dayToSunSet)

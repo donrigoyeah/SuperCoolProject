@@ -6,6 +6,7 @@ public class HUDHandler : MonoBehaviour
 {
     public static HUDHandler SharedInstance;
 
+    public GameObject HUDSystemGO;
     public int currentHUD;
     public GameObject[] HUDS; // 0: Population 1: Minimap 2: Time
     public RectTransform HUDScaler;
@@ -30,6 +31,7 @@ public class HUDHandler : MonoBehaviour
     private void Awake()
     {
         SharedInstance = this;
+        currentHUD = 2;
         DisbaleAllHUDS();
     }
 
@@ -81,7 +83,7 @@ public class HUDHandler : MonoBehaviour
         }
     }
 
-    private void EnableCurrentHUD(int index)
+    public void EnableCurrentHUD(int index)
     {
         DisbaleAllHUDS();
         HUDS[index].SetActive(true);
@@ -99,12 +101,10 @@ public class HUDHandler : MonoBehaviour
 
         if (currentTotalMinutes > (5 * 60) && currentTotalMinutes <= 6 * 60)
         {
-            Debug.Log("Sun Rise");
             DayNightCircle.transform.rotation = Quaternion.Euler(0, 0, (180 * (currentTotalMinutes - (5 * 60)) / 60) + 180);
         }
         if (currentTotalMinutes > (17 * 60) && currentTotalMinutes <= 18 * 60)
         {
-            Debug.Log("Sun Set");
             DayNightCircle.transform.rotation = Quaternion.Euler(0, 0, 180 * (currentTotalMinutes - (17 * 60)) / 60);
         }
     }
