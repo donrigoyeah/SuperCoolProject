@@ -6,14 +6,32 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.VFX;
-using static UnityEngine.Rendering.DebugUI;
 using Unity.VisualScripting;
+using TMPro;
+using UnityEditor.Experimental.GraphView;
 using static AlienHandler;
 
 public class PlayerAttacker : MonoBehaviour
 {
+    [Header("Lazer Sight Stuff")]
+    [SerializeField] private LineRenderer laserSightLeft;
+    [SerializeField] private LineRenderer laserSightRight;
+    [SerializeField] private bool isLaserSight = true;
+    public Transform lazerSpawnLocationRight;
+    public Transform lazerSpawnLocationLeft;
+    public bool isEnabled = false;
+    public bool isDisabled = false;
+    public float lazerSightRange = 20;
+    public float lastTimeSinceLazer = 0;
+    public float disableLazerAfterNoInput = 1f;
+    public GameObject currentTargetEnemy;
+    public GameObject AimTargetIndicatorGO;
+    public RectTransform AimTargetIndicator;
+    private Vector2 lastInput;
+    private Vector3 AimTargetLocation;
+
+
     [Header("Lazer Gun Stuff")]
-    [SerializeField] public Transform lazerSpawnLocation;
     [SerializeField] public GameObject overheatUIGO;
     [SerializeField] public Image overheatUI;
     [SerializeField] private float fireRate = 0.5f;
@@ -28,8 +46,7 @@ public class PlayerAttacker : MonoBehaviour
     [SerializeField] private float bulletSpeed = 50;
     [SerializeField] private float bulletDamage = 10;
     [SerializeField] private float bulletDamageBoost = 2;
-    [SerializeField] private LineRenderer laserSight;
-    [SerializeField] private bool isLaserSight = true;
+    [SerializeField] private bool leftRightSwitch;
 
     [Header("Grenade stuff")]
     [SerializeField] private Transform grenadeSpawnLocation;
@@ -82,16 +99,6 @@ public class PlayerAttacker : MonoBehaviour
     {
         HandleShootLazer();
         HandleGrenadeThrow();
-
-        if (isLaserSight)
-        {
-            laserSight.enabled = true;
-            LaserSight();
-        }
-        else
-        {
-            laserSight.enabled = false;
-        }
     }
 
     private void FixedUpdate()
@@ -99,6 +106,7 @@ public class PlayerAttacker : MonoBehaviour
         float delta = Time.deltaTime;
         HandleWeaponHeat(delta);
         HandleGrenadeCooldown(delta);
+        HandleEnableLazerSight();
     }
 
     #region Handle Lazer
@@ -194,46 +202,215 @@ public class PlayerAttacker : MonoBehaviour
 
     private void SpawnLazer(float damage)
     {
+        //TODO: Add Recoil
+
         GameObject bulletPoolGo = PoolManager.SharedInstance.GetPooledBullets();
+        GameObject muzzlePoolGo = PoolManager.SharedInstance.GetPooledMuzzle();
+
         if (bulletPoolGo != null)
         {
-            bulletPoolGo.transform.position = lazerSpawnLocation.position;
-            bulletPoolGo.transform.rotation = lazerSpawnLocation.rotation;
+            if (leftRightSwitch == true)
+            {
+                // Instantiate Bullet left
+                bulletPoolGo.transform.position = lazerSpawnLocationLeft.position;
+                bulletPoolGo.transform.rotation = lazerSpawnLocationLeft.rotation;
+                if (muzzlePoolGo != null)
+                {
+                    muzzlePoolGo.transform.position = lazerSpawnLocationLeft.position;
+                    muzzlePoolGo.transform.rotation = lazerSpawnLocationLeft.rotation;
+                    muzzlePoolGo.SetActive(true);
+                    StartCoroutine(DisableAfterSeconds(1, muzzlePoolGo));
+                }
+            }
+            else
+            {
+                // Instantiate Bullet right
+                bulletPoolGo.transform.position = lazerSpawnLocationRight.position;
+                bulletPoolGo.transform.rotation = lazerSpawnLocationRight.rotation;
+                if (muzzlePoolGo != null)
+                {
+                    muzzlePoolGo.transform.position = lazerSpawnLocationRight.position;
+                    muzzlePoolGo.transform.rotation = lazerSpawnLocationRight.rotation;
+                    muzzlePoolGo.SetActive(true);
+                    StartCoroutine(DisableAfterSeconds(1, muzzlePoolGo));
+                }
+            }
+            if (AimTargetLocation != Vector3.zero)
+            {
+                bulletPoolGo.transform.LookAt(AimTargetLocation, Vector3.up);
+            }
+            leftRightSwitch = !leftRightSwitch;
+
             BulletHandler BH = bulletPoolGo.GetComponent<BulletHandler>();
             BH.isPlayerBullet = true;
             BH.bulletDamage = damage;
             bulletPoolGo.SetActive(true);
             BH.rb.velocity = Vector3.zero;
-            BH.rb.velocity = lazerSpawnLocation.forward * bulletSpeed;
-        }
-        GameObject muzzlePoolGo = PoolManager.SharedInstance.GetPooledMuzzle();
-        if (muzzlePoolGo != null)
-        {
-            muzzlePoolGo.transform.position = lazerSpawnLocation.position;
-            muzzlePoolGo.transform.rotation = lazerSpawnLocation.rotation;
-            muzzlePoolGo.SetActive(true);
-            StartCoroutine(DisableAfterSeconds(1, muzzlePoolGo));
+            BH.rb.velocity = bulletPoolGo.transform.forward * bulletSpeed;
         }
     }
 
-    void LaserSight()
+    private void HandleEnableLazerSight()
     {
-        // Debug.Log("Laser Sight");
-        //TODO: Add Recoil
+        //Debug.Log("Round inputHandler.inputAim.x): " + Mathf.RoundToInt(inputHandler.inputAim.x));
+        //Debug.Log("Round lastInput.x): " + Mathf.RoundToInt(lastInput.x));
 
-        RaycastHit hit;
 
-        if (Physics.Raycast(transform.position, transform.forward, out hit))
+        if (isLaserSight)
         {
-            if (hit.collider)
+            lastInput = inputHandler.inputAim;
+            lastTimeSinceLazer += Time.deltaTime;
+
+            // Check if on Mouse and has not moved the mouse enough btw aimInput of controller
+            if (inputHandler.inputAim != Vector2.zero ||
+                    (inputHandler.isGamepad == false &&
+                    Mathf.RoundToInt(inputHandler.inputAim.x) != Mathf.RoundToInt(lastInput.x) ||
+                    Mathf.RoundToInt(inputHandler.inputAim.y) != Mathf.RoundToInt(lastInput.y))
+                )
             {
-                laserSight.SetPosition(1, new Vector3(0, 0, hit.distance));
+                lastTimeSinceLazer = 0;
+            }
+
+
+
+            if (lastTimeSinceLazer < disableLazerAfterNoInput)
+            {
+                if (isEnabled == false)
+                {
+                    StartCoroutine(EnableLazers());
+                    isEnabled = true;
+                    isDisabled = false;
+                }
+                LaserSight();
+                return;
             }
             else
             {
-                laserSight.SetPosition(0, transform.position);
-                laserSight.SetPosition(1, transform.position + transform.forward * 40);
+                if (isDisabled == false)
+                {
+                    StartCoroutine(DisableLazers());
+                    isDisabled = true;
+                    isEnabled = false;
+                    return;
+                }
             }
+        }
+        else
+        {
+            laserSightLeft.enabled = false;
+            laserSightRight.enabled = false;
+        }
+    }
+
+    IEnumerator EnableLazers()
+    {
+        laserSightLeft.enabled = true;
+        laserSightRight.enabled = true;
+        laserSightLeft.SetPosition(0, Vector3.zero);
+        laserSightRight.SetPosition(0, Vector3.zero);
+        laserSightLeft.SetPosition(1, Vector3.zero);
+        laserSightRight.SetPosition(1, Vector3.zero);
+
+        int steps = 10;
+        float durationOfAnimation = 0.1f;
+        for (int i = 0; i < steps; i++)
+        {
+            yield return new WaitForSeconds(durationOfAnimation / steps);
+
+            laserSightLeft.SetPosition(1, (Vector3.forward * lazerSightRange * i) / steps);
+            laserSightRight.SetPosition(1, (Vector3.forward * lazerSightRange * i) / steps);
+        }
+
+    }
+    IEnumerator DisableLazers()
+    {
+        laserSightLeft.SetPosition(0, Vector3.zero);
+        laserSightRight.SetPosition(0, Vector3.zero);
+        laserSightLeft.SetPosition(1, (Vector3.forward * lazerSightRange));
+        laserSightRight.SetPosition(1, (Vector3.forward * lazerSightRange));
+
+        int steps = 10;
+        float durationOfAnimation = 0.1f;
+
+        for (int i = 0; i < steps; i++)
+        {
+            yield return new WaitForSeconds(durationOfAnimation / steps);
+            laserSightLeft.SetPosition(0, (Vector3.forward * lazerSightRange * i) / steps);
+            laserSightRight.SetPosition(0, (Vector3.forward * lazerSightRange * i) / steps);
+
+            // Remove Laser from end to start
+            //laserSightLeft.SetPosition(1, (Vector3.forward * lazerSightRange) - (Vector3.forward * lazerSightRange * i / steps));
+            //laserSightRight.SetPosition(1, (Vector3.forward * lazerSightRange) - (Vector3.forward * lazerSightRange * i / steps));
+        }
+        laserSightLeft.SetPosition(1, Vector3.zero);
+        laserSightRight.SetPosition(1, Vector3.zero);
+
+        laserSightLeft.enabled = false;
+        laserSightRight.enabled = false;
+    }
+
+    private void LaserSight()
+    {
+        RaycastHit hit;
+
+        // Use Spherecast here instead of ray to have a better detactionChance
+        if (Physics.SphereCast(transform.position + Vector3.up / 2, 2, transform.forward, out hit, lazerSightRange))
+        {
+            if (hit.collider)
+            {
+                // If Alien or Cop
+                if (hit.collider.gameObject.CompareTag("Alien") || hit.collider.gameObject.CompareTag("Cop"))
+                {
+                    laserSightLeft.useWorldSpace = true;
+                    laserSightRight.useWorldSpace = true;
+
+                    laserSightLeft.SetPosition(0, lazerSpawnLocationLeft.transform.position);
+                    laserSightRight.SetPosition(0, lazerSpawnLocationRight.transform.position);
+                    laserSightLeft.SetPosition(1, hit.transform.position);
+                    laserSightRight.SetPosition(1, hit.transform.position);
+
+                    AimTargetLocation = hit.transform.position;
+                    AimTargetIndicator.position = AimTargetLocation;
+
+                    if (currentTargetEnemy != hit.collider.gameObject)
+                    {
+                        currentTargetEnemy = hit.collider.gameObject;
+                        StartCoroutine(CloseAimIndicator());
+                    }
+
+                    return;
+                }
+            }
+        }
+        currentTargetEnemy = null;
+        AimTargetIndicatorGO.SetActive(false);
+
+        laserSightLeft.useWorldSpace = false;
+        laserSightRight.useWorldSpace = false;
+
+        laserSightLeft.SetPosition(0, Vector3.zero);
+        laserSightRight.SetPosition(0, Vector3.zero);
+        laserSightLeft.SetPosition(1, Vector3.forward * lazerSightRange);
+        laserSightRight.SetPosition(1, Vector3.forward * lazerSightRange);
+
+        AimTargetLocation = Vector3.zero;
+        return;
+    }
+
+    IEnumerator CloseAimIndicator()
+    {
+        AimTargetIndicatorGO.SetActive(true);
+        AimTargetIndicator.localScale = Vector3.one;
+        AimTargetIndicator.localRotation = Quaternion.Euler(0, 0, 0);
+
+        int steps = 30;
+        float durationOfAnimation = 0.5f;
+
+        for (int i = 0; i < steps; i++)
+        {
+            yield return new WaitForSeconds(durationOfAnimation / steps);
+            AimTargetIndicator.localScale = Vector3.one - (Vector3.one * i / (2 * steps)); // Results in Vector3.one/2
+            AimTargetIndicator.localRotation = Quaternion.Euler(0, 0, 90 * i / steps);
         }
     }
 
@@ -334,19 +511,22 @@ public class PlayerAttacker : MonoBehaviour
         if (other.gameObject.CompareTag("Alien"))
         {
             AlienHandler AH = other.gameObject.GetComponent<AlienHandler>();
+            if (AH.isDead) { return; }
+
             if (AH.currentAge == AlienAge.resource)
             {
                 playerManager.HandleGainResource(AH.currentSpecies);
+                AlienManager.SharedInstance.RemoveFromResourceList(AH);
+                AH.gameObject.SetActive(false);
             }
             else
             {
-                Debug.Log("Handle Hit");
                 playerManager.HandleHit();
-                Debug.Log("@Kinshuk: Maybe write a function on the alienHander like hanldeDeath that gets triggered here");
+                AH.HandleDeath();
             }
-            other.gameObject.SetActive(false);
         }
     }
+
     #endregion
 
     IEnumerator DisableAfterSeconds(int sec, GameObject objectToDeactivate)

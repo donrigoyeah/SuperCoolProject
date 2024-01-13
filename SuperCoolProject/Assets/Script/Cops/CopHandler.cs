@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class CopHandler : MonoBehaviour
@@ -25,6 +27,12 @@ public class CopHandler : MonoBehaviour
 
     public Transform CopCar;
     public Animation anim;
+    public GameObject copCorpse;
+
+    [Header("Audio")]
+    public AudioClip copMumbling;
+    public AudioClip copShooting;
+    private AudioSource audioSource;
 
     private void OnEnable()
     {
@@ -32,6 +40,11 @@ public class CopHandler : MonoBehaviour
         isAggro = false;
         canShoot = false;
         fireTimer = 0;
+    }
+
+    private void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void FixedUpdate()
@@ -42,6 +55,11 @@ public class CopHandler : MonoBehaviour
         HandleMovement();
         if (isAggro)
         {
+            if (!closestPlayer.isAlive)
+            {
+                isAggro = false;
+                return;
+            }
             anim.Play("Armature|Attack");
             if (canShoot)
             {
@@ -76,6 +94,11 @@ public class CopHandler : MonoBehaviour
 
     private void HandleMovement()
     {
+        if (!audioSource.isPlaying && !canShoot)
+        {
+            audioSource.PlayOneShot(copMumbling, 1f);
+        }
+
         if (closestPlayer == null) { return; }
 
         float step = copSpeed * Time.deltaTime;
@@ -98,6 +121,7 @@ public class CopHandler : MonoBehaviour
             if (CopManager.SharedInstance.hasBeenServed == false)
             {
                 CopManager.SharedInstance.CopScreenGO.SetActive(true);
+                Time.timeScale = 0;
             }
             canShoot = true;
         }
@@ -113,6 +137,7 @@ public class CopHandler : MonoBehaviour
                 // Instantiate Bullet left
                 HandleSpawnCopLazer(leftGun);
                 leftRightSwitch = false;
+                audioSource.PlayOneShot(copShooting, 1f);
                 return;
             }
             else
@@ -120,6 +145,7 @@ public class CopHandler : MonoBehaviour
                 // Instantiate Bullet right
                 HandleSpawnCopLazer(rightGun);
                 leftRightSwitch = true;
+                audioSource.PlayOneShot(copShooting, 1f);
                 return;
             }
         }
@@ -128,6 +154,8 @@ public class CopHandler : MonoBehaviour
     private void HandleDeath()
     {
         // TODO: Make nicer
+        GameObject deadCop = Instantiate(copCorpse, transform.position, quaternion.identity);
+        Destroy(deadCop, 2f);
         CopManager.SharedInstance.currentCops.Remove(this);
         this.gameObject.SetActive(false);
     }

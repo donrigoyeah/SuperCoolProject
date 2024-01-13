@@ -13,6 +13,7 @@ TagManager:
   - Part
   - Grenade
   - Cop
+  - DeadBody
   layers:
   - Default
   - TransparentFX

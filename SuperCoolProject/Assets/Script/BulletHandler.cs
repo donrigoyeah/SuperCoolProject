@@ -52,7 +52,6 @@ public class BulletHandler : MonoBehaviour
                 {
                     item.isAggro = true;
                 }
-
             }
 
             this.gameObject.SetActive(false);
@@ -64,7 +63,9 @@ public class BulletHandler : MonoBehaviour
             {
                 Debug.Log("Got hit by cop");
                 other.gameObject.GetComponent<PlayerManager>().HandleHit();
+
             }
+            this.gameObject.SetActive(false);
         }
         // TODO: Make cop Bullet Explosion
 

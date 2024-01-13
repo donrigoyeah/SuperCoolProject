@@ -2,13 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 public class CopManager : MonoBehaviour
 {
     public static CopManager SharedInstance;
 
     public bool hasBeenServed = false;
+    public int copAmount = 0;
+    public bool hasLanded = false;
     public int paidFine = 0;
     public bool isFineEvading = false;
     public int currentFineRequested;
@@ -21,50 +22,51 @@ public class CopManager : MonoBehaviour
     public int costPerKill = 50;
     public float copCarSpeed = 100;
 
+    public int amountOfKilledAliensPaid = 0;
+    public int currentAmountOfKilledAliens = 0;
+
+
     private void Awake()
     {
         SharedInstance = this;
     }
 
-    private void Start()
-    {
-        HandleSpawnCopCar(3);
-    }
 
     private void FixedUpdate()
     {
+        if (CopCarCurrent == null) { return; }
+
+        if (hasLanded == false)
+        {
+            HandleLandCopCar();
+            return;
+        }
         if (currentCops.Count > 0 && hasBeenServed == true)
         {
             HandleReturnCops();
+            return;
         }
         if (currentCops.Count == 0 && CopCarCurrent != null)
         {
             HandleReturnCopCar();
+            return;
+        }
+
+
+    }
+
+    public void HandleLandCopCar()
+    {
+        CopCarCurrent.transform.position = Vector3.MoveTowards(CopCarCurrent.transform.position, new Vector3(CopCarCurrent.transform.position.x, 0, CopCarCurrent.transform.position.z), Time.deltaTime * copCarSpeed);
+        if (CopCarCurrent.transform.position.y <= 0)
+        {
+            hasLanded = true;
+            HandleSpawnCops();
         }
     }
 
-    public void HandleSpawnCopCar(int copAmount)
+    public void HandleSpawnCops()
     {
-        hasBeenServed = false;
-
-        int amountKilled = GameManager.SharedInstance.sphereKilled + GameManager.SharedInstance.squareKilled + GameManager.SharedInstance.triangleKilled;
-        currentFineRequested = (amountKilled) * costPerKill;
-        fineCost.text = currentFineRequested.ToString();
-        fineDescribtion.text = "You killed " + amountKilled + " Aliens";
-
-        CopCarCurrent = Instantiate(CopCar);
-        CopCarCurrent.gameObject.transform.SetParent(this.transform);
-        float rCar = Random.Range(20, 30);
-        float angleCar = Random.Range(0, 360);
-
-        float randPosXCar = rCar * Mathf.Cos(Mathf.Deg2Rad * angleCar);
-        float randPosZCar = rCar * Mathf.Sin(Mathf.Deg2Rad * angleCar);
-
-        CopCarCurrent.transform.position = new Vector3(randPosXCar, 0, randPosZCar);
-
-        // TODO: Add landing animation
-        //if (CurrentCopCar.transform.position.y <= 0)
-        //{
         for (int i = 0; i < copAmount; i++)
         {
             GameObject copPoolGo = PoolManager.SharedInstance.GetPooledCop();
@@ -86,8 +88,28 @@ public class CopManager : MonoBehaviour
                 CH.gameObject.SetActive(true);
             }
         }
-        //}
+    }
 
+    public void HandleSpawnCopCar(int newCopAmount)
+    {
+        hasBeenServed = false;
+        hasLanded = false;
+        copAmount = newCopAmount;
+
+        currentAmountOfKilledAliens = AlienManager.SharedInstance.totalKillCount - amountOfKilledAliensPaid;
+        currentFineRequested = (currentAmountOfKilledAliens) * costPerKill;
+        fineCost.text = currentFineRequested.ToString();
+        fineDescribtion.text = "You killed " + currentAmountOfKilledAliens + " Aliens";
+
+        CopCarCurrent = Instantiate(CopCar);
+        CopCarCurrent.gameObject.transform.SetParent(this.transform);
+        float rCar = Random.Range(20, 30);
+        float angleCar = Random.Range(0, 360);
+
+        float randPosXCar = rCar * Mathf.Cos(Mathf.Deg2Rad * angleCar);
+        float randPosZCar = rCar * Mathf.Sin(Mathf.Deg2Rad * angleCar);
+
+        CopCarCurrent.transform.position = new Vector3(randPosXCar, 100, randPosZCar);
     }
 
     public void HandleReturnCops()
@@ -124,7 +146,6 @@ public class CopManager : MonoBehaviour
         CopCarCurrent.transform.position = Vector3.MoveTowards(CopCarCurrent.transform.position, CopCarCurrent.transform.position + Vector3.up * 100, Time.deltaTime * copCarSpeed);
     }
 
-
     public void FineServed()
     {
         hasBeenServed = true;
@@ -133,6 +154,8 @@ public class CopManager : MonoBehaviour
     public void FinePay()
     {
         paidFine += currentFineRequested;
+        amountOfKilledAliensPaid = currentAmountOfKilledAliens;
+        Time.timeScale = 1;
     }
 
     public void FineNotPaying()
@@ -142,6 +165,7 @@ public class CopManager : MonoBehaviour
         {
             cop.isAggro = true;
         }
+        Time.timeScale = 1;
     }
 
 }

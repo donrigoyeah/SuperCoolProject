@@ -37,33 +37,43 @@ public class GameManager : MonoBehaviour
     public bool hasShieldGenerator = false;
     public bool hasAntenna = false;
 
-    [Header("KillCounter")]
-    public int sphereKilled = 0;
-    public int squareKilled = 0;
-    public int triangleKilled = 0;
 
     [Header("References")]
     [SerializeField] private GameObject map;
     [SerializeField] private PlayerInputManager playerInputManager;
     public List<PlayerManager> players;
     public Transform CameraFollowSpot; // For Cinemachine
-    public GameObject PlayerHUD;
 
     public GameObject DeathScreen;
     public GameObject GameOverScreen;
     public Image DeathScreenCloneJuiceUI;
 
+    [Header("Camera")]
+    public int cameraSpeed = 1;
+    public int cameraSpeedRaiseBuffer = 2;
+    public int cameraSpeedRaiseDuration = 2;
+    public int cameraSpeedMultiplier = 3;
+
+    [Header("Dead Body")]
+    public bool playerDeadBody = false;
+
     private void Awake()
     {
         SharedInstance = this;
+        LoadingScreenHandler.SharedInstance.totalAwakeCalls++;
+
+
         players = new List<PlayerManager>();
-        HandleSpawnShipParts();
         currentSpaceShipParts = 0;
         spaceShipPartsDisplay.text = currentSpaceShipParts.ToString() + "/" + totalSpaceShipParts.ToString();
         currentCloneJuice = maxCloneJuice;
         cloneJuiceUI.fillAmount = currentCloneJuice / maxCloneJuice;
     }
 
+    private void Start()
+    {
+        HandleSpawnShipParts();
+    }
 
     private void FixedUpdate()
     {
@@ -91,7 +101,7 @@ public class GameManager : MonoBehaviour
         float targetZNorm = targetZ / players.Count;
 
         //CameraFollowSpot.position = new Vector3(targetXNorm, targetYNorm, targetZNorm);
-        CameraFollowSpot.position = Vector3.Lerp(CameraFollowSpot.transform.position, new Vector3(targetXNorm, targetYNorm, targetZNorm), Time.deltaTime);
+        CameraFollowSpot.position = Vector3.Lerp(CameraFollowSpot.transform.position, new Vector3(targetXNorm, targetYNorm, targetZNorm), Time.deltaTime * cameraSpeed);
     }
 
 
@@ -101,11 +111,40 @@ public class GameManager : MonoBehaviour
     {
         numberOfPlayers++;
         players.Add(pm);
-        PlayerHUD.SetActive(true);
+        HUDHandler.SharedInstance.HUDSystemGO.SetActive(true);
+        HUDHandler.SharedInstance.EnableCurrentHUD(2); // Enable Time Display
+
+        // Enable Light Beams on Player
+        if (TimeManager.SharedInstance.currentState == TimeManager.DayState.sunsetToNight || TimeManager.SharedInstance.currentState == TimeManager.DayState.dayToSunSet)
+        {
+            pm.LightBeam.SetActive(true);
+        }
+        else
+        {
+            pm.LightBeam.SetActive(false);
+        }
 
         if (numberOfPlayers == maxPlayers)
         {
             playerInputManager.DisableJoining();
+        }
+        if (numberOfPlayers == 1)
+        {
+            StartCoroutine(RaiseCameraSpeed(cameraSpeedRaiseDuration));
+        }
+
+    }
+
+    IEnumerator RaiseCameraSpeed(float duration)
+    {
+        int steps = 10;
+
+        yield return new WaitForSeconds(cameraSpeedRaiseBuffer);
+
+        for (int i = 0; i <= steps; i++)
+        {
+            yield return new WaitForSeconds(duration / steps);
+            cameraSpeed = 1 + cameraSpeedMultiplier * i / steps;
         }
     }
 
@@ -147,7 +186,7 @@ public class GameManager : MonoBehaviour
         {
             int distanceIncrease = i * 10;
 
-            radius = Random.Range(40 + distanceIncrease, 60 + distanceIncrease);
+            radius = Random.Range(50 + distanceIncrease, 80 + distanceIncrease);
 
             float randPosX = radius * Mathf.Cos(angle);
             float randPosZ = radius * Mathf.Sin(angle);
@@ -163,6 +202,8 @@ public class GameManager : MonoBehaviour
                 DataAssign.spaceShipData = spaceShipScriptable[i];
             }
         }
+        // After loading all aliens sent finished state to Loading Screen
+        LoadingScreenHandler.SharedInstance.currentAwakeCalls++;
     }
 
     //Space Ships parts are collected and abilities are unlocked here

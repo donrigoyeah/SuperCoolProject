@@ -6,28 +6,48 @@ using UnityEngine;
 
 public class TimeManager : MonoBehaviour
 {
+    public static TimeManager SharedInstance;
+
+
+    public enum DayState
+    {
+        nightToSunrise,
+        sunriseToDay,
+        dayToSunSet,
+        sunsetToNight
+    }
+    [Header("Current Day State")]
+    public DayState currentState;
+
+
     [Header("Time")]
-    [SerializeField] private int minutes;
-    [SerializeField] private int hours;
-    [SerializeField] private int days = 1;
-    [SerializeField] private float timeCounter;
-    [SerializeField] private int secondsInMinutes = 60;
-    [SerializeField] private int minutesinHour = 60;
-    [SerializeField] private float timeBoost = 150f; //1min cycle completes in 25seconds
+    public int minutes;
+    public int hours;
+    private int days = 1;
+    private float timeCounter;
+    private int secondsInMinutes = 60;
+    private int minutesinHour = 60;
+    public float timeBoost = 150f; //1min cycle completes in 25seconds
 
     [Header("Light")]
-    [SerializeField] private TextMeshProUGUI displayTime;
+    public TextMeshProUGUI displayTime;
 
     [Header("Light")]
-    [SerializeField] private Light sun;
+    public Light sun;
 
     [Header("Colors")]
-    [SerializeField] private Gradient nightToSunrise;
-    [SerializeField] private Gradient sunriseToDay;
-    [SerializeField] private Gradient dayToSunSet;
-    [SerializeField] private Gradient sunsetToNight;
+    public Gradient nightToSunrise; // 6-12
+    public Gradient sunriseToDay; // 12 - 18
+    public Gradient dayToSunSet; // 18 - 0
+    public Gradient sunsetToNight; // 0-6
 
-    private void Update()
+    private void Awake()
+    {
+        SharedInstance = this;
+        currentState = DayState.sunsetToNight;
+    }
+
+    private void FixedUpdate()
     {
         timeCounter += Time.deltaTime * timeBoost;
 
@@ -52,18 +72,34 @@ public class TimeManager : MonoBehaviour
         if (hour == 6)
         {
             StartCoroutine(ChangeColor(nightToSunrise, 5f, 0f, 1f));
+            currentState = DayState.nightToSunrise;
+
+            foreach (var player in GameManager.SharedInstance.players)
+            {
+                player.LightBeam.SetActive(false);
+            }
         }
         else if (hour == 12)
         {
             StartCoroutine(ChangeColor(sunriseToDay, 5f, 1f, 1.5f));
+            currentState = DayState.sunriseToDay;
+
         }
         else if (hour == 18)
         {
             StartCoroutine(ChangeColor(dayToSunSet, 10f, 1.0f, 1f));
+            currentState = DayState.dayToSunSet;
+
+            foreach (var player in GameManager.SharedInstance.players)
+            {
+                player.LightBeam.SetActive(true);
+            }
         }
         else if (hour == 24)
         {
             StartCoroutine(ChangeColor(sunsetToNight, 10f, 1f, 0.5f));
+            currentState = DayState.sunsetToNight;
+
             hours = 0;
             days++;
         }

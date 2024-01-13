@@ -24,19 +24,20 @@ public class TutorialHandler : MonoBehaviour
         currentTutorialSlide = 0;
         totalTutorialSlides = tutorialSlides.Length;
 
-        if (PlayerPrefs.HasKey("hideTutorial"))
-        {
-            hideTut = PlayerPrefs.GetInt("hideTutorial");
-            if (hideTut == 1)
-            {
-                TutorialGameObject.SetActive(false);
-            }
-            else
-            {
-                TutorialGameObject.SetActive(true);
-                Time.timeScale = 0;
-            }
-        }
+        Debug.Log("Deactivate Tutorial Here");
+        //if (PlayerPrefs.HasKey("hideTutorial"))
+        //{
+        //    hideTut = PlayerPrefs.GetInt("hideTutorial");
+        //    if (hideTut == 1)
+        //    {
+        //        TutorialGameObject.SetActive(false);
+        //    }
+        //    else
+        //    {
+        //        TutorialGameObject.SetActive(true);
+        //        Time.timeScale = 0;
+        //    }
+        //}
     }
 
     public void SetHideTut()
