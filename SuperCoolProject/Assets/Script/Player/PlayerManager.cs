@@ -68,7 +68,7 @@ public class PlayerManager : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         inputHandler = GetComponent<InputHandler>();
         dissolve = playerShieldGO.gameObject.GetComponent<Renderer>().material;
-        dissolve.SetFloat("_DissolveAmount", 0);
+        // dissolve.SetFloat("_DissolveAmount", 0);
     }
 
     private void FixedUpdate()

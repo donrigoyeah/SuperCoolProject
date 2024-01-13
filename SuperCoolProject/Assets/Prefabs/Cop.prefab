@@ -64,6 +64,8 @@ MonoBehaviour:
   copBulletDamage: 10
   CopCar: {fileID: 0}
   anim: {fileID: 9141595696793438007}
+  copCorpse: {fileID: 3482564769173438262, guid: 352e6ffffb5eb8d46a6ccd3c736fe442,
+    type: 3}
   copMumbling: {fileID: 8300000, guid: 0f749a9e07c948e49a2d1e07f3fb3535, type: 3}
   copShooting: {fileID: 8300000, guid: c8addf7b2a8510648b2a36e6985c4964, type: 3}
 --- !u!136 &5568076235133501838

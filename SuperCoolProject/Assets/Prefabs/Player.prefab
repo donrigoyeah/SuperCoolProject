@@ -352,12 +352,14 @@ MonoBehaviour:
   isInteracting: 0
   invincibleFrames: 0.5
   LightBeam: {fileID: 934595259696851748}
+  deadPlayer: {fileID: 6718371516913241609, guid: fb851b72f52ffba48b9ceb897753eec5,
+    type: 3}
   playerShieldGO: {fileID: 6422262875128791845}
   player: {fileID: 0}
   dissolve: {fileID: -876546973899608171, guid: 9416438c4706ab646b1260251005d205,
     type: 3}
-  dissolveRate: 0.0125
-  refreshRate: 0.025
+  dissolveRate: 0.125
+  refreshRate: 0.0025
   maxSphereResource: 100
   maxSquareResource: 100
   maxTriangleResource: 100
