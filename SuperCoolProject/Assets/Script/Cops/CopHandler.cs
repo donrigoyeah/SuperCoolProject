@@ -121,6 +121,7 @@ public class CopHandler : MonoBehaviour
             if (CopManager.SharedInstance.hasBeenServed == false)
             {
                 CopManager.SharedInstance.CopScreenGO.SetActive(true);
+                CopManager.SharedInstance.payButton.Select();
                 Time.timeScale = 0;
             }
             canShoot = true;

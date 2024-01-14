@@ -209,12 +209,6 @@ public class AlienHandler : MonoBehaviour
             // Reset Tick timer
             tickTimer -= tickTimerMax;
 
-            // Last check if targetAlien exists
-            if (!targetAlien.activeInHierarchy)
-            {
-                DiscardCurrentAction();
-            }
-
             // Handle Behaviour
             switch (currentState)
             {
@@ -245,6 +239,12 @@ public class AlienHandler : MonoBehaviour
 
     public void HandleLooking()
     {
+        float currentShortestDistance = lookRadius;
+        float currentDistance;
+
+        Vector2 MyTransform2D = new Vector2(MyTransform.position.x, MyTransform.position.z);
+        Vector2 TargetAlienTransform2D;
+
         aliensInRange = Physics.OverlapSphere(MyTransform.position, lookRadius, layerMaskAlien);
 
         for (int i = 0; i < aliensInRange.Length; i++)
@@ -278,13 +278,12 @@ public class AlienHandler : MonoBehaviour
                     {
                         SetTargetAlien(aliensInRange[i].gameObject);
                         currentState = AlienState.loving;
-                        break;
                     }
                     else
                     {
                         currentState = AlienState.roaming;
-                        break;
                     }
+                    break;
 
                 #region Who eats who
                 // Check to which state the alien switches
@@ -301,23 +300,34 @@ public class AlienHandler : MonoBehaviour
                     {
                         SetTargetAlien(aliensInRange[i].gameObject);
                         currentState = AlienState.hunting;
-                        break;
                     }
                     else if ((currentSpecies == closestAlienHandler.currentSpecies - 1 ||
                         (currentSpecies == 2 && closestAlienHandler.currentSpecies == 0))) // 0:Sphere > 1:Square > 2:Triangle 
                     {
                         SetTargetAlien(aliensInRange[i].gameObject);
                         currentState = AlienState.evading;
-                        break;
                     }
                     else
                     {
                         currentState = AlienState.roaming;
-                        break;
                     }
+                    break;
+
+            }
+            if (TargetAlienTransform == null) { return; }
+
+            TargetAlienTransform2D = new Vector2(TargetAlienTransform.position.x, TargetAlienTransform.position.z);
+            currentDistance = Vector2.Distance(MyTransform2D, TargetAlienTransform2D);
+
+            if (currentDistance < currentShortestDistance)
+            {
+                currentShortestDistance = currentDistance;
             }
 
-            break;
+            if (currentShortestDistance <= 2)
+            {
+                break;
+            }
         }
 
         #region Loop over List approach
@@ -357,6 +367,13 @@ public class AlienHandler : MonoBehaviour
 
     public void HandleFleeing(GameObject targetAlien)
     {
+        if (targetAlien == null)
+        {
+            DiscardCurrentAction();
+            return;
+        }
+
+
         if (!audioSource.isPlaying)
         {
             audioSource.PlayOneShot(RandomAudioSelector(evadingAudioList, currentSpecies), 1f);
@@ -373,6 +390,12 @@ public class AlienHandler : MonoBehaviour
 
     public void HandleAttacking(GameObject targetAlien) // Player makes them flee as well and by acting als targetAlien in PlayerManager
     {
+        if (targetAlien == null)
+        {
+            DiscardCurrentAction();
+            return;
+        }
+
         if (!audioSource.isPlaying)
         {
             audioSource.PlayOneShot(RandomAudioSelector(attackAudioList, currentSpecies), 1f);
@@ -383,6 +406,12 @@ public class AlienHandler : MonoBehaviour
 
     private void HandleLoveApproach(GameObject targetAlien)
     {
+        if (targetAlien == null)
+        {
+            DiscardCurrentAction();
+            return;
+        }
+
         targetPosition = targetAlien.transform.position; // Update targetPosition only every tick update
     }
 
@@ -464,6 +493,8 @@ public class AlienHandler : MonoBehaviour
 
     private void HandleUpdateTarget()
     {
+        if (targetAlien == null) { return; }
+
         if (targetAlien.gameObject.activeInHierarchy && targetAlien != null && TargetAlienTransform != null)
         {
             targetPosition = TargetAlienTransform.position;

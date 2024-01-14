@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.UI;
+
 
 public class TutorialHandler : MonoBehaviour
 {
@@ -10,9 +12,13 @@ public class TutorialHandler : MonoBehaviour
     public GameObject TutorialGameObject;
     public int hideTut;
 
+    public Button nextButton;
+
     public GameObject[] tutorialSlides;
     public int currentTutorialSlide;
     public int totalTutorialSlides;
+
+
 
     private void Awake()
     {
@@ -35,6 +41,7 @@ public class TutorialHandler : MonoBehaviour
         //    else
         //    {
         //        TutorialGameObject.SetActive(true);
+        //nextButton.Select();
         //        Time.timeScale = 0;
         //    }
         //}

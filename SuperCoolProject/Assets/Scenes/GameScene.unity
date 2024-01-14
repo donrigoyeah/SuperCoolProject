@@ -5371,6 +5371,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TutorialGameObject: {fileID: 432015927}
   hideTut: 0
+  nextButton: {fileID: 1531849927}
   tutorialSlides:
   - {fileID: 1393937454}
   - {fileID: 1571400228}
@@ -19489,6 +19490,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 8263089407108029388}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1531849927 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3889544716611161348, guid: d7021606a89e6fe4787d317d6e2f92a0,
+    type: 3}
+  m_PrefabInstance: {fileID: 8263089407108029388}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1535658790
 GameObject:
   m_ObjectHideFlags: 0
@@ -19615,6 +19628,10 @@ MonoBehaviour:
   FSSPool: []
   FSS: {fileID: 1508112924898509174, guid: 55ea6eb2110f40441aabc76f408bd266, type: 3}
   FSSContainer: {fileID: 1265197036}
+  deadAlienAmount: 0
+  DeadAlienPool: []
+  DeadAlien: {fileID: 0}
+  DeadAlienContainer: {fileID: 0}
 --- !u!1 &1564206088
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CopManager : MonoBehaviour
 {
@@ -25,6 +26,7 @@ public class CopManager : MonoBehaviour
     public int amountOfKilledAliensPaid = 0;
     public int currentAmountOfKilledAliens = 0;
 
+    public Button payButton;
 
     private void Awake()
     {
