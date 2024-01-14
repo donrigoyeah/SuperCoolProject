@@ -95,7 +95,8 @@ MonoBehaviour:
   - {fileID: 2100000, guid: bd93952cbcfb3e643989a7b2336965d5, type: 2}
   - {fileID: 2100000, guid: 8c5530671ba218743894b79eac0e24c8, type: 2}
   - {fileID: 2100000, guid: 50e87ee599495614d9103dc7be4d5128, type: 2}
-  deadAliens: []
+  deadAliens:
+  - {fileID: 7151926714197197924, guid: 9aa565877ecff9045b5de8c22120623f, type: 3}
   anim:
   - {fileID: 4998664625824866998}
   - {fileID: 792772855012502545}

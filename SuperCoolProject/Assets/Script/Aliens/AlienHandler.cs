@@ -83,7 +83,6 @@ public class AlienHandler : MonoBehaviour
     public GameObject[] alienSpeciesChild; // 0:Sphere > 1:Square > 2:Triangle  
     public GameObject[] alienSpeciesAdult; // 0:Sphere > 1:Square > 2:Triangle  
     public Material[] alienColors; // 0:Blue > 1:Green > 2:Red  
-    public GameObject[] deadAliens;
     public Animation[] anim;
     public Renderer alienMiniMapMarker;
     public GameObject resourceSteamGO;
@@ -451,7 +450,22 @@ public class AlienHandler : MonoBehaviour
         anim[currentSpecies].Stop();
         AlienManager.SharedInstance.KillAlien(currentSpecies);
         StartCoroutine(Dissolve());
+        // TODO: Add Coroutine & Ragdoll to show impact/force of bullets
+        //EnableRagdoll();
+        
+        
+    }
 
+    public void HandleDeathByBullet()
+    {
+        GameObject deadAlienGO = PoolManager.SharedInstance.GetPooledDeadAlien();
+        if (deadAlienGO != null)
+        {
+            DeadAlienHandler deadAlien = deadAlienGO.GetComponent<DeadAlienHandler>();
+            deadAlien.currentAlienSpecies = currentSpecies;
+            deadAlien.transform.position = this.gameObject.transform.position;
+            deadAlien.gameObject.SetActive(true);
+        }
     }
 
     private void HandleMovement(float step)
@@ -775,7 +789,6 @@ public class AlienHandler : MonoBehaviour
         {
             // Cannot shoot resource
             if (currentAge == AlienAge.resource) { return; }
-
             //Debug.Log("Handle Bullet damage to alien here");
             BulletHandler BH = other.gameObject.GetComponent<BulletHandler>();
             alienHealth -= BH.bulletDamage;
@@ -793,6 +806,7 @@ public class AlienHandler : MonoBehaviour
             // Handle Alien Death
             if (alienHealth <= 0 && isDead == false)
             {
+                HandleDeathByBullet();
                 HandleDeath();
                 return;
             };

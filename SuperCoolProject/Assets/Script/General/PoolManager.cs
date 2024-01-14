@@ -67,6 +67,12 @@ public class PoolManager : MonoBehaviour
     public GameObject FSS;
     public GameObject FSSContainer;
 
+    [Header("Dead Alien")]
+    public int deadAlienAmount;
+    public List<GameObject> DeadAlienPool;
+    public GameObject DeadAlien;
+    public GameObject DeadAlienContainer;
+    
     private void Awake()
     {
         SharedInstance = this;
@@ -83,6 +89,9 @@ public class PoolManager : MonoBehaviour
         CopPooling();
         CopBulletPooling();
         CopMuzzlePooling();
+        
+        //Dead ALien
+        DeadAlienPooling();
     }
 
     #region Alien Pooling
@@ -358,6 +367,35 @@ public class PoolManager : MonoBehaviour
             tmp.transform.SetParent(FSSContainer.transform);
             tmp.SetActive(false);
             FSSPool.Add(tmp);
+        }
+        LoadingScreenHandler.SharedInstance.currentLoadedPools++;
+    }
+    #endregion
+    
+    #region Dead Alien Pooling
+    public GameObject GetPooledDeadAlien()
+    {
+        for (int i = 0; i < deadAlienAmount; i++)
+        {
+            if (!DeadAlienPool[i].activeInHierarchy)
+            {
+                return DeadAlienPool[i];
+            }
+        }
+
+        return null;
+    }
+
+    private void DeadAlienPooling()
+    {
+        DeadAlienPool = new List<GameObject>();
+        GameObject tmp;
+        for (int i = 0; i < deadAlienAmount; i++)
+        {
+            tmp = Instantiate(DeadAlien);
+            tmp.transform.SetParent(DeadAlienContainer.transform);
+            tmp.SetActive(false);
+            DeadAlienPool.Add(tmp);
         }
         LoadingScreenHandler.SharedInstance.currentLoadedPools++;
     }
