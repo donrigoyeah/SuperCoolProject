@@ -137,7 +137,6 @@ public class PlayerLocomotion : MonoBehaviour
         // Handle toggle HUD 
         if (inputHandler.inputNavToggle)
         {
-            Debug.Log("Pressed toggle");
             HUDHandler.SharedInstance.ChangeHUD();
         }
     }

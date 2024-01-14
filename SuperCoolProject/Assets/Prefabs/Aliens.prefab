@@ -57,6 +57,7 @@ MonoBehaviour:
   currentAge: 0
   currentState: 0
   isRendered: 1
+  canAct: 1
   currentSpecies: 0
   hasUterus: 0
   alienHealth: 0
@@ -6011,6 +6012,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: adult
       objectReference: {fileID: 0}
+    - target: {fileID: -5117700066308340382, guid: b9285c8fb3547214abd0f047f54fe087,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -4258411891960909470, guid: b9285c8fb3547214abd0f047f54fe087,
         type: 3}
       propertyPath: m_Name
@@ -6144,6 +6150,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7845530807121475975, guid: 8b28e8117ba807f4e9b08be264a184eb,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 8b28e8117ba807f4e9b08be264a184eb,
         type: 3}

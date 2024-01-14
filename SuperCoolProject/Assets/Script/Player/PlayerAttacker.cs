@@ -91,11 +91,8 @@ public class PlayerAttacker : MonoBehaviour
         inputHandler = GetComponent<InputHandler>();
         playerManager = GetComponent<PlayerManager>();
         playerAnim = GetComponentInChildren<Animator>();
-    }
-
-    private void Start()
-    {
         CreatePhysicsScene();
+
     }
 
     void Update()
@@ -489,6 +486,7 @@ public class PlayerAttacker : MonoBehaviour
 
     private void UpdateTrajectory()
     {
+
 
         if (lineRenderer.positionCount < PhysicsFrame)
         {

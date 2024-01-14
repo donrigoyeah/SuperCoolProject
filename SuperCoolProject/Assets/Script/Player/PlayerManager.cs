@@ -381,36 +381,6 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    IEnumerator UnfoldResource(GameObject Resource, float degree)
-    {
-        int steps = 50;
-        float animationDuration = .5f;
-        Resource.gameObject.SetActive(true);
-        RectTransform GORT = Resource.GetComponent<RectTransform>();
-        GORT.localScale = Vector3.zero;
-        for (int i = 0; i < steps; i++)
-        {
-            yield return new WaitForSeconds(animationDuration / steps);
-            GORT.localScale = Vector3.one * 3 * i / steps;
-            GORT.localEulerAngles = new Vector3(0, 0, degree * i / steps);
-        }
-    }
-    IEnumerator FoldResource(GameObject Resource)
-    {
-        int steps = 50;
-        float animationDuration = .5f;
-
-        RectTransform GORT = Resource.GetComponent<RectTransform>();
-        GORT.localScale = Vector3.one * 2;
-        for (int i = 0; i < steps; i++)
-        {
-            yield return new WaitForSeconds(animationDuration / steps);
-            GORT.localScale = Vector3.one * 2 - Vector3.one * 2 * i / steps;
-        }
-        GORT.localEulerAngles = Vector3.zero;
-        Resource.gameObject.SetActive(false);
-    }
-
     public void HandleGainResource(int rescourseIndex)
     {
         if (rescourseIndex == 0)
@@ -465,6 +435,37 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+    IEnumerator UnfoldResource(GameObject Resource, float degree)
+    {
+        int steps = 50;
+        float animationDuration = .5f;
+        Resource.gameObject.SetActive(true);
+        RectTransform GORT = Resource.GetComponent<RectTransform>();
+        GORT.localScale = Vector3.zero;
+        for (int i = 0; i < steps; i++)
+        {
+            yield return new WaitForSeconds(animationDuration / steps);
+            GORT.localScale = Vector3.one * 3 * i / steps;
+            GORT.localEulerAngles = new Vector3(0, 0, degree * i / steps);
+        }
+    }
+
+    IEnumerator FoldResource(GameObject Resource)
+    {
+        int steps = 50;
+        float animationDuration = .5f;
+
+        RectTransform GORT = Resource.GetComponent<RectTransform>();
+        GORT.localScale = Vector3.one * 2;
+        for (int i = 0; i < steps; i++)
+        {
+            yield return new WaitForSeconds(animationDuration / steps);
+            GORT.localScale = Vector3.one * 2 - Vector3.one * 2 * i / steps;
+        }
+        GORT.localEulerAngles = Vector3.zero;
+        Resource.gameObject.SetActive(false);
+    }
+
     IEnumerator ShieldRespawn(float timeToRecharge)
     {
         float counter = 0;
@@ -489,7 +490,7 @@ public class PlayerManager : MonoBehaviour
         playerShieldGO.SetActive(true);
     }
 
-    private IEnumerator HandleResourceLightIndicator(int resource)
+    IEnumerator HandleResourceLightIndicator(int resource)
     {
         switch (resource)
         {
