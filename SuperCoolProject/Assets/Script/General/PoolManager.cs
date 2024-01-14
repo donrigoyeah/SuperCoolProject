@@ -72,7 +72,13 @@ public class PoolManager : MonoBehaviour
     public List<GameObject> DeadAlienPool;
     public GameObject DeadAlien;
     public GameObject DeadAlienContainer;
-    
+
+    [Header("Dead Alien")]
+    public int damageUIAmounts;
+    public List<GameObject> DamageUIPool;
+    public GameObject DamageUI;
+    public GameObject DamageUIContainer;
+
     private void Awake()
     {
         SharedInstance = this;
@@ -89,9 +95,12 @@ public class PoolManager : MonoBehaviour
         CopPooling();
         CopBulletPooling();
         CopMuzzlePooling();
-        
+
         //Dead ALien
         DeadAlienPooling();
+
+        // UI Elements
+        DamageUIPooling();
     }
 
     #region Alien Pooling
@@ -371,7 +380,7 @@ public class PoolManager : MonoBehaviour
         LoadingScreenHandler.SharedInstance.currentLoadedPools++;
     }
     #endregion
-    
+
     #region Dead Alien Pooling
     public GameObject GetPooledDeadAlien()
     {
@@ -396,6 +405,35 @@ public class PoolManager : MonoBehaviour
             tmp.transform.SetParent(DeadAlienContainer.transform);
             tmp.SetActive(false);
             DeadAlienPool.Add(tmp);
+        }
+        LoadingScreenHandler.SharedInstance.currentLoadedPools++;
+    }
+    #endregion
+
+    #region DamageUI Pooling
+    public GameObject GetPooledDamageUI()
+    {
+        for (int i = 0; i < damageUIAmounts; i++)
+        {
+            if (!DamageUIPool[i].activeInHierarchy)
+            {
+                return DamageUIPool[i];
+            }
+        }
+
+        return null;
+    }
+
+    private void DamageUIPooling()
+    {
+        DamageUIPool = new List<GameObject>();
+        GameObject tmp;
+        for (int i = 0; i < damageUIAmounts; i++)
+        {
+            tmp = Instantiate(DamageUI);
+            tmp.transform.SetParent(DamageUIContainer.transform);
+            tmp.SetActive(false);
+            DamageUIPool.Add(tmp);
         }
         LoadingScreenHandler.SharedInstance.currentLoadedPools++;
     }

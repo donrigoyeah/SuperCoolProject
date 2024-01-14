@@ -174,11 +174,13 @@ public class PlayerManager : MonoBehaviour
 
             if (CurrentSurroundingAH.currentAge == AlienHandler.AlienAge.fullyGrown)
             {
+                CurrentSurroundingAH.currentState = AlienHandler.AlienState.hunting;
                 CurrentSurroundingAH.HandleAttacking(this.gameObject); // this time its not an alienGO but the player
                 continue;
             }
             else
             {
+                CurrentSurroundingAH.currentState = AlienHandler.AlienState.evading;
                 CurrentSurroundingAH.HandleFleeing(this.gameObject); // this time its not an alienGO but the player
                 continue;
             }
@@ -290,7 +292,11 @@ public class PlayerManager : MonoBehaviour
 
     private void HandleResourceDetectionIndicator(Vector3 targetResource, int neededResource)
     {
-        if (targetResource == null) { return; }
+        if (targetResource == null)
+        {
+            closestResourceIndicator[neededResource].SetActive(false);
+            return;
+        }
 
         // 0:Sphere, 1:Square, 2:Triangle
         closestResourceIndicator[neededResource].SetActive(true);

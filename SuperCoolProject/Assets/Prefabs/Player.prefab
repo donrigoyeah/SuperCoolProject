@@ -351,6 +351,7 @@ MonoBehaviour:
   isAlive: 1
   isInteracting: 0
   invincibleFrames: 0.5
+  timeSinceLastHit: 0
   LightBeam: {fileID: 934595259696851748}
   deadPlayer: {fileID: 6718371516913241609, guid: fb851b72f52ffba48b9ceb897753eec5,
     type: 3}
@@ -437,6 +438,8 @@ MonoBehaviour:
   currentTargetEnemy: {fileID: 0}
   AimTargetIndicatorGO: {fileID: 4895320949651074082}
   AimTargetIndicator: {fileID: 566041900135186001}
+  lastInput: {x: 0, y: 0}
+  AimTargetLocation: {x: 0, y: 0, z: 0}
   overheatUIGO: {fileID: 339469481652884982}
   overheatUI: {fileID: 8228046787694399299}
   fireRate: 0.2
@@ -449,7 +452,7 @@ MonoBehaviour:
   gunOverheated: 0
   nextFireTime: 0
   bulletSpeed: 50
-  bulletDamage: 10
+  bulletDamage: 20
   bulletDamageBoost: 2
   leftRightSwitch: 0
   grenadeSpawnLocation: {fileID: 7748597816388016088}

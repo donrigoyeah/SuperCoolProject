@@ -12,7 +12,7 @@ public class LoadingScreenHandler : MonoBehaviour
     [Header("LoadingScreen")]
     public GameObject LoadingScreen;
     public Image LoadingBar;
-    public int numberOfPools = 9;
+    public int numberOfPools = 10;
     public int currentLoadedPools = 0;
     public int totalAwakeCalls = 0;
     public int currentAwakeCalls = 0;

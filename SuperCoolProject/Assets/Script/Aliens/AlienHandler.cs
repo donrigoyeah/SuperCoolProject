@@ -52,6 +52,7 @@ public class AlienHandler : MonoBehaviour
     private Transform TargetAlienTransform;
     private AlienHandler otherAlien;
     private BulletHandler CurrentBH;
+    private float currentBulletDamage;
 
 
     [Header("This Alien")]
@@ -418,6 +419,11 @@ public class AlienHandler : MonoBehaviour
     private void HandleMating()
     {
         lustTimer = 0;
+        if (PoolManager.SharedInstance.currentAlienAmount == PoolManager.SharedInstance.alienAmount + PoolManager.SharedInstance.alienAmountExtra)
+        {
+            StartCoroutine(IdleForMaxSeconds(1f));
+            return;
+        }
 
         if (!audioSource.isPlaying)
         {
@@ -767,7 +773,11 @@ public class AlienHandler : MonoBehaviour
             switch (otherAlien.currentSpecies == currentSpecies)
             {
                 case true: // Same Species
-                    if (currentAge == AlienAge.sexualActive && currentSpecies == otherAlien.currentSpecies) // Babies
+                    if (hasUterus != otherAlien.hasUterus && // opposite Sex
+                        currentAge == AlienAge.sexualActive && // Sexual active
+                        otherAlien.currentAge == AlienAge.sexualActive && // potential partner also sexual active
+                        lustTimer > lustTimerThreshold && // can mate
+                        otherAlien.lustTimer > lustTimerThreshold) // Babies
                     {
                         StartCoroutine(PlayActionParticle(true)); // Loving Partilce
                         HandleMating();
@@ -825,8 +835,21 @@ public class AlienHandler : MonoBehaviour
             }
 
             CurrentBH = other.gameObject.GetComponent<BulletHandler>();
-            alienHealth -= CurrentBH.bulletDamage;
+            currentBulletDamage = CurrentBH.bulletDamage;
+            alienHealth -= currentBulletDamage;
             bool isPlayerBullet = CurrentBH.isPlayerBullet;
+
+            GameObject damageUIGo = PoolManager.SharedInstance.GetPooledDamageUI();
+            if (damageUIGo != null)
+            {
+                damageUIGo.transform.position = MyTransform.position;
+
+                DamageUIHandler DUIH = damageUIGo.GetComponentInChildren<DamageUIHandler>();
+                DUIH.damageValue = currentBulletDamage;
+
+                damageUIGo.SetActive(true);
+            }
+
             CurrentBH = null;
             other.gameObject.SetActive(false);
 
@@ -839,6 +862,8 @@ public class AlienHandler : MonoBehaviour
             return;
         }
     }
+
+
 
     AudioClip RandomAudioSelector(List<AudioClip[]> audioList, int state) // incase we plan to add more audio for each state
     {

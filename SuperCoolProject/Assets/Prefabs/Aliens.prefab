@@ -55,7 +55,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MyTransform: {fileID: 414676901202353711}
   currentAge: 0
-  currentState: 0
   isRendered: 1
   canAct: 1
   currentSpecies: 0
@@ -65,7 +64,7 @@ MonoBehaviour:
   lifeTime: 0
   lustTimer: 0
   hungerTimer: 0
-  lustTimerThreshold: 10
+  lustTimerThreshold: 2
   maxAmountOfBabies: 3
   hungerTimerThreshold: 2
   currentStateIcon: {fileID: 3589108659310432011}
@@ -77,8 +76,8 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 1cc0d735338a78849b58c8881c86f4aa, type: 3}
   - {fileID: 2800000, guid: 5f2b6bd99efada040b7a9a5f0a909fac, type: 3}
   - {fileID: 2800000, guid: 2ddc0a0c158f6354985b0c000189f295, type: 3}
-  closestAlien: {fileID: 0}
-  lastClosestAlien: {fileID: 0}
+  targetAlien: {fileID: 0}
+  lastTargetAlien: {fileID: 0}
   alienSpecies:
   - {fileID: 8329259287624427090}
   - {fileID: 6981288141397108614}
@@ -95,8 +94,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: bd93952cbcfb3e643989a7b2336965d5, type: 2}
   - {fileID: 2100000, guid: 8c5530671ba218743894b79eac0e24c8, type: 2}
   - {fileID: 2100000, guid: 50e87ee599495614d9103dc7be4d5128, type: 2}
-  deadAliens:
-  - {fileID: 7151926714197197924, guid: 9aa565877ecff9045b5de8c22120623f, type: 3}
   anim:
   - {fileID: 4998664625824866998}
   - {fileID: 792772855012502545}

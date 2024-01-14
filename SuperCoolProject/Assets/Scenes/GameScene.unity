@@ -3484,6 +3484,37 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &338453286
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 338453287}
+  m_Layer: 0
+  m_Name: DamageUIContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &338453287
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 338453286}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1544536867}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &340522435
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5393,7 +5424,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LoadingScreen: {fileID: 1237529907}
   LoadingBar: {fileID: 585838542}
-  numberOfPools: 8
+  numberOfPools: 10
   currentLoadedPools: 0
   totalAwakeCalls: 0
   currentAwakeCalls: 0
@@ -8220,6 +8251,7 @@ MonoBehaviour:
   copCarSpeed: 30
   amountOfKilledAliensPaid: 0
   currentAmountOfKilledAliens: 0
+  payButton: {fileID: 570592909}
 --- !u!224 &656785174 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6680292650503350825, guid: f25dcd618d3acd64795bf8bb32edb6c9,
@@ -19577,6 +19609,7 @@ Transform:
   - {fileID: 2055534017}
   - {fileID: 1412384395}
   - {fileID: 1283110846}
+  - {fileID: 338453287}
   m_Father: {fileID: 890592820}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1544536868
@@ -19632,6 +19665,11 @@ MonoBehaviour:
   DeadAlienPool: []
   DeadAlien: {fileID: 0}
   DeadAlienContainer: {fileID: 0}
+  damageUIAmounts: 10
+  DamageUIPool: []
+  DamageUI: {fileID: 4331799705989807614, guid: 621ee631fcd4a4549a504b3943530792,
+    type: 3}
+  DamageUIContainer: {fileID: 338453286}
 --- !u!1 &1564206088
 GameObject:
   m_ObjectHideFlags: 0
@@ -28003,7 +28041,7 @@ PrefabInstance:
     - target: {fileID: 1675704904367416502, guid: 04d1705c49be2ff449668c9f21cbf177,
         type: 3}
       propertyPath: m_Name
-      value: SpaceShipCanvas
+      value: UI Space Ship
       objectReference: {fileID: 0}
     - target: {fileID: 1675704904367416502, guid: 04d1705c49be2ff449668c9f21cbf177,
         type: 3}
@@ -28083,7 +28121,7 @@ PrefabInstance:
     - target: {fileID: 7254487039927400557, guid: 04d1705c49be2ff449668c9f21cbf177,
         type: 3}
       propertyPath: m_Name
-      value: SpaceShipModel
+      value: Model Space Ship
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -28101,6 +28139,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1866789224722557379}
+    - targetCorrespondingSourceObject: {fileID: 2532741127938772720, guid: 04d1705c49be2ff449668c9f21cbf177,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1866789224722557381}
+    - targetCorrespondingSourceObject: {fileID: 2532741127938772720, guid: 04d1705c49be2ff449668c9f21cbf177,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1866789224722557382}
   m_SourcePrefab: {fileID: 100100000, guid: 04d1705c49be2ff449668c9f21cbf177, type: 3}
 --- !u!1 &1866789224722557378 stripped
 GameObject:
@@ -28127,6 +28173,41 @@ MonoBehaviour:
   ExhaustParticlesGO: {fileID: 1810522167}
   playerInputManager: {fileID: 1325170218}
   TutorialGameObject: {fileID: 432015927}
+--- !u!114 &1866789224722557381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1866789224722557378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a89e75fca64c2349b3e5928611014f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!136 &1866789224722557382
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1866789224722557378}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 7
+  m_Height: 26
+  m_Direction: 0
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!222 &2763850522474930616
 CanvasRenderer:
   m_ObjectHideFlags: 0
