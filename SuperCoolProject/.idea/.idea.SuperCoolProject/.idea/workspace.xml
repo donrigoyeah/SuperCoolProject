@@ -12,6 +12,7 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Assets/LoadingScreenHandler.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Script/Aliens/DeadAlienHandler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/General/TimeManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/Player/CameraShake.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/Player/PlayerDeadBodyHandler.cs" root0="FORCE_HIGHLIGHTING" />
@@ -236,6 +237,8 @@
       <workItem from="1705078416692" duration="330000" />
       <workItem from="1705078862040" duration="1311000" />
       <workItem from="1705151662955" duration="750000" />
+      <workItem from="1705153110209" duration="5020000" />
+      <workItem from="1705199918451" duration="469000" />
     </task>
     <servers />
   </component>

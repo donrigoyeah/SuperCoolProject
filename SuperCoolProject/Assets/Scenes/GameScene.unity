@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.17276807, g: 0.21589197, b: 0.29782572, a: 1}
+  m_IndirectSpecularColor: {r: 0.1727685, g: 0.21589223, b: 0.29782578, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -927,6 +927,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 84136939}
   m_CullTransparentMesh: 1
+--- !u!1 &84494920 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7151926714197197924, guid: 9aa565877ecff9045b5de8c22120623f,
+    type: 3}
+  m_PrefabInstance: {fileID: 2421696446082544907}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &100756011
 GameObject:
   m_ObjectHideFlags: 0
@@ -1416,6 +1422,37 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 267}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &166061571
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 166061572}
+  m_Layer: 0
+  m_Name: DeadAlienContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &166061572
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 166061571}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1544536867}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &169493281
 GameObject:
   m_ObjectHideFlags: 0
@@ -19825,6 +19862,7 @@ Transform:
   - {fileID: 2055534017}
   - {fileID: 1412384395}
   - {fileID: 1283110846}
+  - {fileID: 166061572}
   m_Father: {fileID: 890592820}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1544536868
@@ -19876,6 +19914,10 @@ MonoBehaviour:
   FSSPool: []
   FSS: {fileID: 1508112924898509174, guid: 55ea6eb2110f40441aabc76f408bd266, type: 3}
   FSSContainer: {fileID: 1265197036}
+  deadAlienAmount: 10
+  DeadAlienPool: []
+  DeadAlien: {fileID: 84494920}
+  DeadAlienContainer: {fileID: 166061571}
 --- !u!1 &1564206088
 GameObject:
   m_ObjectHideFlags: 0
@@ -28527,6 +28569,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: DeadCop
+      objectReference: {fileID: 0}
+    - target: {fileID: 3482564769173438262, guid: 352e6ffffb5eb8d46a6ccd3c736fe442,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8607363634655455233, guid: 352e6ffffb5eb8d46a6ccd3c736fe442,
         type: 3}
