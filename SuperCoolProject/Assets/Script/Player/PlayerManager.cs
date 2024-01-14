@@ -21,6 +21,7 @@ public class PlayerManager : MonoBehaviour
     public bool isAlive;
     public bool isInteracting;
     public float invincibleFrames = .5f;
+    public float timeSinceLastHit;
     public GameObject LightBeam;
     public GameObject deadPlayer;
     public GameObject playerShieldGO;
@@ -64,6 +65,9 @@ public class PlayerManager : MonoBehaviour
 
     private InputHandler inputHandler;
     private Animator playerAnim;
+    private AlienHandler CurrentSurroundingAH;
+
+    private int alienLayerMask = 1 << 9; // Lyer 9 is Alien, so only use this layer
 
     private void Awake()
     {
@@ -78,21 +82,31 @@ public class PlayerManager : MonoBehaviour
 
     private void FixedUpdate()
     {
+        timeSinceLastHit += Time.deltaTime;
+        HandleSurroundingAliens();
         HandleResource();
-        HandleAlienDetection();
         HandleRespawn();
         HandleGameOver();
     }
 
     public void HandleHit()
     {
-        if (playerShield == false)
+        if (timeSinceLastHit < invincibleFrames)
         {
-            HandleDeath();
+            return;
         }
         else
         {
-            StartCoroutine(ShieldRespawn(shieldRechargeTime));
+            if (playerShield == false)
+            {
+                HandleDeath();
+            }
+            else
+            {
+                StartCoroutine(ShieldRespawn(shieldRechargeTime));
+            }
+            timeSinceLastHit = 0;
+            return;
         }
     }
 
@@ -142,34 +156,35 @@ public class PlayerManager : MonoBehaviour
         Debug.Log("Press Jump to respawn");
     }
 
-    private void HandleAlienDetection()
+    private void HandleSurroundingAliens()
     {
-        // TODO: This is possible quite cost intense!!!
+        aliensInRange = Physics.OverlapSphere(MyTransform.position, playerDetectionRadius, alienLayerMask);
 
-        int layerMask = 1 << 9; // Lyer 9 is Alien
-
-        aliensInRange = Physics.OverlapSphere(MyTransform.position, playerDetectionRadius, layerMask);
-
-        foreach (var item in aliensInRange)
+        for (int i = 0; i < aliensInRange.Length; i++)
         {
-            AlienHandler AH = item.gameObject.GetComponent<AlienHandler>();
-            if (AH.currentAge == AlienHandler.AlienAge.resource)
+            CurrentSurroundingAH = aliensInRange[i].gameObject.GetComponent<AlienHandler>();
+
+            if (CurrentSurroundingAH.currentAge == AlienHandler.AlienAge.resource) // If sorrounding Alien is resource, put into resource Array
             {
-                closestResource[AH.currentSpecies] = AH;
-                return;
+                closestResource[CurrentSurroundingAH.currentSpecies] = CurrentSurroundingAH;
+                continue;
             }
 
-            AH.closestAlien = this.gameObject;
+            CurrentSurroundingAH.targetAlien = this.gameObject;
 
-            if (AH.currentAge == AlienHandler.AlienAge.fullyGrown)
+            if (CurrentSurroundingAH.currentAge == AlienHandler.AlienAge.fullyGrown)
             {
-                AH.HandleAttacking(this.gameObject); // this time its not an alienGO but the player
+                CurrentSurroundingAH.HandleAttacking(this.gameObject); // this time its not an alienGO but the player
+                continue;
             }
             else
             {
-                AH.HandleFleeing(this.gameObject); // this time its not an alienGO but the player
+                CurrentSurroundingAH.HandleFleeing(this.gameObject); // this time its not an alienGO but the player
+                continue;
             }
         }
+
+
     }
 
     private void HandleResourceDetection(int neededResource)

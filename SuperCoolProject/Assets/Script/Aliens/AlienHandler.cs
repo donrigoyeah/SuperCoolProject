@@ -49,6 +49,9 @@ public class AlienHandler : MonoBehaviour
     private Collider[] aliensInRange;
     private float worldRadiusSquared;
     private int amountOfBabies;
+    private Transform TargetAlienTransform;
+    private AlienHandler otherAlien;
+    private BulletHandler CurrentBH;
 
 
     [Header("This Alien")]
@@ -178,7 +181,7 @@ public class AlienHandler : MonoBehaviour
     private void OnEnable()
     {
         ResetVariable();
-        DisgardClosestAlien();
+        DiscardCurrentAction();
         ActivateCurrentModels(currentSpecies);
         if (rb == null) { rb = this.GetComponent<Rigidbody>(); }
         if (coll == null) { coll = this.GetComponent<Collider>(); }
@@ -190,15 +193,15 @@ public class AlienHandler : MonoBehaviour
     {
         // If is dead, skip everytthing
         if (isDead == true) { return; }
-        // If is doing action
-        if (canAct == false) { return; }
-        //Keep alien on the floor (y)
-        if (MyTransform.position.y != 0.1f) { MyTransform.position = new Vector3(MyTransform.position.x, 0.1f, MyTransform.position.z); }
 
         delta = Time.deltaTime;
         HandleUpdateTimers(delta);
         HandleRendering();
-        HandleMovement();
+
+        // Is still resource
+        if (currentAge == AlienAge.resource) { return; }
+        // If is doing action
+        if (canAct == false) { return; }
 
         // Only Render on Tick condition
         while (tickTimer >= tickTimerMax)
@@ -206,6 +209,13 @@ public class AlienHandler : MonoBehaviour
             // Reset Tick timer
             tickTimer -= tickTimerMax;
 
+            // Last check if targetAlien exists
+            if (!targetAlien.activeInHierarchy)
+            {
+                DiscardCurrentAction();
+            }
+
+            // Handle Behaviour
             switch (currentState)
             {
                 case AlienState.looking:
@@ -221,42 +231,16 @@ public class AlienHandler : MonoBehaviour
                     HandleLoveApproach(targetAlien);
                     break;
                 case AlienState.roaming:
-                    HandleRoaming(delta);
+                    HandleRoaming();
                     break;
                 default:
                     HandleLooking();
                     break;
             }
         }
-    }
 
-    private void HandleUpdateTimers(float delta)
-    {
-        lifeTime += delta;
-        lustTimer += delta;
-        hungerTimer += delta;
-        tickTimer += delta;
-        step = (alienSpeed + lifeTime / 25) * delta;
-    }
-
-    private void HandleRendering()
-    {
-        if (Vector3.Distance(MyTransform.position, GameManager.SharedInstance.CameraFollowSpot.position) > 50)
-        {
-            if (isRendered == true)
-            {
-                DeactivateAllModels();
-                isRendered = false;
-            }
-        }
-        else
-        {
-            if (isRendered == false)
-            {
-                ActivateCurrentModels(currentSpecies);
-                isRendered = true;
-            }
-        }
+        HandleUpdateTarget();
+        HandleMovement();
     }
 
     public void HandleLooking()
@@ -292,7 +276,7 @@ public class AlienHandler : MonoBehaviour
                         closestAlienHandler.lustTimer > lustTimerThreshold // partner can mate
                         )
                     {
-                        targetAlien = aliensInRange[i].gameObject;
+                        SetTargetAlien(aliensInRange[i].gameObject);
                         currentState = AlienState.loving;
                         break;
                     }
@@ -315,14 +299,14 @@ public class AlienHandler : MonoBehaviour
                         (currentSpecies == closestAlienHandler.currentSpecies + 1 ||
                         (currentSpecies == 0 && closestAlienHandler.currentSpecies == 2))) // potential food
                     {
-                        targetAlien = aliensInRange[i].gameObject;
+                        SetTargetAlien(aliensInRange[i].gameObject);
                         currentState = AlienState.hunting;
                         break;
                     }
                     else if ((currentSpecies == closestAlienHandler.currentSpecies - 1 ||
                         (currentSpecies == 2 && closestAlienHandler.currentSpecies == 0))) // 0:Sphere > 1:Square > 2:Triangle 
                     {
-                        targetAlien = aliensInRange[i].gameObject;
+                        SetTargetAlien(aliensInRange[i].gameObject);
                         currentState = AlienState.evading;
                         break;
                     }
@@ -373,45 +357,32 @@ public class AlienHandler : MonoBehaviour
 
     public void HandleFleeing(GameObject targetAlien)
     {
-        // Add +1 so i is out of the lookradius
-        if (!targetAlien.activeInHierarchy || Vector3.Distance(targetAlien.transform.position, MyTransform.position) > lookRadius + 1)
-        {
-            targetAlien = null;
-            currentState = AlienState.looking;
-        }
-
-        targetPosition = MyTransform.position + (MyTransform.position - targetAlien.transform.position);
-
         if (!audioSource.isPlaying)
         {
             audioSource.PlayOneShot(RandomAudioSelector(evadingAudioList, currentSpecies), 1f);
         }
+
+        // Add +1 so i is out of the lookradius
+        if (Vector3.Distance(targetAlien.transform.position, MyTransform.position) > lookRadius + 1)
+        {
+            DiscardCurrentAction();
+        }
+
+        targetPosition = MyTransform.position + (MyTransform.position - targetAlien.transform.position);
     } // Use this here on the player as well to scare the aliens away
 
     public void HandleAttacking(GameObject targetAlien) // Player makes them flee as well and by acting als targetAlien in PlayerManager
     {
-        if (!targetAlien.activeInHierarchy)
+        if (!audioSource.isPlaying)
         {
-            targetAlien = null;
-            currentState = AlienState.looking;
+            audioSource.PlayOneShot(RandomAudioSelector(attackAudioList, currentSpecies), 1f);
         }
-        if (targetAlien.CompareTag("Player"))
-        {
-            if (!audioSource.isPlaying)
-            {
-                audioSource.PlayOneShot(RandomAudioSelector(attackAudioList, currentSpecies), 1f);
-            }
-        }
+
         targetPosition = targetAlien.transform.position; // Update targetPosition only every tick update
     }
 
     private void HandleLoveApproach(GameObject targetAlien)
     {
-        if (!targetAlien.activeInHierarchy)
-        {
-            targetAlien = null;
-            currentState = AlienState.looking;
-        }
         targetPosition = targetAlien.transform.position; // Update targetPosition only every tick update
     }
 
@@ -441,23 +412,25 @@ public class AlienHandler : MonoBehaviour
                 }
             }
         }
-        DisgardClosestAlien();
+        StartCoroutine(IdleForMaxSeconds(1f));
     }
 
     public void HandleDeath()
     {
         isDead = true;
         anim[currentSpecies].Stop();
-        AlienManager.SharedInstance.KillAlien(currentSpecies);
-        StartCoroutine(Dissolve());
-        // TODO: Add Coroutine & Ragdoll to show impact/force of bullets
-        //EnableRagdoll();
-        
-        
+        this.gameObject.SetActive(false);
+        return;
     }
 
-    public void HandleDeathByBullet()
+    public void HandleDeathByBullet(bool isPlayerBullet)
     {
+        if (isPlayerBullet)
+        {
+            AlienManager.SharedInstance.KillAlien(currentSpecies);
+        }
+
+
         GameObject deadAlienGO = PoolManager.SharedInstance.GetPooledDeadAlien();
         if (deadAlienGO != null)
         {
@@ -466,30 +439,40 @@ public class AlienHandler : MonoBehaviour
             deadAlien.transform.position = this.gameObject.transform.position;
             deadAlien.gameObject.SetActive(true);
         }
+
+        HandleDeath();
     }
 
-    private void HandleMovement(float step)
+    private void HandleMovement()
     {
-        if (currentAge != AlienAge.resource && currentState != AlienState.looking)
+        if (MyTransform.position.y != 0.1f) { MyTransform.position = new Vector3(MyTransform.position.x, 0.1f, MyTransform.position.z); }
+
+        if (anim[currentSpecies] != null) { anim[currentSpecies].Play("Armature|WALK"); }
+
+        MyTransform.position = Vector3.MoveTowards(MyTransform.position, targetPosition, step);
+
+        if (Vector3.Distance(transform.position, targetPosition) < .1f)
         {
-            if (anim[currentSpecies] != null)
+            if (currentState == AlienState.roaming)
             {
-                anim[currentSpecies].Play("Armature|WALK");
+                DiscardCurrentAction();
             }
-
-            MyTransform.position = Vector3.MoveTowards(MyTransform.position, targetPosition, step);
-
-            if (Vector3.Distance(transform.position, targetPosition) < .1f)
-            {
-                if (currentState == AlienState.roaming)
-                {
-                    currentState = AlienState.looking;
-                    DisgardClosestAlien();
-                }
-            }
-
-            MyTransform.LookAt(targetPosition, Vector3.up);
         }
+
+        MyTransform.LookAt(targetPosition, Vector3.up);
+    }
+
+    private void HandleUpdateTarget()
+    {
+        if (targetAlien.gameObject.activeInHierarchy && targetAlien != null && TargetAlienTransform != null)
+        {
+            targetPosition = TargetAlienTransform.position;
+        }
+        else
+        {
+            DiscardCurrentAction();
+        }
+
     }
 
     public void DeactivateAllModels()
@@ -531,13 +514,14 @@ public class AlienHandler : MonoBehaviour
         }
     }
 
-
-    void SetTargetAlien(GameObject TargetAlien)
+    private void SetTargetAlien(GameObject TargetAlien)
     {
         targetAlien = TargetAlien;
-        targetPosition = targetAlien.transform.position;
+        TargetAlienTransform = targetAlien.GetComponent<Transform>();
+        targetPosition = TargetAlienTransform.position;
     }
-    void DisgardClosestAlien()
+
+    private void DiscardCurrentAction()
     {
         if (targetAlien != null)
         {
@@ -545,14 +529,41 @@ public class AlienHandler : MonoBehaviour
         }
         targetAlien = null;
         closestAlienHandler = null;
+        TargetAlienTransform = null;
         targetPosition = Vector3.zero;
         currentState = AlienState.looking;
     }
 
+    private void HandleUpdateTimers(float delta)
+    {
+        lifeTime += delta;
+        lustTimer += delta;
+        hungerTimer += delta;
+        tickTimer += delta;
+        step = (alienSpeed + lifeTime / 25) * delta;
+    }
 
-    TODOOOO: Finish up reworking the alienHandler
+    private void HandleRendering()
+    {
+        if (Vector3.Distance(MyTransform.position, GameManager.SharedInstance.CameraFollowSpot.position) > 50)
+        {
+            if (isRendered == true)
+            {
+                DeactivateAllModels();
+                isRendered = false;
+            }
+        }
+        else
+        {
+            if (isRendered == false)
+            {
+                ActivateCurrentModels(currentSpecies);
+                isRendered = true;
+            }
+        }
+    }
 
-    void ResetVariable()
+    private void ResetVariable()
     {
         timeToChild += UnityEngine.Random.Range(0, 10);
         isDead = false;
@@ -585,20 +596,6 @@ public class AlienHandler : MonoBehaviour
         {
             StartCoroutine(HandleAge());
         }
-    }
-
-    void DisableRagdoll()
-    {
-        rb.isKinematic = true;
-        rb.detectCollisions = false;
-        //coll.isTrigger = true;
-    }
-
-    void EnableRagdoll()
-    {
-        rb.isKinematic = false;
-        rb.detectCollisions = true;
-        coll.isTrigger = false;
     }
 
     IEnumerator Dissolve()
@@ -672,13 +669,12 @@ public class AlienHandler : MonoBehaviour
                 anim[currentSpecies].Play("Armature|IDLE");
             }
         }
-        float lookTime = UnityEngine.Random.Range(0, (seconds + 1) * 10) / 10;
 
         canAct = false;
+        DiscardCurrentAction();
+        float lookTime = UnityEngine.Random.Range(0, (seconds + 1) * 10) / 10;
         yield return new WaitForSeconds(lookTime);
         canAct = true;
-        targetPosition = Vector3.zero;
-        currentState = AlienState.looking;
     }
 
     IEnumerator HandleAge()
@@ -735,83 +731,79 @@ public class AlienHandler : MonoBehaviour
         // Handle Alien interaction
         if (other.gameObject.CompareTag("Alien"))
         {
-            AlienHandler otherAlien = other.gameObject.GetComponent<AlienHandler>();
-            if (currentAge == AlienAge.resource)
+            otherAlien = other.gameObject.GetComponent<AlienHandler>();
+
+            switch (otherAlien.currentSpecies == currentSpecies)
             {
-                if (currentSpecies != otherAlien.currentSpecies) // You the resource gets trampled
-                {
-                    AlienManager.SharedInstance.RemoveFromResourceList(this);
-                    this.gameObject.SetActive(false);
-                }
-            }
-            else
-            {
-                if (currentAge == AlienAge.sexualActive && currentSpecies == otherAlien.currentSpecies)
-                {
-                    if (lustTimer > lustTimerThreshold)
+                case true: // Same Species
+                    if (currentAge == AlienAge.sexualActive && currentSpecies == otherAlien.currentSpecies) // Babies
                     {
-                        // Spawn new Species
-                        HandleMating();
                         StartCoroutine(PlayActionParticle(true)); // Loving Partilce
-                        StartCoroutine(WaitForInteraction(1f));
+                        HandleMating();
+                    }
+                    else
+                    {
                         return;
                     }
+                    break;
 
-                }
-                else if (
-                    hungerTimer > hungerTimerThreshold &&
-                    (currentSpecies == otherAlien.currentSpecies + 1 ||
-                    (currentSpecies == 0 && otherAlien.currentSpecies == 2)))
-                {
-                    #region Who Eats Who
-                    // This aliens eats the other
-                    // 0:Sphere > 1:Square > 2:Triangle 
-                    // Triangle eats Square / 2 eats 1
-                    // Square eats Sphere / 1 eats 0
-                    // Sphere eats Triangle / 0 eats 2
-                    #endregion
+                case false: // Other Species
+                    if (currentAge == AlienAge.resource) // You, the resource, gets trampled
+                    {
+                        AlienManager.SharedInstance.RemoveFromResourceList(this);
+                        this.gameObject.SetActive(false);
+                        return;
+                    }
+                    else
+                    {
+                        if (
+                            hungerTimer > hungerTimerThreshold &&
+                            (currentSpecies == otherAlien.currentSpecies + 1 ||
+                            (currentSpecies == 0 && otherAlien.currentSpecies == 2))
+                            )
+                        {
+                            #region Who Eats Who
+                            // This aliens eats the other
+                            // 0:Sphere > 1:Square > 2:Triangle 
+                            // Triangle eats Square / 2 eats 1
+                            // Square eats Sphere / 1 eats 0
+                            // Sphere eats Triangle / 0 eats 2
+                            #endregion
 
-                    // Handles eat other alien
-                    hungerTimer = 0;
-                    otherAlien.gameObject.SetActive(false);
-                    StartCoroutine(PlayActionParticle(false)); // Eating Partilce
-                    StartCoroutine(WaitForInteraction(1f));
-                    DisgardClosestAlien();
-                    return;
-
-                }
-                return;
+                            // Handles eat other alien
+                            hungerTimer = 0;
+                            StartCoroutine(PlayActionParticle(false)); // Eating Partilce
+                            otherAlien.gameObject.SetActive(false);
+                            StartCoroutine(IdleForMaxSeconds(1f));
+                            return;
+                        }
+                    }
+                    break;
             }
             return;
         }
+
         // Handle Bullet interaction
-        else if (other.gameObject.CompareTag("Bullet"))
+        if (other.gameObject.CompareTag("Bullet"))
         {
-            // Cannot shoot resource
-            if (currentAge == AlienAge.resource) { return; }
-            //Debug.Log("Handle Bullet damage to alien here");
-            BulletHandler BH = other.gameObject.GetComponent<BulletHandler>();
-            alienHealth -= BH.bulletDamage;
-            // Needs to deactivate this here so it does not trigger multiple times
-            // Maybe deactive the Collider on the Bullet and then make sure to enable it again if new spawned
+            if (currentAge == AlienAge.resource) { return; } // Cannot shoot resource
 
             if (!audioSource.isPlaying)
             {
                 audioSource.PlayOneShot(RandomAudioSelector(beingAttackedAudioList, currentSpecies), 1f);
             }
 
+            CurrentBH = other.gameObject.GetComponent<BulletHandler>();
+            alienHealth -= CurrentBH.bulletDamage;
+            bool isPlayerBullet = CurrentBH.isPlayerBullet;
+            CurrentBH = null;
             other.gameObject.SetActive(false);
-
 
             // Handle Alien Death
             if (alienHealth <= 0 && isDead == false)
             {
-                HandleDeathByBullet();
-                HandleDeath();
-                return;
+                HandleDeathByBullet(isPlayerBullet);
             };
-
-            transform.position = GetComponent<Transform>().position;
 
             return;
         }

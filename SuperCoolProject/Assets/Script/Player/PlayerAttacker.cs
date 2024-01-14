@@ -1,14 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
-using Cinemachine;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
-using UnityEngine.VFX;
-using Unity.VisualScripting;
-using TMPro;
-using UnityEditor.Experimental.GraphView;
 using static AlienHandler;
 
 public class PlayerAttacker : MonoBehaviour
@@ -17,19 +10,18 @@ public class PlayerAttacker : MonoBehaviour
     [SerializeField] private LineRenderer laserSightLeft;
     [SerializeField] private LineRenderer laserSightRight;
     [SerializeField] private bool isLaserSight = true;
-    public Transform lazerSpawnLocationRight;
-    public Transform lazerSpawnLocationLeft;
-    public bool isEnabled = false;
-    public bool isDisabled = false;
-    public float lazerSightRange = 20;
-    public float lastTimeSinceLazer = 0;
-    public float disableLazerAfterNoInput = 1f;
-    public GameObject currentTargetEnemy;
-    public GameObject AimTargetIndicatorGO;
-    public RectTransform AimTargetIndicator;
-    private Vector2 lastInput;
-    private Vector3 AimTargetLocation;
-
+    [SerializeField] public Transform lazerSpawnLocationRight;
+    [SerializeField] public Transform lazerSpawnLocationLeft;
+    [SerializeField] public bool isEnabled = false;
+    [SerializeField] public bool isDisabled = false;
+    [SerializeField] public float lazerSightRange = 20;
+    [SerializeField] public float lastTimeSinceLazer = 0;
+    [SerializeField] public float disableLazerAfterNoInput = 1f;
+    [SerializeField] public GameObject currentTargetEnemy;
+    [SerializeField] public GameObject AimTargetIndicatorGO;
+    [SerializeField] public RectTransform AimTargetIndicator;
+    [SerializeField] private Vector2 lastInput;
+    [SerializeField] private Vector3 AimTargetLocation;
 
     [Header("Lazer Gun Stuff")]
     [SerializeField] public GameObject overheatUIGO;
@@ -72,6 +64,8 @@ public class PlayerAttacker : MonoBehaviour
     private InputHandler inputHandler;
     private PlayerManager playerManager;
     private Animator playerAnim;
+    private CharacterController controller;
+
 
 
     // TODO: Imlement again
@@ -91,6 +85,8 @@ public class PlayerAttacker : MonoBehaviour
         inputHandler = GetComponent<InputHandler>();
         playerManager = GetComponent<PlayerManager>();
         playerAnim = GetComponentInChildren<Animator>();
+        controller = GetComponent<CharacterController>();
+
         CreatePhysicsScene();
 
     }
@@ -518,19 +514,23 @@ public class PlayerAttacker : MonoBehaviour
         // Less resources on all the alien instances
         if (other.gameObject.CompareTag("Alien"))
         {
-            AlienHandler AH = other.gameObject.GetComponent<AlienHandler>();
-            if (AH.isDead) { return; }
+            AlienHandler CurrentCollidingAH = other.gameObject.GetComponent<AlienHandler>();
+            if (CurrentCollidingAH.isDead) { return; }
 
-            if (AH.currentAge == AlienAge.resource)
+            if (CurrentCollidingAH.currentAge == AlienAge.resource)
             {
-                playerManager.HandleGainResource(AH.currentSpecies);
-                AlienManager.SharedInstance.RemoveFromResourceList(AH);
-                AH.gameObject.SetActive(false);
+                playerManager.HandleGainResource(CurrentCollidingAH.currentSpecies);
+                AlienManager.SharedInstance.RemoveFromResourceList(CurrentCollidingAH);
+                CurrentCollidingAH.gameObject.SetActive(false);
             }
             else
             {
-                playerManager.HandleHit();
-                AH.HandleDeath();
+                if (CurrentCollidingAH.currentState == AlienState.hunting)
+                {
+                    playerManager.HandleHit();
+
+                    // TODO: Push alien or player aways
+                }
             }
         }
     }
