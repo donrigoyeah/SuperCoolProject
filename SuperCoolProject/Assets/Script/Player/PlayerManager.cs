@@ -63,12 +63,15 @@ public class PlayerManager : MonoBehaviour
     private AudioSource audioSource;
 
     private InputHandler inputHandler;
+    private Animator playerAnim;
 
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
         inputHandler = GetComponent<InputHandler>();
         MyTransform = GetComponent<Transform>();
+        playerAnim = GetComponentInChildren<Animator>();
+
         dissolve = playerShieldGO.gameObject.GetComponent<Renderer>().material;
         // dissolve.SetFloat("_DissolveAmount", 0);
     }
@@ -104,15 +107,18 @@ public class PlayerManager : MonoBehaviour
         // Set Variable to disable movement/input
         isAlive = false;
         audioSource.PlayOneShot(deathAudio, 1f);
-        GameObject deadPlayerInstance = Instantiate(deadPlayer, MyTransform.position, Quaternion.identity);
 
-        Rigidbody deadPlayerRigidbody = deadPlayerInstance.GetComponent<Rigidbody>();
-        if (deadPlayerRigidbody != null)
-        {
-            Vector3 forceDirection = Vector3.up;
-            float forceMagnitude = 1f;
-            deadPlayerRigidbody.AddForce(forceDirection * forceMagnitude, ForceMode.Impulse);
-        }
+        playerAnim.SetBool("IsDead", true);
+
+        //GameObject deadPlayerInstance = Instantiate(deadPlayer, MyTransform.position, Quaternion.identity);
+
+        //Rigidbody deadPlayerRigidbody = deadPlayerInstance.GetComponent<Rigidbody>();
+        //if (deadPlayerRigidbody != null)
+        //{
+        //    Vector3 forceDirection = Vector3.up;
+        //    float forceMagnitude = 1f;
+        //    deadPlayerRigidbody.AddForce(forceDirection * forceMagnitude, ForceMode.Impulse);
+        //}
 
         // Enable UI Element
         // TODO: Check if all players are dead. otherwise maybe make deathscreen on playerHUD as well

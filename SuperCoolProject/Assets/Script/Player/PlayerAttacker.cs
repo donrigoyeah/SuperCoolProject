@@ -71,6 +71,8 @@ public class PlayerAttacker : MonoBehaviour
     [Header("References")]
     private InputHandler inputHandler;
     private PlayerManager playerManager;
+    private Animator playerAnim;
+
 
     // TODO: Imlement again
     //[Header("Camera Shake")]
@@ -88,6 +90,7 @@ public class PlayerAttacker : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         inputHandler = GetComponent<InputHandler>();
         playerManager = GetComponent<PlayerManager>();
+        playerAnim = GetComponentInChildren<Animator>();
     }
 
     private void Start()
@@ -118,6 +121,8 @@ public class PlayerAttacker : MonoBehaviour
             overheatUI.color = Color.Lerp(Color.green, Color.red, overheatUI.fillAmount / 0.70f);
             if (inputHandler.inputPrimaryFire && !playerManager.isCarryingPart && !PauseMenu.SharedInstance.isPaused)
             {
+                playerAnim.SetBool("IsShooting", true);
+
                 if (currentWeaponHeat > boostWeaponHeatThreshold)
                 {
                     Debug.Log("Code Explanation for Extra Damage");
@@ -131,9 +136,11 @@ public class PlayerAttacker : MonoBehaviour
                 // CameraShake.ShakeCamera();
                 currentWeaponHeat += singleLazerHeat;
                 nextFireTime = 0;
+                return;
             }
             else
             {
+                playerAnim.SetBool("IsShooting", false);
                 // CameraShake.ResetCameraPosition();
             }
         }
@@ -211,6 +218,8 @@ public class PlayerAttacker : MonoBehaviour
         {
             if (leftRightSwitch == true)
             {
+                playerAnim.SetBool("IsLeftShooting", true);
+
                 // Instantiate Bullet left
                 bulletPoolGo.transform.position = lazerSpawnLocationLeft.position;
                 bulletPoolGo.transform.rotation = lazerSpawnLocationLeft.rotation;
@@ -224,6 +233,7 @@ public class PlayerAttacker : MonoBehaviour
             }
             else
             {
+                playerAnim.SetBool("IsLeftShooting", false);
                 // Instantiate Bullet right
                 bulletPoolGo.transform.position = lazerSpawnLocationRight.position;
                 bulletPoolGo.transform.rotation = lazerSpawnLocationRight.rotation;
