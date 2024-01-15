@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using UnityEngine.UI;
 
 public class MainMenuUI : MonoBehaviour
 {
@@ -14,13 +15,14 @@ public class MainMenuUI : MonoBehaviour
     [SerializeField]
     public TextMeshProUGUI loadingText;
 
+    public Button playButton;
     public GameObject MainMenuLoadingScreen;
-
 
 
     private void Awake()
     {
         MainMenuLoadingScreen.SetActive(false);
+        playButton.Select();
     }
 
     // Updates once per frame
