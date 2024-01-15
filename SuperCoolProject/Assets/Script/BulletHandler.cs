@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 using UnityEngine.VFX;
 
 public class BulletHandler : MonoBehaviour
@@ -40,11 +41,21 @@ public class BulletHandler : MonoBehaviour
 
             if (other.CompareTag("Cop"))
             {
-                Debug.Log("Hit Cop");
                 CopHandler CH = other.gameObject.GetComponent<CopHandler>();
-                if (CH != null)
+                if (CH == null) { return; }
+
+                CH.copHealthCurrent -= bulletDamage;
+
+
+                GameObject damageUIGo = PoolManager.SharedInstance.GetPooledDamageUI();
+                if (damageUIGo != null)
                 {
-                    CH.copHealthCurrent -= bulletDamage;
+                    damageUIGo.transform.position = other.transform.position;
+
+                    DamageUIHandler DUIH = damageUIGo.GetComponentInChildren<DamageUIHandler>();
+                    DUIH.damageValue = bulletDamage;
+
+                    damageUIGo.SetActive(true);
                 }
 
                 // Aggro all cops

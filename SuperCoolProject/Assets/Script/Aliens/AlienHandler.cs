@@ -221,7 +221,7 @@ public class AlienHandler : MonoBehaviour
         // If is doing action
         if (canAct == false) { return; }
 
-        //HandleRendering(); // Necessaray?!
+        HandleRendering(); // Necessaray?!
 
         // Is still resource
         if (currentAge == AlienAge.resource) { return; }
@@ -459,7 +459,6 @@ public class AlienHandler : MonoBehaviour
 
     public void HandleDeath()
     {
-        // TODO: Do we need this?
         isDead = true;
         anim[currentSpecies].Stop();
         StopAllCoroutines();
@@ -473,7 +472,6 @@ public class AlienHandler : MonoBehaviour
         {
             AlienManager.SharedInstance.KillAlien(currentSpecies);
         }
-
 
         GameObject deadAlienGO = PoolManager.SharedInstance.GetPooledDeadAlien();
         if (deadAlienGO != null)
@@ -498,7 +496,7 @@ public class AlienHandler : MonoBehaviour
         MyTransform.position = Vector3.MoveTowards(MyTransform.position, targetPosition, step);
         MyTransform.LookAt(targetPosition, Vector3.up);
 
-        if (currentState == AlienState.evading)
+        if (currentState == AlienState.evading || currentState == AlienState.hunting)
         {
             if (Vector3.Distance(targetPosition, MyTransform.position) > lookRadius + 1)  // Add +1 so i is out of the lookradius
             {
@@ -555,8 +553,15 @@ public class AlienHandler : MonoBehaviour
     public void ActivateCurrentModels(int currentSpeziesIndex)
     {
         DeactivateAllModels();
+        if (currentAge == AlienAge.resource)
+        {
+            alienSpeciesChild[currentSpeziesIndex].SetActive(true);
+        }
+        else
+        {
+            alienSpeciesAdult[currentSpeziesIndex].SetActive(true);
+        }
         alienSpecies[currentSpeziesIndex].SetActive(true);
-        alienSpeciesChild[currentSpeziesIndex].SetActive(true);
     }
 
     private void HandleStateIcon(AlienState currentState)
@@ -614,7 +619,9 @@ public class AlienHandler : MonoBehaviour
 
     private void HandleRendering()
     {
-        if (Vector3.Distance(MyTransform.position, GameManager.SharedInstance.CameraFollowSpot.position) > 50)
+        Vector2 MyTransform2D = new Vector2(MyTransform.position.x, MyTransform.position.z);
+        Vector2 CameraFollowSpot2D = new Vector2(GameManager.SharedInstance.CameraFollowSpot.position.x, GameManager.SharedInstance.CameraFollowSpot.position.z);
+        if (Vector2.Distance(MyTransform2D, CameraFollowSpot2D) > 50)
         {
             if (isRendered == true)
             {

@@ -51,9 +51,15 @@ public class CopHandler : MonoBehaviour
     {
         fireTimer += Time.deltaTime;
         if (closestPlayer == null) { FindClosestPlayer(); }
+        if (copHealthCurrent < 0) { HandleDeath(); }
 
         HandleMovement();
-        if (isAggro)
+
+        if (!isAggro)
+        {
+            anim.Play("Armature|T-Pose");
+        }
+        else
         {
             if (!closestPlayer.isAlive)
             {
@@ -67,14 +73,7 @@ public class CopHandler : MonoBehaviour
                 return;
             }
         }
-        else
-        {
-            anim.Play("Armature|T-Pose");
-        }
-        if (copHealthCurrent < 0)
-        {
-            HandleDeath();
-        }
+
     }
 
     private void FindClosestPlayer()
