@@ -230,7 +230,7 @@ public class AlienHandler : MonoBehaviour
         {
             // Reset Tick timer
             tickTimer -= tickTimerMax;
-            HandleUpdateTarget();
+            HandleUpdateTarget(targetAlien);
         }
         HandleMovement();
     }
@@ -519,11 +519,11 @@ public class AlienHandler : MonoBehaviour
         }
     }
 
-    private void HandleUpdateTarget()
+    private void HandleUpdateTarget(GameObject targetAlien)
     {
         if (targetAlien == null) { return; }
 
-        if (targetAlien.gameObject.activeInHierarchy && targetAlien != null && TargetAlienTransform != null)
+        if (targetAlien.gameObject.activeInHierarchy && targetAlien != null)
         {
             if (currentState == AlienState.evading) // Away from target
             {
@@ -531,7 +531,7 @@ public class AlienHandler : MonoBehaviour
             }
             else // towards target
             {
-                targetPosition = TargetAlienTransform.position;
+                targetPosition = targetAlien.transform.position;
             }
         }
         else
