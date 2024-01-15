@@ -206,9 +206,9 @@ public class AlienHandler : MonoBehaviour
 
     private void OnEnable()
     {
+        ActivateCurrentModels(currentSpecies);
         ResetVariable();
         DiscardCurrentAction();
-        ActivateCurrentModels(currentSpecies);
     }
 
     private void FixedUpdate()
@@ -238,7 +238,7 @@ public class AlienHandler : MonoBehaviour
     public void HandleLooking()
     {
         float currentShortestDistance = lookRadius;
-        float currentDistance;
+        float currentDistance = lookRadius;
 
         Vector2 MyTransform2D = new Vector2(MyTransform.position.x, MyTransform.position.z);
         Vector2 TargetAlienTransform2D;
@@ -320,10 +320,10 @@ public class AlienHandler : MonoBehaviour
             }
         }
 
-
-        if (targetAlien == null)
+        if (TargetAlienTransform == null)
         {
-            IdleSecsUntilNewState(1f, AlienState.roaming);
+            StartCoroutine(IdleSecsUntilNewState(1f, AlienState.roaming));
+            return;
         }
         else
         {
@@ -331,23 +331,26 @@ public class AlienHandler : MonoBehaviour
 
             if (targetAlienHandler == null)
             {
-                IdleSecsUntilNewState(1f, AlienState.looking);
+                StartCoroutine(IdleSecsUntilNewState(1f, AlienState.looking));
                 return;
             }
             if (currentSpecies == targetAlienHandler.currentSpecies)
             {
-                IdleSecsUntilNewState(1f, AlienState.loving);
+                StartCoroutine(IdleSecsUntilNewState(1f, AlienState.loving));
+                return;
             }
             else if (currentSpecies == targetAlienHandler.currentSpecies - 1 ||
                     (currentSpecies == 2 && targetAlienHandler.currentSpecies == 0)) // If target is bigger
             {
 
-                IdleSecsUntilNewState(1f, AlienState.evading);
+                StartCoroutine(IdleSecsUntilNewState(1f, AlienState.evading));
+                return;
             }
             else if (currentSpecies == closestAlienHandler.currentSpecies + 1 ||
                     (currentSpecies == 0 && closestAlienHandler.currentSpecies == 2)) // If target is smaller
             {
-                IdleSecsUntilNewState(1f, AlienState.hunting);
+                StartCoroutine(IdleSecsUntilNewState(1f, AlienState.hunting));
+                return;
             }
         }
 
@@ -383,7 +386,7 @@ public class AlienHandler : MonoBehaviour
     {
         if (targetAlien == null)
         {
-            IdleSecsUntilNewState(1f, AlienState.looking);
+            StartCoroutine(IdleSecsUntilNewState(1f, AlienState.looking));
             return;
         }
 
@@ -398,7 +401,7 @@ public class AlienHandler : MonoBehaviour
     {
         if (targetAlien == null)
         {
-            IdleSecsUntilNewState(1f, AlienState.looking);
+            StartCoroutine(IdleSecsUntilNewState(1f, AlienState.looking));
             return;
         }
 
@@ -412,7 +415,7 @@ public class AlienHandler : MonoBehaviour
     {
         if (targetAlien == null)
         {
-            IdleSecsUntilNewState(1f, AlienState.looking);
+            StartCoroutine(IdleSecsUntilNewState(1f, AlienState.looking));
             return;
         }
     }
@@ -451,6 +454,7 @@ public class AlienHandler : MonoBehaviour
 
         lustTimer = 0;
         StartCoroutine(IdleSecsUntilNewState(1f, AlienState.looking));
+        return;
     }
 
     public void HandleDeath()
@@ -485,7 +489,9 @@ public class AlienHandler : MonoBehaviour
 
     private void HandleMovement()
     {
+        if (targetPosition == Vector3.zero) { return; }
         if (MyTransform.position.y != 0.1f) { MyTransform.position = new Vector3(MyTransform.position.x, 0.1f, MyTransform.position.z); }
+
 
         if (anim[currentSpecies] != null) { anim[currentSpecies].Play("Armature|WALK"); }
 
@@ -494,7 +500,7 @@ public class AlienHandler : MonoBehaviour
 
         if (currentState == AlienState.evading)
         {
-            if (Vector3.Distance(targetAlien.transform.position, MyTransform.position) > lookRadius + 1)  // Add +1 so i is out of the lookradius
+            if (Vector3.Distance(targetPosition, MyTransform.position) > lookRadius + 1)  // Add +1 so i is out of the lookradius
             {
                 StartCoroutine(IdleSecsUntilNewState(1f, AlienState.looking));
                 return;
@@ -530,16 +536,19 @@ public class AlienHandler : MonoBehaviour
         }
         else
         {
-            IdleSecsUntilNewState(1f, AlienState.looking);
+            StartCoroutine(IdleSecsUntilNewState(1f, AlienState.looking));
+            return;
         }
 
     }
 
     public void DeactivateAllModels()
     {
-        foreach (var item in alienSpecies)
+        for (int i = 0; i < alienSpecies.Length; i++)
         {
-            item.SetActive(false);
+            alienSpecies[i].SetActive(false);
+            alienSpeciesChild[i].SetActive(false);
+            alienSpeciesAdult[i].SetActive(false);
         }
     }
 
@@ -547,6 +556,7 @@ public class AlienHandler : MonoBehaviour
     {
         DeactivateAllModels();
         alienSpecies[currentSpeziesIndex].SetActive(true);
+        alienSpeciesChild[currentSpeziesIndex].SetActive(true);
     }
 
     private void HandleStateIcon(AlienState currentState)
@@ -621,6 +631,9 @@ public class AlienHandler : MonoBehaviour
             }
         }
     } // Commented out for now
+
+
+
 
     private void ResetVariable()
     {
@@ -700,8 +713,6 @@ public class AlienHandler : MonoBehaviour
         currentAge = AlienAge.resource;
         alienHealth = alienLifeResource;
         MyTransform.localScale = Vector3.one * 0.7f;
-        alienSpeciesChild[currentSpecies].SetActive(true);
-        alienSpeciesAdult[currentSpecies].SetActive(false);
         AlienManager.SharedInstance.AddToResourceList(this);
         yield return new WaitForSeconds(timeToChild);
 
