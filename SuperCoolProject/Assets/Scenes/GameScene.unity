@@ -19625,7 +19625,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentAlienAmount: 0
-  alienAmount: 300
+  alienAmount: 100
   alienAmountExtra: 50
   AlienPool: []
   Alien: {fileID: 1047908099467871381, guid: d934f14e333eefc4697225457031ccaa, type: 3}
