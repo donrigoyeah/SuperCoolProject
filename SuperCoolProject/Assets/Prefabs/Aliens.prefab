@@ -100,8 +100,8 @@ MonoBehaviour:
   - {fileID: 4631416805117046975}
   alienMiniMapMarker: {fileID: 2548553898403178801}
   resourceSteamGO: {fileID: 4705887365241048240}
+  alienActionParticlesGO: {fileID: 2154863429656762981}
   resourceSteam: {fileID: 3915903878569315107}
-  alienActionParticles: {fileID: 2154863429656762981}
   alienActionFog: {fileID: 2118769241431706716}
   alienSpeed: 3
   lookRadius: 10

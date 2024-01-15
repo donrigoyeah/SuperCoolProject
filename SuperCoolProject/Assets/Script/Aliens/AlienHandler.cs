@@ -113,8 +113,8 @@ public class AlienHandler : MonoBehaviour
     public Animation[] anim;
     public Renderer alienMiniMapMarker;
     public GameObject resourceSteamGO;
+    public GameObject alienActionParticlesGO;
     public ParticleSystem resourceSteam;
-    public ParticleSystem alienActionParticles;
     public ParticleSystem alienActionFog;
     ParticleSystem.MainModule alienActionFogMain;
     public float alienSpeed = 5;
@@ -231,8 +231,8 @@ public class AlienHandler : MonoBehaviour
             // Reset Tick timer
             tickTimer -= tickTimerMax;
             HandleUpdateTarget();
-            HandleMovement();
         }
+        HandleMovement();
     }
 
     public void HandleLooking()
@@ -329,6 +329,11 @@ public class AlienHandler : MonoBehaviour
         {
             AlienHandler targetAlienHandler = targetAlien.GetComponent<AlienHandler>();
 
+            if (targetAlienHandler == null)
+            {
+                IdleSecsUntilNewState(1f, AlienState.looking);
+                return;
+            }
             if (currentSpecies == targetAlienHandler.currentSpecies)
             {
                 IdleSecsUntilNewState(1f, AlienState.loving);
@@ -453,6 +458,7 @@ public class AlienHandler : MonoBehaviour
         // TODO: Do we need this?
         isDead = true;
         anim[currentSpecies].Stop();
+        StopAllCoroutines();
         this.gameObject.SetActive(false);
         return;
     }
@@ -663,9 +669,9 @@ public class AlienHandler : MonoBehaviour
         {
             alienActionFogMain.startColor = new ParticleSystem.MinMaxGradient(Color.gray, Color.black);
         }
-        alienActionParticles.gameObject.SetActive(true);
+        alienActionParticlesGO.SetActive(true);
         yield return new WaitForSeconds(1f);
-        alienActionParticles.gameObject.SetActive(false);
+        alienActionParticlesGO.SetActive(false);
 
     }
 
