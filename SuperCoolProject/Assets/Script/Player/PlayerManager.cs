@@ -124,15 +124,15 @@ public class PlayerManager : MonoBehaviour
 
         playerAnim.SetBool("IsDead", true);
 
-        //GameObject deadPlayerInstance = Instantiate(deadPlayer, MyTransform.position, Quaternion.identity);
+        GameObject deadPlayerInstance = Instantiate(deadPlayer, MyTransform.position, Quaternion.identity);
 
-        //Rigidbody deadPlayerRigidbody = deadPlayerInstance.GetComponent<Rigidbody>();
-        //if (deadPlayerRigidbody != null)
-        //{
-        //    Vector3 forceDirection = Vector3.up;
-        //    float forceMagnitude = 1f;
-        //    deadPlayerRigidbody.AddForce(forceDirection * forceMagnitude, ForceMode.Impulse);
-        //}
+        Rigidbody deadPlayerRigidbody = deadPlayerInstance.GetComponent<Rigidbody>();
+        if (deadPlayerRigidbody != null)
+        {
+            Vector3 forceDirection = Vector3.up;
+            float forceMagnitude = 1f;
+            deadPlayerRigidbody.AddForce(forceDirection * forceMagnitude, ForceMode.Impulse);
+        }
 
         // Enable UI Element
         // TODO: Check if all players are dead. otherwise maybe make deathscreen on playerHUD as well

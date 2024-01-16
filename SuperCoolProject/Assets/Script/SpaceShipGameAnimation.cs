@@ -20,6 +20,8 @@ public class SpaceShipGameAnimation : MonoBehaviour
     ParticleSystem ExhaustParticles;
     private ParticleSystem.MainModule ExhaustParticlesMain;
 
+    public GameObject LandingParticlesGO;
+
     public PlayerInputManager playerInputManager;
     public GameObject TutorialGameObject;
 
@@ -53,6 +55,9 @@ public class SpaceShipGameAnimation : MonoBehaviour
         }
         // TODO: Add cameraShake
         this.transform.position = endPosition;
+        LandingParticlesGO.SetActive(true);
+        Destroy(LandingParticlesGO, 2);
+
         SpaceShipCanvas.SetActive(true);
         playerInputManager.EnableJoining();
 
