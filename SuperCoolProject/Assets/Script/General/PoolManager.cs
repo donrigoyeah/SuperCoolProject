@@ -79,6 +79,10 @@ public class PoolManager : MonoBehaviour
     public GameObject DamageUI;
     public GameObject DamageUIContainer;
 
+
+    [Header("Reference")]
+    public LoadingScreenHandler loadingScreenHandler;
+
     private void Awake()
     {
         SharedInstance = this;
@@ -162,7 +166,7 @@ public class PoolManager : MonoBehaviour
             currentAlienAmount++;
         }
         // Send info to loading screen that this pool is ready
-        LoadingScreenHandler.SharedInstance.currentLoadedPools++;
+        loadingScreenHandler.currentLoadedPools++;
     }
     #endregion
 
@@ -197,7 +201,7 @@ public class PoolManager : MonoBehaviour
             tmp.SetActive(false);
             BulletPool.Add(tmp);
         }
-        LoadingScreenHandler.SharedInstance.currentLoadedPools++;
+        loadingScreenHandler.currentLoadedPools++;
     }
     #endregion
 
@@ -226,7 +230,7 @@ public class PoolManager : MonoBehaviour
             tmp.SetActive(false);
             BulletExpPool.Add(tmp);
         }
-        LoadingScreenHandler.SharedInstance.currentLoadedPools++;
+        loadingScreenHandler.currentLoadedPools++;
     }
     #endregion
 
@@ -255,7 +259,7 @@ public class PoolManager : MonoBehaviour
             tmp.SetActive(false);
             MuzzlePool.Add(tmp);
         }
-        LoadingScreenHandler.SharedInstance.currentLoadedPools++;
+        loadingScreenHandler.currentLoadedPools++;
     }
     #endregion
 
@@ -284,7 +288,7 @@ public class PoolManager : MonoBehaviour
             tmp.SetActive(false);
             CopPool.Add(tmp);
         }
-        LoadingScreenHandler.SharedInstance.currentLoadedPools++;
+        loadingScreenHandler.currentLoadedPools++;
     }
     #endregion
 
@@ -319,7 +323,7 @@ public class PoolManager : MonoBehaviour
             tmp.SetActive(false);
             CopBulletPool.Add(tmp);
         }
-        LoadingScreenHandler.SharedInstance.currentLoadedPools++;
+        loadingScreenHandler.currentLoadedPools++;
     }
     #endregion
 
@@ -348,7 +352,7 @@ public class PoolManager : MonoBehaviour
             tmp.SetActive(false);
             CopMuzzlePool.Add(tmp);
         }
-        LoadingScreenHandler.SharedInstance.currentLoadedPools++;
+        loadingScreenHandler.currentLoadedPools++;
     }
     #endregion
 
@@ -377,7 +381,7 @@ public class PoolManager : MonoBehaviour
             tmp.SetActive(false);
             FSSPool.Add(tmp);
         }
-        LoadingScreenHandler.SharedInstance.currentLoadedPools++;
+        loadingScreenHandler.currentLoadedPools++;
     }
     #endregion
 
@@ -406,7 +410,7 @@ public class PoolManager : MonoBehaviour
             tmp.SetActive(false);
             DeadAlienPool.Add(tmp);
         }
-        LoadingScreenHandler.SharedInstance.currentLoadedPools++;
+        loadingScreenHandler.currentLoadedPools++;
     }
     #endregion
 
@@ -435,7 +439,7 @@ public class PoolManager : MonoBehaviour
             tmp.SetActive(false);
             DamageUIPool.Add(tmp);
         }
-        LoadingScreenHandler.SharedInstance.currentLoadedPools++;
+        loadingScreenHandler.currentLoadedPools++;
     }
     #endregion
 }

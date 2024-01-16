@@ -14,8 +14,6 @@ public class LoadingScreenHandler : MonoBehaviour
     public Image LoadingBar;
     public int numberOfPools = 10;
     public int currentLoadedPools = 0;
-    public int totalAwakeCalls = 0;
-    public int currentAwakeCalls = 0;
     public bool hasFinishedLoading;
 
     private void Awake()
@@ -32,7 +30,7 @@ public class LoadingScreenHandler : MonoBehaviour
             LoadingScreen.SetActive(false);
         }
 
-        float loadingAmount = (currentLoadedPools / numberOfPools + currentAwakeCalls / totalAwakeCalls) / 2;
+        float loadingAmount = currentLoadedPools / numberOfPools;
         LoadingBar.fillAmount = loadingAmount;
 
         if (loadingAmount >= 1)

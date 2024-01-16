@@ -47,7 +47,6 @@ public class AlienManager : MonoBehaviour
 
     private void Start()
     {
-        LoadingScreenHandler.SharedInstance.totalAwakeCalls++;
         InitalSpawnAliens();
     }
 
@@ -101,8 +100,6 @@ public class AlienManager : MonoBehaviour
                 alienPoolGo.SetActive(true);
             }
         }
-        // After loading all aliens sent finished state to Loading Screen
-        LoadingScreenHandler.SharedInstance.currentAwakeCalls++;
         return;
     }
 

@@ -1041,6 +1041,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 209587704}
+  - {fileID: 1237529908}
   - {fileID: 985243445}
   - {fileID: 1413876527}
   - {fileID: 703073542}
@@ -1048,7 +1049,6 @@ RectTransform:
   - {fileID: 432015928}
   - {fileID: 1613040192}
   - {fileID: 681135234}
-  - {fileID: 1237529908}
   - {fileID: 1319182553}
   - {fileID: 75251888}
   - {fileID: 1272444231}
@@ -1174,8 +1174,6 @@ MonoBehaviour:
   LoadingBar: {fileID: 585838542}
   numberOfPools: 10
   currentLoadedPools: 0
-  totalAwakeCalls: 0
-  currentAwakeCalls: 0
   hasFinishedLoading: 0
 --- !u!114 &570592909 stripped
 MonoBehaviour:
@@ -2803,6 +2801,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 890592820}
     m_Modifications:
+    - target: {fileID: 292991685637541685, guid: 959b924f5e51a25468637aa813697924,
+        type: 3}
+      propertyPath: loadingScreenHandler
+      value: 
+      objectReference: {fileID: 506797206}
     - target: {fileID: 5939312767450188020, guid: 959b924f5e51a25468637aa813697924,
         type: 3}
       propertyPath: m_LocalPosition.x
