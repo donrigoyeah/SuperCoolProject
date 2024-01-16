@@ -119,6 +119,6 @@ public class TimeManager : MonoBehaviour
     private void DisplayTimeText()
     {
         string formattedTime = $"{hours:D2}:{minutes:D2}";
-        displayTime.text = "Day: " + days + "\n" + formattedTime;
+        displayTime.text = "DAY: " + days + "\n" + formattedTime;
     }
 }

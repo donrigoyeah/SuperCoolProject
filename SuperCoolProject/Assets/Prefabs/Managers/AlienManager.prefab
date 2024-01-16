@@ -1,0 +1,68 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4484446586205612040
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8708917651951737049}
+  - component: {fileID: 1139254413652998083}
+  m_Layer: 0
+  m_Name: AlienManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 2147483647
+  m_IsActive: 1
+--- !u!4 &8708917651951737049
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4484446586205612040}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1139254413652998083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4484446586205612040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1caf73855bfa5d47a5f12c7fe71478b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sphereCount: 0
+  squareCount: 0
+  triangleCount: 0
+  totalActiveAliens: 0
+  imagesPieChart:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  values: []
+  resourceSphere: []
+  resourceSquare: []
+  resourceTriangle: []
+  segmentAmount: 6
+  segmentWidthRange: 10
+  minRadius: 50
+  maxRadius: 180
+  maxSleepDelay: 10
+  totalKillCount: 0
+  currentPaidKillCount: 0
+  sphereKilled: 0
+  squareKilled: 0
+  triangleKilled: 0

@@ -1,0 +1,114 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2793035938674267015
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7943407949729929867}
+  - component: {fileID: 937689487682581970}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7943407949729929867
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2793035938674267015}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 271264982416113951}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &937689487682581970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2793035938674267015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 109ceb8310df21a4ebfad50b040233ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  worldRadius: 180
+  hasLost: 0
+  numberOfPlayers: 0
+  maxPlayers: 2
+  cloneJuiceUI: {fileID: 0}
+  cloneCost: 20
+  currentCloneJuice: 0
+  maxCloneJuice: 100
+  SpaceShipPart: {fileID: 621607558053313764, guid: 3bf27bdc90cd48e4c87d44d31e595876,
+    type: 3}
+  SpaceShipPartContainer: {fileID: 271264982416113951}
+  totalSpaceShipParts: 5
+  currentSpaceShipParts: 0
+  spaceShipPartsDisplay: {fileID: 0}
+  spaceShipScriptable:
+  - {fileID: 11400000, guid: 02e70b1c46affb643a104ac019c880b5, type: 2}
+  - {fileID: 11400000, guid: ae33f24f63959e445a51dd0946d38663, type: 2}
+  - {fileID: 11400000, guid: b66cc0a944aaae8419fed1b5e2094d74, type: 2}
+  - {fileID: 11400000, guid: 7acb7ce8852f0454eac80f3b73c811b8, type: 2}
+  - {fileID: 11400000, guid: 7acb7ce8852f0454eac80f3b73c811b8, type: 2}
+  hasFuelCanister: 0
+  hasAmmoBox: 0
+  hasShieldGenerator: 0
+  hasAntenna: 0
+  map: {fileID: 0}
+  playerInputManager: {fileID: 0}
+  players: []
+  CameraFollowSpot: {fileID: 0}
+  DeathScreen: {fileID: 0}
+  GameOverScreen: {fileID: 0}
+  DeathScreenCloneJuiceUI: {fileID: 0}
+  cameraSpeed: 1
+  cameraSpeedRaiseBuffer: 2
+  cameraSpeedRaiseDuration: 2
+  cameraSpeedMultiplier: 4
+  playerDeadBody: 0
+--- !u!1 &9078134599936876708
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 271264982416113951}
+  m_Layer: 0
+  m_Name: SpaceShipParts
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &271264982416113951
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9078134599936876708}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7943407949729929867}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
