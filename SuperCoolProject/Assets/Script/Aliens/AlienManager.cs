@@ -39,16 +39,20 @@ public class AlienManager : MonoBehaviour
     public int squareKilled = 0;
     public int triangleKilled = 0;
 
+    public LoadingScreenHandler loadingScreenHandler;
+
 
     private void Awake()
     {
         SharedInstance = this;
+        loadingScreenHandler.totalAwakeCalls++;
     }
 
     private void Start()
     {
         InitalSpawnAliens();
     }
+
 
     private void FixedUpdate()
     {
@@ -100,6 +104,8 @@ public class AlienManager : MonoBehaviour
                 alienPoolGo.SetActive(true);
             }
         }
+        loadingScreenHandler.currentAwakeCalls++;
+
         return;
     }
 
