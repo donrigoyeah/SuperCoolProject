@@ -388,8 +388,8 @@ public class PlayerAttacker : MonoBehaviour
         currentTargetEnemy = null;
         AimTargetIndicatorGO.SetActive(false);
 
-        laserSightLeft.useWorldSpace = false;
-        laserSightRight.useWorldSpace = false;
+        //laserSightLeft.useWorldSpace = false;
+        //laserSightRight.useWorldSpace = false;
 
         laserSightLeft.SetPosition(0, Vector3.zero);
         laserSightRight.SetPosition(0, Vector3.zero);
@@ -413,7 +413,7 @@ public class PlayerAttacker : MonoBehaviour
         {
             yield return new WaitForSeconds(durationOfAnimation / steps);
             AimTargetIndicator.localScale = Vector3.one - (Vector3.one * i / (2 * steps)); // Results in Vector3.one/2
-            AimTargetIndicator.localRotation = Quaternion.Euler(0, 0, 90 * i / steps);
+            AimTargetIndicator.localRotation = Quaternion.Euler(0, 0, 180 * i / steps);
         }
     }
 
