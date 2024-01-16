@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.17276807, g: 0.21589197, b: 0.29782572, a: 1}
+  m_IndirectSpecularColor: {r: 0.1727685, g: 0.21589223, b: 0.29782578, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -18489,7 +18489,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1613040192
 RectTransform:
   m_ObjectHideFlags: 0
@@ -26701,6 +26701,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3022947434942135248, guid: 04d1705c49be2ff449668c9f21cbf177,
         type: 3}
+      propertyPath: okButton
+      value: 
+      objectReference: {fileID: 5500930598546583748}
+    - target: {fileID: 3022947434942135248, guid: 04d1705c49be2ff449668c9f21cbf177,
+        type: 3}
       propertyPath: abilityText
       value: 
       objectReference: {fileID: 69140540}
@@ -26956,7 +26961,7 @@ PrefabInstance:
     - target: {fileID: 4044361012322878466, guid: ffb68a391af645d4bbbf12099ca9e96e,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5652061030795454690, guid: ffb68a391af645d4bbbf12099ca9e96e,
         type: 3}

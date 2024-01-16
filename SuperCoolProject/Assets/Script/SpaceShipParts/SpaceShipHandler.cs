@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
 public class SpaceShipHandler : MonoBehaviour
@@ -10,6 +11,7 @@ public class SpaceShipHandler : MonoBehaviour
     public ParticleSystem ParticleSystem;
     public TextMeshProUGUI abilityText;
     public GameObject UpgradeInformationScreen;
+    public Button okButton;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -62,6 +64,7 @@ public class SpaceShipHandler : MonoBehaviour
                 //     GameManager.SharedInstance.hasAntenna = true;
                 // }
                 UpgradeInformationScreen.SetActive(true);
+                okButton.Select();
 
                 GameManager.SharedInstance.SpaceShipPartUpdate();
             }
