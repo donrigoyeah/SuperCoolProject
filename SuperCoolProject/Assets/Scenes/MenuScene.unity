@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1285,19 +1285,19 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 549704177}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.5}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_LocalPosition: {x: 0, y: 0, z: 24.844055}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1629301625}
   - {fileID: 1138049535}
   - {fileID: 940987265}
   - {fileID: 659435396}
-  m_Father: {fileID: 1620212992}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -0.4, y: 0.4}
+  m_AnchoredPosition: {x: 2.5929508, y: 27.229132}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &549704179
@@ -1397,7 +1397,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.05, y: -2.9}
+  m_AnchoredPosition: {x: 1.08, y: -3.3}
   m_SizeDelta: {x: 6.2, y: 3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &659435397
@@ -2910,6 +2910,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scene: 1
   loadingText: {fileID: 292171899}
+  playButton: {fileID: 1311654117}
   MainMenuLoadingScreen: {fileID: 1738869098}
 --- !u!1 &1296852023
 GameObject:
@@ -8182,8 +8183,9 @@ GameObject:
   - component: {fileID: 1620212992}
   - component: {fileID: 1620212991}
   - component: {fileID: 1620212990}
+  - component: {fileID: 1620212993}
   m_Layer: 0
-  m_Name: PlanetB
+  m_Name: PlanetBGO
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8251,10 +8253,22 @@ Transform:
   m_LocalPosition: {x: 6.592951, y: 23.229132, z: 29.844055}
   m_LocalScale: {x: 10, y: 10, z: 10}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 549704178}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1620212993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1620212988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14d0163432bd1d54797e17107d7713b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationSpeed: 5
 --- !u!1 &1629301624
 GameObject:
   m_ObjectHideFlags: 0
@@ -9396,6 +9410,7 @@ SceneRoots:
   m_Roots:
   - {fileID: 1257635472}
   - {fileID: 833273189}
+  - {fileID: 549704178}
   - {fileID: 1620212992}
   - {fileID: 1290147336}
   - {fileID: 263589237}
