@@ -472,7 +472,7 @@ public class AlienHandler : MonoBehaviour
         {
             AlienManager.SharedInstance.KillAlien(currentSpecies);
         }
-
+        Debug.Log("ffff");
         GameObject deadAlienGO = PoolManager.SharedInstance.GetPooledDeadAlien();
         if (deadAlienGO != null)
         {

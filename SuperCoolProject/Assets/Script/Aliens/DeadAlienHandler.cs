@@ -9,10 +9,15 @@ public class DeadAlienHandler : MonoBehaviour
     public GameObject[] deadAlienSpecies; // 0:Sphere > 1:Square > 2:Triangle
     public int currentAlienSpecies;
 
+    [Header("Dissolve")]
+    public Material dissolve;
+    public float dissolveRate = 0.0125f;
+    public float refreshRate = 0.025f;
+    
     private void OnEnable()
     {
         EnableCertainRagdoll();
-        StartCoroutine(DisableAfterSeconds(1));
+        StartCoroutine(DisableAfterSeconds(2f));
     }
 
     private void EnableCertainRagdoll()
@@ -22,11 +27,28 @@ public class DeadAlienHandler : MonoBehaviour
             item.SetActive(false);
         }
         deadAlienSpecies[currentAlienSpecies].SetActive(true);
+        StartCoroutine(Dissolve());
     }
 
     private IEnumerator DisableAfterSeconds(float seconds)
     {
         yield return new WaitForSeconds(seconds);
+        this.gameObject.SetActive(false);
+    }
+    
+    IEnumerator Dissolve()
+    {
+        float counter = 0;
+        while (dissolve.GetFloat("_DissolveAmount") < 1)
+        {
+            counter += dissolveRate;
+            for (int i = 0; i <= 10; i++)
+            {
+                dissolve.SetFloat("_DissolveAmount", counter);
+                yield return new WaitForSeconds(refreshRate);
+            }
+        }
+        dissolve.SetFloat("_DissolveAmount", 0);
         this.gameObject.SetActive(false);
     }
 }

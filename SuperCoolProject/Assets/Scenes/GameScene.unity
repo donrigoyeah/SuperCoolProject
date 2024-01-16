@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.17276807, g: 0.21589197, b: 0.29782572, a: 1}
+  m_IndirectSpecularColor: {r: 0.1727685, g: 0.21589223, b: 0.29782578, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3496,6 +3496,37 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &331250228
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 331250229}
+  m_Layer: 0
+  m_Name: DeadAlienContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &331250229
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 331250228}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1544536867}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &338453286
 GameObject:
   m_ObjectHideFlags: 0
@@ -19622,6 +19653,7 @@ Transform:
   - {fileID: 1412384395}
   - {fileID: 1283110846}
   - {fileID: 338453287}
+  - {fileID: 331250229}
   m_Father: {fileID: 890592820}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1544536868
@@ -19673,10 +19705,11 @@ MonoBehaviour:
   FSSPool: []
   FSS: {fileID: 1508112924898509174, guid: 55ea6eb2110f40441aabc76f408bd266, type: 3}
   FSSContainer: {fileID: 1265197036}
-  deadAlienAmount: 0
+  deadAlienAmount: 15
   DeadAlienPool: []
-  DeadAlien: {fileID: 0}
-  DeadAlienContainer: {fileID: 0}
+  DeadAlien: {fileID: 7151926714197197924, guid: 9aa565877ecff9045b5de8c22120623f,
+    type: 3}
+  DeadAlienContainer: {fileID: 331250228}
   damageUIAmounts: 10
   DamageUIPool: []
   DamageUI: {fileID: 4331799705989807614, guid: 621ee631fcd4a4549a504b3943530792,

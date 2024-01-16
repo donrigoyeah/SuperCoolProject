@@ -353,7 +353,7 @@ MonoBehaviour:
   invincibleFrames: 0.5
   timeSinceLastHit: 0
   LightBeam: {fileID: 934595259696851748}
-  deadPlayer: {fileID: 6718371516913241609, guid: fb851b72f52ffba48b9ceb897753eec5,
+  deadPlayer: {fileID: 4666430136575265468, guid: fb851b72f52ffba48b9ceb897753eec5,
     type: 3}
   playerShieldGO: {fileID: 6422262875128791845}
   player: {fileID: 0}
