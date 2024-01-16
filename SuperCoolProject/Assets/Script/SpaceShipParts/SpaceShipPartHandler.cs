@@ -16,7 +16,7 @@ public class SpaceShipPartHandler : MonoBehaviour
     public float playerSpeedReduction = 0f;
     public float previousPlayerSpeed = 10f;
     public TextMeshProUGUI tmp;
-    [SerializeField] private ParticleSystem collectingResourcesParticle;
+    [SerializeField] private ParticleSystem draggingParticles;
     public bool particleSpawned = false;
     private AudioSource audioSource;
     [SerializeField] private AudioClip draggingAudio;
@@ -46,7 +46,7 @@ public class SpaceShipPartHandler : MonoBehaviour
             {
                 if (!particleSpawned)
                 {
-                    collectingResourcesParticle.gameObject.SetActive(true);
+                    draggingParticles.gameObject.SetActive(true);
                     particleSpawned = true;
                 }
 
@@ -62,7 +62,7 @@ public class SpaceShipPartHandler : MonoBehaviour
             }
             else if (!inputHandler.inputInteracting)
             {
-                collectingResourcesParticle.gameObject.SetActive(false);
+                draggingParticles.gameObject.SetActive(false);
                 particleSpawned = false;
                 if (playerManager == null)
                 {
