@@ -1174,6 +1174,8 @@ MonoBehaviour:
   LoadingBar: {fileID: 585838542}
   numberOfPools: 10
   currentLoadedPools: 0
+  totalAwakeCalls: 0
+  currentAwakeCalls: 0
   hasFinishedLoading: 0
 --- !u!114 &570592909 stripped
 MonoBehaviour:
@@ -3488,6 +3490,11 @@ PrefabInstance:
       objectReference: {fileID: 1325170218}
     - target: {fileID: 937689487682581970, guid: bf09349e08449f448b0d27ddea6565dc,
         type: 3}
+      propertyPath: loadingScreenHandler
+      value: 
+      objectReference: {fileID: 506797206}
+    - target: {fileID: 937689487682581970, guid: bf09349e08449f448b0d27ddea6565dc,
+        type: 3}
       propertyPath: spaceShipPartsDisplay
       value: 
       objectReference: {fileID: 1001025137}
@@ -3865,6 +3872,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: TutorialScreens
       objectReference: {fileID: 0}
+    - target: {fileID: 699558176809233568, guid: 8a39cf38023b57946be252867c65b70b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2564602905737249614, guid: 8a39cf38023b57946be252867c65b70b,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -3969,6 +3981,51 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4201713763421029886, guid: 8a39cf38023b57946be252867c65b70b,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4201713763421029886, guid: 8a39cf38023b57946be252867c65b70b,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4201713763421029886, guid: 8a39cf38023b57946be252867c65b70b,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4201713763421029886, guid: 8a39cf38023b57946be252867c65b70b,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4201713763421029886, guid: 8a39cf38023b57946be252867c65b70b,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 83
+      objectReference: {fileID: 0}
+    - target: {fileID: 4201713763421029886, guid: 8a39cf38023b57946be252867c65b70b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4201713763421029886, guid: 8a39cf38023b57946be252867c65b70b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 7281877038645789277, guid: 8a39cf38023b57946be252867c65b70b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8102864972558949003, guid: 8a39cf38023b57946be252867c65b70b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9163278726189621646, guid: 8a39cf38023b57946be252867c65b70b,
         type: 3}
@@ -4449,6 +4506,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 890592820}
     m_Modifications:
+    - target: {fileID: 1139254413652998083, guid: c80505f0b68aa6f4dbb7fa8f96b9436d,
+        type: 3}
+      propertyPath: loadingScreenHandler
+      value: 
+      objectReference: {fileID: 506797206}
     - target: {fileID: 1139254413652998083, guid: c80505f0b68aa6f4dbb7fa8f96b9436d,
         type: 3}
       propertyPath: imagesPieChart.Array.data[0]

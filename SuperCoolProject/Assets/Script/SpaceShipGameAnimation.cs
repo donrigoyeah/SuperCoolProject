@@ -69,7 +69,14 @@ public class SpaceShipGameAnimation : MonoBehaviour
         ExhaustParticlesMain.startSpeed = 0.5f;
         ExhaustParticlesMain.startLifetime = 6f;
 
-        Debug.Log("Hide Tutorial here as well");
-        //TutorialGameObject.SetActive(true);
+        StartCoroutine(WaitSecBeforeTut());
+    }
+
+
+    IEnumerator WaitSecBeforeTut()
+    {
+        yield return new WaitForSeconds(1f);
+        Debug.Log("DEV: Disable Tutorial Here");
+        TutorialGameObject.SetActive(true);
     }
 }

@@ -43,6 +43,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private PlayerInputManager playerInputManager;
     public List<PlayerManager> players;
     public Transform CameraFollowSpot; // For Cinemachine
+    public LoadingScreenHandler loadingScreenHandler;
 
     public GameObject DeathScreen;
     public GameObject GameOverScreen;
@@ -65,6 +66,7 @@ public class GameManager : MonoBehaviour
         spaceShipPartsDisplay.text = currentSpaceShipParts.ToString() + "/" + totalSpaceShipParts.ToString();
         currentCloneJuice = maxCloneJuice;
         cloneJuiceUI.fillAmount = currentCloneJuice / maxCloneJuice;
+        loadingScreenHandler.totalAwakeCalls++;
     }
 
     private void Start()
@@ -199,6 +201,8 @@ public class GameManager : MonoBehaviour
                 DataAssign.spaceShipData = spaceShipScriptable[i];
             }
         }
+        // After loading all aliens sent finished state to Loading Screen
+        loadingScreenHandler.currentAwakeCalls++;
     }
 
     //Space Ships parts are collected and abilities are unlocked here
