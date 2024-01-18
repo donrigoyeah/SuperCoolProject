@@ -59,10 +59,8 @@ public class SpaceShipHandler : MonoBehaviour
 
                 if (spaceShipPartHandler.spaceShipData.partName == "ShieldGenerator") { GameManager.SharedInstance.hasShieldGenerator = true; abilityText.text = spaceShipPartHandler.spaceShipData.abilityUnlock; }
 
-                // if (spaceShipPartHandler.spaceShipData.partName == "ShieldGenerator")  this is for the fifth space part
-                // {
-                //     GameManager.SharedInstance.hasAntenna = true;
-                // }
+                if (spaceShipPartHandler.spaceShipData.partName == "Unknown") { GameManager.SharedInstance.hasDashPart = true; abilityText.text = spaceShipPartHandler.spaceShipData.abilityUnlock; }
+                
                 UpgradeInformationScreen.SetActive(true);
                 okButton.Select();
 

@@ -99,7 +99,7 @@ public class PlayerLocomotion : MonoBehaviour
 
             if (inputHandler.inputDashing && dashCurrentCharge > 0)
             {
-                if (isDashing == false)
+                if (isDashing == false && GameManager.SharedInstance.hasDashPart)
                 {
                     StartCoroutine(Dash());
                 }
