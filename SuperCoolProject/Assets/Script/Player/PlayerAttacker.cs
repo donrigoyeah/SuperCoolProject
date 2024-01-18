@@ -423,7 +423,7 @@ public class PlayerAttacker : MonoBehaviour
 
     private void HandleGrenadeThrow()
     {
-        if (grenadeAvailable && GameManager.SharedInstance.hasAmmoBox)
+        if (grenadeAvailable && GameManager.Instance.hasAmmoBox || GameManager.Instance.devMode)
         {
             if (inputHandler.inputSecondaryFire)
             {

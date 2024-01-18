@@ -9,7 +9,10 @@ using Cinemachine;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager SharedInstance;
+    public static GameManager Instance;
+
+    [Header("General")]
+    public bool devMode;
 
     [Header("World")]
     public int worldRadius = 150;
@@ -61,7 +64,15 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        SharedInstance = this;
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
+
         players = new List<PlayerManager>();
         currentSpaceShipParts = 0;
         spaceShipPartsDisplay.text = currentSpaceShipParts.ToString() + "/" + totalSpaceShipParts.ToString();

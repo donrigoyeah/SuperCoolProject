@@ -80,7 +80,7 @@ public class CopHandler : MonoBehaviour
     {
         float dist = 1000;
 
-        foreach (var item in GameManager.SharedInstance.players)
+        foreach (var item in GameManager.Instance.players)
         {
             float tempDist = Vector3.Distance(this.transform.position, item.transform.position);
             if (tempDist < dist)

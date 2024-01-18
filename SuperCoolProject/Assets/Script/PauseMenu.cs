@@ -103,12 +103,12 @@ public class PauseMenu : MonoBehaviour
         triangleKillCounter.text = AlienManager.Instance.triangleKilled.ToString();
 
         // TODO: This only shows the stats of the first player / Maybe check which player opend the pause menu?!
-        ResourceSphere.fillAmount = GameManager.SharedInstance.players[0].currentSphereResource / GameManager.SharedInstance.players[0].maxSphereResource;
-        ResourceSquare.fillAmount = GameManager.SharedInstance.players[0].currentSquareResource / GameManager.SharedInstance.players[0].maxSquareResource;
-        ResourceTriangle.fillAmount = GameManager.SharedInstance.players[0].currentTriangleResource / GameManager.SharedInstance.players[0].maxTriangleResource;
+        ResourceSphere.fillAmount = GameManager.Instance.players[0].currentSphereResource / GameManager.Instance.players[0].maxSphereResource;
+        ResourceSquare.fillAmount = GameManager.Instance.players[0].currentSquareResource / GameManager.Instance.players[0].maxSquareResource;
+        ResourceTriangle.fillAmount = GameManager.Instance.players[0].currentTriangleResource / GameManager.Instance.players[0].maxTriangleResource;
 
-        spaceShipParts.text = GameManager.SharedInstance.currentSpaceShipParts.ToString() + "/" + GameManager.SharedInstance.totalSpaceShipParts.ToString();
-        CloneJuice.fillAmount = GameManager.SharedInstance.currentCloneJuice / GameManager.SharedInstance.maxCloneJuice;
+        spaceShipParts.text = GameManager.Instance.currentSpaceShipParts.ToString() + "/" + GameManager.Instance.totalSpaceShipParts.ToString();
+        CloneJuice.fillAmount = GameManager.Instance.currentCloneJuice / GameManager.Instance.maxCloneJuice;
     }
     public IEnumerator Resume()
     {

@@ -25,8 +25,6 @@ public class SpaceShipGameAnimation : MonoBehaviour
     public PlayerInputManager playerInputManager;
     public GameObject TutorialGameObject;
 
-
-
     private void Awake()
     {
         this.transform.position = startPosition;
@@ -38,8 +36,17 @@ public class SpaceShipGameAnimation : MonoBehaviour
         ExhaustParticlesMain = ExhaustParticles.main;
 
         SpaceShipCanvas.SetActive(false);
-        playerInputManager.DisableJoining();
-        StartCoroutine(CrashAnimation(animationDuration));
+
+        if (GameManager.Instance.devMode)
+        {
+            this.transform.position = endPosition;
+        }
+        else
+        {
+            playerInputManager.DisableJoining();
+            StartCoroutine(CrashAnimation(animationDuration));
+        }
+
     }
 
 
@@ -53,6 +60,7 @@ public class SpaceShipGameAnimation : MonoBehaviour
             elapsedTime += Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
+
         // TODO: Add cameraShake
         this.transform.position = endPosition;
         LandingParticlesGO.SetActive(true);
@@ -76,7 +84,6 @@ public class SpaceShipGameAnimation : MonoBehaviour
     IEnumerator WaitSecBeforeTut()
     {
         yield return new WaitForSeconds(1f);
-        Debug.Log("DEV: Disable Tutorial Here");
         TutorialGameObject.SetActive(true);
     }
 }

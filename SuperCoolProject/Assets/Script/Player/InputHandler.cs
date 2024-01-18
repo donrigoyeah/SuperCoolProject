@@ -32,7 +32,7 @@ public class InputHandler : MonoBehaviour
     //        playerInput = GetComponent<PlayerInput>();
     //        playerIndex = playerInput.playerIndex;
     //        playerManager = GetComponent<PlayerManager>();
-    //        GameManager.SharedInstance.AddPlayer(playerManager);
+    //        GameManager.Instance.AddPlayer(playerManager);
     //        Debug.Log("Player Joined: " + playerIndex.ToString());
 
     //    playerControls.PlayerActionMap.Dash.performed += ctx => inputDashing = true;
@@ -62,7 +62,7 @@ public class InputHandler : MonoBehaviour
         playerInput = GetComponent<PlayerInput>();
         playerIndex = playerInput.playerIndex;
         playerManager = GetComponent<PlayerManager>();
-        GameManager.SharedInstance.AddPlayer(playerManager);
+        GameManager.Instance.AddPlayer(playerManager);
         Debug.Log("Player Joined: " + playerIndex.ToString());
         playerControls.Enable();
     }

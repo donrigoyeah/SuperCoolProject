@@ -3475,6 +3475,11 @@ PrefabInstance:
       objectReference: {fileID: 1244808667}
     - target: {fileID: 937689487682581970, guid: bf09349e08449f448b0d27ddea6565dc,
         type: 3}
+      propertyPath: devMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 937689487682581970, guid: bf09349e08449f448b0d27ddea6565dc,
+        type: 3}
       propertyPath: DeathScreen
       value: 
       objectReference: {fileID: 703073541}
@@ -5342,9 +5347,34 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3359048143442643869, guid: 47dea8476420d14458ede6b0cfd95a2d,
         type: 3}
+      propertyPath: m_IsOn
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3359048143442643869, guid: 47dea8476420d14458ede6b0cfd95a2d,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3359048143442643869, guid: 47dea8476420d14458ede6b0cfd95a2d,
+        type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 506797203}
+    - target: {fileID: 3359048143442643869, guid: 47dea8476420d14458ede6b0cfd95a2d,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ToggleDevMode
+      objectReference: {fileID: 0}
+    - target: {fileID: 3359048143442643869, guid: 47dea8476420d14458ede6b0cfd95a2d,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: DevKitHandler, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4586136322965690682, guid: 47dea8476420d14458ede6b0cfd95a2d,
+        type: 3}
+      propertyPath: m_Name
+      value: DevModeToggle
+      objectReference: {fileID: 0}
     - target: {fileID: 4588886197891933191, guid: 47dea8476420d14458ede6b0cfd95a2d,
         type: 3}
       propertyPath: m_OnSubmit.m_PersistentCalls.m_Calls.Array.data[0].m_Target

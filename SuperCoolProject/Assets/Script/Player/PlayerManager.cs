@@ -137,16 +137,16 @@ public class PlayerManager : MonoBehaviour
         // Enable UI Element
         // TODO: Check if all players are dead. otherwise maybe make deathscreen on playerHUD as well
 
-        if (GameManager.SharedInstance.currentCloneJuice < 0)
+        if (GameManager.Instance.currentCloneJuice < 0)
         {
-            GameManager.SharedInstance.hasLost = true;
+            GameManager.Instance.hasLost = true;
             return;
         }
 
-        if (GameManager.SharedInstance.players.Count == 1)
+        if (GameManager.Instance.players.Count == 1)
         {
-            GameManager.SharedInstance.DeathScreen.SetActive(true);
-            GameManager.SharedInstance.DeathScreenCloneJuiceUI.fillAmount = GameManager.SharedInstance.currentCloneJuice / GameManager.SharedInstance.maxCloneJuice;
+            GameManager.Instance.DeathScreen.SetActive(true);
+            GameManager.Instance.DeathScreenCloneJuiceUI.fillAmount = GameManager.Instance.currentCloneJuice / GameManager.Instance.maxCloneJuice;
         }
 
         // Reset all resource variables back to max on new clone
@@ -434,12 +434,12 @@ public class PlayerManager : MonoBehaviour
     {
         if (!isAlive && inputHandler.inputJumping)
         {
-            if (GameManager.SharedInstance.DeathScreen.activeInHierarchy)
+            if (GameManager.Instance.DeathScreen.activeInHierarchy)
             {
-                GameManager.SharedInstance.DeathScreen.SetActive(false);
+                GameManager.Instance.DeathScreen.SetActive(false);
             }
 
-            GameManager.SharedInstance.HandleCloneJuiceDrain();
+            GameManager.Instance.HandleCloneJuiceDrain();
             // TODO: Add Transition/ Fade to black/ camera shutter effect?!
 
             isAlive = true;
@@ -450,7 +450,7 @@ public class PlayerManager : MonoBehaviour
 
     private void HandleGameOver()
     {
-        if (GameManager.SharedInstance.hasLost && inputHandler.inputJumping)
+        if (GameManager.Instance.hasLost && inputHandler.inputJumping)
         {
             SceneManager.LoadScene("MenuScene");
         }

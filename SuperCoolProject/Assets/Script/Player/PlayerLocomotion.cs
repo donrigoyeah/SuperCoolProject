@@ -101,7 +101,7 @@ public class PlayerLocomotion : MonoBehaviour
             {
                 if (isDashing == false)
                 {
-                    if(GameManager.SharedInstance.hasDashPart)
+                    if(GameManager.Instance.hasDashPart)
                     {
                         StartCoroutine(Dash());
                     }

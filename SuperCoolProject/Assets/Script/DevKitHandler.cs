@@ -78,10 +78,15 @@ public class DevKitHandler : MonoBehaviour
         devKitOpen = false;
     }
 
+    public void ToggleDevMode()
+    {
+        GameManager.Instance.devMode = !GameManager.Instance.devMode;
+    }
+
     public void PlayerSpeedInput()
     {
         int.TryParse(playerSpeed.text, out int input);
-        foreach (var item in GameManager.SharedInstance.players
+        foreach (var item in GameManager.Instance.players
     )
         {
             PlayerLocomotion playerLocomotion = item.GetComponent<PlayerLocomotion>();
@@ -117,14 +122,4 @@ public class DevKitHandler : MonoBehaviour
             alienHandler.maxAmountOfBabies = input;
         }
     }
-
-    public void UnlockAllPowers()
-    {
-        GameManager.SharedInstance.hasFuelCanister = true;
-        GameManager.SharedInstance.hasAmmoBox = true;
-        GameManager.SharedInstance.hasShieldGenerator = true;
-        GameManager.SharedInstance.hasAntenna = true;
-        GameManager.SharedInstance.hasDashPart = true;
-    }
-    
 }

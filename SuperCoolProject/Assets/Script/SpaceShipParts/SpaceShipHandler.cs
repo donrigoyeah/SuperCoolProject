@@ -20,8 +20,8 @@ public class SpaceShipHandler : MonoBehaviour
         if (other.gameObject.CompareTag("DeadBody"))
         {
             Destroy(other.gameObject);
-            GameManager.SharedInstance.playerDeadBody = true;
-            GameManager.SharedInstance.currentCloneJuice += 10f;
+            GameManager.Instance.playerDeadBody = true;
+            GameManager.Instance.currentCloneJuice += 10f;
             ParticleSystem objectCompleted = Instantiate(ParticleSystem, new Vector3(0, 0, 5), Quaternion.Euler(-90, 0, 0));
             Destroy(objectCompleted, 1.2f);
             Debug.Log("incrase juice");
@@ -43,7 +43,7 @@ public class SpaceShipHandler : MonoBehaviour
                 ParticleSystem objectCompleted = Instantiate(ParticleSystem, new Vector3(0, 0, 5), Quaternion.Euler(-90, 0, 0));
                 Destroy(objectCompleted, 1.2f);
 
-                GameManager.SharedInstance.currentSpaceShipParts++;
+                GameManager.Instance.currentSpaceShipParts++;
                 PM.currentPart.SetActive(false);
                 PM.currentPart = null;
                 PM.isCarryingPart = false;
@@ -51,20 +51,20 @@ public class SpaceShipHandler : MonoBehaviour
 
 
                 //This is to check which spaceship part player is holding
-                if (spaceShipPartHandler.spaceShipData.partName == "AmmoBox") { GameManager.SharedInstance.hasAmmoBox = true; abilityText.text = spaceShipPartHandler.spaceShipData.abilityUnlock; }
+                if (spaceShipPartHandler.spaceShipData.partName == "AmmoBox") { GameManager.Instance.hasAmmoBox = true; abilityText.text = spaceShipPartHandler.spaceShipData.abilityUnlock; }
 
-                if (spaceShipPartHandler.spaceShipData.partName == "Antenna") { GameManager.SharedInstance.hasAntenna = true; abilityText.text = spaceShipPartHandler.spaceShipData.abilityUnlock; }
+                if (spaceShipPartHandler.spaceShipData.partName == "Antenna") { GameManager.Instance.hasAntenna = true; abilityText.text = spaceShipPartHandler.spaceShipData.abilityUnlock; }
 
-                if (spaceShipPartHandler.spaceShipData.partName == "FuelCanister") { GameManager.SharedInstance.hasFuelCanister = true; abilityText.text = spaceShipPartHandler.spaceShipData.abilityUnlock; }
+                if (spaceShipPartHandler.spaceShipData.partName == "FuelCanister") { GameManager.Instance.hasFuelCanister = true; abilityText.text = spaceShipPartHandler.spaceShipData.abilityUnlock; }
 
-                if (spaceShipPartHandler.spaceShipData.partName == "ShieldGenerator") { GameManager.SharedInstance.hasShieldGenerator = true; abilityText.text = spaceShipPartHandler.spaceShipData.abilityUnlock; }
+                if (spaceShipPartHandler.spaceShipData.partName == "ShieldGenerator") { GameManager.Instance.hasShieldGenerator = true; abilityText.text = spaceShipPartHandler.spaceShipData.abilityUnlock; }
 
-                if (spaceShipPartHandler.spaceShipData.partName == "Unknown") { GameManager.SharedInstance.hasDashPart = true; abilityText.text = spaceShipPartHandler.spaceShipData.abilityUnlock; }
+                if (spaceShipPartHandler.spaceShipData.partName == "Unknown") { GameManager.Instance.hasDashPart = true; abilityText.text = spaceShipPartHandler.spaceShipData.abilityUnlock; }
                 
                 UpgradeInformationScreen.SetActive(true);
                 okButton.Select();
 
-                GameManager.SharedInstance.SpaceShipPartUpdate();
+                GameManager.Instance.SpaceShipPartUpdate();
             }
         }
     }

@@ -206,7 +206,7 @@ public class AlienHandler : MonoBehaviour
         evadingAudioList.Add(squareEvadingAudio);
         evadingAudioList.Add(triangleEvadingAudio);
 
-        worldRadiusSquared = GameManager.SharedInstance.worldRadius * GameManager.SharedInstance.worldRadius;
+        worldRadiusSquared = GameManager.Instance.worldRadius * GameManager.Instance.worldRadius;
         alienActionFogMain = alienActionFog.gameObject.GetComponent<ParticleSystem>().main;
         if (MyTransform == null) { MyTransform = this.gameObject.GetComponent<Transform>(); }
     }
@@ -627,7 +627,7 @@ public class AlienHandler : MonoBehaviour
     private void HandleRendering()
     {
         Vector2 MyTransform2D = new Vector2(MyTransform.position.x, MyTransform.position.z);
-        Vector2 CameraFollowSpot2D = new Vector2(GameManager.SharedInstance.CameraFollowSpot.position.x, GameManager.SharedInstance.CameraFollowSpot.position.z);
+        Vector2 CameraFollowSpot2D = new Vector2(GameManager.Instance.CameraFollowSpot.position.x, GameManager.Instance.CameraFollowSpot.position.z);
         if (Vector2.Distance(MyTransform2D, CameraFollowSpot2D) > 50)
         {
             if (isRendered == true)
@@ -686,7 +686,7 @@ public class AlienHandler : MonoBehaviour
 
     IEnumerator PlayActionParticle(bool isLoving)
     {
-        if (Vector3.Distance(MyTransform.position, GameManager.SharedInstance.CameraFollowSpot.position) > 50) { yield return null; }
+        if (Vector3.Distance(MyTransform.position, GameManager.Instance.CameraFollowSpot.position) > 50) { yield return null; }
 
         if (isLoving)
         {

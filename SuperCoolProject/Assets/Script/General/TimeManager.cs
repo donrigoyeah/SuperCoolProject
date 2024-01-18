@@ -74,7 +74,7 @@ public class TimeManager : MonoBehaviour
             StartCoroutine(ChangeColor(nightToSunrise, 5f, 0f, 1f));
             currentState = DayState.nightToSunrise;
 
-            foreach (var player in GameManager.SharedInstance.players)
+            foreach (var player in GameManager.Instance.players)
             {
                 player.LightBeam.SetActive(false);
             }
@@ -90,7 +90,7 @@ public class TimeManager : MonoBehaviour
             StartCoroutine(ChangeColor(dayToSunSet, 10f, 1.0f, 1f));
             currentState = DayState.dayToSunSet;
 
-            foreach (var player in GameManager.SharedInstance.players)
+            foreach (var player in GameManager.Instance.players)
             {
                 player.LightBeam.SetActive(true);
             }
