@@ -22,14 +22,16 @@ public class DeadAlienHandler : MonoBehaviour
         {
             Rigidbodies[i].velocity = Vector3.zero;
             Rigidbodies[i].position = Vector3.zero;
+            Rigidbodies[i].rotation = Quaternion.identity;
             deadAlienSpecies[i].SetActive(false);
         }
     }
 
     private void OnEnable()
     {
-        dissolve.SetFloat("_DissolveAmount", 0);
-        EnableCertainRagdoll();
+        deadAlienSpecies[currentAlienSpecies].SetActive(true);
+        Rigidbodies[currentAlienSpecies].AddForce((bulletForce * 4) + Vector3.up * 4);
+        StartCoroutine(Dissolve());
     }
 
     private void OnDisable()
@@ -38,20 +40,16 @@ public class DeadAlienHandler : MonoBehaviour
         {
             Rigidbodies[i].velocity = Vector3.zero;
             Rigidbodies[i].position = Vector3.zero;
+            Rigidbodies[i].rotation = Quaternion.identity;
             deadAlienSpecies[i].SetActive(false);
         }
         bulletForce = Vector3.zero;
     }
 
-    private void EnableCertainRagdoll()
-    {
-        deadAlienSpecies[currentAlienSpecies].SetActive(true);
-        Rigidbodies[currentAlienSpecies].AddForce((bulletForce * 50f) + Vector3.up * 25f);
-        StartCoroutine(Dissolve());
-    }
 
     IEnumerator Dissolve()
     {
+        dissolve.SetFloat("_DissolveAmount", 0);
         float durtaion = 1f;
         float steps = 30;
 

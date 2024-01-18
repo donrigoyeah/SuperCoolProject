@@ -481,11 +481,11 @@ public class AlienHandler : MonoBehaviour
         if (deadAlienGO != null)
         {
             deadAlienGO.transform.position = MyTransform.position;
-            deadAlienGO.transform.rotation = MyTransform.rotation;
+            //deadAlienGO.transform.rotation = MyTransform.rotation;
+            deadAlienGO.transform.rotation = Quaternion.identity;
 
             DeadAlienHandler deadAlien = deadAlienGO.GetComponent<DeadAlienHandler>();
-            deadAlien.transform.rotation = Quaternion.identity;
-            deadAlien.transform.rotation = Quaternion.Euler(0, 90, 0);
+            deadAlien.transform.rotation = MyTransform.rotation;
             deadAlien.bulletForce = bulletForce;
             deadAlien.currentAlienSpecies = currentSpecies;
 
