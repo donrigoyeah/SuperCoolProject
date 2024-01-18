@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour
     public bool hasAmmoBox = false;
     public bool hasShieldGenerator = false;
     public bool hasAntenna = false;
+    public bool hasDashPart = false;
 
 
     [Header("References")]
