@@ -11,8 +11,6 @@ using Random = UnityEngine.Random;
 
 public class AlienHandler : MonoBehaviour
 {
-
-
     public enum AlienState
     {
         looking,
@@ -466,7 +464,7 @@ public class AlienHandler : MonoBehaviour
         return;
     }
 
-    public void HandleDeathByBullet(bool isPlayerBullet)
+    public void HandleDeathByBullet(bool isPlayerBullet, Vector3 bulletForce)
     {
         if (isPlayerBullet)
         {
@@ -477,6 +475,7 @@ public class AlienHandler : MonoBehaviour
         if (deadAlienGO != null)
         {
             DeadAlienHandler deadAlien = deadAlienGO.GetComponent<DeadAlienHandler>();
+            deadAlien.bulletForce = bulletForce;
             deadAlien.currentAlienSpecies = currentSpecies;
             deadAlien.transform.position = this.gameObject.transform.position;
             deadAlien.gameObject.SetActive(true);
@@ -848,7 +847,7 @@ public class AlienHandler : MonoBehaviour
             // Handle Alien Death
             if (alienHealth <= 0 && isDead == false)
             {
-                HandleDeathByBullet(isPlayerBullet);
+                HandleDeathByBullet(isPlayerBullet, other.GetComponent<Rigidbody>().velocity);
             };
 
             return;
