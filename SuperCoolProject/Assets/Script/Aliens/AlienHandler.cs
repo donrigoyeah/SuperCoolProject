@@ -175,7 +175,14 @@ public class AlienHandler : MonoBehaviour
     public float tickTimer;
     public float tickTimerMax = .5f;
 
+    public AlienManager alienManager;
+
     #endregion
+
+    private void Awake()
+    {
+        alienManager = AlienManager.Instance;
+    }
 
     private void Start()
     {
@@ -470,7 +477,7 @@ public class AlienHandler : MonoBehaviour
     {
         if (isPlayerBullet)
         {
-            AlienManager.SharedInstance.KillAlien(currentSpecies);
+            AlienManager.Instance.KillAlien(currentSpecies);
         }
         Debug.Log("ffff");
         GameObject deadAlienGO = PoolManager.SharedInstance.GetPooledDeadAlien();
@@ -720,7 +727,7 @@ public class AlienHandler : MonoBehaviour
         currentAge = AlienAge.resource;
         alienHealth = alienLifeResource;
         MyTransform.localScale = Vector3.one * 0.7f;
-        AlienManager.SharedInstance.AddToResourceList(this);
+        alienManager.AddToResourceList(this);
         yield return new WaitForSeconds(timeToChild);
 
         // Child Life
@@ -731,7 +738,7 @@ public class AlienHandler : MonoBehaviour
         MyTransform.localScale = Vector3.one * .6f;
         alienSpeciesChild[currentSpecies].SetActive(false);
         alienSpeciesAdult[currentSpecies].SetActive(true);
-        AlienManager.SharedInstance.RemoveFromResourceList(this); // TODO: Check if available in List?!
+        alienManager.RemoveFromResourceList(this); // TODO: Check if available in List?!
         yield return new WaitForSeconds(timeToSexual);
 
         // Sexual active Life
@@ -782,7 +789,7 @@ public class AlienHandler : MonoBehaviour
                 case false: // Other Species
                     if (currentAge == AlienAge.resource) // You, the resource, gets trampled
                     {
-                        AlienManager.SharedInstance.RemoveFromResourceList(this);
+                        AlienManager.Instance.RemoveFromResourceList(this);
                         // TODO: Maybe add trampled particles?!
                         this.gameObject.SetActive(false);
                         return;

@@ -520,7 +520,7 @@ public class PlayerAttacker : MonoBehaviour
             if (CurrentCollidingAH.currentAge == AlienAge.resource)
             {
                 playerManager.HandleGainResource(CurrentCollidingAH.currentSpecies);
-                AlienManager.SharedInstance.RemoveFromResourceList(CurrentCollidingAH);
+                AlienManager.Instance.RemoveFromResourceList(CurrentCollidingAH);
                 CurrentCollidingAH.gameObject.SetActive(false);
             }
             else

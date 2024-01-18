@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class AlienManager : MonoBehaviour
 {
-    public static AlienManager SharedInstance;
-
     [Header("Current Alien Population")]
     // 0:Sphere, 1:Square, 2:Triangle
     public int sphereCount;
@@ -41,10 +39,19 @@ public class AlienManager : MonoBehaviour
 
     public LoadingScreenHandler loadingScreenHandler;
 
+    public static AlienManager Instance;
 
     private void Awake()
     {
-        SharedInstance = this;
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
+
         loadingScreenHandler.totalAwakeCalls++;
     }
 
@@ -104,8 +111,8 @@ public class AlienManager : MonoBehaviour
                 alienPoolGo.SetActive(true);
             }
         }
-        loadingScreenHandler.currentAwakeCalls++;
 
+        loadingScreenHandler.currentAwakeCalls++;
         return;
     }
 

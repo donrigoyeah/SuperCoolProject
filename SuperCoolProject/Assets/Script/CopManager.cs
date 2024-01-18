@@ -98,7 +98,7 @@ public class CopManager : MonoBehaviour
         hasLanded = false;
         copAmount = newCopAmount;
 
-        currentAmountOfKilledAliens = AlienManager.SharedInstance.totalKillCount - amountOfKilledAliensPaid;
+        currentAmountOfKilledAliens = AlienManager.Instance.totalKillCount - amountOfKilledAliensPaid;
         currentFineRequested = (currentAmountOfKilledAliens) * costPerKill;
         fineCost.text = currentFineRequested.ToString();
         fineDescribtion.text = "You killed " + currentAmountOfKilledAliens + " Aliens";

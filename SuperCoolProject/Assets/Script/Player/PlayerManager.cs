@@ -261,14 +261,14 @@ public class PlayerManager : MonoBehaviour
             float currentDist;
 
             int loopAmount =
-                neededResource == 0 ? AlienManager.SharedInstance.resourceSphere.Count :
-                neededResource == 1 ? AlienManager.SharedInstance.resourceSquare.Count :
-                neededResource == 2 ? AlienManager.SharedInstance.resourceTriangle.Count : 0;
+                neededResource == 0 ? AlienManager.Instance.resourceSphere.Count :
+                neededResource == 1 ? AlienManager.Instance.resourceSquare.Count :
+                neededResource == 2 ? AlienManager.Instance.resourceTriangle.Count : 0;
 
             List<AlienHandler> ResourceList =
-               neededResource == 0 ? AlienManager.SharedInstance.resourceSphere :
-               neededResource == 1 ? AlienManager.SharedInstance.resourceSquare :
-               neededResource == 2 ? AlienManager.SharedInstance.resourceTriangle : null;
+               neededResource == 0 ? AlienManager.Instance.resourceSphere :
+               neededResource == 1 ? AlienManager.Instance.resourceSquare :
+               neededResource == 2 ? AlienManager.Instance.resourceTriangle : null;
 
             for (int i = 0; i < loopAmount; i++)
             {
