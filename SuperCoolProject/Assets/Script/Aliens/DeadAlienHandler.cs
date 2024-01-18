@@ -7,13 +7,15 @@ using UnityEngine;
 public class DeadAlienHandler : MonoBehaviour
 {
     public GameObject[] deadAlienSpecies; // 0:Sphere > 1:Square > 2:Triangle
+    public Rigidbody[] Rigidbodies;
     public int currentAlienSpecies;
-
+    public Vector3 bulletForce;
+    
     [Header("Dissolve")]
     public Material dissolve;
     public float dissolveRate = 0.0125f;
     public float refreshRate = 0.025f;
-    
+
     private void OnEnable()
     {
         EnableCertainRagdoll();
@@ -26,7 +28,10 @@ public class DeadAlienHandler : MonoBehaviour
         {
             item.SetActive(false);
         }
+
+        Rigidbodies[currentAlienSpecies].velocity = Vector3.zero;
         deadAlienSpecies[currentAlienSpecies].SetActive(true);
+        Rigidbodies[currentAlienSpecies].AddForce(bulletForce + Vector3.up * 5f);
         StartCoroutine(Dissolve());
     }
 
