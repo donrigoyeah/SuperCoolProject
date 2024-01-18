@@ -37,6 +37,7 @@ public class DeadAlienHandler : MonoBehaviour
             item.velocity = Vector3.zero;
             item.position = myTransform.position;
         }
+        bulletForce = Vector3.zero;
     }
 
     private void EnableCertainRagdoll()
