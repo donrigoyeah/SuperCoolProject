@@ -166,6 +166,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: e872bd16213a44b4c965915f62ec1b02, type: 3}
   tickTimer: 0
   tickTimerMax: 0.5
+  alienManager: {fileID: 0}
 --- !u!136 &1753352926865818878
 CapsuleCollider:
   m_ObjectHideFlags: 0

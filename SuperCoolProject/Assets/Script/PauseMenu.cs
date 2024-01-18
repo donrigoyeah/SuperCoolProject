@@ -98,9 +98,9 @@ public class PauseMenu : MonoBehaviour
 
     private void UpdatePauseUI()
     {
-        sphereKillCounter.text = AlienManager.SharedInstance.sphereKilled.ToString();
-        squareKillCounter.text = AlienManager.SharedInstance.squareKilled.ToString();
-        triangleKillCounter.text = AlienManager.SharedInstance.triangleKilled.ToString();
+        sphereKillCounter.text = AlienManager.Instance.sphereKilled.ToString();
+        squareKillCounter.text = AlienManager.Instance.squareKilled.ToString();
+        triangleKillCounter.text = AlienManager.Instance.triangleKilled.ToString();
 
         // TODO: This only shows the stats of the first player / Maybe check which player opend the pause menu?!
         ResourceSphere.fillAmount = GameManager.SharedInstance.players[0].currentSphereResource / GameManager.SharedInstance.players[0].maxSphereResource;

@@ -83,7 +83,7 @@ public class PoolManager : MonoBehaviour
     [Header("Reference")]
     public LoadingScreenHandler loadingScreenHandler;
 
-    private void Awake()
+    private void Start()
     {
         SharedInstance = this;
         // Alien Stuff
@@ -155,7 +155,7 @@ public class PoolManager : MonoBehaviour
         for (int i = 0; i < alienAmount; i++)
         {
             // Generate Opject in Scene
-                tmp = Instantiate(Alien);
+            tmp = Instantiate(Alien);
             // Set location for clearer structure in Scene
             tmp.transform.SetParent(AlienContainer.transform);
             // Disable the freshly instatiated object / Place to handle loading screne?!
