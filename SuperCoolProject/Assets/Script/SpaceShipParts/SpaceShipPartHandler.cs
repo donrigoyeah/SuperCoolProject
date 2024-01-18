@@ -55,7 +55,7 @@ public class SpaceShipPartHandler : MonoBehaviour
                     audioSource.PlayOneShot(draggingAudio, 1f);
                 }
                 playerManager.currentPart = this.gameObject;
-                previousPlayerSpeed = playerLocomotion.playerSpeed;
+                playerLocomotion.playerSpeed = previousPlayerSpeed;
                 playerLocomotion.playerSpeed = playerSpeedReduction;
                 playerManager.isCarryingPart = true;
                 this.transform.parent = other.transform;

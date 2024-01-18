@@ -117,4 +117,14 @@ public class DevKitHandler : MonoBehaviour
             alienHandler.maxAmountOfBabies = input;
         }
     }
+
+    public void UnlockAllPowers()
+    {
+        GameManager.SharedInstance.hasFuelCanister = true;
+        GameManager.SharedInstance.hasAmmoBox = true;
+        GameManager.SharedInstance.hasShieldGenerator = true;
+        GameManager.SharedInstance.hasAntenna = true;
+        GameManager.SharedInstance.hasDashPart = true;
+    }
+    
 }
