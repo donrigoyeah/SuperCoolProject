@@ -59,7 +59,7 @@ public class BulletHandler : MonoBehaviour
                 }
 
                 // Aggro all cops
-                foreach (var item in CopManager.SharedInstance.currentCops)
+                foreach (var item in CopManager.Instance.currentCops)
                 {
                     item.isAggro = true;
                 }

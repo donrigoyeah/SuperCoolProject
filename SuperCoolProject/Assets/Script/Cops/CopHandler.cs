@@ -73,7 +73,6 @@ public class CopHandler : MonoBehaviour
                 return;
             }
         }
-
     }
 
     private void FindClosestPlayer()
@@ -102,7 +101,7 @@ public class CopHandler : MonoBehaviour
 
         float step = copSpeed * Time.deltaTime;
 
-        if (CopManager.SharedInstance.hasBeenServed == true && isAggro == false)
+        if (CopManager.Instance.hasBeenServed == true && isAggro == false)
         {
             transform.LookAt(CopCar.transform.position, Vector3.up);
             transform.position = Vector3.MoveTowards(transform.position, CopCar.transform.position, step);
@@ -117,10 +116,10 @@ public class CopHandler : MonoBehaviour
         }
         else
         {
-            if (CopManager.SharedInstance.hasBeenServed == false)
+            if (CopManager.Instance.hasBeenServed == false)
             {
-                CopManager.SharedInstance.CopScreenGO.SetActive(true);
-                CopManager.SharedInstance.payButton.Select();
+                CopManager.Instance.CopScreenGO.SetActive(true);
+                CopManager.Instance.payButton.Select();
                 Time.timeScale = 0;
             }
             canShoot = true;
@@ -156,7 +155,7 @@ public class CopHandler : MonoBehaviour
         // TODO: Make nicer
         GameObject deadCop = Instantiate(copCorpse, transform.position, quaternion.identity);
         Destroy(deadCop, 2f);
-        CopManager.SharedInstance.currentCops.Remove(this);
+        CopManager.Instance.currentCops.Remove(this);
         this.gameObject.SetActive(false);
     }
 
