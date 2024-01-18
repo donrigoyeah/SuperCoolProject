@@ -40,6 +40,7 @@ public class DeadAlienHandler : MonoBehaviour
             Rigidbodies[i].position = Vector3.zero;
             deadAlienSpecies[i].SetActive(false);
         }
+        bulletForce = Vector3.zero;
     }
 
     private void EnableCertainRagdoll()
