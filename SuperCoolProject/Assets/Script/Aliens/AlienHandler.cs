@@ -482,9 +482,13 @@ public class AlienHandler : MonoBehaviour
         if (deadAlienGO != null)
         {
             DeadAlienHandler deadAlien = deadAlienGO.GetComponent<DeadAlienHandler>();
+            deadAlien.Rigidbodies[currentSpecies].velocity = Vector3.zero;
+            deadAlien.Rigidbodies[currentSpecies].position = MyTransform.position;
+            deadAlien.transform.position = MyTransform.position;
+            deadAlien.transform.rotation = MyTransform.rotation;
             deadAlien.bulletForce = bulletForce;
             deadAlien.currentAlienSpecies = currentSpecies;
-            deadAlien.transform.position = this.gameObject.transform.position;
+
             deadAlien.gameObject.SetActive(true);
         }
 
