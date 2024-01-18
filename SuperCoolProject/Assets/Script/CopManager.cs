@@ -6,8 +6,6 @@ using UnityEngine.UI;
 
 public class CopManager : MonoBehaviour
 {
-    public static CopManager SharedInstance;
-
     public bool hasBeenServed = false;
     public int copAmount = 0;
     public bool hasLanded = false;
@@ -28,9 +26,18 @@ public class CopManager : MonoBehaviour
 
     public Button payButton;
 
+    public static CopManager Instance;
+
     private void Awake()
     {
-        SharedInstance = this;
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
     }
 
 
@@ -53,8 +60,6 @@ public class CopManager : MonoBehaviour
             HandleReturnCopCar();
             return;
         }
-
-
     }
 
     public void HandleLandCopCar()
@@ -92,20 +97,26 @@ public class CopManager : MonoBehaviour
         }
     }
 
-    public void HandleSpawnCopCar(int newCopAmount)
+    public void HandleSpawnCopCar(int copCount)
     {
         hasBeenServed = false;
         hasLanded = false;
-        copAmount = newCopAmount;
 
         currentAmountOfKilledAliens = AlienManager.Instance.totalKillCount - amountOfKilledAliensPaid;
         currentFineRequested = (currentAmountOfKilledAliens) * costPerKill;
         fineCost.text = currentFineRequested.ToString();
         fineDescribtion.text = "You killed " + currentAmountOfKilledAliens + " Aliens";
 
+
+        int copCarCount = Mathf.RoundToInt(copCount / 3);
+
+        for (int i = 0; i < copCarCount; i++)
+        {
+
+        }
         CopCarCurrent = Instantiate(CopCar);
         CopCarCurrent.gameObject.transform.SetParent(this.transform);
-        float rCar = Random.Range(20, 30);
+        float rCar = Random.Range(20, 25);
         float angleCar = Random.Range(0, 360);
 
         float randPosXCar = rCar * Mathf.Cos(Mathf.Deg2Rad * angleCar);

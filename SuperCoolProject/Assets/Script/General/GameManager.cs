@@ -176,6 +176,9 @@ public class GameManager : MonoBehaviour
     private void HandleWin()
     {
         Debug.Log("Player won");
+
+        CopManager.Instance.HandleSpawnCopCar(AlienManager.Instance.totalKillCount);
+
     }
 
     private void HandleLoss()
