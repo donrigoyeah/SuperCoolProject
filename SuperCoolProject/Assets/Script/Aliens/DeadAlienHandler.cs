@@ -10,8 +10,7 @@ public class DeadAlienHandler : MonoBehaviour
     public Rigidbody[] Rigidbodies;
     public int currentAlienSpecies;
     public Vector3 bulletForce;
-    public Transform myTransform;
-    
+
     [Header("Dissolve")]
     public Material dissolve;
     public float dissolveRate = 0.0125f;
@@ -19,49 +18,48 @@ public class DeadAlienHandler : MonoBehaviour
 
     private void Awake()
     {
-        myTransform = this.transform;
+        for (int i = 0; i < Rigidbodies.Length; i++)
+        {
+            Rigidbodies[i].velocity = Vector3.zero;
+            Rigidbodies[i].position = Vector3.zero;
+            deadAlienSpecies[i].SetActive(false);
+        }
     }
 
     private void OnEnable()
     {
-        Rigidbodies[currentAlienSpecies].velocity = Vector3.zero;
-        Rigidbodies[currentAlienSpecies].position = myTransform.position;
         dissolve.SetFloat("_DissolveAmount", 0);
         EnableCertainRagdoll();
     }
 
     private void OnDisable()
     {
-        foreach (var item in Rigidbodies)
+        for (int i = 0; i < Rigidbodies.Length; i++)
         {
-            item.velocity = Vector3.zero;
-            item.position = myTransform.position;
+            Rigidbodies[i].velocity = Vector3.zero;
+            Rigidbodies[i].position = Vector3.zero;
+            deadAlienSpecies[i].SetActive(false);
         }
     }
 
     private void EnableCertainRagdoll()
     {
-        foreach (var item in deadAlienSpecies)
-        {
-            item.SetActive(false);
-        }
-        
         deadAlienSpecies[currentAlienSpecies].SetActive(true);
-        Rigidbodies[currentAlienSpecies].AddForce((bulletForce * 5f) + Vector3.up * 5f);
+        Rigidbodies[currentAlienSpecies].AddForce((bulletForce * 50f) + Vector3.up * 25f);
         StartCoroutine(Dissolve());
     }
-    
+
     IEnumerator Dissolve()
     {
         float durtaion = 1f;
         float steps = 30;
-        
-            for (int i = 0; i < steps; i++)
-            {   
-                yield return new WaitForSeconds(durtaion / steps);
-                float dissolveAMount = (i / steps);
-                dissolve.SetFloat("_DissolveAmount", (dissolveAMount));
-            }
+
+        for (int i = 0; i < steps; i++)
+        {
+            yield return new WaitForSeconds(durtaion / steps);
+            float dissolveAMount = (i / steps);
+            dissolve.SetFloat("_DissolveAmount", (dissolveAMount));
+        }
         Rigidbodies[currentAlienSpecies].velocity = Vector3.zero;
         this.gameObject.SetActive(false);
     }

@@ -477,19 +477,19 @@ public class AlienHandler : MonoBehaviour
         {
             AlienManager.Instance.KillAlien(currentSpecies);
         }
-        Debug.Log("ffff");
         GameObject deadAlienGO = PoolManager.SharedInstance.GetPooledDeadAlien();
         if (deadAlienGO != null)
         {
+            deadAlienGO.transform.position = MyTransform.position;
+            deadAlienGO.transform.rotation = MyTransform.rotation;
+
             DeadAlienHandler deadAlien = deadAlienGO.GetComponent<DeadAlienHandler>();
-            deadAlien.Rigidbodies[currentSpecies].velocity = Vector3.zero;
-            deadAlien.Rigidbodies[currentSpecies].position = MyTransform.position;
-            deadAlien.transform.position = MyTransform.position;
-            deadAlien.transform.rotation = MyTransform.rotation;
+            deadAlien.transform.rotation = Quaternion.identity;
+            deadAlien.transform.rotation = Quaternion.Euler(0, 90, 0);
             deadAlien.bulletForce = bulletForce;
             deadAlien.currentAlienSpecies = currentSpecies;
 
-            deadAlien.gameObject.SetActive(true);
+            deadAlienGO.gameObject.SetActive(true);
         }
 
         HandleDeath();

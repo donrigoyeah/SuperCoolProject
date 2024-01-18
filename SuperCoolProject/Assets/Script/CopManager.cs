@@ -125,6 +125,7 @@ public class CopManager : MonoBehaviour
         CopCarCurrent.transform.position = new Vector3(randPosXCar, 100, randPosZCar);
     }
 
+
     public void HandleReturnCops()
     {
         float totalDistanceOfCopsFromCar = 0;
