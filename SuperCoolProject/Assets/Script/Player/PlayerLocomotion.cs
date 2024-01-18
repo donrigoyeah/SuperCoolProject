@@ -99,9 +99,12 @@ public class PlayerLocomotion : MonoBehaviour
 
             if (inputHandler.inputDashing && dashCurrentCharge > 0)
             {
-                if (isDashing == false && GameManager.SharedInstance.hasDashPart)
+                if (isDashing == false)
                 {
-                    StartCoroutine(Dash());
+                    if(GameManager.SharedInstance.hasDashPart)
+                    {
+                        StartCoroutine(Dash());
+                    }
                 }
             }
 
