@@ -112,7 +112,7 @@ public class PlayerAttacker : MonoBehaviour
         if (gunOverheated == false && nextFireTime > fireRate)
         {
             overheatUI.color = Color.Lerp(Color.green, Color.red, overheatUI.fillAmount / 0.70f);
-            if (inputHandler.inputPrimaryFire && !playerManager.isCarryingPart && !PauseMenu.SharedInstance.isPaused)
+            if (inputHandler.inputPrimaryFire && !playerManager.isCarryingPart && !PauseMenu.Instance.isPaused)
             {
                 playerAnim.SetBool("IsShooting", true);
 
@@ -264,6 +264,13 @@ public class PlayerAttacker : MonoBehaviour
             lastInput = inputHandler.inputAim;
             lastTimeSinceLazer += Time.deltaTime;
 
+            // Check if the player is shooting
+            bool isShooting = inputHandler.inputPrimaryFire && !playerManager.isCarryingPart && !PauseMenu.Instance.isPaused;
+
+            if (isShooting)
+            {
+                lastTimeSinceLazer = 0;
+            }
             // Check if on Mouse and has not moved the mouse enough btw aimInput of controller
             if (inputHandler.inputAim != Vector2.zero ||
                     (inputHandler.isGamepad == false &&

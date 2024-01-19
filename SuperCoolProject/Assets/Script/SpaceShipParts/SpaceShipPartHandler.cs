@@ -51,7 +51,7 @@ public class SpaceShipPartHandler : MonoBehaviour
                 }
                 playerManager.currentPart = this.gameObject;
                 playerLocomotion.playerSpeed = previousPlayerSpeed;
-                playerLocomotion.playerSpeed = playerSpeedReduction;
+                playerLocomotion.playerSpeed -= playerSpeedReduction;
                 playerManager.isCarryingPart = true;
                 this.transform.parent = other.transform;
             }

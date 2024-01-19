@@ -96,7 +96,7 @@ public class AlienHandler : MonoBehaviour
     public float hungerTimerThreshold = 5;
     public RawImage currentStateIcon;
     public Texture[] allStateIcons; // 0: eye, 1: crosshair, 2: wind, 3: heart, 4: shield
-    private Vector3 targetPosition = Vector3.zero;
+    public Vector3 targetPosition = Vector3.zero;
 
     [Header("Target Alien")]
     public GameObject targetAlien = null;
@@ -705,7 +705,7 @@ public class AlienHandler : MonoBehaviour
 
     }
 
-    IEnumerator IdleSecsUntilNewState(float seconds, AlienState nextState)
+    public IEnumerator IdleSecsUntilNewState(float seconds, AlienState nextState)
     {
         if (anim[currentSpecies] != null)
         {

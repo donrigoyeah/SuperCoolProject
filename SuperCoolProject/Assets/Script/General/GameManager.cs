@@ -143,8 +143,14 @@ public class GameManager : MonoBehaviour
         if (numberOfPlayers == 1)
         {
             StartCoroutine(RaiseCameraSpeed(cameraSpeedRaiseDuration));
-        }
 
+            // TODO: Change this here
+            if (devMode == true)
+            {
+                Debug.Log("Tutorial STart");
+                TutorialSceneHandler.Instance.ShowFoodCircleOrder();
+            }
+        }
     }
 
     public void TurnOnAllPlayerLights()

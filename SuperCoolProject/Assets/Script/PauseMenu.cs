@@ -12,7 +12,7 @@ using UnityEngine.InputSystem;
 
 public class PauseMenu : MonoBehaviour
 {
-    public static PauseMenu SharedInstance;
+    public static PauseMenu Instance;
 
     [Header("Volume Settings")]
     public GameObject pauseMenu;
@@ -47,7 +47,14 @@ public class PauseMenu : MonoBehaviour
 
     private void Awake()
     {
-        SharedInstance = this;
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
         // Handle entire UI from this script? Add values of resourceUI and other displays here"); 
     }
 
@@ -88,8 +95,8 @@ public class PauseMenu : MonoBehaviour
     public IEnumerator Pause()
     {
         UpdatePauseUI();
-        PauseMenu.SharedInstance.pauseMenu.SetActive(true);
-        PauseMenu.SharedInstance.stats.SetActive(true);
+        PauseMenu.Instance.pauseMenu.SetActive(true);
+        PauseMenu.Instance.stats.SetActive(true);
         resumeButton.Select();
         Time.timeScale = 0.01f;
         yield return new WaitForSeconds(0.02f);
@@ -113,16 +120,16 @@ public class PauseMenu : MonoBehaviour
     public IEnumerator Resume()
     {
         Time.timeScale = 1;
-        PauseMenu.SharedInstance.pauseMenu.SetActive(false);
-        PauseMenu.SharedInstance.options.SetActive(false);
+        PauseMenu.Instance.pauseMenu.SetActive(false);
+        PauseMenu.Instance.options.SetActive(false);
         yield return new WaitForSeconds(0.2f);
         isPaused = false;
     }
 
     public void PauseForButton()
     {
-        PauseMenu.SharedInstance.pauseMenu.SetActive(true);
-        PauseMenu.SharedInstance.stats.SetActive(true);
+        PauseMenu.Instance.pauseMenu.SetActive(true);
+        PauseMenu.Instance.stats.SetActive(true);
         resumeButton.Select();
         Time.timeScale = 0.01f;
         isPaused = true;
@@ -132,7 +139,7 @@ public class PauseMenu : MonoBehaviour
     {
         isPaused = false;
         Time.timeScale = 1;
-        PauseMenu.SharedInstance.pauseMenu.SetActive(false);
+        PauseMenu.Instance.pauseMenu.SetActive(false);
     }
 
     public void Restart()

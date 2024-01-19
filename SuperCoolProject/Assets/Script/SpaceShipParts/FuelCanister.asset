@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: FuelCanister
   m_EditorClassIdentifier: 
   partName: FuelCanister
-  mass: 10
+  mass: 8
   abilityUnlock: Increases Speed
   model: {fileID: 0}
