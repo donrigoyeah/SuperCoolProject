@@ -22,6 +22,7 @@ public class TreeAndStoneHandler : MonoBehaviour
     private float r;
     private float angle;
     private float randomRotation;
+    private float randomScale;
     private float randPosX;
     private float randPosZ;
 
@@ -52,6 +53,7 @@ public class TreeAndStoneHandler : MonoBehaviour
             r = Random.Range(30, GameManager.Instance.worldRadius);
             angle = Random.Range(0, 360);
             randomRotation = Random.Range(0, 360);
+            randomScale = (Random.Range(0, 2) - .5f) + 1; // between 0.5 and 1.5
 
             randPosX = r * Mathf.Cos(Mathf.Deg2Rad * angle);
             randPosZ = r * Mathf.Sin(Mathf.Deg2Rad * angle);
@@ -66,6 +68,7 @@ public class TreeAndStoneHandler : MonoBehaviour
             tmpTreeTransform = tmpTree.transform;
             tmpTreeTransform.position = potentialPosition;
             tmpTreeTransform.rotation = Quaternion.Euler(0, randomRotation, 0);
+            tmpTreeTransform.localScale = Vector3.one * randomScale;
             tmpTreeTransform.SetParent(this.transform);
 
             Light[] allTmpLights = tmpTree.GetComponentsInChildren<Light>();
@@ -81,6 +84,7 @@ public class TreeAndStoneHandler : MonoBehaviour
             r = Random.Range(30, GameManager.Instance.worldRadius);
             angle = Random.Range(0, 360);
             randomRotation = Random.Range(0, 360);
+            randomScale = (Random.Range(0, 2) - .5f) + 1; // between 0.5 and 1.5
 
             randPosX = r * Mathf.Cos(Mathf.Deg2Rad * angle);
             randPosZ = r * Mathf.Sin(Mathf.Deg2Rad * angle);
@@ -89,11 +93,11 @@ public class TreeAndStoneHandler : MonoBehaviour
             // TODO: Check wheater spot is free or not
             //while (Physics.OverlapSphere(potentialPosition, .1f, 9) != null)
 
-
             tmpStone = Instantiate(Stone);
             tmpStoneTransform = tmpStone.transform;
             tmpStoneTransform.position = potentialPosition;
             tmpStoneTransform.rotation = Quaternion.Euler(0, randomRotation, 0);
+            tmpStoneTransform.localScale = Vector3.one * randomScale;
             tmpStoneTransform.SetParent(this.transform);
 
         }

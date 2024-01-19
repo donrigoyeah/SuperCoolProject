@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7327193470900488689}
-  - component: {fileID: 625335533674342821}
+  - component: {fileID: 5785049520092629307}
   m_Layer: 0
   m_Name: Stone
   m_TagString: Untagged
@@ -33,8 +33,8 @@ Transform:
   - {fileID: 863396649579458937}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &625335533674342821
-CapsuleCollider:
+--- !u!65 &5785049520092629307
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -51,11 +51,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 1.9497108
-  m_Height: 5.2396793
-  m_Direction: 1
-  m_Center: {x: 3.7114058, y: -6.33333, z: 22.119812}
+  serializedVersion: 3
+  m_Size: {x: 2.3797498, y: 3.0405996, z: 3.677363}
+  m_Center: {x: -0.013487816, y: 1.4519156, z: 0.14836788}
 --- !u!1001 &896743888907097746
 PrefabInstance:
   m_ObjectHideFlags: 0
