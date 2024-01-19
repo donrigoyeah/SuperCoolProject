@@ -64,7 +64,6 @@ public class InputHandler : MonoBehaviour
         playerManager = GetComponent<PlayerManager>();
         GameManager.Instance.AddPlayer(playerManager);
 
-        Debug.Log("Player Joined: " + playerIndex.ToString());
         playerControls.Enable();
     }
 

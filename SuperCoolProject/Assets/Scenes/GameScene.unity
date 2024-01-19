@@ -1346,6 +1346,56 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 4413952409639303829}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &689542223
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 689542224}
+  - component: {fileID: 689542225}
+  m_Layer: 0
+  m_Name: TutorialScene
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &689542224
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 689542223}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 14.84, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 986437707}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &689542225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 689542223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41e61d1d8b18af449b159ac6349015fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AlienPrefab: {fileID: 1047908099467871381, guid: d934f14e333eefc4697225457031ccaa,
+    type: 3}
+  currentAlien: {fileID: 0}
+  currentAlienHandler: {fileID: 0}
+  currentAlienTransform: {fileID: 0}
+  alienStartPosition: {x: -20, y: 0, z: 0}
 --- !u!1 &703073541 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5114784885420805789, guid: 4e9f40b14e37beb4ea8ac8f132bf56b0,
@@ -1671,6 +1721,7 @@ Transform:
   - {fileID: 392401693}
   - {fileID: 2045070898}
   - {fileID: 919173420}
+  - {fileID: 689542224}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &989361723 stripped

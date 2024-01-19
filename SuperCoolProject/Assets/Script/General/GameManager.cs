@@ -147,6 +147,7 @@ public class GameManager : MonoBehaviour
             // TODO: Change this here
             if (devMode == true)
             {
+                Debug.Log("Tutorial STart");
                 TutorialSceneHandler.Instance.ShowFoodCircleOrder();
             }
         }

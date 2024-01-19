@@ -29,7 +29,7 @@ public class TutorialSceneHandler : MonoBehaviour
 
     public void ShowFoodCircleOrder()
     {
-        DoTheFoodCircle();
+        StartCoroutine(DoTheFoodCircle());
     }
 
     private void SpawnAdultAlien(int species, bool attacking)
