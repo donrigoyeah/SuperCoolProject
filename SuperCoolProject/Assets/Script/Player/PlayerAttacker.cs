@@ -203,7 +203,7 @@ public class PlayerAttacker : MonoBehaviour
     private void SpawnLazer(float damage)
     {
         //TODO: Add Recoil
-
+        
         GameObject bulletPoolGo = PoolManager.Instance.GetPooledBullets();
         GameObject muzzlePoolGo = PoolManager.Instance.GetPooledMuzzle();
 
@@ -270,23 +270,38 @@ public class PlayerAttacker : MonoBehaviour
             if (isShooting)
             {
                 lastTimeSinceLazer = 0;
+            }
+            // Check if on Mouse and has not moved the mouse enough btw aimInput of controller
+            if (inputHandler.inputAim != Vector2.zero ||
+                    (inputHandler.isGamepad == false &&
+                    Mathf.RoundToInt(inputHandler.inputAim.x) != Mathf.RoundToInt(lastInput.x) ||
+                    Mathf.RoundToInt(inputHandler.inputAim.y) != Mathf.RoundToInt(lastInput.y))
+                )
+            {
+                lastTimeSinceLazer = 0;
+            }
 
+
+
+            if (lastTimeSinceLazer < disableLazerAfterNoInput)
+            {
                 if (isEnabled == false)
                 {
                     StartCoroutine(EnableLazers());
                     isEnabled = true;
                     isDisabled = false;
                 }
-
                 LaserSight();
+                return;
             }
-            else if (lastTimeSinceLazer >= disableLazerAfterNoInput)
+            else
             {
                 if (isDisabled == false)
                 {
                     StartCoroutine(DisableLazers());
                     isDisabled = true;
                     isEnabled = false;
+                    return;
                 }
             }
         }
