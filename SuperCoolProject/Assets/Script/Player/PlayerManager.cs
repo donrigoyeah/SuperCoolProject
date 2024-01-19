@@ -170,18 +170,23 @@ public class PlayerManager : MonoBehaviour
                 continue;
             }
 
+            if (CurrentSurroundingAH.disableActionOnSuccess) // Interaction with player in TutorialScene, prevents HandleUpdateTarget error
+            {
+                return;
+            }
+
             CurrentSurroundingAH.targetAlien = this.gameObject;
 
             if (CurrentSurroundingAH.currentAge == AlienHandler.AlienAge.fullyGrown)
             {
                 CurrentSurroundingAH.currentState = AlienHandler.AlienState.hunting;
-                CurrentSurroundingAH.HandleAttacking(this.gameObject); // this time its not an alienGO but the player
+                CurrentSurroundingAH.HandleAttacking(this.gameObject, true); // this time its not an alienGO but the player, isAttackingPlayer
                 continue;
             }
             else
             {
                 CurrentSurroundingAH.currentState = AlienHandler.AlienState.evading;
-                CurrentSurroundingAH.HandleFleeing(this.gameObject); // this time its not an alienGO but the player
+                CurrentSurroundingAH.HandleFleeing(this.gameObject, true); // this time its not an alienGO but the player, isEvadingPlayer
                 continue;
             }
         }

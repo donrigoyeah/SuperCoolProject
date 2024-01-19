@@ -9,8 +9,7 @@ public class SpaceShipAlienRepellent : MonoBehaviour
         if (other.gameObject.CompareTag("Alien"))
         {
             AlienHandler enteringAlien = other.gameObject.GetComponent<AlienHandler>();
-            enteringAlien.currentState = AlienHandler.AlienState.evading;
-            enteringAlien.HandleFleeing(this.gameObject); // this time its not an alienGO but the player
+            enteringAlien.HandleFleeing(this.gameObject, true); // this time its not an alienGO but the spaceship; true for isEvadingPlayer
         }
     }
 }
