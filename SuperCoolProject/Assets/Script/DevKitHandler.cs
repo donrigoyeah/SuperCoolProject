@@ -97,9 +97,9 @@ public class DevKitHandler : MonoBehaviour
     public void AlienHealthInput()
     {
         float.TryParse(alienHealth.text, out float input);
-        for (int i = 0; i <= PoolManager.SharedInstance.AlienPool.Count; i++)
+        for (int i = 0; i <= PoolManager.Instance.AlienPool.Count; i++)
         {
-            GameObject alien = PoolManager.SharedInstance.AlienPool[i];
+            GameObject alien = PoolManager.Instance.AlienPool[i];
             AlienHandler alienHandler = alien.GetComponent<AlienHandler>();
             alienHandler.alienHealth = input;
         }
@@ -108,16 +108,16 @@ public class DevKitHandler : MonoBehaviour
     public void AlienAmountInput()
     {
         int.TryParse(alienAmount.text, out int input);
-        PoolManager.SharedInstance.alienAmount = input;
+        PoolManager.Instance.alienAmount = input;
     }
 
     public void AlienAmountOfBabiesInput()
     {
         int.TryParse(alienAmountOfBabies.text, out int input);
 
-        for (int i = 0; i <= PoolManager.SharedInstance.AlienPool.Count; i++)
+        for (int i = 0; i <= PoolManager.Instance.AlienPool.Count; i++)
         {
-            GameObject alien = PoolManager.SharedInstance.AlienPool[i];
+            GameObject alien = PoolManager.Instance.AlienPool[i];
             AlienHandler alienHandler = alien.GetComponent<AlienHandler>();
             alienHandler.maxAmountOfBabies = input;
         }

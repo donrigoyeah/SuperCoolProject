@@ -161,7 +161,7 @@ public class CopHandler : MonoBehaviour
 
     private void HandleSpawnCopLazer(Transform lazerSpawnLocation)
     {
-        GameObject copBulletPoolGo = PoolManager.SharedInstance.GetPooledCopBullets();
+        GameObject copBulletPoolGo = PoolManager.Instance.GetPooledCopBullets();
         if (copBulletPoolGo != null)
         {
             copBulletPoolGo.transform.position = lazerSpawnLocation.position;
@@ -174,7 +174,7 @@ public class CopHandler : MonoBehaviour
 
             copBulletPoolGo.SetActive(true);
         }
-        GameObject copMuzzlePoolGo = PoolManager.SharedInstance.GetPooledCopMuzzle();
+        GameObject copMuzzlePoolGo = PoolManager.Instance.GetPooledCopMuzzle();
         if (copMuzzlePoolGo != null)
         {
             copMuzzlePoolGo.transform.position = lazerSpawnLocation.position;

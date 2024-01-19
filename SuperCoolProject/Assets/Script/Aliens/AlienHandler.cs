@@ -360,14 +360,14 @@ public class AlienHandler : MonoBehaviour
         }
 
         #region Loop over List approach
-        //for (int i = 0; i < PoolManager.SharedInstance.AlienPool.Count; i++)  //list of gameObjects to search through
+        //for (int i = 0; i < PoolManager.Instance.AlienPool.Count; i++)  //list of gameObjects to search through
         //{
-        //    if (PoolManager.SharedInstance.AlienPool[i] == this.gameObject || PoolManager.SharedInstance.AlienPool[i] == lastClosestAlien) continue;
+        //    if (PoolManager.Instance.AlienPool[i] == this.gameObject || PoolManager.Instance.AlienPool[i] == lastClosestAlien) continue;
 
-        //    float dist = Vector3.Distance(PoolManager.SharedInstance.AlienPool[i].transform.position, transform.position);
+        //    float dist = Vector3.Distance(PoolManager.Instance.AlienPool[i].transform.position, transform.position);
         //    if (dist < lookRadius)
         //    {
-        //        closestAlien = PoolManager.SharedInstance.AlienPool[i];
+        //        closestAlien = PoolManager.Instance.AlienPool[i];
         //        closestAlienIndex = closestAlien.GetComponent<AlienHandler>().currentSpecies;
         //        break;
         //    }
@@ -428,7 +428,7 @@ public class AlienHandler : MonoBehaviour
     private void HandleMating()
     {
         // Check if possible to spawn more aliens
-        if (PoolManager.SharedInstance.currentAlienAmount == PoolManager.SharedInstance.alienAmount + PoolManager.SharedInstance.alienAmountExtra)
+        if (PoolManager.Instance.currentAlienAmount == PoolManager.Instance.alienAmount + PoolManager.Instance.alienAmountExtra)
         {
             StartCoroutine(IdleSecsUntilNewState(1f, AlienState.looking));
             return;
@@ -444,7 +444,7 @@ public class AlienHandler : MonoBehaviour
             amountOfBabies = UnityEngine.Random.Range(1, maxAmountOfBabies);
             for (var i = 0; i < amountOfBabies; i++)
             {
-                GameObject alienPoolGo = PoolManager.SharedInstance.GetPooledAliens();
+                GameObject alienPoolGo = PoolManager.Instance.GetPooledAliens();
                 if (alienPoolGo != null)
                 {
                     float randomOffSet = (UnityEngine.Random.Range(0, 5) - 2) / 2;
@@ -477,7 +477,7 @@ public class AlienHandler : MonoBehaviour
         {
             AlienManager.Instance.KillAlien(currentSpecies);
         }
-        GameObject deadAlienGO = PoolManager.SharedInstance.GetPooledDeadAlien();
+        GameObject deadAlienGO = PoolManager.Instance.GetPooledDeadAlien();
         if (deadAlienGO != null)
         {
             deadAlienGO.transform.position = MyTransform.position;
@@ -841,7 +841,7 @@ public class AlienHandler : MonoBehaviour
             alienHealth -= currentBulletDamage;
             bool isPlayerBullet = CurrentBH.isPlayerBullet;
 
-            GameObject damageUIGo = PoolManager.SharedInstance.GetPooledDamageUI();
+            GameObject damageUIGo = PoolManager.Instance.GetPooledDamageUI();
             if (damageUIGo != null)
             {
                 damageUIGo.transform.position = MyTransform.position;

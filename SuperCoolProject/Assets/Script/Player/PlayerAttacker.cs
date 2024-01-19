@@ -204,8 +204,8 @@ public class PlayerAttacker : MonoBehaviour
     {
         //TODO: Add Recoil
 
-        GameObject bulletPoolGo = PoolManager.SharedInstance.GetPooledBullets();
-        GameObject muzzlePoolGo = PoolManager.SharedInstance.GetPooledMuzzle();
+        GameObject bulletPoolGo = PoolManager.Instance.GetPooledBullets();
+        GameObject muzzlePoolGo = PoolManager.Instance.GetPooledMuzzle();
 
         if (bulletPoolGo != null)
         {

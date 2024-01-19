@@ -146,7 +146,7 @@ public class PlayerLocomotion : MonoBehaviour
             audioSource.PlayOneShot(footstepAudio, 1f);
 
             // Spawn Footstep Smoke GO
-            FSSGO = PoolManager.SharedInstance.GetPooledFSS();
+            FSSGO = PoolManager.Instance.GetPooledFSS();
             if (FSSGO != null)
             {
                 FSSTransform = FSSGO.GetComponent<Transform>();

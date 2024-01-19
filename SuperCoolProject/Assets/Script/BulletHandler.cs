@@ -30,7 +30,7 @@ public class BulletHandler : MonoBehaviour
     {
         if (isPlayerBullet)
         {
-            GameObject BulletExp = PoolManager.SharedInstance.GetPooledBulletExplosion();
+            GameObject BulletExp = PoolManager.Instance.GetPooledBulletExplosion();
 
             if (BulletExp != null)
             {
@@ -47,7 +47,7 @@ public class BulletHandler : MonoBehaviour
                 CH.copHealthCurrent -= bulletDamage;
 
 
-                GameObject damageUIGo = PoolManager.SharedInstance.GetPooledDamageUI();
+                GameObject damageUIGo = PoolManager.Instance.GetPooledDamageUI();
                 if (damageUIGo != null)
                 {
                     damageUIGo.transform.position = other.transform.position;
