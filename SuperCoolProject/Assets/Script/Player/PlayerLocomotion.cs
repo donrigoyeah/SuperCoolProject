@@ -82,26 +82,11 @@ public class PlayerLocomotion : MonoBehaviour
                 playerAnim.SetBool("IsWalking", false);
             }
 
-            if (inputHandler.inputJumping && isJumping)
-            {
-                Jump();
-            }
-
-            if (!isJumping)
-            {
-                jumpCooldownTimer -= Time.deltaTime;
-                if (jumpCooldownTimer <= 0f)
-                {
-                    isJumping = true;
-                    jumpCooldownTimer = jumpCooldown;
-                }
-            }
-
             if (inputHandler.inputDashing && dashCurrentCharge > 0)
             {
                 if (isDashing == false)
                 {
-                    if(GameManager.Instance.hasDashPart)
+                    if (GameManager.Instance.hasDashPart || GameManager.Instance.devMode)
                     {
                         StartCoroutine(Dash());
                     }
@@ -140,7 +125,7 @@ public class PlayerLocomotion : MonoBehaviour
         // Handle toggle HUD 
         if (inputHandler.inputNavToggle)
         {
-            HUDHandler.SharedInstance.ChangeHUD();
+            HUDHandler.Instance.ChangeHUD();
         }
     }
 

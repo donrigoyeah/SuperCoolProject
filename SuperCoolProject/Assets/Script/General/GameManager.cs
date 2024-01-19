@@ -9,8 +9,6 @@ using Cinemachine;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance;
-
     [Header("General")]
     public bool devMode;
 
@@ -41,7 +39,6 @@ public class GameManager : MonoBehaviour
     public bool hasAntenna = false;
     public bool hasDashPart = false;
 
-
     [Header("References")]
     [SerializeField] private GameObject map;
     [SerializeField] private PlayerInputManager playerInputManager;
@@ -61,6 +58,9 @@ public class GameManager : MonoBehaviour
 
     [Header("Dead Body")]
     public bool playerDeadBody = false;
+
+
+    public static GameManager Instance;
 
     private void Awake()
     {
@@ -88,10 +88,9 @@ public class GameManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (players.Count != 0)
-        {
-            HandleCameraTarget();
-        }
+        if (players.Count == 0) { return; }
+        HandleCameraTarget();
+
     }
 
     private void HandleCameraTarget()
@@ -122,11 +121,11 @@ public class GameManager : MonoBehaviour
     {
         numberOfPlayers++;
         players.Add(pm);
-        HUDHandler.SharedInstance.HUDSystemGO.SetActive(true);
-        HUDHandler.SharedInstance.EnableCurrentHUD(2); // Enable Time Display
+        HUDHandler.Instance.HUDSystemGO.SetActive(true);
+        HUDHandler.Instance.EnableCurrentHUD(2); // Enable Time Display
 
         // Enable Light Beams on Player
-        if (TimeManager.SharedInstance.currentState == TimeManager.DayState.sunsetToNight || TimeManager.SharedInstance.currentState == TimeManager.DayState.dayToSunSet)
+        if (TimeManager.Instance.currentState == TimeManager.DayState.sunsetToNight || TimeManager.Instance.currentState == TimeManager.DayState.dayToSunSet)
         {
             pm.LightBeam.SetActive(true);
         }
@@ -144,6 +143,21 @@ public class GameManager : MonoBehaviour
             StartCoroutine(RaiseCameraSpeed(cameraSpeedRaiseDuration));
         }
 
+    }
+
+    public void TurnOnAllPlayerLights()
+    {
+        foreach (PlayerManager player in players)
+        {
+            player.LightBeam.SetActive(true);
+        }
+    }
+    public void TurnOffAllPlayerLights()
+    {
+        foreach (PlayerManager player in players)
+        {
+            player.LightBeam.SetActive(false);
+        }
     }
 
     IEnumerator RaiseCameraSpeed(float duration)

@@ -541,6 +541,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ParticleSystem: {fileID: 1834161352568267220, guid: 523267235871452419eee02a89d24662,
     type: 3}
+  abilityText: {fileID: 0}
+  UpgradeInformationScreen: {fileID: 0}
+  okButton: {fileID: 0}
 --- !u!1 &6915565293643401255
 GameObject:
   m_ObjectHideFlags: 0

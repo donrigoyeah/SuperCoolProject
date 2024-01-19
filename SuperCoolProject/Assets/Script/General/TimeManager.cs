@@ -3,12 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using static AlienHandler;
 
 public class TimeManager : MonoBehaviour
 {
-    public static TimeManager SharedInstance;
-
-
     public enum DayState
     {
         nightToSunrise,
@@ -17,7 +15,32 @@ public class TimeManager : MonoBehaviour
         sunsetToNight
     }
     [Header("Current Day State")]
-    public DayState currentState;
+
+    private DayState currentStateValue; //this holds the actual value 
+    public DayState currentState
+    {
+        get
+        {
+            return currentStateValue;
+        }
+        set
+        {
+            currentStateValue = value;
+            // Handle Behaviour
+            switch (value)
+            {
+                case DayState.nightToSunrise:
+
+                    GameManager.Instance.TurnOffAllPlayerLights();
+                    StartCoroutine(TreeAndStoneHandler.Instance.TurnOffAllTreeLights());
+                    break;
+                case DayState.dayToSunSet:
+                    GameManager.Instance.TurnOnAllPlayerLights();
+                    StartCoroutine(TreeAndStoneHandler.Instance.TurnOnAllTreeLights());
+                    break;
+            }
+        }
+    } //this is public and accessible, and should be used to change "State"
 
 
     [Header("Time")]
@@ -41,9 +64,19 @@ public class TimeManager : MonoBehaviour
     public Gradient dayToSunSet; // 18 - 0
     public Gradient sunsetToNight; // 0-6
 
+    public static TimeManager Instance;
+
     private void Awake()
     {
-        SharedInstance = this;
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
+
         currentState = DayState.sunsetToNight;
     }
 
@@ -74,10 +107,7 @@ public class TimeManager : MonoBehaviour
             StartCoroutine(ChangeColor(nightToSunrise, 5f, 0f, 1f));
             currentState = DayState.nightToSunrise;
 
-            foreach (var player in GameManager.Instance.players)
-            {
-                player.LightBeam.SetActive(false);
-            }
+
         }
         else if (hour == 12)
         {
@@ -89,11 +119,6 @@ public class TimeManager : MonoBehaviour
         {
             StartCoroutine(ChangeColor(dayToSunSet, 10f, 1.0f, 1f));
             currentState = DayState.dayToSunSet;
-
-            foreach (var player in GameManager.Instance.players)
-            {
-                player.LightBeam.SetActive(true);
-            }
         }
         else if (hour == 24)
         {
@@ -118,7 +143,8 @@ public class TimeManager : MonoBehaviour
 
     private void DisplayTimeText()
     {
-        string formattedTime = $"{hours:D2}:{minutes:D2}";
-        displayTime.text = "DAY: " + days + "\n" + formattedTime;
+        //string formattedTime = $"{hours:D2}:{minutes:D2}";
+        string formattedTime = $"{hours:D2} h";
+        displayTime.text = "DAY " + days + "\n" + formattedTime;
     }
 }

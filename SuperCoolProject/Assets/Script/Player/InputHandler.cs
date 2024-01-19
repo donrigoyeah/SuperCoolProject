@@ -63,14 +63,10 @@ public class InputHandler : MonoBehaviour
         playerIndex = playerInput.playerIndex;
         playerManager = GetComponent<PlayerManager>();
         GameManager.Instance.AddPlayer(playerManager);
+
         Debug.Log("Player Joined: " + playerIndex.ToString());
         playerControls.Enable();
     }
-
-    // private void OnEnable()
-    // {
-    //     playerControls.Enable();
-    // }
 
     private void OnDisable()
     {
@@ -88,6 +84,8 @@ public class InputHandler : MonoBehaviour
             inputMovement = Vector2.zero;
         }
 
+        // This way of handling input did not work and resulted in controlling both player(clones) with both controller for multiplayer:
+        //
         //playerControls.PlayerActionMap.Movement.performed += ctx => inputMovement = ctx.ReadValue<Vector2>();
         //playerControls.PlayerActionMap.Movement.canceled += ctx => inputMovement = Vector2.zero;
     }
@@ -102,10 +100,6 @@ public class InputHandler : MonoBehaviour
         {
             inputAim = Vector2.zero;
         }
-
-
-        //playerControls.PlayerActionMap.Aim.performed += ctx => inputAim = ctx.ReadValue<Vector2>();
-        //playerControls.PlayerActionMap.Aim.canceled += ctx => inputAim = Vector2.zero;
 
         if (ctx.control.device is Gamepad)
         {
@@ -123,9 +117,6 @@ public class InputHandler : MonoBehaviour
         {
             inputDashing = false;
         }
-
-        //playerControls.PlayerActionMap.Dash.performed += ctx => inputDashing = true;
-        //playerControls.PlayerActionMap.Dash.canceled += ctx => inputDashing = false;
     }
 
     public void JumpInput(InputAction.CallbackContext ctx)
@@ -138,9 +129,6 @@ public class InputHandler : MonoBehaviour
         {
             inputJumping = false;
         }
-
-        //playerControls.PlayerActionMap.Jump.performed += ctx => inputJumping = true;
-        //playerControls.PlayerActionMap.Jump.canceled += ctx => inputJumping = false;
     }
 
     public void InteractionInput(InputAction.CallbackContext ctx)
@@ -153,8 +141,6 @@ public class InputHandler : MonoBehaviour
         {
             inputInteracting = false;
         }
-        //playerControls.PlayerActionMap.Interaction.performed += ctx => inputInteracting = true;
-        //playerControls.PlayerActionMap.Interaction.canceled += ctx => inputInteracting = false;
     }
 
     public void PrimaryFireInput(InputAction.CallbackContext ctx)
@@ -167,9 +153,6 @@ public class InputHandler : MonoBehaviour
         {
             inputPrimaryFire = false;
         }
-
-        //playerControls.PlayerActionMap.PrimaryFire.performed += ctx => inputPrimaryFire = true;
-        //playerControls.PlayerActionMap.PrimaryFire.canceled += ctx => inputPrimaryFire = false;
     }
 
     public void SecondaryFireInput(InputAction.CallbackContext ctx)
@@ -182,9 +165,6 @@ public class InputHandler : MonoBehaviour
         {
             inputSecondaryFire = false;
         }
-
-        //playerControls.PlayerActionMap.SecondaryFire.performed += ctx => inputSecondaryFire = true;
-        //playerControls.PlayerActionMap.SecondaryFire.canceled += ctx => inputSecondaryFire = false;
     }
 
     public void PauseInput(InputAction.CallbackContext ctx)
@@ -197,9 +177,6 @@ public class InputHandler : MonoBehaviour
         {
             inputPause = false;
         }
-
-        //playerControls.PlayerActionMap.Pause.performed += ctx => inputPause = true;
-        //playerControls.PlayerActionMap.Pause.canceled += ctx => inputPause = false;
     }
 
     public void NavToggleInput(InputAction.CallbackContext ctx)
@@ -212,8 +189,5 @@ public class InputHandler : MonoBehaviour
         {
             inputNavToggle = false;
         }
-
-        //playerControls.PlayerActionMap.Pause.performed += ctx => inputPause = true;
-        //playerControls.PlayerActionMap.Pause.canceled += ctx => inputPause = false;
     }
 }

@@ -22,11 +22,6 @@ public class SpaceShipPartHandler : MonoBehaviour
     [SerializeField] private AudioClip draggingAudio;
 
 
-
-    // public LineRenderer linerenderer;
-    // public Transform position1;
-    // public Transform position2;
-
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
@@ -77,7 +72,7 @@ public class SpaceShipPartHandler : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         tmp.text = spaceShipData.partName;
     }

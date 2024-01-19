@@ -4,16 +4,20 @@ using UnityEngine;
 
 public class HUDHandler : MonoBehaviour
 {
-    public static HUDHandler SharedInstance;
-
+    [Header("Reference")]
     public GameObject HUDSystemGO;
     public int currentHUD;
     public GameObject[] HUDS; // 0: Population 1: Minimap 2: Time
     public RectTransform HUDScaler;
+    public GameObject UnlockPopulation;
+    public GameObject UnlockMiniMap;
+
+    [Header("MiniMap")]
     public Camera MiniMapCamera;
     public float cameraZoomOut = 200; // TODO: This is entire Island. Maybe Have it follow the player instead
     public float cameraZoomIn = 50;
 
+    [Header("DayTime")]
     public RectTransform DayNightCircle;
     public RectTransform SunNMoonCircle;
     public int currentMinute = 0;
@@ -21,6 +25,7 @@ public class HUDHandler : MonoBehaviour
     public int currentTotalMinutes = 0;
     public float currentPercentage = 0;
 
+    [Header("General")]
     private float lastInputTimer = 100;
     private float minWaitDuration = .5f;
     private float timeThreshold = 2;
@@ -28,10 +33,26 @@ public class HUDHandler : MonoBehaviour
     private float transitionDuration = .5f;
 
 
+    public static HUDHandler Instance;
+
     private void Awake()
     {
-        SharedInstance = this;
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
+
+
         currentHUD = 2;
+        if (GameManager.Instance.devMode)
+        {
+            UnlockMiniMap.SetActive(false);
+            UnlockPopulation.SetActive(false);
+        }
         DisbaleAllHUDS();
     }
 
@@ -91,8 +112,8 @@ public class HUDHandler : MonoBehaviour
 
     private void HandleDisplayTimeOfDay()
     {
-        currentMinute = TimeManager.SharedInstance.minutes;
-        currentHours = TimeManager.SharedInstance.hours;
+        currentMinute = TimeManager.Instance.minutes;
+        currentHours = TimeManager.Instance.hours;
 
         currentTotalMinutes = currentMinute + currentHours * 60;
         currentPercentage = (currentTotalMinutes * 100) / (24 * 60);
