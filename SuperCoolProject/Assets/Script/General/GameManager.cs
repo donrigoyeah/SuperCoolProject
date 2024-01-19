@@ -43,6 +43,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject map;
     [SerializeField] private PlayerInputManager playerInputManager;
     public List<PlayerManager> players;
+    public List<PlayerLocomotion> playersLocos;
     public Transform CameraFollowSpot; // For Cinemachine
     public LoadingScreenHandler loadingScreenHandler;
 
@@ -76,11 +77,13 @@ public class GameManager : MonoBehaviour
         }
 
         players = new List<PlayerManager>();
+        playersLocos = new List<PlayerLocomotion>();
         currentSpaceShipParts = 0;
         spaceShipPartsDisplay.text = currentSpaceShipParts.ToString() + "/" + totalSpaceShipParts.ToString();
         currentCloneJuice = maxCloneJuice;
         cloneJuiceUI.fillAmount = currentCloneJuice / maxCloneJuice;
         loadingScreenHandler.totalAwakeCalls++;
+
     }
 
     private void Start()
@@ -123,6 +126,12 @@ public class GameManager : MonoBehaviour
     {
         numberOfPlayers++;
         players.Add(pm);
+
+        PlayerLocomotion currentPlayerLoco = pm.GetComponent<PlayerLocomotion>();
+        playersLocos.Add(currentPlayerLoco);
+
+        pm.gameObject.transform.LookAt(TutorialSceneHandler.Instance.alienEndPosition);
+
         HUDHandler.Instance.HUDSystemGO.SetActive(true);
         HUDHandler.Instance.EnableCurrentHUD(2); // Enable Time Display
 
@@ -148,10 +157,28 @@ public class GameManager : MonoBehaviour
             if (devMode == true)
             {
                 Debug.Log("Tutorial STart");
+                FreezeAllPlayers();
+
                 TutorialSceneHandler.Instance.ShowFoodCircleOrder();
             }
         }
     }
+
+    public void FreezeAllPlayers()
+    {
+        foreach (PlayerLocomotion player in playersLocos)
+        {
+            player.canMove = false;
+        }
+    }
+    public void UnFreezeAllPlayers()
+    {
+        foreach (PlayerLocomotion player in playersLocos)
+        {
+            player.canMove = true;
+        }
+    }
+
 
     public void TurnOnAllPlayerLights()
     {

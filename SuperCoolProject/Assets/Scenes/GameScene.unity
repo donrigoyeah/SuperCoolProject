@@ -1372,7 +1372,7 @@ Transform:
   m_GameObject: {fileID: 689542223}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 14.84, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1395,7 +1395,9 @@ MonoBehaviour:
   currentAlien: {fileID: 0}
   currentAlienHandler: {fileID: 0}
   currentAlienTransform: {fileID: 0}
-  alienStartPosition: {x: -20, y: 0, z: 0}
+  spawnDelay: 5
+  alienStartPosition: {x: -23, y: 0, z: -11}
+  alienEndPosition: {x: 0, y: 0, z: -11}
 --- !u!1 &703073541 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5114784885420805789, guid: 4e9f40b14e37beb4ea8ac8f132bf56b0,
@@ -3049,12 +3051,17 @@ PrefabInstance:
     - target: {fileID: 292991685637541685, guid: 959b924f5e51a25468637aa813697924,
         type: 3}
       propertyPath: alienAmount
-      value: 100
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 292991685637541685, guid: 959b924f5e51a25468637aa813697924,
         type: 3}
       propertyPath: deadAlienAmount
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 292991685637541685, guid: 959b924f5e51a25468637aa813697924,
+        type: 3}
+      propertyPath: alienAmountExtra
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 292991685637541685, guid: 959b924f5e51a25468637aa813697924,
         type: 3}
