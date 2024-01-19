@@ -7,7 +7,7 @@ public class PoolManager : MonoBehaviour
 {
     // SharedInstances lets us access it from everyy file
     // Only for Scripts that have exactly one instance in the scene
-    public static PoolManager SharedInstance;
+    public static PoolManager Instance;
 
     // Header In Inspector
     [Header("Aliens")]
@@ -83,9 +83,17 @@ public class PoolManager : MonoBehaviour
     [Header("Reference")]
     public LoadingScreenHandler loadingScreenHandler;
 
-    private void Start()
+    private void Awake()
     {
-        SharedInstance = this;
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
+
         // Alien Stuff
         AlienPooling();
 

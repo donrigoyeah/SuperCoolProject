@@ -76,7 +76,7 @@ public class CopManager : MonoBehaviour
     {
         for (int i = 0; i < copAmount; i++)
         {
-            GameObject copPoolGo = PoolManager.SharedInstance.GetPooledCop();
+            GameObject copPoolGo = PoolManager.Instance.GetPooledCop();
             if (copPoolGo != null)
             {
 

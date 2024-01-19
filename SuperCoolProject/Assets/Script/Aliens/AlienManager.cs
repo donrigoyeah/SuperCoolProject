@@ -77,15 +77,15 @@ public class AlienManager : MonoBehaviour
     private void InitalSpawnAliens()
     {
         ClearResourceList();
-        int oneSegmentOfPoulation = Mathf.RoundToInt(PoolManager.SharedInstance.alienAmount / segmentAmount);
+        int oneSegmentOfPoulation = Mathf.RoundToInt(PoolManager.Instance.alienAmount / segmentAmount);
         int currentPopulationSegment = oneSegmentOfPoulation;
         int pieSliceSize = 360 / segmentAmount;
         int currentSlize = 0;
         int currentSpieziesForArea = 0;
 
-        for (int i = 0; i < PoolManager.SharedInstance.alienAmount; i++)
+        for (int i = 0; i < PoolManager.Instance.alienAmount; i++)
         {
-            GameObject alienPoolGo = PoolManager.SharedInstance.GetPooledAliens();
+            GameObject alienPoolGo = PoolManager.Instance.GetPooledAliens();
             if (alienPoolGo != null)
             {
                 if (i > currentPopulationSegment)
@@ -163,7 +163,7 @@ public class AlienManager : MonoBehaviour
         triangleCount = 0;
         totalActiveAliens = 0;
 
-        foreach (var item in PoolManager.SharedInstance.AlienPool)
+        foreach (var item in PoolManager.Instance.AlienPool)
         {
             if (item.activeInHierarchy)
             {
