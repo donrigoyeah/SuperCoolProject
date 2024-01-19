@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: AmmoBox
   m_EditorClassIdentifier: 
   partName: AmmoBox
-  mass: 10
+  mass: 8
   abilityUnlock: Grenades
   model: {fileID: 0}

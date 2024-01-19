@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: ShieldGenerator
   m_EditorClassIdentifier: 
   partName: ShieldGenerator
-  mass: 5
+  mass: 8
   abilityUnlock: Makes Shield Stronger
   model: {fileID: 0}

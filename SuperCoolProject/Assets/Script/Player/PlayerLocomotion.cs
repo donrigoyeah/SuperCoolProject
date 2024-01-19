@@ -12,6 +12,8 @@ public class PlayerLocomotion : MonoBehaviour
     Camera MainCamera;
     private float horizontalInput;
     private float verticalInput;
+    public bool canMove = true;
+
     public float playerSpeed;
     [SerializeField] private float gravityValue;
     [SerializeField] private float jumpForce;
@@ -19,10 +21,6 @@ public class PlayerLocomotion : MonoBehaviour
     private CharacterController controller;
     private Vector3 playerVelocity;
     public Vector3 targetAimPosition;
-
-    private bool isJumping = true;
-    private float jumpCooldownTimer = 0f;
-    private float jumpCooldown = 2f;
 
     [Header("Dash")]
     [SerializeField] public GameObject dashUiGO;
@@ -54,9 +52,9 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] private AudioClip footstepAudio;
     private AudioSource audioSource;
 
+
     private void OnEnable()
     {
-        isJumping = false;
         audioSource = GetComponent<AudioSource>();
         controller = GetComponent<CharacterController>();
         inputHandler = GetComponent<InputHandler>();
@@ -68,6 +66,9 @@ public class PlayerLocomotion : MonoBehaviour
 
     void Update()
     {
+        // Player can not move!
+        if (canMove == false) { return; }
+
         // Player is Alive
         if (playerManager.isAlive)
         {
@@ -109,16 +110,16 @@ public class PlayerLocomotion : MonoBehaviour
         if (inputHandler.inputPause)
         {
             // TODO: Check that it does not trigger double
-            if (PauseMenu.SharedInstance.isPaused)
+            if (PauseMenu.Instance.isPaused)
             {
-                StartCoroutine(PauseMenu.SharedInstance.Resume());
-                PauseMenu.SharedInstance.Resume();
+                StartCoroutine(PauseMenu.Instance.Resume());
+                PauseMenu.Instance.Resume();
             }
 
-            if (PauseMenu.SharedInstance.isPaused == false)
+            if (PauseMenu.Instance.isPaused == false)
             {
-                StartCoroutine(PauseMenu.SharedInstance.Pause());
-                PauseMenu.SharedInstance.Pause();
+                StartCoroutine(PauseMenu.Instance.Pause());
+                PauseMenu.Instance.Pause();
             }
         }
 
@@ -194,12 +195,6 @@ public class PlayerLocomotion : MonoBehaviour
     {
         targetAimPosition = new Vector3(lookPoint.x, myTransform.position.y, lookPoint.z);
         myTransform.LookAt(targetAimPosition);
-    }
-
-    private void Jump()
-    {
-        playerVelocity.y = jumpForce;
-        isJumping = false;
     }
 
     private IEnumerator Dash()

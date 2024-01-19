@@ -7,6 +7,7 @@ public class TreeAndStoneHandler : MonoBehaviour
     [Header("General")]
     public int treeCount = 0;
     public int stoneCount = 0;
+    public float lightSwitchDuration = 5f;
 
 
     [Header("References")]
@@ -58,7 +59,7 @@ public class TreeAndStoneHandler : MonoBehaviour
             randPosX = r * Mathf.Cos(Mathf.Deg2Rad * angle);
             randPosZ = r * Mathf.Sin(Mathf.Deg2Rad * angle);
 
-            potentialPosition = new Vector3(randPosX, 0.1f, randPosZ);
+            potentialPosition = new Vector3(randPosX, 0, randPosZ);
 
 
             // TODO: Check wheater spot is free or not
@@ -74,6 +75,8 @@ public class TreeAndStoneHandler : MonoBehaviour
             Light[] allTmpLights = tmpTree.GetComponentsInChildren<Light>();
             foreach (var item in allTmpLights)
             {
+                item.range = item.range * randomScale;
+                item.intensity = item.intensity * randomScale;
                 allTreeLights.Add(item);
             }
         }
@@ -89,7 +92,7 @@ public class TreeAndStoneHandler : MonoBehaviour
             randPosX = r * Mathf.Cos(Mathf.Deg2Rad * angle);
             randPosZ = r * Mathf.Sin(Mathf.Deg2Rad * angle);
 
-            potentialPosition = new Vector3(randPosX, 0.1f, randPosZ);
+            potentialPosition = new Vector3(randPosX, 0, randPosZ);
             // TODO: Check wheater spot is free or not
             //while (Physics.OverlapSphere(potentialPosition, .1f, 9) != null)
 
@@ -107,8 +110,7 @@ public class TreeAndStoneHandler : MonoBehaviour
     {
         for (int i = 0; i < allTreeLights.Count; i++)
         {
-            float tmpWait = Random.Range(0, 10);
-            yield return new WaitForSeconds(tmpWait / 10);
+            yield return new WaitForSeconds((i / allTreeLights.Count) * lightSwitchDuration); // Within lightSwitchDuration all lights are out
             allTreeLights[i].enabled = false;
         }
     }
@@ -117,8 +119,7 @@ public class TreeAndStoneHandler : MonoBehaviour
     {
         for (int i = 0; i < allTreeLights.Count; i++)
         {
-            float tmpWait = Random.Range(0, 10);
-            yield return new WaitForSeconds(tmpWait / 10);
+            yield return new WaitForSeconds((i / allTreeLights.Count) * lightSwitchDuration); // Within lightSwitchDuration all lights are on
             allTreeLights[i].enabled = true;
         }
     }

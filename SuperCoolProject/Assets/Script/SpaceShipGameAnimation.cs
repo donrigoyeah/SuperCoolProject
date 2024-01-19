@@ -41,6 +41,13 @@ public class SpaceShipGameAnimation : MonoBehaviour
         {
             this.transform.position = endPosition;
             GameManager.Instance.Clouds.SetActive(false);
+            DamageParticlesGO.transform.rotation = Quaternion.Euler(-90, 90, 90);
+            DamageParticlesMain.startSpeed = 0.5f;
+            DamageParticlesMain.startLifetime = 6f;
+
+            ExhaustParticlesGO.transform.rotation = Quaternion.Euler(-90, 90, 90);
+            ExhaustParticlesMain.startSpeed = 0.5f;
+            ExhaustParticlesMain.startLifetime = 6f;
         }
         else
         {

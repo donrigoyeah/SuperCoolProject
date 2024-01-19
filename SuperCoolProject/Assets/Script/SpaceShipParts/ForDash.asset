@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: ForDash
   m_EditorClassIdentifier: 
   partName: Unknown
-  mass: 5
+  mass: 6
   abilityUnlock: Dash
   model: {fileID: 0}
