@@ -49,6 +49,8 @@ public class GameManager : MonoBehaviour
     public GameObject DeathScreen;
     public GameObject GameOverScreen;
     public Image DeathScreenCloneJuiceUI;
+    public GameObject Clouds;
+
 
     [Header("Camera")]
     public int cameraSpeed = 1;
@@ -171,6 +173,8 @@ public class GameManager : MonoBehaviour
             yield return new WaitForSeconds(duration / steps);
             cameraSpeed = 1 + cameraSpeedMultiplier * i / steps;
         }
+
+        Clouds.SetActive(false);
     }
 
     public void HandleCloneJuiceDrain()

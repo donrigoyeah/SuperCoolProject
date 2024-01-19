@@ -40,6 +40,7 @@ public class SpaceShipGameAnimation : MonoBehaviour
         if (GameManager.Instance.devMode)
         {
             this.transform.position = endPosition;
+            GameManager.Instance.Clouds.SetActive(false);
         }
         else
         {

@@ -16,7 +16,14 @@ public class TreeAndStoneHandler : MonoBehaviour
     private GameObject tmpStone;
     public List<Light> allTreeLights;
     private Vector3 potentialPosition;
+    Transform tmpTreeTransform;
+    Transform tmpStoneTransform;
 
+    private float r;
+    private float angle;
+    private float randomRotation;
+    private float randPosX;
+    private float randPosZ;
 
     public static TreeAndStoneHandler Instance;
 
@@ -42,11 +49,12 @@ public class TreeAndStoneHandler : MonoBehaviour
 
         for (int i = 0; i < treeCount; i++)
         {
-            float r = Random.Range(30, GameManager.Instance.worldRadius);
-            float angle = Random.Range(0, 360);
+            r = Random.Range(30, GameManager.Instance.worldRadius);
+            angle = Random.Range(0, 360);
+            randomRotation = Random.Range(0, 360);
 
-            float randPosX = r * Mathf.Cos(Mathf.Deg2Rad * angle);
-            float randPosZ = r * Mathf.Sin(Mathf.Deg2Rad * angle);
+            randPosX = r * Mathf.Cos(Mathf.Deg2Rad * angle);
+            randPosZ = r * Mathf.Sin(Mathf.Deg2Rad * angle);
 
             potentialPosition = new Vector3(randPosX, 0.1f, randPosZ);
 
@@ -55,8 +63,10 @@ public class TreeAndStoneHandler : MonoBehaviour
             //while (Physics.OverlapSphere(potentialPosition, .1f, 9) != null)
 
             tmpTree = Instantiate(Tree);
-            tmpTree.transform.position = potentialPosition;
-            tmpTree.transform.SetParent(this.transform);
+            tmpTreeTransform = tmpTree.transform;
+            tmpTreeTransform.position = potentialPosition;
+            tmpTreeTransform.rotation = Quaternion.Euler(0, randomRotation, 0);
+            tmpTreeTransform.SetParent(this.transform);
 
             Light[] allTmpLights = tmpTree.GetComponentsInChildren<Light>();
             foreach (var item in allTmpLights)
@@ -68,18 +78,23 @@ public class TreeAndStoneHandler : MonoBehaviour
 
         for (int i = 0; i < stoneCount; i++)
         {
-            float r = Random.Range(30, GameManager.Instance.worldRadius);
-            float angle = Random.Range(0, 360);
+            r = Random.Range(30, GameManager.Instance.worldRadius);
+            angle = Random.Range(0, 360);
+            randomRotation = Random.Range(0, 360);
 
-            float randPosX = r * Mathf.Cos(Mathf.Deg2Rad * angle);
-            float randPosZ = r * Mathf.Sin(Mathf.Deg2Rad * angle);
+            randPosX = r * Mathf.Cos(Mathf.Deg2Rad * angle);
+            randPosZ = r * Mathf.Sin(Mathf.Deg2Rad * angle);
 
+            potentialPosition = new Vector3(randPosX, 0.1f, randPosZ);
             // TODO: Check wheater spot is free or not
             //while (Physics.OverlapSphere(potentialPosition, .1f, 9) != null)
 
+
             tmpStone = Instantiate(Stone);
-            tmpStone.transform.position = new Vector3(randPosX, 0.1f, randPosZ);
-            tmpStone.transform.SetParent(this.transform);
+            tmpStoneTransform = tmpStone.transform;
+            tmpStoneTransform.position = potentialPosition;
+            tmpStoneTransform.rotation = Quaternion.Euler(0, randomRotation, 0);
+            tmpStoneTransform.SetParent(this.transform);
 
         }
     }
