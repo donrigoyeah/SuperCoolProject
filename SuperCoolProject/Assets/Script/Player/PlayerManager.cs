@@ -323,7 +323,7 @@ public class PlayerManager : MonoBehaviour
         if (currentSquareResource > 0) { currentSquareResource -= resourceDrain; }
         if (currentTriangleResource > 0) { currentTriangleResource -= resourceDrain; }
 
-        // Only show resource UI if below 75%
+        /*// Only show resource UI if below 75%
         if (currentSphereResource < 3 * maxSphereResource / 4)
         {
             //StartCoroutine(HandleResourceLightIndicator(0));
@@ -390,7 +390,7 @@ public class PlayerManager : MonoBehaviour
                 triangleUnfolded = false;
                 //ResourceUITriangle.SetActive(false);
             }
-        }
+        }*/
 
         // Update UI
         resourcePieCharts[0].fillAmount = currentSphereResource / maxSphereResource;
@@ -460,7 +460,7 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    IEnumerator UnfoldResource(GameObject Resource, float degree)
+    public IEnumerator UnfoldResource(GameObject Resource, float degree)
     {
         int steps = 50;
         float animationDuration = .5f;
@@ -475,7 +475,7 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    IEnumerator FoldResource(GameObject Resource)
+    public IEnumerator FoldResource(GameObject Resource)
     {
         int steps = 50;
         float animationDuration = .5f;

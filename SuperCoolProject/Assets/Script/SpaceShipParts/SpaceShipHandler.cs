@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
@@ -23,9 +24,19 @@ public class SpaceShipHandler : MonoBehaviour
         ParticleSystem1Main = particleSystems[0].main;
         ParticleSystem2Main = particleSystems[1].main;
     }
-
+    
     private void OnTriggerEnter(Collider other)
-    {
+    {            
+        PlayerManager PM = other.gameObject.GetComponent<PlayerManager>();
+        
+        if (other.gameObject.CompareTag("Player"))
+        {
+            StartCoroutine(PM.UnfoldResource(PM.ResourceUISphere, 50));
+            StartCoroutine(PM.UnfoldResource(PM.ResourceUISquare, 25));
+            StartCoroutine(PM.UnfoldResource(PM.ResourceUITriangle, 0));
+            return;
+        }
+        
         //Check for player dragging the deadbody
         if (other.gameObject.CompareTag("DeadBody"))
         {
@@ -39,7 +50,7 @@ public class SpaceShipHandler : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
 
-            PlayerManager PM = other.gameObject.GetComponent<PlayerManager>();
+            // PlayerManager PM = other.gameObject.GetComponent<PlayerManager>();
             if (PM.currentPart == null) return; // If come empty handed to spacehsip return
 
             SpaceShipPartHandler spaceShipPartHandler = PM.currentPart.GetComponent<SpaceShipPartHandler>();
@@ -92,6 +103,15 @@ public class SpaceShipHandler : MonoBehaviour
                 GameManager.Instance.SpaceShipPartUpdate();
             }
         }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        PlayerManager PM = other.gameObject.GetComponent<PlayerManager>();
+
+        StartCoroutine(PM.FoldResource(PM.ResourceUISphere));
+        StartCoroutine(PM.FoldResource(PM.ResourceUISquare));
+        StartCoroutine(PM.FoldResource(PM.ResourceUITriangle));
     }
 
     IEnumerator PlayRetrieveParticle(bool isPart)
