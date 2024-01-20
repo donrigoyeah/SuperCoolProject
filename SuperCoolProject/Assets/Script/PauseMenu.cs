@@ -56,6 +56,7 @@ public class PauseMenu : MonoBehaviour
             Instance = this;
         }
         // Handle entire UI from this script? Add values of resourceUI and other displays here"); 
+        
     }
 
     void Start()
@@ -79,6 +80,8 @@ public class PauseMenu : MonoBehaviour
         float currentTime = Time.time - startTime;
         string formattedTime = FormatTime(currentTime);
         playtimeText.text = "Playtime: " + formattedTime;
+        
+        GameManager.Instance.HideMouseCursor();
     }
 
     private string FormatTime(float timeInSeconds)
@@ -101,6 +104,8 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 0.01f;
         yield return new WaitForSeconds(0.02f);
         isPaused = true;
+        
+        GameManager.Instance.ShowMouseCursor();
     }
 
     private void UpdatePauseUI()
@@ -124,6 +129,8 @@ public class PauseMenu : MonoBehaviour
         PauseMenu.Instance.options.SetActive(false);
         yield return new WaitForSeconds(0.2f);
         isPaused = false;
+        
+        GameManager.Instance.HideMouseCursor();
     }
 
     public void PauseForButton()
@@ -133,6 +140,8 @@ public class PauseMenu : MonoBehaviour
         resumeButton.Select();
         Time.timeScale = 0.01f;
         isPaused = true;
+        
+        GameManager.Instance.ShowMouseCursor();
     }
 
     public void ResumeForButton() // UI buttons only works with void functions
@@ -140,6 +149,8 @@ public class PauseMenu : MonoBehaviour
         isPaused = false;
         Time.timeScale = 1;
         PauseMenu.Instance.pauseMenu.SetActive(false);
+        
+        GameManager.Instance.HideMouseCursor();
     }
 
     public void Restart()

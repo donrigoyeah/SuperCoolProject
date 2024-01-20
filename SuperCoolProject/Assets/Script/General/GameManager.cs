@@ -119,6 +119,15 @@ public class GameManager : MonoBehaviour
         CameraFollowSpot.position = Vector3.Lerp(CameraFollowSpot.transform.position, new Vector3(targetXNorm, targetYNorm, targetZNorm), Time.deltaTime * cameraSpeed);
     }
 
+    public void HideMouseCursor()
+    { 
+        Cursor.visible = false;
+    }
+
+    public void ShowMouseCursor()
+    {
+        Cursor.visible = true;
+    }
 
     #region Handle Add Players
 
