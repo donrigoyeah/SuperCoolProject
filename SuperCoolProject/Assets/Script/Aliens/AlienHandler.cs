@@ -221,6 +221,7 @@ public class AlienHandler : MonoBehaviour
 
         if (lifeTime < 999) // Its a hack
         {
+
             ResetVariable();
             DiscardCurrentAction();
         }
@@ -469,6 +470,8 @@ public class AlienHandler : MonoBehaviour
 
     private void HandleMating()
     {
+        lustTimer = 0;
+
         // Check if possible to spawn more aliens
         if (brainWashed == false && PoolManager.Instance.currentAlienAmount >= PoolManager.Instance.alienAmount + PoolManager.Instance.alienAmountExtra)
         {
@@ -484,6 +487,7 @@ public class AlienHandler : MonoBehaviour
         if (hasUterus == true)
         {
             amountOfBabies = UnityEngine.Random.Range(1, maxAmountOfBabies);
+            if (brainWashed == true) { amountOfBabies = 1; }
             for (var i = 0; i < amountOfBabies; i++)
             {
                 GameObject alienPoolGo = PoolManager.Instance.GetPooledAliens(brainWashed);
@@ -499,7 +503,6 @@ public class AlienHandler : MonoBehaviour
             }
         }
 
-        lustTimer = 0;
         StartCoroutine(IdleSecsUntilNewState(1f, AlienState.looking));
         return;
     }

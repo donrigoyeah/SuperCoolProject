@@ -8,8 +8,6 @@ using UnityEngine.UI;
 
 public class TutorialHandler : MonoBehaviour
 {
-    public static TutorialHandler SharedInstance;
-
     public GameObject TutorialGameObject;
     public int hideTut;
 
@@ -21,36 +19,79 @@ public class TutorialHandler : MonoBehaviour
 
 
 
+    public static TutorialHandler Instance;
+
     private void Awake()
     {
-        SharedInstance = this;
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
     }
 
     private void OnEnable()
     {
         currentTutorialSlide = 0;
         totalTutorialSlides = tutorialSlides.Length;
+    }
 
+    public void EnableEntireTutorial()
+    {
+        // Folowing code only runs if playerPrefs exist, and they only do in builds
         if (PlayerPrefs.HasKey("hideTutorial"))
         {
+            Debug.Log("has PlayerPrefs, workaround here with return");
+            TutorialGameObject.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(nextButton.gameObject);
+            Time.timeScale = 0;
+            return;
+
+
             hideTut = PlayerPrefs.GetInt("hideTutorial");
-            if (hideTut == 1)
+            if (hideTut == 1 || GameManager.Instance.devMode)
             {
                 TutorialGameObject.SetActive(false);
             }
             else
             {
-                Time.timeScale = 0;
                 TutorialGameObject.SetActive(true);
                 EventSystem.current.SetSelectedGameObject(nextButton.gameObject);
-                Debug.Log(EventSystem.current.currentSelectedGameObject.name);
+                Time.timeScale = 0;
             }
         }
+        else
+        {
+            Debug.Log("has no PlayerPrefs");
+            TutorialGameObject.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(nextButton.gameObject);
+            Time.timeScale = 0;
+        }
     }
+
 
     public void SetHideTut()
     {
         PlayerPrefs.SetInt("hideTutorial", 1);
+        TutorialGameObject.SetActive(false);
+        Time.timeScale = 1;
+
+        Debug.Log("remove this here in future");
+        // Start with Alien behaviour Scene
+        TutorialSceneHandler.Instance.ShowFoodCircleOrder();
+    }
+
+    public void SkipTut()
+    {
+        TutorialGameObject.SetActive(false);
+        Time.timeScale = 1;
+
+        Debug.Log("remove this here in future");
+        // Start with Alien behaviour Scene
+        TutorialSceneHandler.Instance.ShowFoodCircleOrder();
     }
 
     public void NextSlide()
@@ -62,6 +103,9 @@ public class TutorialHandler : MonoBehaviour
             // Completed tutorial
             TutorialGameObject.SetActive(false);
             Time.timeScale = 1;
+
+            // Start with Alien behaviour Scene
+            TutorialSceneHandler.Instance.ShowFoodCircleOrder();
         }
         else
         {

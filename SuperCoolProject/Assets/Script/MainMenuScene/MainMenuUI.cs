@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class MainMenuUI : MonoBehaviour
 {
@@ -22,7 +23,7 @@ public class MainMenuUI : MonoBehaviour
     private void Awake()
     {
         MainMenuLoadingScreen.SetActive(false);
-        playButton.Select();
+        EventSystem.current.SetSelectedGameObject(playButton.gameObject);
     }
 
     // Updates once per frame

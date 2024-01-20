@@ -23,7 +23,6 @@ public class SpaceShipGameAnimation : MonoBehaviour
     public GameObject LandingParticlesGO;
 
     public PlayerInputManager playerInputManager;
-    public GameObject TutorialGameObject;
 
     private void Awake()
     {
@@ -87,13 +86,16 @@ public class SpaceShipGameAnimation : MonoBehaviour
 
         GameManager.Instance.CameraFollowSpot.position = Vector3.zero;
         StartCoroutine(GameManager.Instance.RaiseCameraSpeed(GameManager.Instance.cameraSpeedRaiseDuration));
-        StartCoroutine(WaitSecBeforeTut());
+        if (GameManager.Instance.devMode == false)
+        {
+            StartCoroutine(WaitSecBeforeTut());
+        }
     }
 
 
     IEnumerator WaitSecBeforeTut()
     {
         yield return new WaitForSeconds(GameManager.Instance.cameraSpeedRaiseDuration);
-        TutorialGameObject.SetActive(true);
+        TutorialHandler.Instance.EnableEntireTutorial();
     }
 }

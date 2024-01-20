@@ -1462,7 +1462,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 1759578256}
+  m_FirstSelected: {fileID: 0}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
 --- !u!4 &851505486
@@ -2402,19 +2402,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1759578256 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2321509263025846104, guid: 3079f47d50dfbbd4ebf5954fdc48b8a4,
-    type: 3}
-  m_PrefabInstance: {fileID: 7334238867359192586}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1759578258 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7102217858306190351, guid: 3079f47d50dfbbd4ebf5954fdc48b8a4,
     type: 3}
   m_PrefabInstance: {fileID: 7334238867359192586}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1759578256}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
@@ -3546,7 +3540,6 @@ MonoBehaviour:
   ExhaustParticlesGO: {fileID: 1810522167}
   LandingParticlesGO: {fileID: 2071644454}
   playerInputManager: {fileID: 1325170218}
-  TutorialGameObject: {fileID: 432015927}
 --- !u!114 &1866789224722557381
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4547,6 +4540,26 @@ PrefabInstance:
       propertyPath: m_Colors.m_SelectedColor.r
       value: 0.16832304
       objectReference: {fileID: 0}
+    - target: {fileID: 3079676634934094083, guid: 8a39cf38023b57946be252867c65b70b,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3079676634934094083, guid: 8a39cf38023b57946be252867c65b70b,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 506797205}
+    - target: {fileID: 3079676634934094083, guid: 8a39cf38023b57946be252867c65b70b,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SkipTut
+      objectReference: {fileID: 0}
+    - target: {fileID: 3079676634934094083, guid: 8a39cf38023b57946be252867c65b70b,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TutorialHandler, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 3741279635592713884, guid: 8a39cf38023b57946be252867c65b70b,
         type: 3}
       propertyPath: m_Sprite
@@ -4780,9 +4793,39 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9163278726189621646, guid: 8a39cf38023b57946be252867c65b70b,
         type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9163278726189621646, guid: 8a39cf38023b57946be252867c65b70b,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9163278726189621646, guid: 8a39cf38023b57946be252867c65b70b,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 506797205}
+    - target: {fileID: 9163278726189621646, guid: 8a39cf38023b57946be252867c65b70b,
+        type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 506797205}
+    - target: {fileID: 9163278726189621646, guid: 8a39cf38023b57946be252867c65b70b,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetHideTut
+      objectReference: {fileID: 0}
+    - target: {fileID: 9163278726189621646, guid: 8a39cf38023b57946be252867c65b70b,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TutorialHandler, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 9163278726189621646, guid: 8a39cf38023b57946be252867c65b70b,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3741279635592713884, guid: 8a39cf38023b57946be252867c65b70b, type: 3}
     - {fileID: 7709761589495761927, guid: 8a39cf38023b57946be252867c65b70b, type: 3}

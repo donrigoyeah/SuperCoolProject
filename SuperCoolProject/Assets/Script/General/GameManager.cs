@@ -160,13 +160,11 @@ public class GameManager : MonoBehaviour
         }
         if (numberOfPlayers == 1)
         {
-            // TODO: Change this here
+            // ???           // TODO: Change this here
             if (devMode == false)
             {
                 Debug.Log("Tutorial STart");
                 FreezeAllPlayers();
-
-                TutorialSceneHandler.Instance.ShowFoodCircleOrder();
             }
         }
     }
