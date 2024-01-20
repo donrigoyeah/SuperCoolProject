@@ -35,20 +35,18 @@ public class TutorialSceneHandler : MonoBehaviour
         StartCoroutine(DoTheFoodCircle());
     }
 
-    private void SpawnAdultAlien(int species, bool isAttacking, bool isIdleing, bool isLoving)
+    private void SpawnAdultAlien(int species, bool isAttacking, bool isLoving)
     {
         currentAlien = Instantiate(AlienPrefab, this.transform);
         currentAlienHandler = currentAlien.GetComponent<AlienHandler>();
         currentAlienHandler.BrainwashAlien();
-        currentAlienHandler.targetAlien = GameManager.Instance.players[0].gameObject;
+        //currentAlienHandler.targetAlien = GameManager.Instance.players[0].gameObject;
         currentAlienHandler.currentSpecies = species;
         currentAlienHandler.currentAge = AlienHandler.AlienAge.sexualActive;
-        Debug.Log("SpawnAdultAlien, targetPosition : " + alienEndPosition);
-        Debug.Log("SpawnAdultAlien, targetPosition * scale: " + alienEndPosition * currentAlienHandler.sexualActiveScale);
         currentAlienHandler.targetPosition = alienEndPosition * currentAlienHandler.sexualActiveScale;
         currentAlienHandler.lustTimer = 10;
+        currentAlienHandler.hasUterus = false;
         currentAlienHandler.hungerTimer = 10;
-
         currentAlienHandler.ActivateCurrentModels(species);
         currentAlienHandler.lifeTime = 999; // Hackerman
 
@@ -60,35 +58,24 @@ public class TutorialSceneHandler : MonoBehaviour
             currentAlienHandler.currentState = AlienHandler.AlienState.hunting;
             currentAlienHandler.hungerTimer = 1000;
         }
-        if (isIdleing == true)
-        {
-            currentAlienHandler.currentState = AlienHandler.AlienState.roaming;
-        }
         if (isLoving == true)
         {
             currentAlienHandler.currentState = AlienHandler.AlienState.loving;
-        }
-
-        //currentAlienHandler.targetPosition = Vector3.right;
-
-        if (currentAlienTransform.position == Vector3.right)
-        {
-            StartCoroutine(currentAlienHandler.IdleSecsUntilNewState(30f, AlienHandler.AlienState.roaming));
-
+            currentAlienHandler.hasUterus = true;
         }
     }
 
     IEnumerator DoTheFoodCircle()
     {
-        SpawnAdultAlien(0, false, true, false);
+        SpawnAdultAlien(0, true, false);
         yield return new WaitForSeconds(spawnDelay);
-        SpawnAdultAlien(1, true, false, false);
+        SpawnAdultAlien(1, true, false);
         yield return new WaitForSeconds(spawnDelay);
-        SpawnAdultAlien(2, true, false, false);
+        SpawnAdultAlien(2, true, false);
         yield return new WaitForSeconds(spawnDelay);
-        SpawnAdultAlien(0, true, false, false);
+        SpawnAdultAlien(0, true, false);
         yield return new WaitForSeconds(spawnDelay);
-        SpawnAdultAlien(0, true, false, true);
+        SpawnAdultAlien(0, false, true);
         yield return new WaitForSeconds(spawnDelay);
         GameManager.Instance.UnFreezeAllPlayers();
 
