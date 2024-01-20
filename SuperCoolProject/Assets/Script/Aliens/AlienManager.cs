@@ -57,7 +57,7 @@ public class AlienManager : MonoBehaviour
 
     private void Start()
     {
-        InitalSpawnAliens();
+        StartCoroutine(SpawnAliensWithDelay());
     }
 
 
@@ -74,6 +74,12 @@ public class AlienManager : MonoBehaviour
         resourceTriangle.Clear();
     }
 
+    IEnumerator SpawnAliensWithDelay()
+    {
+        yield return new WaitForSeconds(.5f);
+        InitalSpawnAliens();
+    }
+
     private void InitalSpawnAliens()
     {
         ClearResourceList();
@@ -85,7 +91,7 @@ public class AlienManager : MonoBehaviour
 
         for (int i = 0; i < PoolManager.Instance.alienAmount; i++)
         {
-            GameObject alienPoolGo = PoolManager.Instance.GetPooledAliens();
+            GameObject alienPoolGo = PoolManager.Instance.GetPooledAliens(false);
             if (alienPoolGo != null)
             {
                 if (i > currentPopulationSegment)

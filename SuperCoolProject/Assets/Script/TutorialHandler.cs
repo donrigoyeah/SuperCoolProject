@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
 
@@ -39,9 +40,10 @@ public class TutorialHandler : MonoBehaviour
             }
             else
             {
-                TutorialGameObject.SetActive(true);
-                nextButton.Select();
                 Time.timeScale = 0;
+                TutorialGameObject.SetActive(true);
+                EventSystem.current.SetSelectedGameObject(nextButton.gameObject);
+                Debug.Log(EventSystem.current.currentSelectedGameObject.name);
             }
         }
     }

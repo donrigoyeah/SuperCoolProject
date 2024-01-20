@@ -94,9 +94,6 @@ public class PoolManager : MonoBehaviour
             Instance = this;
         }
 
-        // Alien Stuff
-        AlienPooling();
-
         // Player Stuff
         BulletPooling();
         BulletExpPooling();
@@ -113,6 +110,9 @@ public class PoolManager : MonoBehaviour
 
         // UI Elements
         DamageUIPooling();
+
+        // Alien Stuff
+        AlienPooling();
     }
 
     #region Alien Pooling

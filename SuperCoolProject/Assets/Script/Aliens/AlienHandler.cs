@@ -469,32 +469,24 @@ public class AlienHandler : MonoBehaviour
 
     private void HandleMating()
     {
-        Debug.Log("Handle Mating");
         // Check if possible to spawn more aliens
         if (brainWashed == false && PoolManager.Instance.currentAlienAmount >= PoolManager.Instance.alienAmount + PoolManager.Instance.alienAmountExtra)
         {
-            Debug.Log("Already to many babies?!");
             StartCoroutine(IdleSecsUntilNewState(1f, AlienState.looking));
             return;
         }
-
-        Debug.Log("Handle Mating2");
 
         if (!audioSource.isPlaying)
         {
             audioSource.PlayOneShot(RandomAudioSelector(lovemakingAudioList, currentSpecies), 1f);
         }
-        Debug.Log("Handle Mating3");
 
         if (hasUterus == true)
         {
-            Debug.Log("Handle Mating3 with Uterus");
             amountOfBabies = UnityEngine.Random.Range(1, maxAmountOfBabies);
-            Debug.Log("Get Baby: Amount: " + amountOfBabies);
             for (var i = 0; i < amountOfBabies; i++)
             {
                 GameObject alienPoolGo = PoolManager.Instance.GetPooledAliens(brainWashed);
-                Debug.Log("new Baby: " + alienPoolGo);
                 if (alienPoolGo != null)
                 {
                     float randomOffSet = (UnityEngine.Random.Range(0, 5) - 2) / 2;
@@ -506,7 +498,6 @@ public class AlienHandler : MonoBehaviour
                 }
             }
         }
-        Debug.Log("Handle Mating4");
 
         lustTimer = 0;
         StartCoroutine(IdleSecsUntilNewState(1f, AlienState.looking));
@@ -802,7 +793,6 @@ public class AlienHandler : MonoBehaviour
         currentAge = AlienAge.resource;
         alienHealth = alienLifeResource;
         MyTransform.localScale = Vector3.one * resourceScale;
-        alienManager.AddToResourceList(this);
         yield return new WaitForSeconds(timeToChild);
 
         // Child Life
@@ -813,7 +803,10 @@ public class AlienHandler : MonoBehaviour
         MyTransform.localScale = Vector3.one * childScale;
         alienSpeciesChild[currentSpecies].SetActive(false);
         alienSpeciesAdult[currentSpecies].SetActive(true);
-        alienManager.RemoveFromResourceList(this); // TODO: Check if available in List?!
+        if (AlienManager.Instance.resourceSphere.Count + AlienManager.Instance.resourceSquare.Count + AlienManager.Instance.resourceTriangle.Count > 0)
+        {
+            AlienManager.Instance.RemoveFromResourceList(this); // TODO: Check if available in List?!
+        }
         yield return new WaitForSeconds(timeToSexual);
 
         // Sexual active Life
@@ -868,7 +861,6 @@ public class AlienHandler : MonoBehaviour
                         lustTimer > lustTimerThreshold && // can mate
                         otherAlien.lustTimer > lustTimerThreshold) // Babies
                     {
-                        Debug.Log("OnTrigger Enter Mating:");
                         HandleMating();
                         StartCoroutine(PlayActionParticle(true)); // Loving Partilce
                     }

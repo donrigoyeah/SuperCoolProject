@@ -120,7 +120,7 @@ public class GameManager : MonoBehaviour
     }
 
     public void HideMouseCursor()
-    { 
+    {
         Cursor.visible = false;
     }
 
@@ -160,8 +160,6 @@ public class GameManager : MonoBehaviour
         }
         if (numberOfPlayers == 1)
         {
-            StartCoroutine(RaiseCameraSpeed(cameraSpeedRaiseDuration));
-
             // TODO: Change this here
             if (devMode == false)
             {
@@ -204,7 +202,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    IEnumerator RaiseCameraSpeed(float duration)
+    public IEnumerator RaiseCameraSpeed(float duration)
     {
         int steps = 10;
 

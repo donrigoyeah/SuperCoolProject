@@ -85,13 +85,15 @@ public class SpaceShipGameAnimation : MonoBehaviour
         ExhaustParticlesMain.startSpeed = 0.5f;
         ExhaustParticlesMain.startLifetime = 6f;
 
+        GameManager.Instance.CameraFollowSpot.position = Vector3.zero;
+        StartCoroutine(GameManager.Instance.RaiseCameraSpeed(GameManager.Instance.cameraSpeedRaiseDuration));
         StartCoroutine(WaitSecBeforeTut());
     }
 
 
     IEnumerator WaitSecBeforeTut()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(GameManager.Instance.cameraSpeedRaiseDuration);
         TutorialGameObject.SetActive(true);
     }
 }
