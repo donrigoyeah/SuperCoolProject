@@ -62,6 +62,7 @@ public class TutorialSceneHandler : MonoBehaviour
         {
             currentAlienHandler.currentState = AlienHandler.AlienState.loving;
             currentAlienHandler.hasUterus = true;
+            currentAlienHandler.maxAmountOfBabies = 2;
         }
     }
 

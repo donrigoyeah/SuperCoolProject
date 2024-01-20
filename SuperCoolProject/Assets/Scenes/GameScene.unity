@@ -1395,7 +1395,7 @@ MonoBehaviour:
   currentAlien: {fileID: 0}
   currentAlienHandler: {fileID: 0}
   currentAlienTransform: {fileID: 0}
-  spawnDelay: 3
+  spawnDelay: 2
   alienStartPosition: {x: -23, y: 0, z: -11}
   alienEndPosition: {x: 5, y: 0, z: -11}
 --- !u!1 &703073541 stripped
@@ -3051,7 +3051,7 @@ PrefabInstance:
     - target: {fileID: 292991685637541685, guid: 959b924f5e51a25468637aa813697924,
         type: 3}
       propertyPath: alienAmount
-      value: 0
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 292991685637541685, guid: 959b924f5e51a25468637aa813697924,
         type: 3}

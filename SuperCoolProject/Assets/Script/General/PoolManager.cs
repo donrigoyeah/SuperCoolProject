@@ -116,7 +116,7 @@ public class PoolManager : MonoBehaviour
     }
 
     #region Alien Pooling
-    public GameObject GetPooledAliens()
+    public GameObject GetPooledAliens(bool forceAdd)
     {
         // Debug.Log("Code Explanation for AlienPooling");
 
@@ -149,6 +149,25 @@ public class PoolManager : MonoBehaviour
             // Return newly generated GO
             return tmp;
         }
+
+        if (forceAdd == true)
+        {
+            // Add only when no more are available
+            // Debug.Log("Add additionl alien to the pool");
+            // Inititalize Gameobject tmp/Temporary
+            GameObject tmp;
+            // Add to scene
+            tmp = Instantiate(Alien);
+            // place in file structure so all are in a container
+            tmp.transform.SetParent(AlienContainer.transform);
+            // Add to pre defined List
+            AlienPool.Add(tmp);
+            // Add total amount for looping to find active
+            currentAlienAmount++;
+            // Return newly generated GO
+            return tmp;
+        }
+
         // Returns nothing to function to "formaly end"?!
         return null;
     }

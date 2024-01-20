@@ -154,7 +154,7 @@ public class GameManager : MonoBehaviour
             StartCoroutine(RaiseCameraSpeed(cameraSpeedRaiseDuration));
 
             // TODO: Change this here
-            if (devMode == true)
+            if (devMode == false)
             {
                 Debug.Log("Tutorial STart");
                 FreezeAllPlayers();

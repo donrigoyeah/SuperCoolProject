@@ -224,6 +224,10 @@ public class AlienHandler : MonoBehaviour
             ResetVariable();
             DiscardCurrentAction();
         }
+        if (brainWashed == true)
+        {
+            StartCoroutine(UndoBrainWash(10));
+        }
     }
 
     private void FixedUpdate()
@@ -465,24 +469,32 @@ public class AlienHandler : MonoBehaviour
 
     private void HandleMating()
     {
+        Debug.Log("Handle Mating");
         // Check if possible to spawn more aliens
-        if (PoolManager.Instance.currentAlienAmount == PoolManager.Instance.alienAmount + PoolManager.Instance.alienAmountExtra)
+        if (brainWashed == false && PoolManager.Instance.currentAlienAmount >= PoolManager.Instance.alienAmount + PoolManager.Instance.alienAmountExtra)
         {
+            Debug.Log("Already to many babies?!");
             StartCoroutine(IdleSecsUntilNewState(1f, AlienState.looking));
             return;
         }
+
+        Debug.Log("Handle Mating2");
 
         if (!audioSource.isPlaying)
         {
             audioSource.PlayOneShot(RandomAudioSelector(lovemakingAudioList, currentSpecies), 1f);
         }
+        Debug.Log("Handle Mating3");
 
-        if (hasUterus)
+        if (hasUterus == true)
         {
+            Debug.Log("Handle Mating3 with Uterus");
             amountOfBabies = UnityEngine.Random.Range(1, maxAmountOfBabies);
+            Debug.Log("Get Baby: Amount: " + amountOfBabies);
             for (var i = 0; i < amountOfBabies; i++)
             {
-                GameObject alienPoolGo = PoolManager.Instance.GetPooledAliens();
+                GameObject alienPoolGo = PoolManager.Instance.GetPooledAliens(brainWashed);
+                Debug.Log("new Baby: " + alienPoolGo);
                 if (alienPoolGo != null)
                 {
                     float randomOffSet = (UnityEngine.Random.Range(0, 5) - 2) / 2;
@@ -494,6 +506,7 @@ public class AlienHandler : MonoBehaviour
                 }
             }
         }
+        Debug.Log("Handle Mating4");
 
         lustTimer = 0;
         StartCoroutine(IdleSecsUntilNewState(1f, AlienState.looking));
@@ -503,6 +516,7 @@ public class AlienHandler : MonoBehaviour
     public void HandleDeath()
     {
         isDead = true;
+        brainWashed = false;
         anim[currentSpecies].Stop();
         StopAllCoroutines();
         this.gameObject.SetActive(false);
@@ -703,6 +717,7 @@ public class AlienHandler : MonoBehaviour
         isDead = false;
         canAct = true;
         brainWashed = false; // AKA tutuorial scene
+
         timeToChild += UnityEngine.Random.Range(0, 10);
         hasUterus = UnityEngine.Random.Range(0, 2) == 1;
         alienHealth = alienLifeResource;
@@ -712,28 +727,25 @@ public class AlienHandler : MonoBehaviour
         lifeTime = 0;
 
         ParticleSystem.MainModule resourceSteamMain = resourceSteamGO.GetComponent<ParticleSystem>().main;
-        if (brainWashed)
+
+        if (currentSpecies == 0)
         {
-            return;
+            resourceSteamMain.startColor = Color.blue;
+            alienMiniMapMarker.material = alienColors[0];
         }
-        else
+        else if (currentSpecies == 1)
         {
-            if (currentSpecies == 0)
-            {
-                resourceSteamMain.startColor = Color.blue;
-                alienMiniMapMarker.material = alienColors[0];
-            }
-            else if (currentSpecies == 1)
-            {
-                resourceSteamMain.startColor = Color.green;
-                alienMiniMapMarker.material = alienColors[1];
-            }
-            else if (currentSpecies == 2)
-            {
-                resourceSteamMain.startColor = Color.red;
-                alienMiniMapMarker.material = alienColors[2];
-            }
-            if (this.gameObject.activeInHierarchy)
+            resourceSteamMain.startColor = Color.green;
+            alienMiniMapMarker.material = alienColors[1];
+        }
+        else if (currentSpecies == 2)
+        {
+            resourceSteamMain.startColor = Color.red;
+            alienMiniMapMarker.material = alienColors[2];
+        }
+        if (this.gameObject.activeInHierarchy)
+        {
+            if (brainWashed == false)
             {
                 StartCoroutine(HandleAge());
             }
@@ -826,6 +838,12 @@ public class AlienHandler : MonoBehaviour
         }
     }
 
+    IEnumerator UndoBrainWash(float time)
+    {
+        yield return new WaitForSeconds(time);
+        brainWashed = false; // AKA tutuorial scene
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         // TODO: Is this good?! if -> switch -> if
@@ -838,14 +856,21 @@ public class AlienHandler : MonoBehaviour
             switch (otherAlien.currentSpecies == currentSpecies)
             {
                 case true: // Same Species
-                    if (hasUterus != otherAlien.hasUterus && // opposite Sex
-                        currentAge == AlienAge.sexualActive && // Sexual active
-                        otherAlien.currentAge == AlienAge.sexualActive && // potential partner also sexual active
+                    if ((hasUterus == true && // opposite Sex
+                        otherAlien.hasUterus == false) || // opposite Sex
+                        (hasUterus == false && // opposite Sex
+                        otherAlien.hasUterus == true) && // opposite Sex
+                                                         //hasUterus != otherAlien.hasUterus && // opposite Sex
+                        currentAge != AlienAge.child && // no child
+                        otherAlien.currentAge != AlienAge.child && // potential partner also no child
+                        currentAge != AlienAge.resource && // no resource
+                        otherAlien.currentAge != AlienAge.resource && // potential partner also no resource
                         lustTimer > lustTimerThreshold && // can mate
                         otherAlien.lustTimer > lustTimerThreshold) // Babies
                     {
-                        StartCoroutine(PlayActionParticle(true)); // Loving Partilce
+                        Debug.Log("OnTrigger Enter Mating:");
                         HandleMating();
+                        StartCoroutine(PlayActionParticle(true)); // Loving Partilce
                     }
                     break;
 
