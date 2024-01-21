@@ -56,6 +56,7 @@ public class PlayerManager : MonoBehaviour
     public GameObject ResourceUITriangle;
     public GameObject[] closestResourceIndicator;  // 0:Sphere, 1:Square, 2:Triangle
     public Light resourceIndicatorLight;
+    public Material[] resourceMaterial; // 0:Sphere, 1:Square, 2:Triangle
 
     [Header("Audio")]
     [SerializeField] private AudioClip shieldRechargeAudio;
@@ -87,6 +88,8 @@ public class PlayerManager : MonoBehaviour
         HandleResource();
         HandleRespawn();
         HandleGameOver();
+        
+
     }
 
     public void HandleHit()
@@ -323,6 +326,10 @@ public class PlayerManager : MonoBehaviour
         if (currentSquareResource > 0) { currentSquareResource -= resourceDrain; }
         if (currentTriangleResource > 0) { currentTriangleResource -= resourceDrain; }
 
+        resourceMaterial[0].SetColor("_EmissionColor", Color.blue * currentSphereResource);
+        resourceMaterial[1].SetColor("_EmissionColor", Color.yellow * currentSquareResource);
+        resourceMaterial[2].SetColor("_EmissionColor", Color.red * currentTriangleResource);
+        
         /*// Only show resource UI if below 75%
         if (currentSphereResource < 3 * maxSphereResource / 4)
         {

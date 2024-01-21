@@ -384,6 +384,10 @@ MonoBehaviour:
   - {fileID: 7991882302808134556}
   - {fileID: 7860369408348699713}
   resourceIndicatorLight: {fileID: 0}
+  resourceMaterial:
+  - {fileID: 2100000, guid: c37d2f824c767f54293b5f4306714201, type: 2}
+  - {fileID: 2100000, guid: 60e6af70e351b464b8dd695307e04ab4, type: 2}
+  - {fileID: 2100000, guid: 27fd5d22a7eaeae41bb8bc377526432c, type: 2}
   shieldRechargeAudio: {fileID: 8300000, guid: 7c4072b1b16aa7c47ac7c00b4e89bc31, type: 3}
   shieldBreakAudio: {fileID: 8300000, guid: ed490b7c5f0392e4eb9d586baf5045a8, type: 3}
   deathAudio: {fileID: 8300000, guid: fb8cde1c02d901c48bff064d2c4a6a2b, type: 3}
@@ -8511,6 +8515,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7646332428451715846, guid: 6c349d905fa95d54882b16457121704a,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c37d2f824c767f54293b5f4306714201, type: 2}
+    - target: {fileID: -5158911063107824100, guid: 6c349d905fa95d54882b16457121704a,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 27fd5d22a7eaeae41bb8bc377526432c, type: 2}
     - target: {fileID: 919132149155446097, guid: 6c349d905fa95d54882b16457121704a,
         type: 3}
       propertyPath: m_Name
@@ -8532,6 +8546,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3317929086521519539, guid: 6c349d905fa95d54882b16457121704a,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: ba8fac177a7fde643be6484be7fd587f, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
