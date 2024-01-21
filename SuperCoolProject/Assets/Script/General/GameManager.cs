@@ -139,7 +139,7 @@ public class GameManager : MonoBehaviour
         PlayerLocomotion currentPlayerLoco = pm.GetComponent<PlayerLocomotion>();
         playersLocos.Add(currentPlayerLoco);
 
-        pm.gameObject.transform.LookAt(TutorialSceneHandler.Instance.alienEndPosition);
+        pm.gameObject.transform.LookAt(TutorialHandler.Instance.alienEndPosition);
 
         HUDHandler.Instance.HUDSystemGO.SetActive(true);
         HUDHandler.Instance.EnableCurrentHUD(2); // Enable Time Display

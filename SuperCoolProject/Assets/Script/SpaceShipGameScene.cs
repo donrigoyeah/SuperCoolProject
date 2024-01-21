@@ -2,9 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
-public class SpaceShipGameAnimation : MonoBehaviour
+public class SpaceShipGameScene : MonoBehaviour
 {
+    [Header("Menu Scene Stuff")]
+    public float bobbleAmplitude = 0.02f;
+    public float bobbleSpeed = 0.5f;
+    public float bobbleStart = 23.5f;
+
+    [Header("Game Scene Stuff")]
     public int animationSteps = 100;
     public float animationDuration = 3f;
 
@@ -24,9 +31,14 @@ public class SpaceShipGameAnimation : MonoBehaviour
 
     public PlayerInputManager playerInputManager;
 
-    private void Awake()
+    bool isMainMenu;
+
+
+    private void Start()
     {
         this.transform.position = startPosition;
+
+        isMainMenu = SceneManager.GetActiveScene().buildIndex == 0;
 
         DamageParticles = DamageParticlesGO.GetComponent<ParticleSystem>();
         DamageParticlesMain = DamageParticles.main;
@@ -55,7 +67,18 @@ public class SpaceShipGameAnimation : MonoBehaviour
         }
 
     }
+    private void FixedUpdate()
+    {
+        if (isMainMenu == false) { return; }
 
+        HandleBobbing();
+    }
+
+    private void HandleBobbing()
+    {
+        float verticleBobMovement = bobbleAmplitude * Mathf.Sin(Time.time / bobbleSpeed) + bobbleStart;
+        transform.position = new Vector3(transform.position.x, verticleBobMovement, transform.position.z);
+    }
 
     IEnumerator CrashAnimation(float seconds)
     {
@@ -97,5 +120,14 @@ public class SpaceShipGameAnimation : MonoBehaviour
     {
         yield return new WaitForSeconds(GameManager.Instance.cameraSpeedRaiseDuration);
         TutorialHandler.Instance.EnableEntireTutorial();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Alien"))
+        {
+            AlienHandler enteringAlien = other.gameObject.GetComponent<AlienHandler>();
+            enteringAlien.HandleFleeing(this.gameObject, true); // this time its not an alienGO but the spaceship; true for isEvadingPlayer
+        }
     }
 }

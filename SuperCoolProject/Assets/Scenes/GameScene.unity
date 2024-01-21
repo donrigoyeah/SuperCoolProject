@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.1727685, g: 0.21589223, b: 0.29782578, a: 1}
+  m_IndirectSpecularColor: {r: 0.17276807, g: 0.21589197, b: 0.29782572, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1155,6 +1155,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1737537940}
   - {fileID: 209587704}
   - {fileID: 1237529908}
   - {fileID: 985243445}
@@ -1167,7 +1168,6 @@ RectTransform:
   - {fileID: 1319182553}
   - {fileID: 75251888}
   - {fileID: 1272444231}
-  - {fileID: 1737537940}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1266,15 +1266,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TutorialGameObject: {fileID: 432015927}
-  hideTut: 0
-  nextButton: {fileID: 1531849927}
   tutorialSlides:
   - {fileID: 1393937454}
   - {fileID: 1571400228}
   - {fileID: 200399474}
   - {fileID: 624148444}
+  hideTut: 0
   currentTutorialSlide: 0
   totalTutorialSlides: 0
+  nextButton: {fileID: 1531849927}
+  AlienPrefab: {fileID: 1047908099467871381, guid: d934f14e333eefc4697225457031ccaa,
+    type: 3}
+  currentAlien: {fileID: 0}
+  currentAlienHandler: {fileID: 0}
+  currentAlienTransform: {fileID: 0}
+  spawnDelay: 2
+  alienStartPosition: {x: -23, y: 0, z: -11}
+  alienEndPosition: {x: 5, y: 0, z: -11}
 --- !u!114 &506797206
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1490,58 +1498,6 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 4413952409639303829}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &689542223
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 689542224}
-  - component: {fileID: 689542225}
-  m_Layer: 0
-  m_Name: TutorialScene
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &689542224
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 689542223}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 986437707}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &689542225
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 689542223}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41e61d1d8b18af449b159ac6349015fd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AlienPrefab: {fileID: 1047908099467871381, guid: d934f14e333eefc4697225457031ccaa,
-    type: 3}
-  currentAlien: {fileID: 0}
-  currentAlienHandler: {fileID: 0}
-  currentAlienTransform: {fileID: 0}
-  spawnDelay: 2
-  alienStartPosition: {x: -23, y: 0, z: -11}
-  alienEndPosition: {x: 5, y: 0, z: -11}
 --- !u!1 &703073541 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5114784885420805789, guid: 4e9f40b14e37beb4ea8ac8f132bf56b0,
@@ -1867,7 +1823,6 @@ Transform:
   - {fileID: 392401693}
   - {fileID: 2045070898}
   - {fileID: 919173420}
-  - {fileID: 689542224}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &989361723 stripped
@@ -1993,7 +1948,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1056472985
 Transform:
   m_ObjectHideFlags: 0
@@ -3766,11 +3721,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2532741127938772720, guid: 04d1705c49be2ff449668c9f21cbf177,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1866789224722557379}
-    - targetCorrespondingSourceObject: {fileID: 2532741127938772720, guid: 04d1705c49be2ff449668c9f21cbf177,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1866789224722557381}
+      addedObject: {fileID: 1866789224722557383}
     - targetCorrespondingSourceObject: {fileID: 2532741127938772720, guid: 04d1705c49be2ff449668c9f21cbf177,
         type: 3}
       insertIndex: -1
@@ -3782,37 +3733,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1866789224722557377}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1866789224722557379
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1866789224722557378}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ddf4cdf00678c78408239dc7a9270b54, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animationSteps: 100
-  animationDuration: 3
-  SpaceShipCanvas: {fileID: 1502285134}
-  DamageParticlesGO: {fileID: 1980782423}
-  ExhaustParticlesGO: {fileID: 1810522167}
-  LandingParticlesGO: {fileID: 2071644454}
-  playerInputManager: {fileID: 1325170218}
---- !u!114 &1866789224722557381
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1866789224722557378}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a89e75fca64c2349b3e5928611014f3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!136 &1866789224722557382
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3836,6 +3756,28 @@ CapsuleCollider:
   m_Height: 26
   m_Direction: 0
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1866789224722557383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1866789224722557378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce1433bb24fe6a247a87d8c24dceaee3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bobbleAmplitude: 0.02
+  bobbleSpeed: 0.5
+  bobbleStart: 23.5
+  animationSteps: 100
+  animationDuration: 2
+  SpaceShipCanvas: {fileID: 1502285134}
+  DamageParticlesGO: {fileID: 1980782423}
+  ExhaustParticlesGO: {fileID: 1810522167}
+  LandingParticlesGO: {fileID: 2071644454}
+  playerInputManager: {fileID: 1325170218}
 --- !u!1001 &1967303792690895420
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4206,7 +4148,7 @@ PrefabInstance:
     - target: {fileID: 937689487682581970, guid: bf09349e08449f448b0d27ddea6565dc,
         type: 3}
       propertyPath: devMode
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 937689487682581970, guid: bf09349e08449f448b0d27ddea6565dc,
         type: 3}
@@ -6296,7 +6238,7 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 986437707}
-  - {fileID: 506797201}
-  - {fileID: 890592820}
   - {fileID: 1175532132}
+  - {fileID: 890592820}
+  - {fileID: 506797201}
+  - {fileID: 986437707}

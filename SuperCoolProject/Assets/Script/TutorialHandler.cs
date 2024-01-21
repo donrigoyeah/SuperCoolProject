@@ -8,15 +8,22 @@ using UnityEngine.UI;
 
 public class TutorialHandler : MonoBehaviour
 {
+    [Header("UI Tutorial")]
     public GameObject TutorialGameObject;
-    public int hideTut;
-
-    public Button nextButton;
-
     public GameObject[] tutorialSlides;
+    public int hideTut;
     public int currentTutorialSlide;
     public int totalTutorialSlides;
+    public Button nextButton;
 
+    [Header("Tutorial Scene")]
+    public GameObject AlienPrefab;
+    public GameObject currentAlien;
+    public AlienHandler currentAlienHandler;
+    public Transform currentAlienTransform;
+    public float spawnDelay = 5;
+    public Vector3 alienStartPosition;
+    public Vector3 alienEndPosition;
 
 
     public static TutorialHandler Instance;
@@ -81,7 +88,7 @@ public class TutorialHandler : MonoBehaviour
 
         Debug.Log("remove this here in future");
         // Start with Alien behaviour Scene
-        TutorialSceneHandler.Instance.ShowFoodCircleOrder();
+        ShowFoodCircleOrder();
     }
 
     public void SkipTut()
@@ -91,7 +98,7 @@ public class TutorialHandler : MonoBehaviour
 
         Debug.Log("remove this here in future");
         // Start with Alien behaviour Scene
-        TutorialSceneHandler.Instance.ShowFoodCircleOrder();
+        ShowFoodCircleOrder();
     }
 
     public void NextSlide()
@@ -105,7 +112,7 @@ public class TutorialHandler : MonoBehaviour
             Time.timeScale = 1;
 
             // Start with Alien behaviour Scene
-            TutorialSceneHandler.Instance.ShowFoodCircleOrder();
+            ShowFoodCircleOrder();
         }
         else
         {
@@ -116,4 +123,60 @@ public class TutorialHandler : MonoBehaviour
             tutorialSlides[currentTutorialSlide].SetActive(true);
         }
     }
+
+
+    public void ShowFoodCircleOrder()
+    {
+        StartCoroutine(DoTheFoodCircle());
+    }
+
+    private void SpawnAdultAlien(int species, bool isAttacking, bool isLoving)
+    {
+        GameObject alienPoolGo = PoolManager.Instance.GetPooledAliens(false);
+        if (alienPoolGo != null)
+        {
+            currentAlienHandler = alienPoolGo.GetComponent<AlienHandler>();
+            currentAlienHandler.BrainwashAlien();
+            //currentAlienHandler.targetAlien = GameManager.Instance.players[0].gameObject;
+            currentAlienHandler.currentSpecies = species;
+            currentAlienHandler.currentAge = AlienHandler.AlienAge.sexualActive;
+            currentAlienHandler.targetPosition = alienEndPosition * currentAlienHandler.sexualActiveScale;
+            currentAlienHandler.lustTimer = 10;
+            currentAlienHandler.hasUterus = false;
+            currentAlienHandler.hungerTimer = 10;
+            currentAlienHandler.ActivateCurrentModels(species);
+            currentAlienHandler.lifeTime = 999; // Hackerman
+
+            currentAlienTransform = alienPoolGo.transform;
+            currentAlienTransform.position = alienStartPosition;
+            if (isAttacking == true)
+            {
+                currentAlienHandler.currentState = AlienHandler.AlienState.hunting;
+                currentAlienHandler.hungerTimer = 1000;
+            }
+            if (isLoving == true)
+            {
+                currentAlienHandler.currentState = AlienHandler.AlienState.loving;
+                currentAlienHandler.hasUterus = true;
+                currentAlienHandler.maxAmountOfBabies = 2;
+            }
+        }
+    }
+
+    IEnumerator DoTheFoodCircle()
+    {
+        SpawnAdultAlien(0, true, false);
+        yield return new WaitForSeconds(spawnDelay);
+        SpawnAdultAlien(1, true, false);
+        yield return new WaitForSeconds(spawnDelay);
+        SpawnAdultAlien(2, true, false);
+        yield return new WaitForSeconds(spawnDelay);
+        SpawnAdultAlien(0, true, false);
+        yield return new WaitForSeconds(spawnDelay);
+        SpawnAdultAlien(0, false, true);
+        yield return new WaitForSeconds(spawnDelay);
+        GameManager.Instance.UnFreezeAllPlayers();
+
+    }
+
 }

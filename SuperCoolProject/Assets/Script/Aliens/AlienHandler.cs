@@ -18,7 +18,8 @@ public class AlienHandler : MonoBehaviour
         evading,
         loving,
         roaming,
-        resource
+        resource,
+        idle
     }
 
     public AlienState currentStateValue; //this holds the actual value, should be private
@@ -51,6 +52,8 @@ public class AlienHandler : MonoBehaviour
                     HandleRoaming();
                     break;
                 case AlienState.resource:
+                    break;
+                case AlienState.idle: // Do nothing
                     break;
                 default:
                     HandleLooking();
@@ -121,7 +124,7 @@ public class AlienHandler : MonoBehaviour
     public ParticleSystem resourceSteam;
     public ParticleSystem alienActionFog;
     ParticleSystem.MainModule alienActionFogMain;
-    public float alienSpeed = 5;
+    public float alienSpeed;
     public float lookRadius = 10;
     private float delta;
     private float speed;
@@ -221,7 +224,6 @@ public class AlienHandler : MonoBehaviour
 
         if (lifeTime < 999) // Its a hack
         {
-
             ResetVariable();
             DiscardCurrentAction();
         }
@@ -229,6 +231,15 @@ public class AlienHandler : MonoBehaviour
         {
             StartCoroutine(UndoBrainWash(10));
         }
+    }
+
+    private void OnDisable()
+    {
+        // TODO: maybe clear variables here
+        //ResetVariable();
+        //DiscardCurrentAction();
+        brainWashed = false;
+        StopAllCoroutines();
     }
 
     private void FixedUpdate()
@@ -470,8 +481,6 @@ public class AlienHandler : MonoBehaviour
 
     private void HandleMating()
     {
-        lustTimer = 0;
-
         // Check if possible to spawn more aliens
         if (brainWashed == false && PoolManager.Instance.currentAlienAmount >= PoolManager.Instance.alienAmount + PoolManager.Instance.alienAmountExtra)
         {
@@ -496,13 +505,13 @@ public class AlienHandler : MonoBehaviour
                     float randomOffSet = (UnityEngine.Random.Range(0, 5) - 2) / 2;
 
                     AlienHandler newBornAlien = alienPoolGo.GetComponent<AlienHandler>();
+                    newBornAlien.ResetVariable();
                     newBornAlien.currentSpecies = currentSpecies;
                     newBornAlien.transform.position = new Vector3(MyTransform.position.x + randomOffSet, 0.5f, MyTransform.position.z + randomOffSet);
                     newBornAlien.gameObject.SetActive(true);
                 }
             }
         }
-
         StartCoroutine(IdleSecsUntilNewState(1f, AlienState.looking));
         return;
     }
@@ -681,7 +690,7 @@ public class AlienHandler : MonoBehaviour
         hungerTimer += delta;
         tickTimer += delta;
         lifeTime += delta;
-        speed = (alienSpeed + lustTimer) * delta; // + ((2 * (lustTimer + hungerTimer)) / (lustTimer + hungerTimer)); Way too fast
+        speed = (alienSpeed + ((lustTimer + hungerTimer) / 100)) * delta; // + ((2 * (lustTimer + hungerTimer)) / (lustTimer + hungerTimer)); TODO: make better?! Way too fast
     }
 
     private void HandleRendering()
@@ -708,17 +717,16 @@ public class AlienHandler : MonoBehaviour
 
     private void ResetVariable()
     {
-        isDead = false;
-        canAct = true;
-        brainWashed = false; // AKA tutuorial scene
-
-        timeToChild += UnityEngine.Random.Range(0, 10);
-        hasUterus = UnityEngine.Random.Range(0, 2) == 1;
-        alienHealth = alienLifeResource;
-        currentAge = AlienAge.resource;
         lustTimer = 0;
         hungerTimer = 0;
         lifeTime = 0;
+        currentAge = AlienAge.resource;
+        timeToChild += UnityEngine.Random.Range(0, 10);
+        hasUterus = UnityEngine.Random.Range(0, 2) == 1;
+        alienHealth = alienLifeResource;
+        brainWashed = false; // AKA tutuorial scene
+        canAct = true;
+        isDead = false;
 
         ParticleSystem.MainModule resourceSteamMain = resourceSteamGO.GetComponent<ParticleSystem>().main;
 
@@ -743,6 +751,10 @@ public class AlienHandler : MonoBehaviour
             {
                 StartCoroutine(HandleAge());
             }
+            else
+            {
+                StopAllCoroutines();
+            }
         }
     }
 
@@ -750,6 +762,7 @@ public class AlienHandler : MonoBehaviour
     {
         brainWashed = true;
         resourceSteamGO.SetActive(false);
+        StopAllCoroutines();
     }
 
 
@@ -773,6 +786,7 @@ public class AlienHandler : MonoBehaviour
 
     public IEnumerator IdleSecsUntilNewState(float seconds, AlienState nextState)
     {
+        currentState = AlienState.idle;
         if (anim[currentSpecies] != null)
         {
             if (currentSpecies != 0)
@@ -852,18 +866,14 @@ public class AlienHandler : MonoBehaviour
             switch (otherAlien.currentSpecies == currentSpecies)
             {
                 case true: // Same Species
-                    if ((hasUterus == true && // opposite Sex
-                        otherAlien.hasUterus == false) || // opposite Sex
-                        (hasUterus == false && // opposite Sex
-                        otherAlien.hasUterus == true) && // opposite Sex
-                                                         //hasUterus != otherAlien.hasUterus && // opposite Sex
+                    if (hasUterus != otherAlien.hasUterus && // opposite Sex
                         currentAge != AlienAge.child && // no child
                         otherAlien.currentAge != AlienAge.child && // potential partner also no child
                         currentAge != AlienAge.resource && // no resource
                         otherAlien.currentAge != AlienAge.resource && // potential partner also no resource
-                        lustTimer > lustTimerThreshold && // can mate
-                        otherAlien.lustTimer > lustTimerThreshold) // Babies
+                        lustTimer > lustTimerThreshold) // Babies
                     {
+                        lustTimer = 0;
                         HandleMating();
                         StartCoroutine(PlayActionParticle(true)); // Loving Partilce
                     }
