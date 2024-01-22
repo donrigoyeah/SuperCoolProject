@@ -174,10 +174,10 @@ public class GameManager : MonoBehaviour
 
     private void HandleTutorialStart()
     {
-        Debug.Log("start Tur´torial here. Remove later");
-        FreezeAllPlayers();
-        TutorialHandler.Instance.EnableEntireTutorial();
-        return;
+        Debug.Log("start Turtorial here. Uncomment the foloowing line up to return");
+        //FreezeAllPlayers();
+        //TutorialHandler.Instance.EnableEntireTutorial();
+        //return;
 
         // Folowing code only runs if playerPrefs exist, and they only do in builds
         if (PlayerPrefs.HasKey("hideTutorial"))
