@@ -15,6 +15,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/Script/Aliens/DeadAlienHandler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/General/TimeManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/Player/CameraShake.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Script/Player/GrenadeTest/Projectile.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/Player/PlayerDeadBodyHandler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@14.0.8/Shaders/Lit.shader" root0="SKIP_HIGHLIGHTING" />
   </component>
@@ -256,6 +257,10 @@
       <workItem from="1705793507082" duration="2882000" />
       <workItem from="1705810028757" duration="284000" />
       <workItem from="1705810328142" duration="153000" />
+      <workItem from="1705852578628" duration="1862000" />
+      <workItem from="1705860602543" duration="7304000" />
+      <workItem from="1705875255945" duration="12290000" />
+      <workItem from="1705927610156" duration="10752000" />
     </task>
     <servers />
   </component>

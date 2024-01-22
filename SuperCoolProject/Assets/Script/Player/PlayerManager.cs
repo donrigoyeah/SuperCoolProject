@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -57,7 +58,11 @@ public class PlayerManager : MonoBehaviour
     public GameObject[] closestResourceIndicator;  // 0:Sphere, 1:Square, 2:Triangle
     public Light resourceIndicatorLight;
     public Material[] resourceMaterial; // 0:Sphere, 1:Square, 2:Triangle
-
+    public float currentResourceSphere;
+    public float currentResourceSquare;
+    public float currentResourceTriangle;
+    
+    
     [Header("Audio")]
     [SerializeField] private AudioClip shieldRechargeAudio;
     [SerializeField] private AudioClip shieldBreakAudio;
@@ -326,18 +331,37 @@ public class PlayerManager : MonoBehaviour
         if (currentSquareResource > 0) { currentSquareResource -= resourceDrain; }
         if (currentTriangleResource > 0) { currentTriangleResource -= resourceDrain; }
 
-        resourceMaterial[0].SetColor("_EmissionColor", Color.blue * currentSphereResource);
-        resourceMaterial[1].SetColor("_EmissionColor", Color.yellow * currentSquareResource);
-        resourceMaterial[2].SetColor("_EmissionColor", Color.red * currentTriangleResource);
+        currentResourceSphere = maxSphereResource - currentSphereResource;
+        currentResourceSquare = maxSquareResource - currentSquareResource;
+        currentResourceTriangle = maxTriangleResource - currentTriangleResource;
+        
+        MaterialEmmissionControler(1);
+
+        if (currentResourceSphere >= 50)
+        {
+            MaterialEmmissionControler(10);
+
+            if (currentResourceSphere >= 75)
+            {
+                MaterialEmmissionControler(20);
+            }
+        }
         
         /*// Only show resource UI if below 75%
         if (currentSphereResource < 3 * maxSphereResource / 4)
         {
+            
+            if (bulbFlashing)
+            {
+                // StartCoroutine(BulbFlashing());
+                bulbFlashing = false;
+            }
+
             //StartCoroutine(HandleResourceLightIndicator(0));
             HandleResourceDetection(0);
             if (sphereUnfolded != true)
             {
-                StartCoroutine(UnfoldResource(ResourceUISphere, 50));
+                // StartCoroutine(UnfoldResource(ResourceUISphere, 50));
                 sphereUnfolded = true;
                 //ResourceUISphere.SetActive(true);
             }
@@ -347,13 +371,13 @@ public class PlayerManager : MonoBehaviour
             if (sphereUnfolded != false)
             {
                 DeactivateResourceDetectionIndicator(0);
-                StartCoroutine(FoldResource(ResourceUISphere));
+                // StartCoroutine(FoldResource(ResourceUISphere));
                 sphereUnfolded = false;
                 //ResourceUISphere.SetActive(false);
             }
-        }
+        }*/
 
-        // Only show resource UI if below 75%
+        /*// Only show resource UI if below 75%
         if (currentSquareResource < 3 * maxSquareResource / 4)
         {
             //StartCoroutine(HandleResourceLightIndicator(1));
@@ -383,7 +407,7 @@ public class PlayerManager : MonoBehaviour
             HandleResourceDetection(2);
             if (triangleUnfolded != true)
             {
-                StartCoroutine(UnfoldResource(ResourceUITriangle, 0));
+                // StartCoroutine(UnfoldResource(ResourceUITriangle, 0));
                 triangleUnfolded = true;
                 //ResourceUITriangle.SetActive(true);
             }
@@ -393,7 +417,7 @@ public class PlayerManager : MonoBehaviour
             if (triangleUnfolded != false)
             {
                 DeactivateResourceDetectionIndicator(2);
-                StartCoroutine(FoldResource(ResourceUITriangle));
+                // StartCoroutine(FoldResource(ResourceUITriangle));
                 triangleUnfolded = false;
                 //ResourceUITriangle.SetActive(false);
             }
@@ -411,6 +435,13 @@ public class PlayerManager : MonoBehaviour
         {
             HandleDeath();
         }
+    }
+
+    private void MaterialEmmissionControler(float multiplyer)
+    {
+        resourceMaterial[0].SetColor("_EmissionColor", Color.blue * Mathf.PingPong(currentResourceSphere * multiplyer, 2f));
+        resourceMaterial[1].SetColor("_EmissionColor", Color.yellow * Mathf.PingPong(currentResourceSquare * multiplyer, 4f));
+        resourceMaterial[2].SetColor("_EmissionColor", Color.red * Mathf.PingPong(currentResourceTriangle * multiplyer, 2f));
     }
 
     public void HandleGainResource(int rescourseIndex)

@@ -1,7 +1,9 @@
 using System.Collections;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using static AlienHandler;
 
 public class PlayerAttacker : MonoBehaviour
@@ -41,20 +43,21 @@ public class PlayerAttacker : MonoBehaviour
     [SerializeField] private bool leftRightSwitch;
 
     [Header("Grenade stuff")]
-    [SerializeField] private Transform grenadeSpawnLocation;
     [SerializeField] public GameObject grenadeCooldownUIGO;
     [SerializeField] public Image grenadeCooldownUI;
-    [SerializeField] private LineRenderer lineRenderer;
-    [SerializeField] private GrenadeHandler grenadePrefab;
-    [SerializeField] private float throwForce;
-    [SerializeField] private float throwForceBuildUpSpeed = 0.3f;
-    [SerializeField] private float maxthrowForce = 10f;
-    [SerializeField] private float currentThrowForce = 0f;
+    // [SerializeField] private LineRenderer lineRenderer;
+    [SerializeField] private GameObject grenadePrefab;
     [SerializeField] private float currentGrenadeCooldownValue = 0f;
     [SerializeField] private float grenadeCooldownSpeed = 1;
     [SerializeField] private float grenadeCooldownMax = 10;
     [SerializeField] private bool grenadeAvailable;
-
+    public bool grenadeKeyPressed = false;
+    public Transform grenadespawnPoint;
+    public Transform target;
+    public Transform arcHeight;
+    public Vector3 ac;
+    public Vector3 cb;
+    
     [Header("Grenade Trajectory Physics stuff")]
     [SerializeField] private int PhysicsFrame = 62;
     private Scene simulateScene;
@@ -86,11 +89,16 @@ public class PlayerAttacker : MonoBehaviour
         playerManager = GetComponent<PlayerManager>();
         playerAnim = GetComponentInChildren<Animator>();
         controller = GetComponent<CharacterController>();
-
-        CreatePhysicsScene();
-
     }
 
+    private void OnDrawGizmos()
+    {
+        for (int i = 0; i < 20; i++)
+        {
+            Gizmos.DrawWireSphere(Evaluate(i / 20f), 0.1f);
+        }
+    }
+    
     void Update()
     {
         HandleShootLazer();
@@ -428,27 +436,47 @@ public class PlayerAttacker : MonoBehaviour
 
     #region Handle Grenade
 
+    public Vector3 Evaluate(float t)
+    {
+   
+        ac = Vector3.Lerp(grenadespawnPoint.position, arcHeight.position, t);
+        cb = Vector3.Lerp(arcHeight.position, target.position, t);
+        
+        return Vector3.Lerp(ac, cb, t);
+        //convert to world position
+    }
+    
     private void HandleGrenadeThrow()
     {
         if (grenadeAvailable && GameManager.Instance.hasAmmoBox || GameManager.Instance.devMode)
         {
             if (inputHandler.inputSecondaryFire)
             {
-                throwForce += throwForceBuildUpSpeed;
-                currentThrowForce = Mathf.Min(maxthrowForce, throwForce);
-                UpdateTrajectory();
+                Debug.Log("initiate grenade");
+                grenadeKeyPressed = true;
+                if (arcHeight.localPosition.z <= 10f)
+                {
+                    arcHeight.localPosition += new Vector3(0f, 0f, 0.2f * 0.5f);
+                }
+
+                if (target.localPosition.z + 0.2f <= 20f)
+                {
+                    target.localPosition += new Vector3(0f, 0f, 0.2f);
+                }
+                
             }
-            else if (!inputHandler.inputSecondaryFire && throwForce > 0)
+            else if (!inputHandler.inputSecondaryFire && grenadeAvailable && grenadeKeyPressed)
             {
-                currentGrenadeCooldownValue = 0;
-                lineRenderer.positionCount = 0;
-                throwForce = 0;
-                LaunchGrenade();
-                grenadeAvailable = false;
+                 currentGrenadeCooldownValue = 0;
+                // lineRenderer.positionCount = 0;
+                // throwForce = 0;
+                 LaunchGrenade();
+                 grenadeAvailable = false;
+                 grenadeKeyPressed = false;
             }
         }
     }
-
+    
     private void HandleGrenadeCooldown(float delta)
     {
         SetGrenadeCooldownUI(currentGrenadeCooldownValue);
@@ -474,44 +502,14 @@ public class PlayerAttacker : MonoBehaviour
         grenadeCooldownUI.fillAmount = currentChargeValue / grenadeCooldownMax;
     }
 
-    private void CreatePhysicsScene()
-    {
-        string SimulationName = "Simulation" + inputHandler.playerIndex.ToString();
-        simulateScene = SceneManager.CreateScene(SimulationName, new CreateSceneParameters(LocalPhysicsMode.Physics3D));
-        physicsScene = simulateScene.GetPhysicsScene();
-    }
-
     private void LaunchGrenade()
     {
-        var spawned = Instantiate(grenadePrefab, grenadeSpawnLocation.position, grenadeSpawnLocation.rotation); //this is used to spawn grenede at spawnlocation with alloted throwForce
-        spawned.Init(grenadeSpawnLocation.forward * currentThrowForce, false);
+        GameObject NewGrenade = Instantiate(grenadePrefab, grenadespawnPoint.transform.position, transform.rotation);
+
+        GrenadeHandler currentGH = NewGrenade.GetComponent<GrenadeHandler>();
+        currentGH.playerAttacker = this;
     }
-
-    private void UpdateTrajectory()
-    {
-
-
-        if (lineRenderer.positionCount < PhysicsFrame)
-        {
-            lineRenderer.positionCount = PhysicsFrame;
-        }
-
-        GrenadeHandler grenadeTrajectory = Instantiate(grenadePrefab, grenadeSpawnLocation.position, Quaternion.identity); // this is used to simulate trejectory
-        SceneManager.MoveGameObjectToScene(grenadeTrajectory.gameObject, simulateScene);
-
-        grenadeTrajectory.Init(grenadeSpawnLocation.forward * currentThrowForce, true);
-
-        for (var i = 0; i < PhysicsFrame; i++)
-        {
-            physicsScene.Simulate(Time.fixedDeltaTime);
-            if (i < lineRenderer.positionCount)
-            {
-                lineRenderer.SetPosition(i, grenadeTrajectory.transform.position);
-            }
-        }
-
-        Destroy(grenadeTrajectory.gameObject);
-    }
+    
     #endregion
 
     #region Handle Player / Alien interaction

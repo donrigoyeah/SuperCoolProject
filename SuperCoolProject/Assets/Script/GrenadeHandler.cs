@@ -1,10 +1,10 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class GrenadeHandler : MonoBehaviour
 {
 
-    [SerializeField] private Rigidbody _rb;
     private bool _isGhost;
     [SerializeField] private float explosionForce = 700f;
     [SerializeField] private float explosionRadius = 5f;
@@ -12,23 +12,26 @@ public class GrenadeHandler : MonoBehaviour
     private float countdown = 1f;
     private bool hasExploded = false;
 
+    public PlayerAttacker playerAttacker;
+    public float speed;
+
+    public float time;
+    public Vector3 x;
     public AlienHandler alienHandler;
 
-    public void Init(Vector3 velocity, bool isGhost)
+    private void Start()
     {
-        _rb.AddForce(velocity, ForceMode.Impulse);
+        time = 0f;
     }
 
     private void Update()
     {
-        if (!hasExploded)
+        time += Time.deltaTime * speed;
+        transform.position = playerAttacker.Evaluate(time);
+
+        if (time >= 1f)
         {
-            countdown -= Time.deltaTime;
-            if (countdown <= 0f)
-            {
-                Explode();
-                hasExploded = true;
-            }
+            Explode();
         }
     }
 
