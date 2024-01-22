@@ -46,6 +46,14 @@ public class HUDHandler : MonoBehaviour
             Instance = this;
         }
 
+        // Set right day/night indicator
+        currentMinute = TimeManager.Instance.minutes;
+        currentHours = TimeManager.Instance.hours;
+        currentTotalMinutes = currentMinute + currentHours * 60;
+        currentPercentage = (currentTotalMinutes * 100) / (24 * 60);
+        DayNightCircle.transform.rotation = Quaternion.Euler(0, 0, (180 * (currentTotalMinutes - (5 * 60)) / 60) + 180);
+        DayNightCircle.transform.rotation = Quaternion.Euler(0, 0, 180 * (currentTotalMinutes - (17 * 60)) / 60);
+
 
         currentHUD = 2;
         if (GameManager.Instance.devMode)

@@ -46,7 +46,7 @@ public class TimeManager : MonoBehaviour
     [Header("Time")]
     public int minutes;
     public int hours;
-    private int days = 1;
+    private int days;
     private float timeCounter;
     private int secondsInMinutes = 60;
     private int minutesinHour = 60;
@@ -77,7 +77,10 @@ public class TimeManager : MonoBehaviour
             Instance = this;
         }
 
-        currentState = DayState.sunsetToNight;
+        // Set initial Time, State and Color
+        hours = 7;
+        currentState = DayState.sunriseToDay;
+        ChangeColor(sunriseToDay, 5f, 1f, 1.5f);
     }
 
     private void FixedUpdate()
