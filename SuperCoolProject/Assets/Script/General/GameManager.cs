@@ -138,6 +138,7 @@ public class GameManager : MonoBehaviour
     {
         numberOfPlayers++;
         players.Add(pm);
+        pm.isInteracting = true;
 
         PlayerLocomotion currentPlayerLoco = pm.GetComponent<PlayerLocomotion>();
         playersLocos.Add(currentPlayerLoco);
@@ -185,6 +186,7 @@ public class GameManager : MonoBehaviour
 
             if (hideTut == 1 || devMode == true)
             {
+                UnFreezeAllPlayers();
                 return;
             }
             else
@@ -229,7 +231,6 @@ public class GameManager : MonoBehaviour
             player.isInteracting = false;
         }
     }
-
 
     public void TurnOnAllPlayerLights()
     {

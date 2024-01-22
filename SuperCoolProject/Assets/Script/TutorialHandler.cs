@@ -29,7 +29,6 @@ public class TutorialHandler : MonoBehaviour
     public AlienHandler LoveAlien1;
     public AlienHandler LoveAlien2;
 
-
     public static TutorialHandler Instance;
 
     private void Awake()
@@ -68,28 +67,29 @@ public class TutorialHandler : MonoBehaviour
         currentTutorialSlide++;
         if (currentTutorialSlide > totalTutorialSlides) // After last ok press
         {
+            TutorialGameObject.SetActive(false);
             GameManager.Instance.UnFreezeAllPlayers();
+            Time.timeScale = 1;
             return;
         }
-        else
+
+        if (currentTutorialSlide == 2) // After second slide
         {
-            if (currentTutorialSlide == 2) // After second slide
-            {
-                ShowFoodCircleOrder();
-            }
-            else if (currentTutorialSlide == 3)
-            {
-                ShowReproduction();
-            }
-            else if (currentTutorialSlide == 4)
-            {
-                ShowDefense();
-            }
-            else
-            {
-                EnableCertainSlide(currentTutorialSlide);
-            }
+            ShowFoodCircleOrder();
         }
+        else if (currentTutorialSlide == 3)
+        {
+            ShowReproduction();
+        }
+        else if (currentTutorialSlide == 4)
+        {
+            ShowDefense();
+        }
+        else if (currentTutorialSlide < totalTutorialSlides)
+        {
+            EnableCertainSlide(currentTutorialSlide);
+        }
+
     }
 
     private void EnableCertainSlide(int slideIndex)
@@ -124,7 +124,7 @@ public class TutorialHandler : MonoBehaviour
         StartCoroutine(DoTheDefense());
     }
 
-    private AlienHandler SpawnAdultAlien(int species, bool isAttacking, bool isLoving)
+    private AlienHandler SpawnAdultAlien(int species, bool isLoving)
     {
         GameObject alienPoolGo = PoolManager.Instance.GetPooledAliens(false);
         if (alienPoolGo != null)
@@ -141,20 +141,17 @@ public class TutorialHandler : MonoBehaviour
             currentAlienHandler.hungerTimer = 20;
             currentAlienHandler.ActivateCurrentModels(species);
             currentAlienHandler.lifeTime = 999; // Hackerman
+            currentAlienHandler.currentState = AlienHandler.AlienState.idle;
+            currentAlienHandler.HandleStateIcon(AlienHandler.AlienState.hunting);
+            currentAlienHandler.hungerTimer = 1000;
 
             currentAlienTransform = alienPoolGo.transform;
             currentAlienTransform.position = alienStartPosition;
-            if (isAttacking == true)
-            {
-                currentAlienHandler.currentState = AlienHandler.AlienState.hunting;
-                currentAlienHandler.hungerTimer = 1000;
-            }
             if (isLoving == true)
             {
-                currentAlienHandler.currentState = AlienHandler.AlienState.loving;
-                currentAlienHandler.hungerTimer = 1000;
                 currentAlienHandler.hasUterus = true;
                 currentAlienHandler.maxAmountOfBabies = 2;
+                currentAlienHandler.HandleStateIcon(AlienHandler.AlienState.loving);
             }
         }
         if (currentAlienHandler == null)
@@ -167,13 +164,13 @@ public class TutorialHandler : MonoBehaviour
     IEnumerator DoTheFoodCircle()
     {
         GameManager.Instance.CameraFollowSpot.position = cameraPositionForTut;
-        SpawnAdultAlien(0, true, false);
+        SpawnAdultAlien(0, false);
         yield return new WaitForSeconds(spawnDelay);
-        SpawnAdultAlien(1, true, false);
+        SpawnAdultAlien(1, false);
         yield return new WaitForSeconds(spawnDelay);
-        SpawnAdultAlien(2, true, false);
+        SpawnAdultAlien(2, false);
         yield return new WaitForSeconds(spawnDelay);
-        LoveAlien1 = SpawnAdultAlien(0, true, false);
+        LoveAlien1 = SpawnAdultAlien(0, false);
         yield return new WaitForSeconds(spawnDelay + 1);
 
         EnableCertainSlide(currentTutorialSlide);
@@ -182,9 +179,9 @@ public class TutorialHandler : MonoBehaviour
 
     IEnumerator DoTheReproduction()
     {
-        LoveAlien2 = SpawnAdultAlien(0, false, true);
+        LoveAlien2 = SpawnAdultAlien(0, true);
+        LoveAlien1.HandleStateIcon(AlienHandler.AlienState.loving);
         yield return new WaitForSeconds(spawnDelay + 1);
-
         EnableCertainSlide(currentTutorialSlide);
         TutorialGameObject.SetActive(true);
     }
@@ -197,6 +194,8 @@ public class TutorialHandler : MonoBehaviour
         LoveAlien2.targetAlien = GameManager.Instance.players[0].gameObject;
         LoveAlien1.currentState = AlienHandler.AlienState.hunting;
         LoveAlien2.currentState = AlienHandler.AlienState.hunting;
+        LoveAlien1.brainWashed = false;
+        LoveAlien2.brainWashed = false;
         EnableCertainSlide(currentTutorialSlide);
         TutorialGameObject.SetActive(true);
     }

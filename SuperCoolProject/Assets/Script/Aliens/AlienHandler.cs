@@ -512,6 +512,11 @@ public class AlienHandler : MonoBehaviour
                 }
             }
         }
+        if (brainWashed)
+        {
+            return;
+        }
+
         StartCoroutine(IdleSecsUntilNewState(1f, AlienState.looking));
         return;
     }
@@ -557,7 +562,7 @@ public class AlienHandler : MonoBehaviour
         if (anim[currentSpecies] != null) { anim[currentSpecies].Play("Armature|WALK"); }
 
         MyTransform.position = Vector3.MoveTowards(MyTransform.position, targetPosition, speed);
-        if (Vector3.Distance(MyTransform.position, targetPosition) > .1f)
+        if (Vector3.Distance(MyTransform.position, targetPosition) > 1)
         {
             MyTransform.LookAt(targetPosition);
         }
@@ -638,7 +643,7 @@ public class AlienHandler : MonoBehaviour
         alienSpecies[currentSpeziesIndex].SetActive(true);
     }
 
-    private void HandleStateIcon(AlienState currentState)
+    public void HandleStateIcon(AlienState currentState)
     {
         switch (currentState)
         {

@@ -83,7 +83,7 @@ public class PlayerAttacker : MonoBehaviour
     {
         laserSightLeft.enabled = false;
         laserSightRight.enabled = false;
-
+        AimTargetIndicatorGO.SetActive(false);
 
         audioSource = GetComponent<AudioSource>();
         inputHandler = GetComponent<InputHandler>();
