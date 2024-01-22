@@ -557,7 +557,10 @@ public class AlienHandler : MonoBehaviour
         if (anim[currentSpecies] != null) { anim[currentSpecies].Play("Armature|WALK"); }
 
         MyTransform.position = Vector3.MoveTowards(MyTransform.position, targetPosition, speed);
-        MyTransform.LookAt(targetPosition, Vector3.up);
+        if (Vector3.Distance(MyTransform.position, targetPosition) > .1f)
+        {
+            MyTransform.LookAt(targetPosition);
+        }
 
         if (brainWashed == false)
         {

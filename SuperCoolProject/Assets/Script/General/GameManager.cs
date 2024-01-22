@@ -6,11 +6,13 @@ using TMPro;
 using UnityEngine.Serialization;
 using UnityEngine.InputSystem;
 using Cinemachine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class GameManager : MonoBehaviour
 {
     [Header("General")]
     public bool devMode;
+    public int hideTut;
 
     [Header("World")]
     public int worldRadius = 150;
@@ -94,8 +96,9 @@ public class GameManager : MonoBehaviour
     private void FixedUpdate()
     {
         if (players.Count == 0) { return; }
-        HandleCameraTarget();
+        if (players[0].isInteracting == true) { return; }
 
+        HandleCameraTarget();
     }
 
     private void HandleCameraTarget()
@@ -158,15 +161,50 @@ public class GameManager : MonoBehaviour
         {
             playerInputManager.DisableJoining();
         }
+
         if (numberOfPlayers == 1)
         {
-            // ???           // TODO: Change this here
-            if (devMode == false)
+            CameraFollowSpot.position = Vector3.zero;
+            StartCoroutine(RaiseCameraSpeed(cameraSpeedRaiseDuration));
+            StartCoroutine(WaitSecBeforeTut(cameraSpeedRaiseDuration));
+        }
+    }
+
+
+    private void HandleTutorialStart()
+    {
+        Debug.Log("start Tur´torial here. Remove later");
+        FreezeAllPlayers();
+        TutorialHandler.Instance.EnableEntireTutorial();
+        return;
+
+        // Folowing code only runs if playerPrefs exist, and they only do in builds
+        if (PlayerPrefs.HasKey("hideTutorial"))
+        {
+            hideTut = PlayerPrefs.GetInt("hideTutorial");
+
+            if (hideTut == 1 || devMode == true)
             {
-                Debug.Log("Tutorial STart");
+                return;
+            }
+            else
+            {
                 FreezeAllPlayers();
+                TutorialHandler.Instance.EnableEntireTutorial();
+                return;
             }
         }
+
+        Debug.Log("has no PlayerPrefs");
+        FreezeAllPlayers();
+        TutorialHandler.Instance.EnableEntireTutorial();
+        return;
+    }
+
+    IEnumerator WaitSecBeforeTut(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        HandleTutorialStart();
     }
 
     public void FreezeAllPlayers()
@@ -175,12 +213,20 @@ public class GameManager : MonoBehaviour
         {
             player.canMove = false;
         }
+        foreach (PlayerManager player in players)
+        {
+            player.isInteracting = true;
+        }
     }
     public void UnFreezeAllPlayers()
     {
         foreach (PlayerLocomotion player in playersLocos)
         {
             player.canMove = true;
+        }
+        foreach (PlayerManager player in players)
+        {
+            player.isInteracting = false;
         }
     }
 

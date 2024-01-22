@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Versioning;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
@@ -11,7 +12,6 @@ public class TutorialHandler : MonoBehaviour
     [Header("UI Tutorial")]
     public GameObject TutorialGameObject;
     public GameObject[] tutorialSlides;
-    public int hideTut;
     public int currentTutorialSlide;
     public int totalTutorialSlides;
     public Button nextButton;
@@ -24,6 +24,10 @@ public class TutorialHandler : MonoBehaviour
     public float spawnDelay = 5;
     public Vector3 alienStartPosition;
     public Vector3 alienEndPosition;
+    public Vector3 cameraPositionForTut;
+
+    public AlienHandler LoveAlien1;
+    public AlienHandler LoveAlien2;
 
 
     public static TutorialHandler Instance;
@@ -38,112 +42,103 @@ public class TutorialHandler : MonoBehaviour
         {
             Instance = this;
         }
-    }
 
-    private void OnEnable()
-    {
+        TutorialGameObject.SetActive(false);
         currentTutorialSlide = 0;
         totalTutorialSlides = tutorialSlides.Length;
     }
 
     public void EnableEntireTutorial()
     {
-        // Folowing code only runs if playerPrefs exist, and they only do in builds
-        if (PlayerPrefs.HasKey("hideTutorial"))
-        {
-            Debug.Log("has PlayerPrefs, workaround here with return");
-            TutorialGameObject.SetActive(true);
-            EventSystem.current.SetSelectedGameObject(nextButton.gameObject);
-            Time.timeScale = 0;
-            return;
-
-
-            hideTut = PlayerPrefs.GetInt("hideTutorial");
-            if (hideTut == 1 || GameManager.Instance.devMode)
-            {
-                TutorialGameObject.SetActive(false);
-            }
-            else
-            {
-                TutorialGameObject.SetActive(true);
-                EventSystem.current.SetSelectedGameObject(nextButton.gameObject);
-                Time.timeScale = 0;
-            }
-        }
-        else
-        {
-            Debug.Log("has no PlayerPrefs");
-            TutorialGameObject.SetActive(true);
-            EventSystem.current.SetSelectedGameObject(nextButton.gameObject);
-            Time.timeScale = 0;
-        }
+        TutorialGameObject.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(nextButton.gameObject);
+        Time.timeScale = 0;
     }
-
 
     public void SetHideTut()
     {
         PlayerPrefs.SetInt("hideTutorial", 1);
         TutorialGameObject.SetActive(false);
         Time.timeScale = 1;
-
-        Debug.Log("remove this here in future");
-        // Start with Alien behaviour Scene
-        ShowFoodCircleOrder();
-    }
-
-    public void SkipTut()
-    {
-        TutorialGameObject.SetActive(false);
-        Time.timeScale = 1;
-
-        Debug.Log("remove this here in future");
-        // Start with Alien behaviour Scene
-        ShowFoodCircleOrder();
+        GameManager.Instance.UnFreezeAllPlayers();
     }
 
     public void NextSlide()
     {
         currentTutorialSlide++;
-
-        if (currentTutorialSlide == totalTutorialSlides)
+        if (currentTutorialSlide > totalTutorialSlides) // After last ok press
         {
-            // Completed tutorial
-            TutorialGameObject.SetActive(false);
-            Time.timeScale = 1;
-
-            // Start with Alien behaviour Scene
-            ShowFoodCircleOrder();
+            GameManager.Instance.UnFreezeAllPlayers();
+            return;
         }
         else
         {
-            foreach (var item in tutorialSlides)
+            if (currentTutorialSlide == 2) // After second slide
             {
-                item.SetActive(false);
+                ShowFoodCircleOrder();
             }
-            tutorialSlides[currentTutorialSlide].SetActive(true);
+            else if (currentTutorialSlide == 3)
+            {
+                ShowReproduction();
+            }
+            else if (currentTutorialSlide == 4)
+            {
+                ShowDefense();
+            }
+            else
+            {
+                EnableCertainSlide(currentTutorialSlide);
+            }
         }
     }
 
-
-    public void ShowFoodCircleOrder()
+    private void EnableCertainSlide(int slideIndex)
     {
+        Time.timeScale = 0;
+
+        foreach (var item in tutorialSlides)
+        {
+            item.SetActive(false);
+        }
+        tutorialSlides[slideIndex].SetActive(true);
+    }
+
+    private void ShowFoodCircleOrder()
+    {
+        TutorialGameObject.SetActive(false);
+        Time.timeScale = 1;
         StartCoroutine(DoTheFoodCircle());
     }
 
-    private void SpawnAdultAlien(int species, bool isAttacking, bool isLoving)
+    private void ShowReproduction()
+    {
+        TutorialGameObject.SetActive(false);
+        Time.timeScale = 1;
+        StartCoroutine(DoTheReproduction());
+    }
+
+    private void ShowDefense()
+    {
+        TutorialGameObject.SetActive(false);
+        Time.timeScale = 1;
+        StartCoroutine(DoTheDefense());
+    }
+
+    private AlienHandler SpawnAdultAlien(int species, bool isAttacking, bool isLoving)
     {
         GameObject alienPoolGo = PoolManager.Instance.GetPooledAliens(false);
         if (alienPoolGo != null)
         {
             currentAlienHandler = alienPoolGo.GetComponent<AlienHandler>();
             currentAlienHandler.BrainwashAlien();
-            //currentAlienHandler.targetAlien = GameManager.Instance.players[0].gameObject;
             currentAlienHandler.currentSpecies = species;
-            currentAlienHandler.currentAge = AlienHandler.AlienAge.sexualActive;
-            currentAlienHandler.targetPosition = alienEndPosition * currentAlienHandler.sexualActiveScale;
-            currentAlienHandler.lustTimer = 10;
+            currentAlienHandler.currentAge = AlienHandler.AlienAge.fullyGrown;
+            currentAlienHandler.MyTransform.localScale = Vector3.one;
+            currentAlienHandler.targetPosition = alienEndPosition;
+
+            currentAlienHandler.lustTimer = 20;
             currentAlienHandler.hasUterus = false;
-            currentAlienHandler.hungerTimer = 10;
+            currentAlienHandler.hungerTimer = 20;
             currentAlienHandler.ActivateCurrentModels(species);
             currentAlienHandler.lifeTime = 999; // Hackerman
 
@@ -157,26 +152,52 @@ public class TutorialHandler : MonoBehaviour
             if (isLoving == true)
             {
                 currentAlienHandler.currentState = AlienHandler.AlienState.loving;
+                currentAlienHandler.hungerTimer = 1000;
                 currentAlienHandler.hasUterus = true;
                 currentAlienHandler.maxAmountOfBabies = 2;
             }
         }
+        if (currentAlienHandler == null)
+        {
+            return null;
+        }
+        return currentAlienHandler;
     }
 
     IEnumerator DoTheFoodCircle()
     {
+        GameManager.Instance.CameraFollowSpot.position = cameraPositionForTut;
         SpawnAdultAlien(0, true, false);
         yield return new WaitForSeconds(spawnDelay);
         SpawnAdultAlien(1, true, false);
         yield return new WaitForSeconds(spawnDelay);
         SpawnAdultAlien(2, true, false);
         yield return new WaitForSeconds(spawnDelay);
-        SpawnAdultAlien(0, true, false);
-        yield return new WaitForSeconds(spawnDelay);
-        SpawnAdultAlien(0, false, true);
-        yield return new WaitForSeconds(spawnDelay);
-        GameManager.Instance.UnFreezeAllPlayers();
+        LoveAlien1 = SpawnAdultAlien(0, true, false);
+        yield return new WaitForSeconds(spawnDelay + 1);
 
+        EnableCertainSlide(currentTutorialSlide);
+        TutorialGameObject.SetActive(true);
     }
 
+    IEnumerator DoTheReproduction()
+    {
+        LoveAlien2 = SpawnAdultAlien(0, false, true);
+        yield return new WaitForSeconds(spawnDelay + 1);
+
+        EnableCertainSlide(currentTutorialSlide);
+        TutorialGameObject.SetActive(true);
+    }
+
+    IEnumerator DoTheDefense()
+    {
+        //SpawnAdultAlien(0, false, true);
+        yield return new WaitForSeconds(spawnDelay);
+        LoveAlien1.targetAlien = GameManager.Instance.players[0].gameObject;
+        LoveAlien2.targetAlien = GameManager.Instance.players[0].gameObject;
+        LoveAlien1.currentState = AlienHandler.AlienState.hunting;
+        LoveAlien2.currentState = AlienHandler.AlienState.hunting;
+        EnableCertainSlide(currentTutorialSlide);
+        TutorialGameObject.SetActive(true);
+    }
 }

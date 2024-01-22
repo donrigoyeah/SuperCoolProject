@@ -88,7 +88,7 @@ public class PlayerManager : MonoBehaviour
         HandleResource();
         HandleRespawn();
         HandleGameOver();
-        
+
 
     }
 
@@ -123,6 +123,7 @@ public class PlayerManager : MonoBehaviour
 
         // Set Variable to disable movement/input
         isAlive = false;
+        StopAllCoroutines();
         audioSource.PlayOneShot(deathAudio, 1f);
 
         playerAnim.SetBool("IsDead", true);
@@ -329,7 +330,7 @@ public class PlayerManager : MonoBehaviour
         resourceMaterial[0].SetColor("_EmissionColor", Color.blue * currentSphereResource);
         resourceMaterial[1].SetColor("_EmissionColor", Color.yellow * currentSquareResource);
         resourceMaterial[2].SetColor("_EmissionColor", Color.red * currentTriangleResource);
-        
+
         /*// Only show resource UI if below 75%
         if (currentSphereResource < 3 * maxSphereResource / 4)
         {

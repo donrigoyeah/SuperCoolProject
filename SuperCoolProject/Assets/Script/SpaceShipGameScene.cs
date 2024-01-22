@@ -106,20 +106,6 @@ public class SpaceShipGameScene : MonoBehaviour
         ExhaustParticlesGO.transform.rotation = Quaternion.Euler(-90, 90, 90);
         ExhaustParticlesMain.startSpeed = 0.5f;
         ExhaustParticlesMain.startLifetime = 6f;
-
-        GameManager.Instance.CameraFollowSpot.position = Vector3.zero;
-        StartCoroutine(GameManager.Instance.RaiseCameraSpeed(GameManager.Instance.cameraSpeedRaiseDuration));
-        if (GameManager.Instance.devMode == false)
-        {
-            StartCoroutine(WaitSecBeforeTut());
-        }
-    }
-
-
-    IEnumerator WaitSecBeforeTut()
-    {
-        yield return new WaitForSeconds(GameManager.Instance.cameraSpeedRaiseDuration);
-        TutorialHandler.Instance.EnableEntireTutorial();
     }
 
     private void OnTriggerEnter(Collider other)

@@ -81,6 +81,10 @@ public class PlayerAttacker : MonoBehaviour
 
     private void Awake()
     {
+        laserSightLeft.enabled = false;
+        laserSightRight.enabled = false;
+
+
         audioSource = GetComponent<AudioSource>();
         inputHandler = GetComponent<InputHandler>();
         playerManager = GetComponent<PlayerManager>();
@@ -88,21 +92,28 @@ public class PlayerAttacker : MonoBehaviour
         controller = GetComponent<CharacterController>();
 
         CreatePhysicsScene();
-
     }
 
     void Update()
     {
-        HandleShootLazer();
-        HandleGrenadeThrow();
+        if (playerManager.isInteracting == true || playerManager.isAlive == false) { return; }
+        else
+        {
+            HandleShootLazer();
+            HandleGrenadeThrow();
+        }
     }
 
     private void FixedUpdate()
     {
-        float delta = Time.deltaTime;
-        HandleWeaponHeat(delta);
-        HandleGrenadeCooldown(delta);
-        HandleEnableLazerSight();
+        if (playerManager.isInteracting == true || playerManager.isAlive == false) { return; }
+        else
+        {
+            float delta = Time.deltaTime;
+            HandleWeaponHeat(delta);
+            HandleGrenadeCooldown(delta);
+            HandleEnableLazerSight();
+        }
     }
 
     #region Handle Lazer
@@ -203,7 +214,7 @@ public class PlayerAttacker : MonoBehaviour
     private void SpawnLazer(float damage)
     {
         //TODO: Add Recoil
-        
+
         GameObject bulletPoolGo = PoolManager.Instance.GetPooledBullets();
         GameObject muzzlePoolGo = PoolManager.Instance.GetPooledMuzzle();
 
