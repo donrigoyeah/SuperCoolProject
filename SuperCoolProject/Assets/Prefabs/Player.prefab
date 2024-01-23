@@ -455,8 +455,8 @@ MonoBehaviour:
   fireRate: 0.2
   currentWeaponHeat: 0
   maxWeaponHeat: 100
-  boostWeaponHeatThreshold: 70
-  singleLazerHeat: 10
+  boostWeaponHeatThreshold: 80
+  singleLazerHeat: 30
   gunCooldownSpeed: 0.5
   gunOverHeatCooldownSpeed: 0.1
   gunOverheated: 0

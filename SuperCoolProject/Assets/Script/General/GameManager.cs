@@ -26,10 +26,10 @@ public class GameManager : MonoBehaviour
     [Header("SpaceshipParts")]
     SpaceShipPartHandler CurrentPartHandler;
     GameObject CurrentPartGO;
+    public int totalSpaceShipParts;
     public Vector3 AntennaSpawnLocation;
     public GameObject SpaceShipPart;
     public Transform SpaceShipPartContainer;
-    public int totalSpaceShipParts;
     public int currentSpaceShipParts;
     public TextMeshProUGUI spaceShipPartsDisplay;
     [SerializeField] private SpaceShipScriptable[] spaceShipScriptable;
@@ -42,7 +42,6 @@ public class GameManager : MonoBehaviour
     public bool hasDashPart = false;
 
     [Header("References")]
-    [SerializeField] private GameObject map;
     [SerializeField] private PlayerInputManager playerInputManager;
     public List<PlayerManager> players;
     public List<PlayerLocomotion> playersLocos;
@@ -347,7 +346,17 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if (hasAntenna) { Debug.Log("Found Antenna"); map.SetActive(true); }
+        if (hasAntenna)
+        {
+            HUDHandler.Instance.UnlockPopulation.SetActive(true);
+
+        }
+
+        if (hasAntenna)
+        {
+            Debug.Log("Found Antenna"); HUDHandler.Instance.UnlockMiniMap.SetActive(true);
+
+        }
 
         if (currentSpaceShipParts == totalSpaceShipParts)
         {

@@ -26,8 +26,8 @@ public class AlienManager : MonoBehaviour
     [Header("Spawn Settings")]
     public int segmentAmount = 6;
     public int segmentWidthRange = 10;
-    public int minRadius = 30;
-    public int maxRadius = 70;
+    public int minSpawnRadius = 30;
+    public int maxSpawnRadius = 70;
     public int maxSleepDelay = 10;
 
     [Header("Kill Stuff")]
@@ -104,7 +104,7 @@ public class AlienManager : MonoBehaviour
 
                 }
 
-                float r = Random.Range(minRadius, maxRadius);
+                float r = Random.Range(minSpawnRadius, maxSpawnRadius);
                 float angle = Random.Range(currentSlize - segmentWidthRange, currentSlize + segmentWidthRange);
 
                 float randPosX = r * Mathf.Cos(Mathf.Deg2Rad * angle);
