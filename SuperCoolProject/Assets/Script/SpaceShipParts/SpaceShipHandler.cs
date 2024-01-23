@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 
 public class SpaceShipHandler : MonoBehaviour
 {
@@ -93,8 +94,7 @@ public class SpaceShipHandler : MonoBehaviour
                     abilityText.text = spaceShipPartHandler.spaceShipData.abilityUnlock;
                 }
 
-                UpgradeInformationScreen.SetActive(true);
-                okButton.Select();
+                StartCoroutine(ShowInfoPanel());
 
                 GameManager.Instance.SpaceShipPartUpdate();
             }
@@ -108,6 +108,13 @@ public class SpaceShipHandler : MonoBehaviour
         StartCoroutine(PM.FoldResource(PM.ResourceUISphere));
         StartCoroutine(PM.FoldResource(PM.ResourceUISquare));
         StartCoroutine(PM.FoldResource(PM.ResourceUITriangle));
+    }
+
+    IEnumerator ShowInfoPanel()
+    {
+        yield return new WaitForSeconds(1);
+        UpgradeInformationScreen.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(okButton.gameObject);
     }
 
     IEnumerator PlayRetrieveParticle(bool isPart)
