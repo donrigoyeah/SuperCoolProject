@@ -71,6 +71,7 @@ public class InputHandler : MonoBehaviour
         TutorialHandler.Instance.secondaryShootButton = playerInput.currentActionMap.FindAction("SecondaryFire").GetBindingDisplayString(1);
         TutorialHandler.Instance.toggleNavButton = playerInput.currentActionMap.FindAction("NavigationToggle").GetBindingDisplayString(1);
         TutorialHandler.Instance.interactionButton = playerInput.currentActionMap.FindAction("Interaction").GetBindingDisplayString(1);
+        TutorialHandler.Instance.dashButton = playerInput.currentActionMap.FindAction("Dash").GetBindingDisplayString(1);
 
 
     }
@@ -116,6 +117,8 @@ public class InputHandler : MonoBehaviour
             TutorialHandler.Instance.secondaryShootButton = playerInput.currentActionMap.FindAction("SecondaryFire").GetBindingDisplayString(0);
             TutorialHandler.Instance.toggleNavButton = playerInput.currentActionMap.FindAction("NavigationToggle").GetBindingDisplayString(0);
             TutorialHandler.Instance.interactionButton = playerInput.currentActionMap.FindAction("Interaction").GetBindingDisplayString(0);
+            TutorialHandler.Instance.dashButton = playerInput.currentActionMap.FindAction("Dash").GetBindingDisplayString(0);
+
             isGamepad = true;
             switchedControlLabels = true;
         }

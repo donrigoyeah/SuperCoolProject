@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
     public Vector3 AntennaSpawnLocation;
     public GameObject SpaceShipPart;
     public Transform SpaceShipPartContainer;
-    public int totalSpaceShipParts = 5;
+    public int totalSpaceShipParts;
     public int currentSpaceShipParts;
     public TextMeshProUGUI spaceShipPartsDisplay;
     [SerializeField] private SpaceShipScriptable[] spaceShipScriptable;
@@ -50,6 +50,7 @@ public class GameManager : MonoBehaviour
     public LoadingScreenHandler loadingScreenHandler;
 
     public GameObject DeathScreen;
+    public TextMeshProUGUI respawnButton;
     public GameObject GameOverScreen;
     public Image DeathScreenCloneJuiceUI;
     public GameObject Clouds;
@@ -80,6 +81,7 @@ public class GameManager : MonoBehaviour
 
         players = new List<PlayerManager>();
         playersLocos = new List<PlayerLocomotion>();
+        totalSpaceShipParts = spaceShipScriptable.Length;
         currentSpaceShipParts = 0;
         spaceShipPartsDisplay.text = currentSpaceShipParts.ToString() + "/" + totalSpaceShipParts.ToString();
         currentCloneJuice = maxCloneJuice;
@@ -91,6 +93,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         HandleSpawnShipParts();
+        respawnButton.text = TutorialHandler.Instance.dashButton;
     }
 
     private void FixedUpdate()
@@ -313,6 +316,7 @@ public class GameManager : MonoBehaviour
             CurrentPartGO.transform.position = new Vector3(randPosX, 0, randPosZ);
 
             CurrentPartHandler = CurrentPartGO.GetComponent<SpaceShipPartHandler>();
+            CurrentPartHandler.UpgradeName.text = spaceShipScriptable[i].name;
             CurrentPartHandler.spaceShipData = spaceShipScriptable[i];
         }
 
@@ -321,7 +325,10 @@ public class GameManager : MonoBehaviour
         CurrentPartGO.transform.position = AntennaSpawnLocation;
 
         CurrentPartHandler = CurrentPartGO.GetComponent<SpaceShipPartHandler>();
+        CurrentPartHandler.UpgradeName.text = spaceShipScriptable[totalSpaceShipParts - 1].name;
         CurrentPartHandler.spaceShipData = spaceShipScriptable[totalSpaceShipParts - 1];
+
+        TutorialHandler.Instance.totalAmountOfSpaceShpParts.text = totalSpaceShipParts.ToString();
 
         // After loading all aliens sent finished state to Loading Screen
         loadingScreenHandler.currentAwakeCalls++;

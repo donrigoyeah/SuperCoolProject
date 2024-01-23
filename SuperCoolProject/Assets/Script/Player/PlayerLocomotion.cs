@@ -105,6 +105,7 @@ public class PlayerLocomotion : MonoBehaviour
             }
         }
 
+
         // Handle Pause Input
         if (inputHandler.inputPause)
         {
@@ -204,6 +205,7 @@ public class PlayerLocomotion : MonoBehaviour
         dashCurrentCharge -= dashCost;
 
         //Instantiate particle system for dash
+        dashParticle.transform.rotation = myTransform.rotation;
         dashParticle.SetActive(true);
         yield return new WaitForSeconds(dashDuration);
         dashParticle.SetActive(false);

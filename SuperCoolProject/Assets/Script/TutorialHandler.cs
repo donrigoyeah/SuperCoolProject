@@ -31,11 +31,13 @@ public class TutorialHandler : MonoBehaviour
     public static TutorialHandler Instance;
 
     public TextMeshProUGUI primaryFireButtonText;
+    public TextMeshProUGUI totalAmountOfSpaceShpParts;
 
     public string primaryShootButton;
     public string secondaryShootButton;
     public string toggleNavButton;
     public string interactionButton;
+    public string dashButton;
 
 
     private void Awake()

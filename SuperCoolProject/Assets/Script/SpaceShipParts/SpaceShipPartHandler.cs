@@ -16,7 +16,7 @@ public class SpaceShipPartHandler : MonoBehaviour
     public SpaceShipScriptable spaceShipData;
     public float playerSpeedReduction = 0f;
     public float previousPlayerSpeed = 10f;
-    public TextMeshProUGUI tmp;
+    public TextMeshProUGUI UpgradeName;
     [SerializeField] private ParticleSystem draggingParticles;
     public bool particleSpawned = false;
     private AudioSource audioSource;
@@ -77,8 +77,6 @@ public class SpaceShipPartHandler : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            tmp.text = spaceShipData.partName;
-
             inputHandler = other.gameObject.GetComponent<InputHandler>();
             playerLocomotion = other.gameObject.GetComponent<PlayerLocomotion>();
             playerManager = other.gameObject.GetComponent<PlayerManager>();

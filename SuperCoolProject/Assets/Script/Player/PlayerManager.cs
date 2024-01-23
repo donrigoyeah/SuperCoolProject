@@ -443,7 +443,7 @@ public class PlayerManager : MonoBehaviour
 
     private void HandleRespawn()
     {
-        if (!isAlive && inputHandler.inputJumping)
+        if (!isAlive && inputHandler.inputDashing)
         {
             if (GameManager.Instance.DeathScreen.activeInHierarchy)
             {
