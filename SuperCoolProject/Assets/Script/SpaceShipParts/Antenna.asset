@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   partName: Antenna
   mass: 6
-  abilityUnlock: Fixes communication between Player and SpaceShip
+  abilityUnlockText: Your connection to the ships radar is working now
   model: {fileID: 919132149155446097, guid: ac7d1b5d201dae94c81937af637f0733, type: 3}

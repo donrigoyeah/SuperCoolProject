@@ -7,37 +7,21 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
+using UnityEditor.Experimental.GraphView;
 
 public class SpaceShipHandler : MonoBehaviour
 {
-    public GameObject ParticleSystem;
-    ParticleSystem.MainModule ParticleSystem1Main;
-    ParticleSystem.MainModule ParticleSystem2Main;
     public TextMeshProUGUI abilityText;
+    public TextMeshProUGUI upgradeButtonBinding;
     public GameObject UpgradeInformationScreen;
+    public GameObject NewAbilityWithKey;
     public Button okButton;
+    public bool showNewUpgradeBinging = false;
 
-    private void Start()
-    {
-        ParticleSystem[] particleSystems = ParticleSystem.GetComponentsInChildren<ParticleSystem>();
 
-        // TODO: Risky call?
-        ParticleSystem1Main = particleSystems[0].main;
-        ParticleSystem2Main = particleSystems[1].main;
-    }
 
     private void OnTriggerEnter(Collider other)
     {
-        //Check for player dragging the deadbody
-        if (other.gameObject.CompareTag("DeadBody"))
-        {
-            Destroy(other.gameObject);
-            GameManager.Instance.playerDeadBody = true;
-            GameManager.Instance.currentCloneJuice += 10f;
-            StartCoroutine(PlayRetrieveParticle(false));
-            return;
-        }
-
         if (other.gameObject.CompareTag("Player"))
         {
             PlayerManager PM = other.gameObject.GetComponent<PlayerManager>();
@@ -48,15 +32,15 @@ public class SpaceShipHandler : MonoBehaviour
             StartCoroutine(PM.UnfoldResource(PM.ResourceUITriangle, 0));
 
             // PlayerManager PM = other.gameObject.GetComponent<PlayerManager>();
-            if (PM.currentPart == null) return; // If come empty handed to spacehsip return
+            if (PM.currentPart == null || PM.isCarryingPart == false) { return; } // If come empty handed to spacehsip return
 
-            SpaceShipPartHandler spaceShipPartHandler = PM.currentPart.GetComponent<SpaceShipPartHandler>();
             if (PM != null && PM.isCarryingPart)
             {
                 StartCoroutine(PlayRetrieveParticle(true));
+
+                SpaceShipPartHandler spaceShipPartHandler = PM.currentPart.GetComponent<SpaceShipPartHandler>();
                 PlayerLocomotion PL = PM.GetComponent<PlayerLocomotion>();
                 PL.playerSpeed = spaceShipPartHandler.previousPlayerSpeed;
-                ParticleSystem.SetActive(true);
 
                 GameManager.Instance.currentSpaceShipParts++;
                 PM.currentPart.SetActive(false);
@@ -67,37 +51,59 @@ public class SpaceShipHandler : MonoBehaviour
                 if (spaceShipPartHandler.spaceShipData.partName == "AmmoBox") // Unlocks Granades
                 {
                     GameManager.Instance.hasAmmoBox = true;
-                    abilityText.text = spaceShipPartHandler.spaceShipData.abilityUnlock;
+                    abilityText.text = spaceShipPartHandler.spaceShipData.abilityUnlockText;
+                    showNewUpgradeBinging = true;
+                    upgradeButtonBinding.text = TutorialHandler.Instance.secondaryShootButton;
                 }
 
                 if (spaceShipPartHandler.spaceShipData.partName == "Antenna") // Unlocks 
                 {
                     GameManager.Instance.hasAntenna = true;
-                    abilityText.text = spaceShipPartHandler.spaceShipData.abilityUnlock;
+                    abilityText.text = spaceShipPartHandler.spaceShipData.abilityUnlockText;
+                    showNewUpgradeBinging = true;
+                    upgradeButtonBinding.text = TutorialHandler.Instance.toggleNavButton;
                 }
 
                 if (spaceShipPartHandler.spaceShipData.partName == "FuelCanister")
                 {
                     GameManager.Instance.hasFuelCanister = true;
-                    abilityText.text = spaceShipPartHandler.spaceShipData.abilityUnlock;
+                    abilityText.text = spaceShipPartHandler.spaceShipData.abilityUnlockText;
                 }
 
                 if (spaceShipPartHandler.spaceShipData.partName == "ShieldGenerator")
                 {
                     GameManager.Instance.hasShieldGenerator = true;
-                    abilityText.text = spaceShipPartHandler.spaceShipData.abilityUnlock;
+                    abilityText.text = spaceShipPartHandler.spaceShipData.abilityUnlockText;
                 }
 
                 if (spaceShipPartHandler.spaceShipData.partName == "Unknown")
                 {
                     GameManager.Instance.hasDashPart = true;
-                    abilityText.text = spaceShipPartHandler.spaceShipData.abilityUnlock;
+                    abilityText.text = spaceShipPartHandler.spaceShipData.abilityUnlockText;
                 }
 
                 StartCoroutine(ShowInfoPanel());
 
                 GameManager.Instance.SpaceShipPartUpdate();
             }
+        }
+
+
+
+        //TODO:
+        //- SpaceShipparts have ontriggerenter thing that displays "press interaction" to drag
+        //    - Placemat antenna in front of spawn point
+
+
+
+        //Check for player dragging the deadbody
+        if (other.gameObject.CompareTag("DeadBody"))
+        {
+            Destroy(other.gameObject);
+            GameManager.Instance.playerDeadBody = true;
+            GameManager.Instance.currentCloneJuice += 10f;
+            StartCoroutine(PlayRetrieveParticle(false));
+            return;
         }
     }
 
@@ -114,25 +120,46 @@ public class SpaceShipHandler : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
         UpgradeInformationScreen.SetActive(true);
+        if (showNewUpgradeBinging == true)
+        {
+            NewAbilityWithKey.SetActive(true);
+        }
+
         EventSystem.current.SetSelectedGameObject(okButton.gameObject);
     }
 
     IEnumerator PlayRetrieveParticle(bool isPart)
     {
-        if (isPart)
+        foreach (var player in GameManager.Instance.players)
         {
-            ParticleSystem1Main.startColor = new ParticleSystem.MinMaxGradient(Color.green, Color.yellow);
-            ParticleSystem2Main.startColor = new ParticleSystem.MinMaxGradient(Color.green, Color.yellow);
-        }
-        else
-        {
-            ParticleSystem1Main.startColor = new ParticleSystem.MinMaxGradient(Color.green, Color.magenta);
-            ParticleSystem2Main.startColor = new ParticleSystem.MinMaxGradient(Color.green, Color.magenta);
+
+            if (isPart)
+            {
+                player.ParticleSystem1Main.startColor = new ParticleSystem.MinMaxGradient(Color.green, Color.yellow);
+                player.ParticleSystem2Main.startColor = new ParticleSystem.MinMaxGradient(Color.green, Color.yellow);
+                player.ParticleSystem3Main.startColor = new ParticleSystem.MinMaxGradient(Color.green, Color.yellow);
+            }
+            else
+            {
+                player.ParticleSystem1Main.startColor = new ParticleSystem.MinMaxGradient(Color.green, Color.magenta);
+                player.ParticleSystem2Main.startColor = new ParticleSystem.MinMaxGradient(Color.green, Color.magenta);
+                player.ParticleSystem3Main.startColor = new ParticleSystem.MinMaxGradient(Color.green, Color.magenta);
+            }
+            player.UpgradeParticles.SetActive(true);
         }
 
-        ParticleSystem.SetActive(true);
         yield return new WaitForSeconds(1.5f);
-        ParticleSystem.SetActive(false);
 
+        foreach (var player in GameManager.Instance.players)
+        {
+            player.UpgradeParticles.SetActive(false);
+        }
+    }
+
+    public void CloseUpgradeScreen()
+    {
+        showNewUpgradeBinging = false;
+        UpgradeInformationScreen.SetActive(false);
+        NewAbilityWithKey.SetActive(false);
     }
 }

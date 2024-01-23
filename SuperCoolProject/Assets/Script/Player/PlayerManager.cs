@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -69,6 +70,10 @@ public class PlayerManager : MonoBehaviour
     private InputHandler inputHandler;
     private Animator playerAnim;
     private AlienHandler CurrentSurroundingAH;
+    public GameObject UpgradeParticles;
+    public ParticleSystem.MainModule ParticleSystem1Main;
+    public ParticleSystem.MainModule ParticleSystem2Main;
+    public ParticleSystem.MainModule ParticleSystem3Main;
 
     private int alienLayerMask = 1 << 9; // Lyer 9 is Alien, so only use this layer
 
@@ -81,6 +86,14 @@ public class PlayerManager : MonoBehaviour
 
         dissolve = playerShieldGO.gameObject.GetComponent<Renderer>().material;
         // dissolve.SetFloat("_DissolveAmount", 0);
+
+        ParticleSystem[] particleSystems = UpgradeParticles.GetComponentsInChildren<ParticleSystem>();
+
+        ParticleSystem1Main = particleSystems[0].main;
+        ParticleSystem2Main = particleSystems[1].main;
+        ParticleSystem3Main = particleSystems[1].main;
+        UpgradeParticles.SetActive(false);
+
     }
 
     private void FixedUpdate()
@@ -456,8 +469,8 @@ public class PlayerManager : MonoBehaviour
 
     public IEnumerator UnfoldResource(GameObject Resource, float degree)
     {
-        int steps = 50;
-        float animationDuration = .5f;
+        int steps = 30;
+        float animationDuration = .3f;
         Resource.gameObject.SetActive(true);
         RectTransform GORT = Resource.GetComponent<RectTransform>();
         GORT.localScale = Vector3.zero;
@@ -471,8 +484,8 @@ public class PlayerManager : MonoBehaviour
 
     public IEnumerator FoldResource(GameObject Resource)
     {
-        int steps = 50;
-        float animationDuration = .5f;
+        int steps = 30;
+        float animationDuration = .2f;
 
         RectTransform GORT = Resource.GetComponent<RectTransform>();
         GORT.localScale = Vector3.one * 2;

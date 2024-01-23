@@ -8,8 +8,6 @@ public class RebindingMenu : MonoBehaviour
 {
     public InputActionReference moveRef, jumpRef, fire1Ref, fireRef2, dashRef, interactRef;
 
-    
-
     private void OnEnable()
     {
         moveRef.action.Disable();
@@ -18,7 +16,7 @@ public class RebindingMenu : MonoBehaviour
         fireRef2.action.Disable();
         dashRef.action.Disable();
         interactRef.action.Disable();
-        
+
     }
 
     private void OnDisable()
@@ -30,5 +28,5 @@ public class RebindingMenu : MonoBehaviour
         dashRef.action.Enable();
         interactRef.action.Enable();
     }
-    
+
 }

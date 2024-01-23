@@ -8,6 +8,6 @@ public class SpaceShipScriptable : ScriptableObject
 {
     public string partName;
     public float mass;
-    public string abilityUnlock;
+    public string abilityUnlockText;
     public GameObject model;
 }

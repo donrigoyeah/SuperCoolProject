@@ -22,6 +22,7 @@ public class InputHandler : MonoBehaviour
     public bool inputDevKit;
     public bool isGamepad;
     public int playerIndex;
+    public bool switchedControlLabels;
 
     //public void OnEnable()
     //{
@@ -65,6 +66,13 @@ public class InputHandler : MonoBehaviour
         GameManager.Instance.AddPlayer(playerManager);
 
         playerControls.Enable();
+
+        TutorialHandler.Instance.primaryShootButton = playerInput.currentActionMap.FindAction("PrimaryFire").GetBindingDisplayString(1);
+        TutorialHandler.Instance.secondaryShootButton = playerInput.currentActionMap.FindAction("SecondaryFire").GetBindingDisplayString(1);
+        TutorialHandler.Instance.toggleNavButton = playerInput.currentActionMap.FindAction("NavigationToggle").GetBindingDisplayString(1);
+        TutorialHandler.Instance.interactionButton = playerInput.currentActionMap.FindAction("Interaction").GetBindingDisplayString(1);
+
+
     }
 
     private void OnDisable()
@@ -102,7 +110,14 @@ public class InputHandler : MonoBehaviour
 
         if (ctx.control.device is Gamepad)
         {
+            if (switchedControlLabels == true) { return; }
+
+            TutorialHandler.Instance.primaryShootButton = playerInput.currentActionMap.FindAction("PrimaryFire").GetBindingDisplayString(0);
+            TutorialHandler.Instance.secondaryShootButton = playerInput.currentActionMap.FindAction("SecondaryFire").GetBindingDisplayString(0);
+            TutorialHandler.Instance.toggleNavButton = playerInput.currentActionMap.FindAction("NavigationToggle").GetBindingDisplayString(0);
+            TutorialHandler.Instance.interactionButton = playerInput.currentActionMap.FindAction("Interaction").GetBindingDisplayString(0);
             isGamepad = true;
+            switchedControlLabels = true;
         }
     }
 
@@ -115,18 +130,6 @@ public class InputHandler : MonoBehaviour
         if (ctx.canceled)
         {
             inputDashing = false;
-        }
-    }
-
-    public void JumpInput(InputAction.CallbackContext ctx)
-    {
-        if (ctx.performed)
-        {
-            inputJumping = true;
-        }
-        if (ctx.canceled)
-        {
-            inputJumping = false;
         }
     }
 

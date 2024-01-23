@@ -78,9 +78,9 @@ public class TimeManager : MonoBehaviour
         }
 
         // Set initial Time, State and Color
-        hours = 7;
+        hours = 6;
         currentState = DayState.sunriseToDay;
-        ChangeColor(sunriseToDay, 5f, 1f, 1.5f);
+        StartCoroutine(ChangeColor(sunriseToDay, 1f, 1f, 1.5f));
     }
 
     private void FixedUpdate()
@@ -120,12 +120,12 @@ public class TimeManager : MonoBehaviour
         }
         else if (hour == 18)
         {
-            StartCoroutine(ChangeColor(dayToSunSet, 10f, 1.0f, 1f));
+            StartCoroutine(ChangeColor(dayToSunSet, 5f, 1.0f, 1f));
             currentState = DayState.dayToSunSet;
         }
         else if (hour == 24)
         {
-            StartCoroutine(ChangeColor(sunsetToNight, 10f, 1f, 0.5f));
+            StartCoroutine(ChangeColor(sunsetToNight, 5f, 1f, 0.5f));
             currentState = DayState.sunsetToNight;
 
             hours = 0;

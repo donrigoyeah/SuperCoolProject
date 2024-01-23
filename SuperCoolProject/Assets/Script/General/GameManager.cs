@@ -24,6 +24,9 @@ public class GameManager : MonoBehaviour
     public float maxCloneJuice;
 
     [Header("SpaceshipParts")]
+    SpaceShipPartHandler CurrentPartHandler;
+    GameObject CurrentPartGO;
+    public Vector3 AntennaSpawnLocation;
     public GameObject SpaceShipPart;
     public Transform SpaceShipPartContainer;
     public int totalSpaceShipParts = 5;
@@ -296,7 +299,7 @@ public class GameManager : MonoBehaviour
     {
         float radius = 0;
         float angle = 0;
-        for (int i = 0; i < totalSpaceShipParts; i++)
+        for (int i = 0; i < totalSpaceShipParts - 1; i++)
         {
             int distanceIncrease = i * 10;
 
@@ -306,16 +309,20 @@ public class GameManager : MonoBehaviour
             float randPosZ = radius * Mathf.Sin(angle);
 
             angle += 360 / totalSpaceShipParts;
-            GameObject Go = Instantiate(SpaceShipPart, SpaceShipPartContainer);
-            Go.transform.position = new Vector3(randPosX, 0, randPosZ);
+            CurrentPartGO = Instantiate(SpaceShipPart, SpaceShipPartContainer);
+            CurrentPartGO.transform.position = new Vector3(randPosX, 0, randPosZ);
 
-            SpaceShipPartHandler DataAssign = Go.GetComponent<SpaceShipPartHandler>();
-
-            if (spaceShipScriptable.Length > i)
-            {
-                DataAssign.spaceShipData = spaceShipScriptable[i];
-            }
+            CurrentPartHandler = CurrentPartGO.GetComponent<SpaceShipPartHandler>();
+            CurrentPartHandler.spaceShipData = spaceShipScriptable[i];
         }
+
+        // Spawn Antenna last and in front of player
+        CurrentPartGO = Instantiate(SpaceShipPart, SpaceShipPartContainer);
+        CurrentPartGO.transform.position = AntennaSpawnLocation;
+
+        CurrentPartHandler = CurrentPartGO.GetComponent<SpaceShipPartHandler>();
+        CurrentPartHandler.spaceShipData = spaceShipScriptable[totalSpaceShipParts - 1];
+
         // After loading all aliens sent finished state to Loading Screen
         loadingScreenHandler.currentAwakeCalls++;
     }

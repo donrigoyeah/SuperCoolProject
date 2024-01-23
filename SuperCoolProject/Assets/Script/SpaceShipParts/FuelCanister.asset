@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   partName: FuelCanister
   mass: 8
-  abilityUnlock: Increases Speed
+  abilityUnlockText: Your mechanics are oiled
   model: {fileID: 0}

@@ -60,6 +60,7 @@ public class PlayerLocomotion : MonoBehaviour
         playerAnim = GetComponentInChildren<Animator>();
         myTransform = GetComponent<Transform>();
         MainCamera = Camera.main;
+        dashParticle.SetActive(false);
     }
 
     void Update()

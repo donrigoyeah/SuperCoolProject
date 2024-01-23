@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   partName: AmmoBox
   mass: 8
-  abilityUnlock: Grenades
+  abilityUnlockText: Grenades are now available
   model: {fileID: 0}

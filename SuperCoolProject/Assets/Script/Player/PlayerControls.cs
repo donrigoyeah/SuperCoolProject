@@ -73,15 +73,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Jump"",
-                    ""type"": ""Button"",
-                    ""id"": ""a8525a12-2c2d-4689-9545-545286acb1f7"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Dash"",
                     ""type"": ""Button"",
                     ""id"": ""9b8a4e5b-32c8-4793-913f-f3cb5fbb2b04"",
@@ -100,15 +91,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""DevKit"",
-                    ""type"": ""Button"",
-                    ""id"": ""96a5fc4d-7313-4ffc-9dbe-03b75fd562f2"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
                     ""name"": ""NavigationToggle"",
                     ""type"": ""Button"",
                     ""id"": ""be35b6ba-48fd-4cb9-82e3-b4cad9d2fe59"",
@@ -119,6 +101,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 }
             ],
             ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""3f2bd8d7-d7d8-49a5-8190-886121cd291d"",
+                    ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""GamePad"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
                 {
                     ""name"": ""2D Vector"",
                     ""id"": ""70b0a9ac-7cc6-4242-89ce-8ea3d0718787"",
@@ -176,17 +169,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""3f2bd8d7-d7d8-49a5-8190-886121cd291d"",
-                    ""path"": ""<Gamepad>/leftStick"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""GamePad"",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""5918d0f5-5554-4bd8-a5ef-4616ba3b2e36"",
                     ""path"": ""<Gamepad>/rightStick"",
                     ""interactions"": """",
@@ -209,11 +191,11 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""f2e112be-6970-4f28-80f3-3f6549da1af9"",
-                    ""path"": ""<Keyboard>/e"",
+                    ""id"": ""b7295d03-1f25-411b-8e4a-a05bae883550"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Mouse&KeyBoard"",
+                    ""groups"": ""GamePad"",
                     ""action"": ""Interaction"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -231,23 +213,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""b7295d03-1f25-411b-8e4a-a05bae883550"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""id"": ""f2e112be-6970-4f28-80f3-3f6549da1af9"",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""GamePad"",
+                    ""groups"": ""Mouse&KeyBoard"",
                     ""action"": ""Interaction"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""660551c3-476c-4854-9c98-0ff6428b546d"",
-                    ""path"": ""<Keyboard>/numpadEnter"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""DevKit"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -292,28 +263,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Mouse&KeyBoard"",
                     ""action"": ""SecondaryFire"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""bb288737-d6b2-49cf-bb4f-5ea1ab4a9839"",
-                    ""path"": ""<Gamepad>/buttonNorth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""GamePad"",
-                    ""action"": ""Jump"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""d591d470-b108-4641-b7bc-9a50a1c9fa26"",
-                    ""path"": ""<Keyboard>/space"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Mouse&KeyBoard"",
-                    ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -423,10 +372,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_PlayerActionMap_PrimaryFire = m_PlayerActionMap.FindAction("PrimaryFire", throwIfNotFound: true);
         m_PlayerActionMap_SecondaryFire = m_PlayerActionMap.FindAction("SecondaryFire", throwIfNotFound: true);
         m_PlayerActionMap_Interaction = m_PlayerActionMap.FindAction("Interaction", throwIfNotFound: true);
-        m_PlayerActionMap_Jump = m_PlayerActionMap.FindAction("Jump", throwIfNotFound: true);
         m_PlayerActionMap_Dash = m_PlayerActionMap.FindAction("Dash", throwIfNotFound: true);
         m_PlayerActionMap_Pause = m_PlayerActionMap.FindAction("Pause", throwIfNotFound: true);
-        m_PlayerActionMap_DevKit = m_PlayerActionMap.FindAction("DevKit", throwIfNotFound: true);
         m_PlayerActionMap_NavigationToggle = m_PlayerActionMap.FindAction("NavigationToggle", throwIfNotFound: true);
     }
 
@@ -494,10 +441,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerActionMap_PrimaryFire;
     private readonly InputAction m_PlayerActionMap_SecondaryFire;
     private readonly InputAction m_PlayerActionMap_Interaction;
-    private readonly InputAction m_PlayerActionMap_Jump;
     private readonly InputAction m_PlayerActionMap_Dash;
     private readonly InputAction m_PlayerActionMap_Pause;
-    private readonly InputAction m_PlayerActionMap_DevKit;
     private readonly InputAction m_PlayerActionMap_NavigationToggle;
     public struct PlayerActionMapActions
     {
@@ -508,10 +453,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @PrimaryFire => m_Wrapper.m_PlayerActionMap_PrimaryFire;
         public InputAction @SecondaryFire => m_Wrapper.m_PlayerActionMap_SecondaryFire;
         public InputAction @Interaction => m_Wrapper.m_PlayerActionMap_Interaction;
-        public InputAction @Jump => m_Wrapper.m_PlayerActionMap_Jump;
         public InputAction @Dash => m_Wrapper.m_PlayerActionMap_Dash;
         public InputAction @Pause => m_Wrapper.m_PlayerActionMap_Pause;
-        public InputAction @DevKit => m_Wrapper.m_PlayerActionMap_DevKit;
         public InputAction @NavigationToggle => m_Wrapper.m_PlayerActionMap_NavigationToggle;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActionMap; }
         public void Enable() { Get().Enable(); }
@@ -537,18 +480,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Interaction.started += instance.OnInteraction;
             @Interaction.performed += instance.OnInteraction;
             @Interaction.canceled += instance.OnInteraction;
-            @Jump.started += instance.OnJump;
-            @Jump.performed += instance.OnJump;
-            @Jump.canceled += instance.OnJump;
             @Dash.started += instance.OnDash;
             @Dash.performed += instance.OnDash;
             @Dash.canceled += instance.OnDash;
             @Pause.started += instance.OnPause;
             @Pause.performed += instance.OnPause;
             @Pause.canceled += instance.OnPause;
-            @DevKit.started += instance.OnDevKit;
-            @DevKit.performed += instance.OnDevKit;
-            @DevKit.canceled += instance.OnDevKit;
             @NavigationToggle.started += instance.OnNavigationToggle;
             @NavigationToggle.performed += instance.OnNavigationToggle;
             @NavigationToggle.canceled += instance.OnNavigationToggle;
@@ -571,18 +508,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Interaction.started -= instance.OnInteraction;
             @Interaction.performed -= instance.OnInteraction;
             @Interaction.canceled -= instance.OnInteraction;
-            @Jump.started -= instance.OnJump;
-            @Jump.performed -= instance.OnJump;
-            @Jump.canceled -= instance.OnJump;
             @Dash.started -= instance.OnDash;
             @Dash.performed -= instance.OnDash;
             @Dash.canceled -= instance.OnDash;
             @Pause.started -= instance.OnPause;
             @Pause.performed -= instance.OnPause;
             @Pause.canceled -= instance.OnPause;
-            @DevKit.started -= instance.OnDevKit;
-            @DevKit.performed -= instance.OnDevKit;
-            @DevKit.canceled -= instance.OnDevKit;
             @NavigationToggle.started -= instance.OnNavigationToggle;
             @NavigationToggle.performed -= instance.OnNavigationToggle;
             @NavigationToggle.canceled -= instance.OnNavigationToggle;
@@ -628,10 +559,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnPrimaryFire(InputAction.CallbackContext context);
         void OnSecondaryFire(InputAction.CallbackContext context);
         void OnInteraction(InputAction.CallbackContext context);
-        void OnJump(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
-        void OnDevKit(InputAction.CallbackContext context);
         void OnNavigationToggle(InputAction.CallbackContext context);
     }
 }

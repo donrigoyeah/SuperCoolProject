@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 using UnityEngine.EventSystems;
-using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 
@@ -30,6 +30,14 @@ public class TutorialHandler : MonoBehaviour
 
     public static TutorialHandler Instance;
 
+    public TextMeshProUGUI primaryFireButtonText;
+
+    public string primaryShootButton;
+    public string secondaryShootButton;
+    public string toggleNavButton;
+    public string interactionButton;
+
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -51,6 +59,9 @@ public class TutorialHandler : MonoBehaviour
         TutorialGameObject.SetActive(true);
         EventSystem.current.SetSelectedGameObject(nextButton.gameObject);
         Time.timeScale = 0;
+
+
+        primaryFireButtonText.text = primaryShootButton;
     }
 
     public void SetHideTut()

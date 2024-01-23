@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90b23d16c9521294e9645c1c2973370e, type: 3}
   m_Name: ForDash
   m_EditorClassIdentifier: 
-  partName: Unknown
+  partName: Fuel Canister
   mass: 6
-  abilityUnlock: Dash
+  abilityUnlockText: Your boosters are working now
   model: {fileID: 0}

@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   partName: ShieldGenerator
   mass: 8
-  abilityUnlock: Makes Shield Stronger
+  abilityUnlockText: Your shield Generator is working again
   model: {fileID: 0}
