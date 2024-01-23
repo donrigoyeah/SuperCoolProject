@@ -30,6 +30,7 @@ public class PlayerManager : MonoBehaviour
     public float refreshRate = 0.025f;
 
     [Header("Resource Variables")]
+    public float lightBulbMultiplicator = 1;
     public float maxSphereResource = 100;
     public float maxSquareResource = 100;
     public float maxTriangleResource = 100;
@@ -325,6 +326,8 @@ public class PlayerManager : MonoBehaviour
         if (currentSquareResource > 0) { currentSquareResource -= resourceDrain; }
         if (currentTriangleResource > 0) { currentTriangleResource -= resourceDrain; }
 
+
+        // Will go from 0 to max
         currentSphereResourceInverse = maxSphereResource - currentSphereResource;
         currentSquareResourceInverse = maxSquareResource - currentSquareResource;
         currentTriangleResourceInverse = maxTriangleResource - currentTriangleResource;
@@ -382,19 +385,18 @@ public class PlayerManager : MonoBehaviour
 
     private void MaterialEmmissionControler(int neededResource)
     {
-
         // TODO: Need to use own colors here, new Color(0.4f, 0.9f, 0.7f, 1.0f); so this would not work
         if (neededResource == 0)
         {
-            resourceMaterial[0].SetColor("_EmissionColor", Color.blue * Mathf.PingPong(currentSphereResourceInverse, 3));
+            resourceMaterial[0].SetColor("_EmissionColor", Color.blue * (Mathf.Sin((currentSphereResource * lightBulbMultiplicator) * Time.time) + 0.5f));
         }
         if (neededResource == 1)
         {
-            resourceMaterial[1].SetColor("_EmissionColor", Color.yellow * Mathf.PingPong(currentSquareResourceInverse, 3));
+            resourceMaterial[1].SetColor("_EmissionColor", Color.yellow * (Mathf.Sin((currentSquareResource * lightBulbMultiplicator) * Time.time) + 0.5f));
         }
         if (neededResource == 2)
         {
-            resourceMaterial[2].SetColor("_EmissionColor", Color.red * Mathf.PingPong(currentTriangleResourceInverse, 3));
+            resourceMaterial[2].SetColor("_EmissionColor", Color.red * (Mathf.Sin((currentTriangleResource * lightBulbMultiplicator) * Time.time) + 0.5f));
         }
     }
 
