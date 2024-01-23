@@ -49,7 +49,7 @@ Material:
     - _DissolveAmount: 0
     - _DissolveScale: 40
     - _DissolveSize: 0.08
-    - _Metallic: 0.025
+    - _Metallic: 0
     - _NormalStrength: 0.5
     - _QueueControl: 0
     - _QueueOffset: 0
@@ -57,7 +57,7 @@ Material:
     - _speed: 3.93
     m_Colors:
     - _Color: {r: 0.49056605, g: 0, b: 0, a: 1}
-    - _DissolveColor: {r: 26.904675, g: 12.978092, b: 0, a: 1}
+    - _DissolveColor: {r: 1, g: 0.486911, b: 0, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &2320862293049409725
 MonoBehaviour:

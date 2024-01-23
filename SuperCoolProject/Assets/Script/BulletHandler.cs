@@ -76,7 +76,7 @@ public class BulletHandler : MonoBehaviour
             this.gameObject.SetActive(false);
         }
         // TODO: Make cop Bullet Explosion
-
+        this.gameObject.SetActive(false);
     }
 
 

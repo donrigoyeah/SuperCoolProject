@@ -41,7 +41,8 @@ public class PlayerAttacker : MonoBehaviour
     [SerializeField] private float bulletDamage = 10;
     [SerializeField] private float bulletDamageBoost = 2;
     [SerializeField] private bool leftRightSwitch;
-
+    private Transform myTransform;
+    
     [Header("Grenade stuff")]
     [SerializeField] public GameObject grenadeCooldownUIGO;
     [SerializeField] public Image grenadeCooldownUI;
@@ -96,6 +97,8 @@ public class PlayerAttacker : MonoBehaviour
         playerManager = GetComponent<PlayerManager>();
         playerAnim = GetComponentInChildren<Animator>();
         controller = GetComponent<CharacterController>();
+
+        myTransform = this.transform;
     }
 
     private void OnDrawGizmos()
@@ -238,7 +241,7 @@ public class PlayerAttacker : MonoBehaviour
 
                 // Instantiate Bullet left
                 bulletPoolGo.transform.position = lazerSpawnLocationLeft.position;
-                bulletPoolGo.transform.rotation = lazerSpawnLocationLeft.rotation;
+                bulletPoolGo.transform.rotation = myTransform.rotation;
                 if (muzzlePoolGo != null)
                 {
                     muzzlePoolGo.transform.position = lazerSpawnLocationLeft.position;
@@ -252,7 +255,7 @@ public class PlayerAttacker : MonoBehaviour
                 playerAnim.SetBool("IsLeftShooting", false);
                 // Instantiate Bullet right
                 bulletPoolGo.transform.position = lazerSpawnLocationRight.position;
-                bulletPoolGo.transform.rotation = lazerSpawnLocationRight.rotation;
+                bulletPoolGo.transform.rotation = myTransform.rotation;
                 if (muzzlePoolGo != null)
                 {
                     muzzlePoolGo.transform.position = lazerSpawnLocationRight.position;
@@ -353,6 +356,7 @@ public class PlayerAttacker : MonoBehaviour
             laserSightLeft.SetPosition(1, (Vector3.forward * lazerSightRange * i) / steps);
             laserSightRight.SetPosition(1, (Vector3.forward * lazerSightRange * i) / steps);
         }
+        
 
     }
     IEnumerator DisableLazers()
@@ -470,7 +474,6 @@ public class PlayerAttacker : MonoBehaviour
         {
             if (inputHandler.inputSecondaryFire)
             {
-                Debug.Log("initiate grenade");
                 grenadeKeyPressed = true;
                 if (arcHeight.localPosition.z <= 10f)
                 {
