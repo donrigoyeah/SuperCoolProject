@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.Versioning;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
@@ -181,6 +180,8 @@ public class TutorialHandler : MonoBehaviour
     {
         LoveAlien2 = SpawnAdultAlien(0, true);
         LoveAlien1.HandleStateIcon(AlienHandler.AlienState.loving);
+        LoveAlien1.targetAlien = LoveAlien2.gameObject;
+        LoveAlien1.transform.LookAt(LoveAlien2.transform);
         yield return new WaitForSeconds(spawnDelay + 1);
         EnableCertainSlide(currentTutorialSlide);
         TutorialGameObject.SetActive(true);
@@ -189,11 +190,13 @@ public class TutorialHandler : MonoBehaviour
     IEnumerator DoTheDefense()
     {
         //SpawnAdultAlien(0, false, true);
-        yield return new WaitForSeconds(spawnDelay);
-        LoveAlien1.targetAlien = GameManager.Instance.players[0].gameObject;
-        LoveAlien2.targetAlien = GameManager.Instance.players[0].gameObject;
         LoveAlien1.currentState = AlienHandler.AlienState.hunting;
         LoveAlien2.currentState = AlienHandler.AlienState.hunting;
+        LoveAlien2.targetAlien = GameManager.Instance.players[0].gameObject;
+        LoveAlien1.targetAlien = GameManager.Instance.players[0].gameObject;
+        LoveAlien1.transform.LookAt(GameManager.Instance.players[0].gameObject.transform);
+        LoveAlien2.transform.LookAt(GameManager.Instance.players[0].gameObject.transform);
+        yield return new WaitForSeconds(1);
         LoveAlien1.brainWashed = false;
         LoveAlien2.brainWashed = false;
         EnableCertainSlide(currentTutorialSlide);

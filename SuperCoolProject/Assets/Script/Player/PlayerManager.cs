@@ -1,11 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Mathematics;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class PlayerManager : MonoBehaviour
@@ -34,6 +30,7 @@ public class PlayerManager : MonoBehaviour
     public float refreshRate = 0.025f;
 
     [Header("Resource Variables")]
+    public float lightBulbMultiplicator = 1;
     public float maxSphereResource = 100;
     public float maxSquareResource = 100;
     public float maxTriangleResource = 100;
@@ -58,11 +55,11 @@ public class PlayerManager : MonoBehaviour
     public GameObject[] closestResourceIndicator;  // 0:Sphere, 1:Square, 2:Triangle
     public Light resourceIndicatorLight;
     public Material[] resourceMaterial; // 0:Sphere, 1:Square, 2:Triangle
-    public float currentResourceSphere;
-    public float currentResourceSquare;
-    public float currentResourceTriangle;
-    
-    
+    public float currentSphereResourceInverse;
+    public float currentSquareResourceInverse;
+    public float currentTriangleResourceInverse;
+
+
     [Header("Audio")]
     [SerializeField] private AudioClip shieldRechargeAudio;
     [SerializeField] private AudioClip shieldBreakAudio;
@@ -93,8 +90,6 @@ public class PlayerManager : MonoBehaviour
         HandleResource();
         HandleRespawn();
         HandleGameOver();
-
-
     }
 
     public void HandleHit()
@@ -326,103 +321,53 @@ public class PlayerManager : MonoBehaviour
 
     private void HandleResource()
     {
-
         // 0:Sphere, 1:Square, 2:Triangle
         if (currentSphereResource > 0) { currentSphereResource -= resourceDrain; }
         if (currentSquareResource > 0) { currentSquareResource -= resourceDrain; }
         if (currentTriangleResource > 0) { currentTriangleResource -= resourceDrain; }
 
-        currentResourceSphere = maxSphereResource - currentSphereResource;
-        currentResourceSquare = maxSquareResource - currentSquareResource;
-        currentResourceTriangle = maxTriangleResource - currentTriangleResource;
-        
-        MaterialEmmissionControler(1);
 
-        if (currentResourceSphere >= 50)
-        {
-            MaterialEmmissionControler(10);
+        // Will go from 0 to max
+        currentSphereResourceInverse = maxSphereResource - currentSphereResource;
+        currentSquareResourceInverse = maxSquareResource - currentSquareResource;
+        currentTriangleResourceInverse = maxTriangleResource - currentTriangleResource;
 
-            if (currentResourceSphere >= 75)
-            {
-                MaterialEmmissionControler(20);
-            }
-        }
-        
-        /*// Only show resource UI if below 75%
+
+        // Only show resource UI if below 75%
         if (currentSphereResource < 3 * maxSphereResource / 4)
         {
-            
-            if (bulbFlashing)
-            {
-                // StartCoroutine(BulbFlashing());
-                bulbFlashing = false;
-            }
-
-            //StartCoroutine(HandleResourceLightIndicator(0));
             HandleResourceDetection(0);
-            if (sphereUnfolded != true)
-            {
-                // StartCoroutine(UnfoldResource(ResourceUISphere, 50));
-                sphereUnfolded = true;
-                //ResourceUISphere.SetActive(true);
-            }
+            MaterialEmmissionControler(0);
         }
         else
         {
-            if (sphereUnfolded != false)
-            {
-                DeactivateResourceDetectionIndicator(0);
-                // StartCoroutine(FoldResource(ResourceUISphere));
-                sphereUnfolded = false;
-                //ResourceUISphere.SetActive(false);
-            }
-        }*/
+            DeactivateResourceDetectionIndicator(0);
+            MaterialEmmissionControler(0);
+        }
 
-        /*// Only show resource UI if below 75%
+        // Only show resource UI if below 75%
         if (currentSquareResource < 3 * maxSquareResource / 4)
         {
-            //StartCoroutine(HandleResourceLightIndicator(1));
             HandleResourceDetection(1);
-            if (squareUnfolded != true)
-            {
-                StartCoroutine(UnfoldResource(ResourceUISquare, 25));
-                squareUnfolded = true;
-                //ResourceUISquare.SetActive(true);
-            }
+            MaterialEmmissionControler(1);
         }
         else
         {
-            if (squareUnfolded != false)
-            {
-                DeactivateResourceDetectionIndicator(1);
-                StartCoroutine(FoldResource(ResourceUISquare));
-                squareUnfolded = false;
-                //ResourceUISquare.SetActive(false);
-            }
+            DeactivateResourceDetectionIndicator(1);
+            MaterialEmmissionControler(1);
         }
 
         // Only show resource UI if below 75%
         if (currentTriangleResource < 3 * maxTriangleResource / 4)
         {
-            //StartCoroutine(HandleResourceLightIndicator(2));
             HandleResourceDetection(2);
-            if (triangleUnfolded != true)
-            {
-                // StartCoroutine(UnfoldResource(ResourceUITriangle, 0));
-                triangleUnfolded = true;
-                //ResourceUITriangle.SetActive(true);
-            }
+            MaterialEmmissionControler(2);
         }
         else
         {
-            if (triangleUnfolded != false)
-            {
-                DeactivateResourceDetectionIndicator(2);
-                // StartCoroutine(FoldResource(ResourceUITriangle));
-                triangleUnfolded = false;
-                //ResourceUITriangle.SetActive(false);
-            }
-        }*/
+            DeactivateResourceDetectionIndicator(2);
+            MaterialEmmissionControler(2);
+        }
 
         // Update UI
         resourcePieCharts[0].fillAmount = currentSphereResource / maxSphereResource;
@@ -438,11 +383,21 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    private void MaterialEmmissionControler(float multiplyer)
+    private void MaterialEmmissionControler(int neededResource)
     {
-        resourceMaterial[0].SetColor("_EmissionColor", Color.blue * Mathf.PingPong(currentResourceSphere * multiplyer, 2f));
-        resourceMaterial[1].SetColor("_EmissionColor", Color.yellow * Mathf.PingPong(currentResourceSquare * multiplyer, 4f));
-        resourceMaterial[2].SetColor("_EmissionColor", Color.red * Mathf.PingPong(currentResourceTriangle * multiplyer, 2f));
+        // TODO: Need to use own colors here, new Color(0.4f, 0.9f, 0.7f, 1.0f); so this would not work
+        if (neededResource == 0)
+        {
+            resourceMaterial[0].SetColor("_EmissionColor", Color.blue * (Mathf.Sin((currentSphereResource * lightBulbMultiplicator) * Time.time) + 0.5f));
+        }
+        if (neededResource == 1)
+        {
+            resourceMaterial[1].SetColor("_EmissionColor", Color.yellow * (Mathf.Sin((currentSquareResource * lightBulbMultiplicator) * Time.time) + 0.5f));
+        }
+        if (neededResource == 2)
+        {
+            resourceMaterial[2].SetColor("_EmissionColor", Color.red * (Mathf.Sin((currentTriangleResource * lightBulbMultiplicator) * Time.time) + 0.5f));
+        }
     }
 
     public void HandleGainResource(int rescourseIndex)
@@ -553,33 +508,4 @@ public class PlayerManager : MonoBehaviour
         audioSource.PlayOneShot(shieldRechargeAudio, 1f);
         playerShieldGO.SetActive(true);
     }
-
-    IEnumerator HandleResourceLightIndicator(int resource)
-    {
-        switch (resource)
-        {
-            case 0:
-                resourceIndicatorLight.color = Color.blue;
-                Debug.Log("blue");
-                break;
-            case 1:
-                resourceIndicatorLight.color = Color.green;
-                Debug.Log("green");
-                break;
-            case 2:
-                resourceIndicatorLight.color = Color.red;
-                Debug.Log("red");
-                break;
-        }
-
-        resourceIndicatorLight.enabled = true;
-
-        yield return new WaitForSeconds(3f); // Light on
-        resourceIndicatorLight.enabled = false;
-
-        yield return new WaitForSeconds(3); // Light off
-        resourceIndicatorLight.enabled = true;
-        resourceIndicatorLight.enabled = false;
-    }
-
 }

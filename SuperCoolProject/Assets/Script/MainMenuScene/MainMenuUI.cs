@@ -8,7 +8,6 @@ using UnityEngine.EventSystems;
 
 public class MainMenuUI : MonoBehaviour
 {
-
     private bool loadScene = false;
 
     [SerializeField]

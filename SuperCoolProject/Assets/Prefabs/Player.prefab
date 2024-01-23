@@ -361,6 +361,7 @@ MonoBehaviour:
     type: 3}
   dissolveRate: 0.125
   refreshRate: 0.0025
+  lightBulbMultiplicator: 0.5
   maxSphereResource: 100
   maxSquareResource: 100
   maxTriangleResource: 100
@@ -388,9 +389,9 @@ MonoBehaviour:
   - {fileID: 2100000, guid: c37d2f824c767f54293b5f4306714201, type: 2}
   - {fileID: 2100000, guid: 60e6af70e351b464b8dd695307e04ab4, type: 2}
   - {fileID: 2100000, guid: 27fd5d22a7eaeae41bb8bc377526432c, type: 2}
-  currentResourceSphere: 0
-  currentResourceSquare: 0
-  currentResourceTriangle: 0
+  currentSphereResourceInverse: 0
+  currentSquareResourceInverse: 0
+  currentTriangleResourceInverse: 0
   shieldRechargeAudio: {fileID: 8300000, guid: 7c4072b1b16aa7c47ac7c00b4e89bc31, type: 3}
   shieldBreakAudio: {fileID: 8300000, guid: ed490b7c5f0392e4eb9d586baf5045a8, type: 3}
   deathAudio: {fileID: 8300000, guid: fb8cde1c02d901c48bff064d2c4a6a2b, type: 3}

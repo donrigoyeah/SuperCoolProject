@@ -1,9 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class PlayerLocomotion : MonoBehaviour
@@ -212,6 +210,7 @@ public class PlayerLocomotion : MonoBehaviour
         isDashing = false;
         playerSpeed -= dashExtraSpeed;
     }
+
     IEnumerator DisableAfterSeconds(int sec, GameObject objectToDeactivate)
     {
         yield return new WaitForSeconds(sec);

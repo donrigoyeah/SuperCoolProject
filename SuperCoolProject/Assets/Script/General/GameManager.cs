@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEngine.Serialization;
 using UnityEngine.InputSystem;
-using Cinemachine;
 
 public class GameManager : MonoBehaviour
 {
@@ -174,9 +172,9 @@ public class GameManager : MonoBehaviour
     private void HandleTutorialStart()
     {
         Debug.Log("start Turtorial here. Uncomment the foloowing line up to return");
-        //FreezeAllPlayers();
-        //TutorialHandler.Instance.EnableEntireTutorial();
-        //return;
+        FreezeAllPlayers();
+        TutorialHandler.Instance.EnableEntireTutorial();
+        return;
 
         // Folowing code only runs if playerPrefs exist, and they only do in builds
         if (PlayerPrefs.HasKey("hideTutorial"))
