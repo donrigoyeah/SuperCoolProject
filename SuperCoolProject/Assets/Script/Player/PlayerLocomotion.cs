@@ -205,6 +205,7 @@ public class PlayerLocomotion : MonoBehaviour
         dashCurrentCharge -= dashCost;
 
         //Instantiate particle system for dash
+        // TODO: face the direction of travel, not where player is looking at
         dashParticle.transform.rotation = myTransform.rotation;
         dashParticle.SetActive(true);
         yield return new WaitForSeconds(dashDuration);
