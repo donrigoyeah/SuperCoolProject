@@ -17,10 +17,10 @@ MonoBehaviour:
   categories: []
   uiBounds:
     serializedVersion: 2
-    x: 738
+    x: 739
     y: -190
-    width: 1430
-    height: 2125
+    width: 1431
+    height: 2137
 --- !u!114 &114350483966674976
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -60,7 +60,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEngine.Color, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"r":2.0,"g":0.0,"b":1.069657325744629,"a":0.0}'
+      m_SerializableObject: '{"r":0.0,"g":1.7824350595474244,"b":0.41994550824165347,"a":0.0}'
     min: -Infinity
     max: Infinity
     enumValues: []
@@ -74,7 +74,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEngine.Color, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"r":766.9962158203125,"g":266.3609313964844,"b":0.0,"a":0.0}'
+      m_SerializableObject: '{"r":0.0,"g":1825.2127685546875,"b":0.0,"a":1.0}'
     min: -Infinity
     max: Infinity
     enumValues: []
@@ -1694,7 +1694,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEngine.Color, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"r":2.0,"g":0.0,"b":1.069657325744629,"a":0.0}'
+      m_SerializableObject: '{"r":0.0,"g":1.7824350595474244,"b":0.41994550824165347,"a":0.0}'
     m_Space: 2147483647
   m_Property:
     name: o
@@ -4630,14 +4630,14 @@ MonoBehaviour:
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
   m_UIPosition: {x: 0, y: 0}
-  m_UICollapsed: 0
+  m_UICollapsed: 1
   m_UISuperCollapsed: 0
   m_InputSlots: []
   m_OutputSlots:
   - {fileID: 8926484042661614843}
   m_ExposedName: ParticleColor
   m_Exposed: 1
-  m_Order: 2
+  m_Order: 1
   m_Category: 
   m_Min:
     m_Type:
@@ -4688,7 +4688,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEngine.Color, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"r":766.9962158203125,"g":266.3609313964844,"b":0.0,"a":0.0}'
+      m_SerializableObject: '{"r":0.0,"g":1825.2127685546875,"b":0.0,"a":1.0}'
     m_Space: 2147483647
   m_Property:
     name: o

@@ -60,10 +60,10 @@ VisualEffect:
       - m_Value: {x: 0.28367043, y: 0, z: 1, w: 1}
         m_Name: FireCrossColor
         m_Overridden: 1
-      - m_Value: {x: 0.25, y: 0, z: 0.13370717, w: 0}
+      - m_Value: {x: 0, y: 1, z: 0.10327816, w: 0}
         m_Name: Color
         m_Overridden: 1
-      - m_Value: {x: 12.530198, y: 1.3093596, z: 17.863415, w: 0}
+      - m_Value: {x: 0, y: 1.4905663, z: 0.13704327, w: 0}
         m_Name: ParticleColor
         m_Overridden: 1
     m_Uint:
