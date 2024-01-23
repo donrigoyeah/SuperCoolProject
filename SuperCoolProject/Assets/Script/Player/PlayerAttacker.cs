@@ -57,6 +57,9 @@ public class PlayerAttacker : MonoBehaviour
     public Transform arcHeight;
     public Vector3 ac;
     public Vector3 cb;
+    public Vector3 cachedResult;
+    public bool isCachedGrenadeTrajectoryResultValid = false;
+    public GameObject grenadeTrajectoryParent;
     
     [Header("Grenade Trajectory Physics stuff")]
     [SerializeField] private int PhysicsFrame = 62;
@@ -450,12 +453,15 @@ public class PlayerAttacker : MonoBehaviour
 
     public Vector3 Evaluate(float t)
     {
-   
         ac = Vector3.Lerp(grenadespawnPoint.position, arcHeight.position, t);
         cb = Vector3.Lerp(arcHeight.position, target.position, t);
-        
-        return Vector3.Lerp(ac, cb, t);
-        //convert to world position
+        cachedResult = Vector3.Lerp(ac, cb, t);
+
+        if (inputHandler.inputSecondaryFire)
+        {
+        }
+
+        return cachedResult;
     }
     
     private void HandleGrenadeThrow()
@@ -475,16 +481,17 @@ public class PlayerAttacker : MonoBehaviour
                 {
                     target.localPosition += new Vector3(0f, 0f, 0.2f);
                 }
-                
             }
             else if (!inputHandler.inputSecondaryFire && grenadeAvailable && grenadeKeyPressed)
             {
                  currentGrenadeCooldownValue = 0;
                 // lineRenderer.positionCount = 0;
                 // throwForce = 0;
-                 LaunchGrenade();
+                grenadeTrajectoryParent.transform.SetParent(null);
+                StartCoroutine(ResetGrenadeTransform());
                  grenadeAvailable = false;
                  grenadeKeyPressed = false;
+                 LaunchGrenade();
             }
         }
     }
@@ -516,10 +523,17 @@ public class PlayerAttacker : MonoBehaviour
 
     private void LaunchGrenade()
     {
-        GameObject NewGrenade = Instantiate(grenadePrefab, grenadespawnPoint.transform.position, transform.rotation);
-
-        GrenadeHandler currentGH = NewGrenade.GetComponent<GrenadeHandler>();
+        // GameObject NewGrenade = Instantiate(grenadePrefab, grenadespawnPoint.transform.position, transform.rotation);
+        GameObject grenadePoolGo = PoolManager.Instance.GetPooledGrenade();
+        grenadePoolGo.SetActive(true);
+        grenadePoolGo.transform.position = grenadespawnPoint.transform.position;
+        grenadePoolGo.transform.rotation = grenadespawnPoint.transform.rotation;
+        GrenadeHandler currentGH = grenadePoolGo.GetComponent<GrenadeHandler>();
+        currentGH.time = 0;
         currentGH.playerAttacker = this;
+        StartCoroutine(DisableAfterSeconds(2, grenadePoolGo));
+        // GrenadeHandler currentGH = NewGrenade.GetComponent<GrenadeHandler>();
+        // currentGH.playerAttacker = this;
     }
     
     #endregion
@@ -560,4 +574,19 @@ public class PlayerAttacker : MonoBehaviour
         objectToDeactivate.SetActive(false);
     }
 
+    IEnumerator ResetGrenadeTransform()
+    {
+        yield return new WaitForSeconds(2f);
+        Debug.Log("ff");
+
+        grenadeTrajectoryParent.transform.SetParent(transform);
+
+        grenadeTrajectoryParent.transform.localRotation = Quaternion.identity;
+        grenadeTrajectoryParent.transform.localPosition = Vector3.zero;
+        
+        target.localPosition = new Vector3(0, 2, 0);
+        target.localRotation = Quaternion.Euler(0, -90, 0);
+        
+
+    }
 }

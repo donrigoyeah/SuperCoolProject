@@ -40,7 +40,6 @@ public class GrenadeHandler : MonoBehaviour
         GameObject explosion = Instantiate(explosionEffect, transform.position, Quaternion.identity);
         Destroy(explosion, 1f);
         Explosion();
-        Destroy(gameObject);
     }
 
     void Explosion()
@@ -65,6 +64,7 @@ public class GrenadeHandler : MonoBehaviour
                 }
             }
         }
+        time = 0;
         hasExploded = false;
     }
     

@@ -6,7 +6,6 @@ using TMPro;
 using UnityEngine.Serialization;
 using UnityEngine.InputSystem;
 using Cinemachine;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class GameManager : MonoBehaviour
 {

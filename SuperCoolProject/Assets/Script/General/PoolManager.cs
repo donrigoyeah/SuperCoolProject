@@ -79,7 +79,12 @@ public class PoolManager : MonoBehaviour
     public GameObject DamageUI;
     public GameObject DamageUIContainer;
 
-
+    [Header("Grenades")]
+    public int grenadeAmount;
+    public List<GameObject> GrenadePool;
+    public GameObject grenade;
+    public GameObject GrenadeContainer;
+    
     [Header("Reference")]
     public LoadingScreenHandler loadingScreenHandler;
 
@@ -113,6 +118,9 @@ public class PoolManager : MonoBehaviour
 
         // Alien Stuff
         AlienPooling();
+        
+        //Grenade Pooling
+        GrenadePooling();
     }
 
     #region Alien Pooling
@@ -465,6 +473,36 @@ public class PoolManager : MonoBehaviour
             tmp.transform.SetParent(DamageUIContainer.transform);
             tmp.SetActive(false);
             DamageUIPool.Add(tmp);
+        }
+        loadingScreenHandler.currentLoadedPools++;
+    }
+    #endregion
+    
+    #region Grenade Pooling
+    
+    public GameObject GetPooledGrenade()
+    {
+        for (int i = 0; i < grenadeAmount; i++)
+        {
+            if (!GrenadePool[i].activeInHierarchy)
+            {
+                return GrenadePool[i];
+            }
+        }
+
+        return null;
+    }
+
+    private void GrenadePooling()
+    {
+        CopPool = new List<GameObject>();
+        GameObject tmp;
+        for (int i = 0; i < grenadeAmount; i++)
+        {
+            tmp = Instantiate(grenade);
+            tmp.transform.SetParent(GrenadeContainer.transform);
+            tmp.SetActive(false);
+            GrenadePool.Add(tmp);
         }
         loadingScreenHandler.currentLoadedPools++;
     }
