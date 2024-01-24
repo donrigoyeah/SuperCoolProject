@@ -1,9 +1,8 @@
 using System.Collections;
-using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
+using System.Collections.Generic;
 using static AlienHandler;
 
 public class PlayerAttacker : MonoBehaviour
@@ -46,7 +45,7 @@ public class PlayerAttacker : MonoBehaviour
     [Header("Grenade stuff")]
     [SerializeField] public GameObject grenadeCooldownUIGO;
     [SerializeField] public Image grenadeCooldownUI;
-    // [SerializeField] private LineRenderer lineRenderer;
+    [SerializeField] private LineRenderer grenadeLineRenderer;
     [SerializeField] private GameObject grenadePrefab;
     [SerializeField] private float currentGrenadeCooldownValue = 0f;
     [SerializeField] private float grenadeCooldownSpeed = 1;
@@ -61,6 +60,8 @@ public class PlayerAttacker : MonoBehaviour
     public Vector3 cachedResult;
     public bool isCachedGrenadeTrajectoryResultValid = false;
     public GameObject grenadeTrajectoryParent;
+    public Sprite sprite;
+    public float vertecCount = 12;
     
     [Header("Grenade Trajectory Physics stuff")]
     [SerializeField] private int PhysicsFrame = 62;
@@ -100,17 +101,11 @@ public class PlayerAttacker : MonoBehaviour
 
         myTransform = this.transform;
     }
-
-    private void OnDrawGizmos()
-    {
-        for (int i = 0; i < 20; i++)
-        {
-            Gizmos.DrawWireSphere(Evaluate(i / 20f), 0.1f);
-        }
-    }
     
     void Update()
     {
+
+        
         if (playerManager.isInteracting == true || playerManager.isAlive == false) { return; }
         else
         {
@@ -455,16 +450,30 @@ public class PlayerAttacker : MonoBehaviour
 
     #region Handle Grenade
 
+    private void DrawTrajectory()
+    {
+        grenadeLineRenderer.enabled = true;
+        var pointList = new List<Vector3>();
+        
+        for (float ratio = 0;ratio<=1;ratio+= 1/vertecCount)
+        {
+            var pos1 = Vector3.Lerp(grenadespawnPoint.position, arcHeight.position, ratio);
+            var post2 = Vector3.Lerp(arcHeight.position, target.position, ratio);
+            var pos3 = Vector3.Lerp(pos1, post2, ratio);
+
+            pointList.Add(pos3);
+        }
+
+        grenadeLineRenderer.positionCount = pointList.Count;
+        grenadeLineRenderer.SetPositions(pointList.ToArray());
+    }
+    
     public Vector3 Evaluate(float t)
     {
         ac = Vector3.Lerp(grenadespawnPoint.position, arcHeight.position, t);
         cb = Vector3.Lerp(arcHeight.position, target.position, t);
         cachedResult = Vector3.Lerp(ac, cb, t);
-
-        if (inputHandler.inputSecondaryFire)
-        {
-        }
-
+        
         return cachedResult;
     }
     
@@ -474,6 +483,7 @@ public class PlayerAttacker : MonoBehaviour
         {
             if (inputHandler.inputSecondaryFire)
             {
+                DrawTrajectory();
                 grenadeKeyPressed = true;
                 if (arcHeight.localPosition.z <= 10f)
                 {
@@ -487,6 +497,7 @@ public class PlayerAttacker : MonoBehaviour
             }
             else if (!inputHandler.inputSecondaryFire && grenadeAvailable && grenadeKeyPressed)
             {
+                grenadeLineRenderer.enabled = false;
                  currentGrenadeCooldownValue = 0;
                 // lineRenderer.positionCount = 0;
                 // throwForce = 0;
