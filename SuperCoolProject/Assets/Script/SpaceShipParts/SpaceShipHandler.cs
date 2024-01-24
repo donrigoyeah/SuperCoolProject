@@ -86,14 +86,6 @@ public class SpaceShipHandler : MonoBehaviour
             }
         }
 
-
-
-        //TODO:
-        //- SpaceShipparts have ontriggerenter thing that displays "press interaction" to drag
-        //    - Placemat antenna in front of spawn point
-
-
-
         //Check for player dragging the deadbody
         if (other.gameObject.CompareTag("DeadBody"))
         {
@@ -107,11 +99,14 @@ public class SpaceShipHandler : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        PlayerManager PM = other.gameObject.GetComponent<PlayerManager>();
+        if (other.gameObject.CompareTag("Player"))
+        {
+            PlayerManager PM = other.gameObject.GetComponent<PlayerManager>();
 
-        StartCoroutine(PM.FoldResource(PM.ResourceUISphere));
-        StartCoroutine(PM.FoldResource(PM.ResourceUISquare));
-        StartCoroutine(PM.FoldResource(PM.ResourceUITriangle));
+            StartCoroutine(PM.FoldResource(PM.ResourceUISphere));
+            StartCoroutine(PM.FoldResource(PM.ResourceUISquare));
+            StartCoroutine(PM.FoldResource(PM.ResourceUITriangle));
+        }
     }
 
     IEnumerator ShowInfoPanel()

@@ -50,6 +50,7 @@ public class AlienHandler : MonoBehaviour
                 case AlienState.resource:
                     break;
                 case AlienState.idle: // Do nothing
+                    HandleIdle();
                     break;
                 default:
                     HandleLooking();
@@ -270,6 +271,16 @@ public class AlienHandler : MonoBehaviour
             HandleUpdateTarget(targetAlien); // Most cost intense calculations here
         }
     }
+    private void HandleIdle()
+    {
+        if (anim[currentSpecies] != null)
+        {
+            if (currentSpecies != 0)
+            {
+                anim[currentSpecies].Play("Armature|IDLE");
+            }
+        }
+    }
 
     public void HandleLooking()
     {
@@ -285,15 +296,10 @@ public class AlienHandler : MonoBehaviour
         for (int i = 0; i < aliensInRange.Length; i++)
         {
             // Prevent checking on self and last alien
-            if (aliensInRange[i].gameObject == lastTargetAlien ||
-                aliensInRange[i].gameObject == this.gameObject)
-            {
-                continue;
-            }
+            if (aliensInRange[i].gameObject == this.gameObject) { continue; }
 
             // TODO: This a good spot for this?!
             closestAlienHandler = aliensInRange[i].gameObject.GetComponent<AlienHandler>();
-
             if (closestAlienHandler.currentAge == AlienAge.resource)
             {
                 continue;
@@ -537,17 +543,17 @@ public class AlienHandler : MonoBehaviour
         if (deadAlienGO != null)
         {
             deadAlienGO.transform.position = MyTransform.position;
+            deadAlienGO.transform.rotation = MyTransform.rotation;
             //deadAlienGO.transform.rotation = MyTransform.rotation;
-            deadAlienGO.transform.rotation = Quaternion.identity;
 
             DeadAlienHandler deadAlien = deadAlienGO.GetComponent<DeadAlienHandler>();
-            deadAlien.transform.rotation = MyTransform.rotation;
+            //deadAlien.transform.rotation = MyTransform.rotation;
             deadAlien.bulletForce = bulletForce;
             deadAlien.currentAlienSpecies = currentSpecies;
 
             deadAlienGO.gameObject.SetActive(true);
         }
-
+        Debug.Break();
         HandleDeath();
     }
 
@@ -567,6 +573,7 @@ public class AlienHandler : MonoBehaviour
         {
             if ((currentState == AlienState.evading || currentState == AlienState.hunting))
             {
+                if (anim[currentSpecies] != null) { anim[currentSpecies]["Armature|WALK"].speed = 2; }
                 if (Vector3.Distance(targetPosition, MyTransform.position) > lookRadius + 1)  // Add +1 so i is out of the lookradius
                 {
                     StartCoroutine(IdleSecsUntilNewState(1f, AlienState.looking));
@@ -574,6 +581,7 @@ public class AlienHandler : MonoBehaviour
             }
             else // AlienStates: .resource .loving .looking
             {
+                if (anim[currentSpecies] != null) { anim[currentSpecies]["Armature|WALK"].speed = 1; }
                 if (Vector3.Distance(MyTransform.position, targetPosition) < .1f)
                 {
                     if (currentState == AlienState.roaming) // We need this check so if state is hunting or love making, we dont overwrite state of onTriggerEnter
@@ -769,36 +777,31 @@ public class AlienHandler : MonoBehaviour
         StopAllCoroutines();
     }
 
-
     IEnumerator PlayActionParticle(bool isLoving)
     {
-        if (Vector3.Distance(MyTransform.position, GameManager.Instance.CameraFollowSpot.position) > 50) { yield return null; }
-
-        if (isLoving)
+        if (Vector3.Distance(MyTransform.position, GameManager.Instance.CameraFollowSpot.position) > 50)
         {
-            alienActionFogMain.startColor = new ParticleSystem.MinMaxGradient(Color.red, Color.magenta);
+            yield return null;
         }
         else
         {
-            alienActionFogMain.startColor = new ParticleSystem.MinMaxGradient(Color.gray, Color.black);
+            if (isLoving)
+            {
+                alienActionFogMain.startColor = new ParticleSystem.MinMaxGradient(Color.red, Color.magenta);
+            }
+            else
+            {
+                alienActionFogMain.startColor = new ParticleSystem.MinMaxGradient(Color.gray, Color.black);
+            }
+            alienActionParticlesGO.SetActive(true);
+            yield return new WaitForSeconds(1f);
+            alienActionParticlesGO.SetActive(false);
         }
-        alienActionParticlesGO.SetActive(true);
-        yield return new WaitForSeconds(1f);
-        alienActionParticlesGO.SetActive(false);
-
     }
 
     public IEnumerator IdleSecsUntilNewState(float seconds, AlienState nextState)
     {
-        currentState = AlienState.idle;
-        if (anim[currentSpecies] != null)
-        {
-            if (currentSpecies != 0)
-            {
-                anim[currentSpecies].Play("Armature|IDLE");
-            }
-        }
-
+        HandleIdle();
         canAct = false;
         DiscardCurrentAction();
         float lookTime = UnityEngine.Random.Range(0, (seconds + 1) * 10) / 10;
@@ -961,8 +964,6 @@ public class AlienHandler : MonoBehaviour
             return;
         }
     }
-
-
 
     AudioClip RandomAudioSelector(List<AudioClip[]> audioList, int state) // incase we plan to add more audio for each state
     {
