@@ -409,7 +409,8 @@ public class PlayerAttacker : MonoBehaviour
                         currentTargetEnemy = hit.collider.gameObject;
                         StartCoroutine(CloseAimIndicator());
                     }
-
+                    laserSightLeft.enabled = true;
+                    laserSightRight.enabled = true;
                     return;
                 }
             }
@@ -417,8 +418,8 @@ public class PlayerAttacker : MonoBehaviour
         currentTargetEnemy = null;
         AimTargetIndicatorGO.SetActive(false);
 
-        //laserSightLeft.useWorldSpace = false;
-        //laserSightRight.useWorldSpace = false;
+        laserSightLeft.useWorldSpace = false;
+        laserSightRight.useWorldSpace = false;
 
         laserSightLeft.SetPosition(0, Vector3.zero);
         laserSightRight.SetPosition(0, Vector3.zero);
@@ -426,6 +427,9 @@ public class PlayerAttacker : MonoBehaviour
         laserSightRight.SetPosition(1, Vector3.forward * lazerSightRange);
 
         AimTargetLocation = Vector3.zero;
+        laserSightLeft.enabled = false;
+        laserSightRight.enabled = false;
+        
         return;
     }
 

@@ -553,7 +553,7 @@ public class AlienHandler : MonoBehaviour
 
             deadAlienGO.gameObject.SetActive(true);
         }
-        Debug.Break();
+        // Debug.Break();
         HandleDeath();
     }
 
