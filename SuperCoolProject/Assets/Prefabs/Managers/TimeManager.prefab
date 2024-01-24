@@ -44,9 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 123fa7901cc957444bfa18abb24cc579, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentState: 0
   minutes: 0
-  hours: 3
+  hours: 0
   timeBoost: 1000
   displayTime: {fileID: 0}
   sun: {fileID: 0}
@@ -142,7 +141,7 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   sunsetToNight:
     serializedVersion: 2
-    key0: {r: 0.8962264, g: 0.64711326, b: 0.29310542, a: 1}
+    key0: {r: 0.90588236, g: 0.44705883, b: 0.28627452, a: 1}
     key1: {r: 0.17734659, g: 0.2749263, b: 0.5754717, a: 1}
     key2: {r: 0, g: 0, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}

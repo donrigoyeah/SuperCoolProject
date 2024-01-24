@@ -84,7 +84,7 @@ public class PoolManager : MonoBehaviour
     public List<GameObject> GrenadePool;
     public GameObject grenade;
     public GameObject GrenadeContainer;
-    
+
     [Header("Reference")]
     public LoadingScreenHandler loadingScreenHandler;
 
@@ -118,7 +118,7 @@ public class PoolManager : MonoBehaviour
 
         // Alien Stuff
         AlienPooling();
-        
+
         //Grenade Pooling
         GrenadePooling();
     }
@@ -477,9 +477,9 @@ public class PoolManager : MonoBehaviour
         loadingScreenHandler.currentLoadedPools++;
     }
     #endregion
-    
+
     #region Grenade Pooling
-    
+
     public GameObject GetPooledGrenade()
     {
         for (int i = 0; i < grenadeAmount; i++)

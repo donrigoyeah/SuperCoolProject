@@ -14,9 +14,11 @@ public class PlayerManager : MonoBehaviour
     public Collider[] resourceInRange;
     public bool playerShield;
     public float shieldRechargeTime = 2;
+    public float shieldRechargeTimeWithUpgrade = 1;
     public bool isCarryingPart;
     public GameObject currentPart;
     public bool isAlive;
+    public bool canAim;
     public bool isInteracting;
     public float invincibleFrames = .5f;
     public float timeSinceLastHit;
@@ -119,7 +121,7 @@ public class PlayerManager : MonoBehaviour
             }
             else
             {
-                StartCoroutine(ShieldRespawn(shieldRechargeTime));
+                StartCoroutine(ShieldBreak(shieldRechargeTime));
             }
             timeSinceLastHit = 0;
             return;
@@ -128,19 +130,10 @@ public class PlayerManager : MonoBehaviour
 
     private void HandleDeath()
     {
-        Debug.Log("One TODO left here, remove already done TODO once you verify that they are alright");
-        // TODO: Instanciate GameObject like (deadPlayerBody)
-        // Add draggable script to it
-        // WHen returned to spaceship, enable upgrades again
-        // Make global boolean to handle this
-
         // Set Variable to disable movement/input
         isAlive = false;
         StopAllCoroutines();
         audioSource.PlayOneShot(deathAudio, 1f);
-
-        playerAnim.SetBool("IsDead", true);
-
         GameObject deadPlayerInstance = Instantiate(deadPlayer, MyTransform.position, Quaternion.identity);
 
         Rigidbody deadPlayerRigidbody = deadPlayerInstance.GetComponent<Rigidbody>();
@@ -497,22 +490,20 @@ public class PlayerManager : MonoBehaviour
         Resource.gameObject.SetActive(false);
     }
 
-    IEnumerator ShieldRespawn(float timeToRecharge)
+    IEnumerator ShieldBreak(float timeToRecharge)
     {
-        float counter = 0;
         int steps = 30;
-        while (dissolve.GetFloat("_DissolveAmount") < 1)
+        float animationDuration = .5f;
+        playerShield = false;
+        dissolve.SetFloat("_DissolveAmount", 0);
+        audioSource.PlayOneShot(shieldBreakAudio, 1f);
+
+        for (int i = 0; i < steps; i++)
         {
-            counter += dissolveRate;
-            for (int i = 0; i <= steps; i++)
-            {
-                dissolve.SetFloat("_DissolveAmount", counter);
-                yield return new WaitForSeconds(refreshRate);
-            }
+            yield return new WaitForSeconds(animationDuration / steps);
+            dissolve.SetFloat("_DissolveAmount", i / steps);
         }
 
-        playerShield = false;
-        audioSource.PlayOneShot(shieldBreakAudio, 1f);
         playerShieldGO.SetActive(false);
         yield return new WaitForSeconds(timeToRecharge);
         dissolve.SetFloat("_DissolveAmount", 0);

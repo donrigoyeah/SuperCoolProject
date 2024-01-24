@@ -41,7 +41,7 @@ public class PlayerAttacker : MonoBehaviour
     [SerializeField] private float bulletDamageBoost = 2;
     [SerializeField] private bool leftRightSwitch;
     private Transform myTransform;
-    
+
     [Header("Grenade stuff")]
     [SerializeField] public GameObject grenadeCooldownUIGO;
     [SerializeField] public Image grenadeCooldownUI;
@@ -62,7 +62,7 @@ public class PlayerAttacker : MonoBehaviour
     public GameObject grenadeTrajectoryParent;
     public Sprite sprite;
     public float vertecCount = 12;
-    
+
     [Header("Grenade Trajectory Physics stuff")]
     [SerializeField] private int PhysicsFrame = 62;
     private Scene simulateScene;
@@ -101,11 +101,11 @@ public class PlayerAttacker : MonoBehaviour
 
         myTransform = this.transform;
     }
-    
+
     void Update()
     {
 
-        
+
         if (playerManager.isInteracting == true || playerManager.isAlive == false) { return; }
         else
         {
@@ -122,7 +122,11 @@ public class PlayerAttacker : MonoBehaviour
             float delta = Time.deltaTime;
             HandleWeaponHeat(delta);
             HandleGrenadeCooldown(delta);
-            HandleEnableLazerSight();
+            //HandleEnableLazerSight();
+            if (playerManager.canAim)
+            {
+                AimLockTarget();
+            }
         }
     }
 
@@ -303,7 +307,6 @@ public class PlayerAttacker : MonoBehaviour
             }
 
 
-
             if (lastTimeSinceLazer < disableLazerAfterNoInput)
             {
                 if (isEnabled == false)
@@ -312,7 +315,7 @@ public class PlayerAttacker : MonoBehaviour
                     isEnabled = true;
                     isDisabled = false;
                 }
-                LaserSight();
+                //LaserSight(); // now AimLockTarget();
                 return;
             }
             else
@@ -351,7 +354,7 @@ public class PlayerAttacker : MonoBehaviour
             laserSightLeft.SetPosition(1, (Vector3.forward * lazerSightRange * i) / steps);
             laserSightRight.SetPosition(1, (Vector3.forward * lazerSightRange * i) / steps);
         }
-        
+
 
     }
     IEnumerator DisableLazers()
@@ -381,7 +384,7 @@ public class PlayerAttacker : MonoBehaviour
         laserSightRight.enabled = false;
     }
 
-    private void LaserSight()
+    private void AimLockTarget()
     {
         RaycastHit hit;
 
@@ -458,8 +461,8 @@ public class PlayerAttacker : MonoBehaviour
     {
         grenadeLineRenderer.enabled = true;
         var pointList = new List<Vector3>();
-        
-        for (float ratio = 0;ratio<=1;ratio+= 1/vertecCount)
+
+        for (float ratio = 0; ratio <= 1; ratio += 1 / vertecCount)
         {
             var pos1 = Vector3.Lerp(grenadespawnPoint.position, arcHeight.position, ratio);
             var post2 = Vector3.Lerp(arcHeight.position, target.position, ratio);
@@ -471,16 +474,16 @@ public class PlayerAttacker : MonoBehaviour
         grenadeLineRenderer.positionCount = pointList.Count;
         grenadeLineRenderer.SetPositions(pointList.ToArray());
     }
-    
+
     public Vector3 Evaluate(float t)
     {
         ac = Vector3.Lerp(grenadespawnPoint.position, arcHeight.position, t);
         cb = Vector3.Lerp(arcHeight.position, target.position, t);
         cachedResult = Vector3.Lerp(ac, cb, t);
-        
+
         return cachedResult;
     }
-    
+
     private void HandleGrenadeThrow()
     {
         if (grenadeAvailable && GameManager.Instance.hasAmmoBox || GameManager.Instance.devMode)
@@ -502,18 +505,18 @@ public class PlayerAttacker : MonoBehaviour
             else if (!inputHandler.inputSecondaryFire && grenadeAvailable && grenadeKeyPressed)
             {
                 grenadeLineRenderer.enabled = false;
-                 currentGrenadeCooldownValue = 0;
+                currentGrenadeCooldownValue = 0;
                 // lineRenderer.positionCount = 0;
                 // throwForce = 0;
                 grenadeTrajectoryParent.transform.SetParent(null);
                 StartCoroutine(ResetGrenadeTransform());
-                 grenadeAvailable = false;
-                 grenadeKeyPressed = false;
-                 LaunchGrenade();
+                grenadeAvailable = false;
+                grenadeKeyPressed = false;
+                LaunchGrenade();
             }
         }
     }
-    
+
     private void HandleGrenadeCooldown(float delta)
     {
         SetGrenadeCooldownUI(currentGrenadeCooldownValue);
@@ -553,7 +556,7 @@ public class PlayerAttacker : MonoBehaviour
         // GrenadeHandler currentGH = NewGrenade.GetComponent<GrenadeHandler>();
         // currentGH.playerAttacker = this;
     }
-    
+
     #endregion
 
     #region Handle Player / Alien interaction
@@ -576,9 +579,9 @@ public class PlayerAttacker : MonoBehaviour
             {
                 if (CurrentCollidingAH.currentState == AlienState.hunting)
                 {
+                    Debug.Log("Got Hit by Alien");
                     playerManager.HandleHit();
 
-                    // TODO: Push alien or player aways
                 }
             }
         }
@@ -601,10 +604,10 @@ public class PlayerAttacker : MonoBehaviour
 
         grenadeTrajectoryParent.transform.localRotation = Quaternion.identity;
         grenadeTrajectoryParent.transform.localPosition = Vector3.zero;
-        
+
         target.localPosition = new Vector3(0, 2, 0);
         target.localRotation = Quaternion.Euler(0, -90, 0);
-        
+
 
     }
 }

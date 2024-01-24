@@ -45,6 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 109ceb8310df21a4ebfad50b040233ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  devMode: 0
+  hideTut: 0
   worldRadius: 180
   hasLost: 0
   numberOfPlayers: 0
@@ -53,32 +55,43 @@ MonoBehaviour:
   cloneCost: 20
   currentCloneJuice: 0
   maxCloneJuice: 100
+  totalSpaceShipParts: 7
+  AntennaSpawnLocation: {x: 5, y: 0, z: -20}
   SpaceShipPart: {fileID: 621607558053313764, guid: 3bf27bdc90cd48e4c87d44d31e595876,
     type: 3}
   SpaceShipPartContainer: {fileID: 271264982416113951}
-  totalSpaceShipParts: 5
   currentSpaceShipParts: 0
   spaceShipPartsDisplay: {fileID: 0}
   spaceShipScriptable:
   - {fileID: 11400000, guid: 02e70b1c46affb643a104ac019c880b5, type: 2}
-  - {fileID: 11400000, guid: ae33f24f63959e445a51dd0946d38663, type: 2}
   - {fileID: 11400000, guid: b66cc0a944aaae8419fed1b5e2094d74, type: 2}
   - {fileID: 11400000, guid: 7acb7ce8852f0454eac80f3b73c811b8, type: 2}
-  - {fileID: 11400000, guid: 7acb7ce8852f0454eac80f3b73c811b8, type: 2}
-  hasFuelCanister: 0
+  - {fileID: 11400000, guid: fed7e06d1c3573c4ca3df0484731c2a9, type: 2}
+  - {fileID: 11400000, guid: 1c0e5071b7c2499449636c8324e124da, type: 2}
+  - {fileID: 11400000, guid: e7f67979637758a42bfa11f8f7e139af, type: 2}
+  - {fileID: 11400000, guid: 72136865c7e6a5c46864f43b03da0fdb, type: 2}
+  - {fileID: 11400000, guid: ae33f24f63959e445a51dd0946d38663, type: 2}
   hasAmmoBox: 0
-  hasShieldGenerator: 0
   hasAntenna: 0
-  map: {fileID: 0}
+  hasCloneJuicer: 0
+  hasFuelCanister: 0
+  hasLightmachine: 0
+  hasRadar: 0
+  hasShieldGenerator: 0
+  hasAimAssist: 0
   playerInputManager: {fileID: 0}
   players: []
+  playersLocos: []
   CameraFollowSpot: {fileID: 0}
+  loadingScreenHandler: {fileID: 0}
   DeathScreen: {fileID: 0}
+  respawnButton: {fileID: 0}
   GameOverScreen: {fileID: 0}
   DeathScreenCloneJuiceUI: {fileID: 0}
+  Clouds: {fileID: 0}
   cameraSpeed: 1
   cameraSpeedRaiseBuffer: 2
-  cameraSpeedRaiseDuration: 2
+  cameraSpeedRaiseDuration: 1
   cameraSpeedMultiplier: 4
   playerDeadBody: 0
 --- !u!1 &9078134599936876708
@@ -91,7 +104,7 @@ GameObject:
   m_Component:
   - component: {fileID: 271264982416113951}
   m_Layer: 0
-  m_Name: SpaceShipParts
+  m_Name: SpaceShipPartContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
