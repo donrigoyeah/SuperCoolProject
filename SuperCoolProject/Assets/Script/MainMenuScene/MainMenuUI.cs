@@ -25,6 +25,7 @@ public class MainMenuUI : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(playButton.gameObject);
     }
 
+
     // Updates once per frame
     void Update()
     {

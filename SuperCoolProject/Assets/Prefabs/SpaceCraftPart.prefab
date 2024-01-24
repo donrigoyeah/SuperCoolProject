@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3632512854461247160}
   - component: {fileID: 3354510961972014199}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: UpgradeName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -260,7 +260,7 @@ MonoBehaviour:
   spaceShipData: {fileID: 0}
   playerSpeedReduction: 0
   previousPlayerSpeed: 10
-  tmp: {fileID: 3354510961972014199}
+  UpgradeName: {fileID: 3354510961972014199}
   draggingParticles: {fileID: 1472632793259827238}
   particleSpawned: 0
   draggingAudio: {fileID: 8300000, guid: d59fb6dd2d2cef449a5d15f4b1a765a0, type: 3}
@@ -437,9 +437,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 7df0f96fc72a67749bb25f7665404443, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:

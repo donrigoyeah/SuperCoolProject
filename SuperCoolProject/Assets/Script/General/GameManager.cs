@@ -26,23 +26,24 @@ public class GameManager : MonoBehaviour
     [Header("SpaceshipParts")]
     SpaceShipPartHandler CurrentPartHandler;
     GameObject CurrentPartGO;
+    public int totalSpaceShipParts;
     public Vector3 AntennaSpawnLocation;
     public GameObject SpaceShipPart;
     public Transform SpaceShipPartContainer;
-    public int totalSpaceShipParts = 5;
     public int currentSpaceShipParts;
     public TextMeshProUGUI spaceShipPartsDisplay;
     [SerializeField] private SpaceShipScriptable[] spaceShipScriptable;
 
     [Header("SpaceShipPartsBoolValues")]
-    public bool hasFuelCanister = false;
     public bool hasAmmoBox = false;
-    public bool hasShieldGenerator = false;
     public bool hasAntenna = false;
-    public bool hasDashPart = false;
+    public bool hasCloneJuicer = false;
+    public bool hasFuelCanister = false;
+    public bool hasLightmachine = false;
+    public bool hasRadar = false;
+    public bool hasShieldGenerator = false;
 
     [Header("References")]
-    [SerializeField] private GameObject map;
     [SerializeField] private PlayerInputManager playerInputManager;
     public List<PlayerManager> players;
     public List<PlayerLocomotion> playersLocos;
@@ -50,6 +51,7 @@ public class GameManager : MonoBehaviour
     public LoadingScreenHandler loadingScreenHandler;
 
     public GameObject DeathScreen;
+    public TextMeshProUGUI respawnButton;
     public GameObject GameOverScreen;
     public Image DeathScreenCloneJuiceUI;
     public GameObject Clouds;
@@ -80,6 +82,7 @@ public class GameManager : MonoBehaviour
 
         players = new List<PlayerManager>();
         playersLocos = new List<PlayerLocomotion>();
+        totalSpaceShipParts = spaceShipScriptable.Length;
         currentSpaceShipParts = 0;
         spaceShipPartsDisplay.text = currentSpaceShipParts.ToString() + "/" + totalSpaceShipParts.ToString();
         currentCloneJuice = maxCloneJuice;
@@ -91,6 +94,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         HandleSpawnShipParts();
+        respawnButton.text = TutorialHandler.Instance.dashButton;
     }
 
     private void FixedUpdate()
@@ -149,7 +153,7 @@ public class GameManager : MonoBehaviour
         HUDHandler.Instance.EnableCurrentHUD(2); // Enable Time Display
 
         // Enable Light Beams on Player
-        if (TimeManager.Instance.currentState == TimeManager.DayState.sunsetToNight || TimeManager.Instance.currentState == TimeManager.DayState.dayToSunSet)
+        if ((TimeManager.Instance.currentState == TimeManager.DayState.sunsetToNight || TimeManager.Instance.currentState == TimeManager.DayState.dayToSunSet) && hasLightmachine == true)
         {
             pm.LightBeam.SetActive(true);
         }
@@ -234,9 +238,13 @@ public class GameManager : MonoBehaviour
 
     public void TurnOnAllPlayerLights()
     {
-        foreach (PlayerManager player in players)
+        if (hasLightmachine == false) { return; }
+        else
         {
-            player.LightBeam.SetActive(true);
+            foreach (PlayerManager player in players)
+            {
+                player.LightBeam.SetActive(true);
+            }
         }
     }
     public void TurnOffAllPlayerLights()
@@ -262,7 +270,7 @@ public class GameManager : MonoBehaviour
         Clouds.SetActive(false);
     }
 
-    public void HandleCloneJuiceDrain()
+    public void HandleDrainCloneJuice()
     {
         currentCloneJuice -= cloneCost;
         cloneJuiceUI.fillAmount = currentCloneJuice / maxCloneJuice;
@@ -270,6 +278,15 @@ public class GameManager : MonoBehaviour
         {
             HandleLoss();
         }
+    }
+
+    public void HandleGainCloneJuivce(float gain)
+    {
+        if (hasCloneJuicer)
+        {
+            gain = gain * 2;
+        }
+        currentCloneJuice += gain;
     }
 
     #endregion
@@ -313,6 +330,7 @@ public class GameManager : MonoBehaviour
             CurrentPartGO.transform.position = new Vector3(randPosX, 0, randPosZ);
 
             CurrentPartHandler = CurrentPartGO.GetComponent<SpaceShipPartHandler>();
+            CurrentPartHandler.UpgradeName.text = spaceShipScriptable[i].name;
             CurrentPartHandler.spaceShipData = spaceShipScriptable[i];
         }
 
@@ -321,7 +339,10 @@ public class GameManager : MonoBehaviour
         CurrentPartGO.transform.position = AntennaSpawnLocation;
 
         CurrentPartHandler = CurrentPartGO.GetComponent<SpaceShipPartHandler>();
+        CurrentPartHandler.UpgradeName.text = spaceShipScriptable[totalSpaceShipParts - 1].name;
         CurrentPartHandler.spaceShipData = spaceShipScriptable[totalSpaceShipParts - 1];
+
+        TutorialHandler.Instance.totalAmountOfSpaceShpParts.text = totalSpaceShipParts.ToString();
 
         // After loading all aliens sent finished state to Loading Screen
         loadingScreenHandler.currentAwakeCalls++;
@@ -336,11 +357,21 @@ public class GameManager : MonoBehaviour
         {
             foreach (var item in players)
             {
-                item.GetComponent<PlayerLocomotion>().playerSpeed = 13f;
+                item.GetComponent<PlayerLocomotion>().canDash = true;
             }
         }
 
-        if (hasAntenna) { Debug.Log("Found Antenna"); map.SetActive(true); }
+        if (hasAntenna)
+        {
+            HUDHandler.Instance.UnlockPopulation.SetActive(false);
+
+        }
+
+        if (hasRadar)
+        {
+            HUDHandler.Instance.UnlockMiniMap.SetActive(false);
+        }
+
 
         if (currentSpaceShipParts == totalSpaceShipParts)
         {

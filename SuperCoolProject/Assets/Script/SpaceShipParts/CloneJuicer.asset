@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 90b23d16c9521294e9645c1c2973370e, type: 3}
-  m_Name: ForDash
+  m_Name: CloneJuicer
   m_EditorClassIdentifier: 
-  partName: Fuel Canister
-  mass: 6
-  abilityUnlockText: Your boosters are working now
+  partName: Clone Juicer
+  mass: 10
+  abilityUnlockText: Gain more juice
   model: {fileID: 0}

@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
@@ -75,32 +74,37 @@ public class SpaceShipHandler : MonoBehaviour
                     abilityText.text = spaceShipPartHandler.spaceShipData.abilityUnlockText;
                 }
 
-                if (spaceShipPartHandler.spaceShipData.partName == "Unknown")
+                if (spaceShipPartHandler.spaceShipData.partName == "Lightmachine")
                 {
-                    GameManager.Instance.hasDashPart = true;
+                    GameManager.Instance.hasLightmachine = true;
                     abilityText.text = spaceShipPartHandler.spaceShipData.abilityUnlockText;
                 }
 
-                StartCoroutine(ShowInfoPanel());
+                if (spaceShipPartHandler.spaceShipData.partName == "CloneJuicerr")
+                {
+                    GameManager.Instance.hasCloneJuicer = true;
+                    abilityText.text = spaceShipPartHandler.spaceShipData.abilityUnlockText;
+                }
 
+                if (spaceShipPartHandler.spaceShipData.partName == "Radar")
+                {
+                    GameManager.Instance.hasRadar = true;
+                    abilityText.text = spaceShipPartHandler.spaceShipData.abilityUnlockText;
+                    showNewUpgradeBinging = true;
+                    upgradeButtonBinding.text = TutorialHandler.Instance.toggleNavButton;
+                }
+
+                StartCoroutine(ShowInfoPanel());
                 GameManager.Instance.SpaceShipPartUpdate();
             }
         }
-
-
-
-        //TODO:
-        //- SpaceShipparts have ontriggerenter thing that displays "press interaction" to drag
-        //    - Placemat antenna in front of spawn point
-
-
 
         //Check for player dragging the deadbody
         if (other.gameObject.CompareTag("DeadBody"))
         {
             Destroy(other.gameObject);
             GameManager.Instance.playerDeadBody = true;
-            GameManager.Instance.currentCloneJuice += 10f;
+            GameManager.Instance.HandleGainCloneJuivce(10);
             StartCoroutine(PlayRetrieveParticle(false));
             return;
         }
@@ -108,11 +112,14 @@ public class SpaceShipHandler : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        PlayerManager PM = other.gameObject.GetComponent<PlayerManager>();
+        if (other.gameObject.CompareTag("Player"))
+        {
+            PlayerManager PM = other.gameObject.GetComponent<PlayerManager>();
 
-        StartCoroutine(PM.FoldResource(PM.ResourceUISphere));
-        StartCoroutine(PM.FoldResource(PM.ResourceUISquare));
-        StartCoroutine(PM.FoldResource(PM.ResourceUITriangle));
+            StartCoroutine(PM.FoldResource(PM.ResourceUISphere));
+            StartCoroutine(PM.FoldResource(PM.ResourceUISquare));
+            StartCoroutine(PM.FoldResource(PM.ResourceUITriangle));
+        }
     }
 
     IEnumerator ShowInfoPanel()
