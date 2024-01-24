@@ -420,6 +420,7 @@ MonoBehaviour:
   dashCost: 33
   dashRechargeSpeed: 10
   dashParticle: {fileID: 6682954297294681468}
+  canDash: 0
   isDashing: 0
   deltaFSS: 0.2
   footstepAudio: {fileID: 8300000, guid: da2a6eb0d4102284abdc66f885d4a59b, type: 3}
@@ -456,8 +457,8 @@ MonoBehaviour:
   currentWeaponHeat: 0
   maxWeaponHeat: 100
   boostWeaponHeatThreshold: 80
-  singleLazerHeat: 30
-  gunCooldownSpeed: 0.5
+  singleLazerHeat: 5
+  gunCooldownSpeed: 0.1
   gunOverHeatCooldownSpeed: 0.1
   gunOverheated: 0
   nextFireTime: 0
@@ -624,22 +625,6 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6940714301392089187}
         m_TargetAssemblyTypeName: InputHandler, Assembly-CSharp
-        m_MethodName: JumpInput
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: a8525a12-2c2d-4689-9545-545286acb1f7
-    m_ActionName: PlayerActionMap/Jump[/Keyboard/space,/XInputControllerWindows/buttonNorth]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6940714301392089187}
-        m_TargetAssemblyTypeName: InputHandler, Assembly-CSharp
         m_MethodName: DashInput
         m_Mode: 0
         m_Arguments:
@@ -668,10 +653,6 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 295d0c29-fcc5-4588-a334-c259fd865dad
     m_ActionName: PlayerActionMap/Pause[/Keyboard/escape,/XInputControllerWindows/start]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 96a5fc4d-7313-4ffc-9dbe-03b75fd562f2
-    m_ActionName: PlayerActionMap/DevKit[/Keyboard/numpadEnter]
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 6940714301392089187}
@@ -1603,7 +1584,7 @@ LineRenderer:
   - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 1
+    widthMultiplier: 0.5
     widthCurve:
       serializedVersion: 2
       m_Curve:
