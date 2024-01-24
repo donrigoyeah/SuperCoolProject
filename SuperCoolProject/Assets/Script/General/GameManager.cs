@@ -42,6 +42,7 @@ public class GameManager : MonoBehaviour
     public bool hasLightmachine = false;
     public bool hasRadar = false;
     public bool hasShieldGenerator = false;
+    public bool hasAimAssist = false;
 
     [Header("References")]
     [SerializeField] private PlayerInputManager playerInputManager;
@@ -355,9 +356,17 @@ public class GameManager : MonoBehaviour
 
         if (hasFuelCanister)
         {
+            foreach (var item in playersLocos)
+            {
+                item.canDash = true;
+            }
+        }
+
+        if (hasShieldGenerator)
+        {
             foreach (var item in players)
             {
-                item.GetComponent<PlayerLocomotion>().canDash = true;
+                item.shieldRechargeTime = item.shieldRechargeTimeWithUpgrade;
             }
         }
 
@@ -370,6 +379,14 @@ public class GameManager : MonoBehaviour
         if (hasRadar)
         {
             HUDHandler.Instance.UnlockMiniMap.SetActive(false);
+        }
+
+        if (hasAimAssist)
+        {
+            foreach (var item in players)
+            {
+                item.canAim = true;
+            }
         }
 
 

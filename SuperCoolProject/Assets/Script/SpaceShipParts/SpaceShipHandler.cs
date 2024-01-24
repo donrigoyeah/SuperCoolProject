@@ -16,8 +16,6 @@ public class SpaceShipHandler : MonoBehaviour
     public Button okButton;
     public bool showNewUpgradeBinging = false;
 
-
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))

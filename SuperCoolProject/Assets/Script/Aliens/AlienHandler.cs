@@ -273,6 +273,8 @@ public class AlienHandler : MonoBehaviour
     }
     private void HandleIdle()
     {
+        if (anim[currentSpecies] != null) { anim[currentSpecies]["Armature|WALK"].speed = 1; }
+
         if (anim[currentSpecies] != null)
         {
             if (currentSpecies != 0)
@@ -284,6 +286,15 @@ public class AlienHandler : MonoBehaviour
 
     public void HandleLooking()
     {
+        // TODO: Add missing animation!!
+        if (anim[currentSpecies] != null)
+        {
+            if (currentSpecies != 0)
+            {
+                anim[currentSpecies].Play("Armature|IDLE");
+            }
+        }
+
         float currentShortestDistance = lookRadius;
         float currentDistance = lookRadius;
 
@@ -433,6 +444,7 @@ public class AlienHandler : MonoBehaviour
         {
             audioSource.PlayOneShot(RandomAudioSelector(evadingAudioList, currentSpecies), 1f);
         }
+        if (anim[currentSpecies] != null) { anim[currentSpecies]["Armature|WALK"].speed = 2; }
 
         if (isEvadingPlayer == true || brainWashed == true)
         {
@@ -454,6 +466,9 @@ public class AlienHandler : MonoBehaviour
         {
             audioSource.PlayOneShot(RandomAudioSelector(attackAudioList, currentSpecies), 1f);
         }
+
+        if (anim[currentSpecies] != null) { anim[currentSpecies]["Armature|WALK"].speed = 2; }
+
 
         if (isAttackingPlayer == true || brainWashed == true)
         {
@@ -544,16 +559,15 @@ public class AlienHandler : MonoBehaviour
         {
             deadAlienGO.transform.position = MyTransform.position;
             deadAlienGO.transform.rotation = MyTransform.rotation;
-            //deadAlienGO.transform.rotation = MyTransform.rotation;
 
             DeadAlienHandler deadAlien = deadAlienGO.GetComponent<DeadAlienHandler>();
-            //deadAlien.transform.rotation = MyTransform.rotation;
+            deadAlien.Rigidbodies[currentSpecies].position = this.transform.position;
+            deadAlien.transform.rotation = MyTransform.rotation;
             deadAlien.bulletForce = bulletForce;
             deadAlien.currentAlienSpecies = currentSpecies;
 
             deadAlienGO.gameObject.SetActive(true);
         }
-        Debug.Break();
         HandleDeath();
     }
 
@@ -573,7 +587,6 @@ public class AlienHandler : MonoBehaviour
         {
             if ((currentState == AlienState.evading || currentState == AlienState.hunting))
             {
-                if (anim[currentSpecies] != null) { anim[currentSpecies]["Armature|WALK"].speed = 2; }
                 if (Vector3.Distance(targetPosition, MyTransform.position) > lookRadius + 1)  // Add +1 so i is out of the lookradius
                 {
                     StartCoroutine(IdleSecsUntilNewState(1f, AlienState.looking));
@@ -581,7 +594,6 @@ public class AlienHandler : MonoBehaviour
             }
             else // AlienStates: .resource .loving .looking
             {
-                if (anim[currentSpecies] != null) { anim[currentSpecies]["Armature|WALK"].speed = 1; }
                 if (Vector3.Distance(MyTransform.position, targetPosition) < .1f)
                 {
                     if (currentState == AlienState.roaming) // We need this check so if state is hunting or love making, we dont overwrite state of onTriggerEnter

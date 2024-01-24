@@ -102,7 +102,7 @@ public class DeadAlienHandler : MonoBehaviour
     private void OnEnable()
     {
         deadAlienSpecies[currentAlienSpecies].SetActive(true);
-        ResetAllBones();
+        //ResetAllBones();
 
         Rigidbodies[currentAlienSpecies].AddForce((bulletForce * 4) + Vector3.up * 4);
         StartCoroutine(Dissolve());

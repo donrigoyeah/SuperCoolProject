@@ -45,7 +45,10 @@ public class HUDHandler : MonoBehaviour
         {
             Instance = this;
         }
+    }
 
+    private void Start()
+    {
         // Set right day/night indicator
         currentMinute = TimeManager.Instance.minutes;
         currentHours = TimeManager.Instance.hours;
