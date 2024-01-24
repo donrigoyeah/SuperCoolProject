@@ -5523,12 +5523,12 @@ PrefabInstance:
     - target: {fileID: 5196354401897797955, guid: 3079f47d50dfbbd4ebf5954fdc48b8a4,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5196354401897797955, guid: 3079f47d50dfbbd4ebf5954fdc48b8a4,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5196354401897797955, guid: 3079f47d50dfbbd4ebf5954fdc48b8a4,
         type: 3}
@@ -5543,12 +5543,12 @@ PrefabInstance:
     - target: {fileID: 5196354401897797955, guid: 3079f47d50dfbbd4ebf5954fdc48b8a4,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 1920
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5196354401897797955, guid: 3079f47d50dfbbd4ebf5954fdc48b8a4,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 1080
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5196354401897797955, guid: 3079f47d50dfbbd4ebf5954fdc48b8a4,
         type: 3}
@@ -5588,12 +5588,12 @@ PrefabInstance:
     - target: {fileID: 5196354401897797955, guid: 3079f47d50dfbbd4ebf5954fdc48b8a4,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 960
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5196354401897797955, guid: 3079f47d50dfbbd4ebf5954fdc48b8a4,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 550
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5196354401897797955, guid: 3079f47d50dfbbd4ebf5954fdc48b8a4,
         type: 3}
@@ -6097,6 +6097,24 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9208377063363476665, guid: 49a61848f81e09d40b80657694b454f6,
+        type: 3}
+      propertyPath: m_text
+      value: 'Loading ok
+
+        Initializing...'
+      objectReference: {fileID: 0}
+    - target: {fileID: 9208377063363476665, guid: 49a61848f81e09d40b80657694b454f6,
+        type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 00175914977e9764384bc2dd649d62fa,
+        type: 2}
+    - target: {fileID: 9208377063363476665, guid: 49a61848f81e09d40b80657694b454f6,
+        type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

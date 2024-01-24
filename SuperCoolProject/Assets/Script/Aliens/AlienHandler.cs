@@ -568,6 +568,7 @@ public class AlienHandler : MonoBehaviour
 
             deadAlienGO.gameObject.SetActive(true);
         }
+        Debug.Log("Work wrok wrokokr");
         HandleDeath();
     }
 
@@ -577,7 +578,11 @@ public class AlienHandler : MonoBehaviour
         if (MyTransform.position.y != 0.1f) { MyTransform.position = new Vector3(MyTransform.position.x, 0.1f, MyTransform.position.z); }
         if (anim[currentSpecies] != null) { anim[currentSpecies].Play("Armature|WALK"); }
 
-        MyTransform.position = Vector3.MoveTowards(MyTransform.position, targetPosition, speed);
+        if (currentState != AlienState.idle)
+        {
+            MyTransform.position = Vector3.MoveTowards(MyTransform.position, targetPosition, speed);
+        }
+
         if (Vector3.Distance(MyTransform.position, targetPosition) > 1)
         {
             MyTransform.LookAt(targetPosition);
@@ -789,7 +794,9 @@ public class AlienHandler : MonoBehaviour
         StopAllCoroutines();
     }
 
-    IEnumerator PlayActionParticle(bool isLoving)
+
+
+    IEnumerator PlayActionParticle(AlienState currentState)
     {
         if (Vector3.Distance(MyTransform.position, GameManager.Instance.CameraFollowSpot.position) > 50)
         {
@@ -797,14 +804,20 @@ public class AlienHandler : MonoBehaviour
         }
         else
         {
-            if (isLoving)
+            if (currentState == AlienState.loving)
             {
                 alienActionFogMain.startColor = new ParticleSystem.MinMaxGradient(Color.red, Color.magenta);
             }
-            else
+            else if (currentState == AlienState.hunting)
             {
                 alienActionFogMain.startColor = new ParticleSystem.MinMaxGradient(Color.gray, Color.black);
             }
+
+            // TODO: Add Player Interaction color
+            //else if (currentState == AlienState.hunting)
+            //{
+
+            //}
             alienActionParticlesGO.SetActive(true);
             yield return new WaitForSeconds(1f);
             alienActionParticlesGO.SetActive(false);
@@ -894,7 +907,7 @@ public class AlienHandler : MonoBehaviour
                     {
                         lustTimer = 0;
                         HandleMating();
-                        StartCoroutine(PlayActionParticle(true)); // Loving Partilce
+                        StartCoroutine(PlayActionParticle(currentState)); // Loving Partilce
                     }
                     break;
 
@@ -924,7 +937,7 @@ public class AlienHandler : MonoBehaviour
 
                             // Handles eat other alien
                             hungerTimer = 0;
-                            StartCoroutine(PlayActionParticle(false)); // Eating Partilce
+                            StartCoroutine(PlayActionParticle(currentState)); // Eating Partilce
                             otherAlien.HandleDeath();
                             if (brainWashed == false)
                             {
@@ -975,6 +988,18 @@ public class AlienHandler : MonoBehaviour
 
             return;
         }
+    }
+
+    public void HandleDeathByCombat()
+    {
+        StartCoroutine(WaitForDeath(2));
+    }
+
+    IEnumerator WaitForDeath(float time)
+    {
+        StartCoroutine(PlayActionParticle(currentState));
+        yield return new WaitForSeconds(time);
+        HandleDeath();
     }
 
     AudioClip RandomAudioSelector(List<AudioClip[]> audioList, int state) // incase we plan to add more audio for each state

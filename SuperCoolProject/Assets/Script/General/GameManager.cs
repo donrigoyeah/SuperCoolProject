@@ -51,6 +51,7 @@ public class GameManager : MonoBehaviour
     public Transform CameraFollowSpot; // For Cinemachine
     public LoadingScreenHandler loadingScreenHandler;
 
+    [Header("UI Elements")]
     public GameObject DeathScreen;
     public TextMeshProUGUI respawnButton;
     public GameObject GameOverScreen;
@@ -89,13 +90,12 @@ public class GameManager : MonoBehaviour
         currentCloneJuice = maxCloneJuice;
         cloneJuiceUI.fillAmount = currentCloneJuice / maxCloneJuice;
         loadingScreenHandler.totalAwakeCalls++;
-
     }
 
     private void Start()
     {
         HandleSpawnShipParts();
-        respawnButton.text = TutorialHandler.Instance.dashButton;
+        respawnButton.text = TutorialHandler.Instance.interactionButton;
     }
 
     private void FixedUpdate()

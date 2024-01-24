@@ -436,7 +436,7 @@ public class PlayerManager : MonoBehaviour
 
     private void HandleRespawn()
     {
-        if (!isAlive && inputHandler.inputDashing)
+        if (!isAlive && inputHandler.inputInteracting)
         {
             if (GameManager.Instance.DeathScreen.activeInHierarchy)
             {

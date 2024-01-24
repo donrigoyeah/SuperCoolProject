@@ -575,9 +575,8 @@ public class PlayerAttacker : MonoBehaviour
             {
                 if (CurrentCollidingAH.currentState == AlienState.hunting)
                 {
-                    Debug.Log("Got Hit by Alien");
                     playerManager.HandleHit();
-
+                    CurrentCollidingAH.HandleDeathByCombat();
                 }
             }
         }
