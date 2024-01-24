@@ -28,7 +28,7 @@ public class PlayerLocomotion : MonoBehaviour
     public float dashCost = 33;
     public float dashRechargeSpeed = 3;
     public GameObject dashParticle;
-
+    public bool canDash;
     public bool isDashing = false;
     private float dashDuration = 0.3f;
     private float dashExtraSpeed = 20f;
@@ -82,14 +82,11 @@ public class PlayerLocomotion : MonoBehaviour
                 playerAnim.SetBool("IsWalking", false);
             }
 
-            if (inputHandler.inputDashing && dashCurrentCharge > 0)
+            if (inputHandler.inputDashing && dashCurrentCharge > 0 || GameManager.Instance.devMode)
             {
-                if (isDashing == false)
+                if (isDashing == false && canDash == true)
                 {
-                    if (GameManager.Instance.hasDashPart || GameManager.Instance.devMode)
-                    {
-                        StartCoroutine(Dash());
-                    }
+                    StartCoroutine(Dash());
                 }
             }
 

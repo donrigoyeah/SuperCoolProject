@@ -35,11 +35,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] private SpaceShipScriptable[] spaceShipScriptable;
 
     [Header("SpaceShipPartsBoolValues")]
-    public bool hasFuelCanister = false;
     public bool hasAmmoBox = false;
-    public bool hasShieldGenerator = false;
     public bool hasAntenna = false;
-    public bool hasDashPart = false;
+    public bool hasCloneJuicer = false;
+    public bool hasFuelCanister = false;
+    public bool hasLightmachine = false;
+    public bool hasRadar = false;
+    public bool hasShieldGenerator = false;
 
     [Header("References")]
     [SerializeField] private PlayerInputManager playerInputManager;
@@ -151,7 +153,7 @@ public class GameManager : MonoBehaviour
         HUDHandler.Instance.EnableCurrentHUD(2); // Enable Time Display
 
         // Enable Light Beams on Player
-        if (TimeManager.Instance.currentState == TimeManager.DayState.sunsetToNight || TimeManager.Instance.currentState == TimeManager.DayState.dayToSunSet)
+        if ((TimeManager.Instance.currentState == TimeManager.DayState.sunsetToNight || TimeManager.Instance.currentState == TimeManager.DayState.dayToSunSet) && hasLightmachine == true)
         {
             pm.LightBeam.SetActive(true);
         }
@@ -236,9 +238,13 @@ public class GameManager : MonoBehaviour
 
     public void TurnOnAllPlayerLights()
     {
-        foreach (PlayerManager player in players)
+        if (hasLightmachine == false) { return; }
+        else
         {
-            player.LightBeam.SetActive(true);
+            foreach (PlayerManager player in players)
+            {
+                player.LightBeam.SetActive(true);
+            }
         }
     }
     public void TurnOffAllPlayerLights()
@@ -264,7 +270,7 @@ public class GameManager : MonoBehaviour
         Clouds.SetActive(false);
     }
 
-    public void HandleCloneJuiceDrain()
+    public void HandleDrainCloneJuice()
     {
         currentCloneJuice -= cloneCost;
         cloneJuiceUI.fillAmount = currentCloneJuice / maxCloneJuice;
@@ -272,6 +278,15 @@ public class GameManager : MonoBehaviour
         {
             HandleLoss();
         }
+    }
+
+    public void HandleGainCloneJuivce(float gain)
+    {
+        if (hasCloneJuicer)
+        {
+            gain = gain * 2;
+        }
+        currentCloneJuice += gain;
     }
 
     #endregion
@@ -342,21 +357,21 @@ public class GameManager : MonoBehaviour
         {
             foreach (var item in players)
             {
-                item.GetComponent<PlayerLocomotion>().playerSpeed = 13f;
+                item.GetComponent<PlayerLocomotion>().canDash = true;
             }
         }
 
         if (hasAntenna)
         {
-            HUDHandler.Instance.UnlockPopulation.SetActive(true);
+            HUDHandler.Instance.UnlockPopulation.SetActive(false);
 
         }
 
-        if (hasAntenna)
+        if (hasRadar)
         {
-            Debug.Log("Found Antenna"); HUDHandler.Instance.UnlockMiniMap.SetActive(true);
-
+            HUDHandler.Instance.UnlockMiniMap.SetActive(false);
         }
+
 
         if (currentSpaceShipParts == totalSpaceShipParts)
         {

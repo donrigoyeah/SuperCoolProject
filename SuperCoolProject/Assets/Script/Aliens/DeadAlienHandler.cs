@@ -61,9 +61,6 @@ public class DeadAlienHandler : MonoBehaviour
     private Vector3 SqBone6Pos;
     private Quaternion SqBone6Rot;
 
-
-
-
     private void Awake()
     {
         for (int i = 0; i < Rigidbodies.Length; i++)
@@ -116,7 +113,7 @@ public class DeadAlienHandler : MonoBehaviour
         for (int i = 0; i < Rigidbodies.Length; i++)
         {
             Rigidbodies[i].velocity = Vector3.zero;
-            Rigidbodies[i].transform.position = Vector3.zero;
+            Rigidbodies[i].transform.localPosition = Vector3.zero;
             Rigidbodies[i].transform.rotation = Quaternion.identity;
             deadAlienSpecies[i].SetActive(false);
         }

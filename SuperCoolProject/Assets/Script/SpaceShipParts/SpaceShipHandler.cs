@@ -74,14 +74,27 @@ public class SpaceShipHandler : MonoBehaviour
                     abilityText.text = spaceShipPartHandler.spaceShipData.abilityUnlockText;
                 }
 
-                if (spaceShipPartHandler.spaceShipData.partName == "Unknown")
+                if (spaceShipPartHandler.spaceShipData.partName == "Lightmachine")
                 {
-                    GameManager.Instance.hasDashPart = true;
+                    GameManager.Instance.hasLightmachine = true;
                     abilityText.text = spaceShipPartHandler.spaceShipData.abilityUnlockText;
                 }
 
-                StartCoroutine(ShowInfoPanel());
+                if (spaceShipPartHandler.spaceShipData.partName == "CloneJuicerr")
+                {
+                    GameManager.Instance.hasCloneJuicer = true;
+                    abilityText.text = spaceShipPartHandler.spaceShipData.abilityUnlockText;
+                }
 
+                if (spaceShipPartHandler.spaceShipData.partName == "Radar")
+                {
+                    GameManager.Instance.hasRadar = true;
+                    abilityText.text = spaceShipPartHandler.spaceShipData.abilityUnlockText;
+                    showNewUpgradeBinging = true;
+                    upgradeButtonBinding.text = TutorialHandler.Instance.toggleNavButton;
+                }
+
+                StartCoroutine(ShowInfoPanel());
                 GameManager.Instance.SpaceShipPartUpdate();
             }
         }
@@ -91,7 +104,7 @@ public class SpaceShipHandler : MonoBehaviour
         {
             Destroy(other.gameObject);
             GameManager.Instance.playerDeadBody = true;
-            GameManager.Instance.currentCloneJuice += 10f;
+            GameManager.Instance.HandleGainCloneJuivce(10);
             StartCoroutine(PlayRetrieveParticle(false));
             return;
         }

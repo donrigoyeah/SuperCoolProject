@@ -85,7 +85,7 @@ public class PlayerManager : MonoBehaviour
         playerAnim = GetComponentInChildren<Animator>();
 
         dissolve = playerShieldGO.gameObject.GetComponent<Renderer>().material;
-        // dissolve.SetFloat("_DissolveAmount", 0);
+        dissolve.SetFloat("_DissolveAmount", 0);
 
         ParticleSystem[] particleSystems = UpgradeParticles.GetComponentsInChildren<ParticleSystem>();
 
@@ -450,11 +450,10 @@ public class PlayerManager : MonoBehaviour
                 GameManager.Instance.DeathScreen.SetActive(false);
             }
 
-            GameManager.Instance.HandleCloneJuiceDrain();
+            GameManager.Instance.HandleDrainCloneJuice();
             // TODO: Add Transition/ Fade to black/ camera shutter effect?!
 
             isAlive = true;
-
             MyTransform.position = Vector3.zero;
         }
     }
