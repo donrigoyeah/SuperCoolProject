@@ -29,6 +29,15 @@ public class CopHandler : MonoBehaviour
     public Animation anim;
     public GameObject copCorpse;
 
+    private float distToPlayer;
+    private float tempDistToPlayer;
+    private float stepCop;
+
+    private GameObject deadCop;
+    private GameObject copBulletPoolGo;
+    private GameObject copMuzzlePoolGo;
+    private BulletHandler BH;
+
     [Header("Audio")]
     public AudioClip copMumbling;
     public AudioClip copShooting;
@@ -77,14 +86,14 @@ public class CopHandler : MonoBehaviour
 
     private void FindClosestPlayer()
     {
-        float dist = 1000;
+        distToPlayer = 1000;
 
         foreach (var item in GameManager.Instance.players)
         {
-            float tempDist = Vector3.Distance(this.transform.position, item.transform.position);
-            if (tempDist < dist)
+            tempDistToPlayer = Vector3.Distance(this.transform.position, item.transform.position);
+            if (tempDistToPlayer < distToPlayer)
             {
-                dist = tempDist;
+                distToPlayer = tempDistToPlayer;
                 closestPlayer = item;
             }
         }
@@ -99,12 +108,12 @@ public class CopHandler : MonoBehaviour
 
         if (closestPlayer == null) { return; }
 
-        float step = copSpeed * Time.deltaTime;
+        stepCop = copSpeed * Time.deltaTime;
 
         if (CopManager.Instance.hasBeenServed == true && isAggro == false)
         {
             transform.LookAt(CopCar.transform.position, Vector3.up);
-            transform.position = Vector3.MoveTowards(transform.position, CopCar.transform.position, step);
+            transform.position = Vector3.MoveTowards(transform.position, CopCar.transform.position, stepCop);
             return;
         }
 
@@ -112,7 +121,7 @@ public class CopHandler : MonoBehaviour
 
         if (Vector3.Distance(this.transform.position, closestPlayer.transform.position) > attackRange)
         {
-            transform.position = Vector3.MoveTowards(transform.position, closestPlayer.transform.position, step);
+            transform.position = Vector3.MoveTowards(transform.position, closestPlayer.transform.position, stepCop);
         }
         else
         {
@@ -153,7 +162,7 @@ public class CopHandler : MonoBehaviour
     private void HandleDeath()
     {
         // TODO: Make nicer
-        GameObject deadCop = Instantiate(copCorpse, transform.position, quaternion.identity);
+        deadCop = Instantiate(copCorpse, transform.position, quaternion.identity);
         Destroy(deadCop, 2f);
         CopManager.Instance.currentCops.Remove(this);
         this.gameObject.SetActive(false);
@@ -161,12 +170,12 @@ public class CopHandler : MonoBehaviour
 
     private void HandleSpawnCopLazer(Transform lazerSpawnLocation)
     {
-        GameObject copBulletPoolGo = PoolManager.Instance.GetPooledCopBullets();
+        copBulletPoolGo = PoolManager.Instance.GetPooledCopBullets();
         if (copBulletPoolGo != null)
         {
             copBulletPoolGo.transform.position = lazerSpawnLocation.position;
             copBulletPoolGo.transform.rotation = lazerSpawnLocation.rotation;
-            BulletHandler BH = copBulletPoolGo.GetComponent<BulletHandler>();
+            BH = copBulletPoolGo.GetComponent<BulletHandler>();
             BH.bulletDamage = copBulletDamage;
             BH.isPlayerBullet = false;
             BH.rb.velocity = Vector3.zero;
@@ -174,7 +183,7 @@ public class CopHandler : MonoBehaviour
 
             copBulletPoolGo.SetActive(true);
         }
-        GameObject copMuzzlePoolGo = PoolManager.Instance.GetPooledCopMuzzle();
+        copMuzzlePoolGo = PoolManager.Instance.GetPooledCopMuzzle();
         if (copMuzzlePoolGo != null)
         {
             copMuzzlePoolGo.transform.position = lazerSpawnLocation.position;

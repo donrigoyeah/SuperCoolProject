@@ -24,6 +24,20 @@ public class CopManager : MonoBehaviour
     public int amountOfKilledAliensPaid = 0;
     public int currentAmountOfKilledAliens = 0;
 
+    private float rCop;
+    private float angleCop;
+    private float randPosXCop;
+    private float randPosZCop;
+    private float rCar;
+    private float angleCar;
+    private float randPosXCar;
+    private float randPosZCar;
+
+    private GameObject copPoolGo;
+    private CopHandler CH;
+    private int copCarCount;
+    private float totalDistanceOfCopsFromCar;
+
     public Button payButton;
 
     public static CopManager Instance;
@@ -76,19 +90,19 @@ public class CopManager : MonoBehaviour
     {
         for (int i = 0; i < copAmount; i++)
         {
-            GameObject copPoolGo = PoolManager.Instance.GetPooledCop();
+            copPoolGo = PoolManager.Instance.GetPooledCop();
             if (copPoolGo != null)
             {
 
-                float r = Random.Range(1, 3);
-                float angle = i * (360 / copAmount);
+                rCop = Random.Range(1, 3);
+                angleCop = i * (360 / copAmount);
 
-                float randPosX = r * Mathf.Cos(Mathf.Deg2Rad * angle);
-                float randPosZ = r * Mathf.Sin(Mathf.Deg2Rad * angle);
+                randPosXCop = rCop * Mathf.Cos(Mathf.Deg2Rad * angleCop);
+                randPosZCop = rCop * Mathf.Sin(Mathf.Deg2Rad * angleCop);
 
-                copPoolGo.transform.position = CopCarCurrent.transform.position + new Vector3(randPosX, 0, randPosZ);
+                copPoolGo.transform.position = CopCarCurrent.transform.position + new Vector3(randPosXCop, 0, randPosZCop);
 
-                CopHandler CH = copPoolGo.GetComponent<CopHandler>();
+                CH = copPoolGo.GetComponent<CopHandler>();
                 currentCops.Add(CH);
                 CH.CopCar = CopCarCurrent.transform;
                 CH.isAggro = false;
@@ -108,7 +122,7 @@ public class CopManager : MonoBehaviour
         fineDescribtion.text = "You killed " + currentAmountOfKilledAliens + " Aliens";
 
 
-        int copCarCount = Mathf.RoundToInt(copCount / 3);
+        copCarCount = Mathf.RoundToInt(copCount / 3);
 
         for (int i = 0; i < copCarCount; i++)
         {
@@ -116,11 +130,11 @@ public class CopManager : MonoBehaviour
         }
         CopCarCurrent = Instantiate(CopCar);
         CopCarCurrent.gameObject.transform.SetParent(this.transform);
-        float rCar = Random.Range(20, 25);
-        float angleCar = Random.Range(0, 360);
+        rCar = Random.Range(20, 25);
+        angleCar = Random.Range(0, 360);
 
-        float randPosXCar = rCar * Mathf.Cos(Mathf.Deg2Rad * angleCar);
-        float randPosZCar = rCar * Mathf.Sin(Mathf.Deg2Rad * angleCar);
+        randPosXCar = rCar * Mathf.Cos(Mathf.Deg2Rad * angleCar);
+        randPosZCar = rCar * Mathf.Sin(Mathf.Deg2Rad * angleCar);
 
         CopCarCurrent.transform.position = new Vector3(randPosXCar, 100, randPosZCar);
     }
@@ -128,7 +142,7 @@ public class CopManager : MonoBehaviour
 
     public void HandleReturnCops()
     {
-        float totalDistanceOfCopsFromCar = 0;
+        totalDistanceOfCopsFromCar = 0;
 
         for (int i = 0; i < currentCops.Count; i++)
         {

@@ -12,6 +12,11 @@ public class BulletHandler : MonoBehaviour
 
     // To make in available in other script. Probably not very secure for competitive online play but here should be fine :)
     public Rigidbody rb;
+    private GameObject BulletExplosion;
+    private CopHandler CH;
+    private GameObject damageUIGo;
+    private DamageUIHandler DUIH;
+
 
     private void Awake()
     {
@@ -27,29 +32,29 @@ public class BulletHandler : MonoBehaviour
     {
         if (isPlayerBullet)
         {
-            GameObject BulletExp = PoolManager.Instance.GetPooledBulletExplosion();
+            BulletExplosion = PoolManager.Instance.GetPooledBulletExplosion();
 
-            if (BulletExp != null)
+            if (BulletExplosion != null)
             {
-                BulletExp.transform.position = other.transform.position;
-                BulletExp.transform.rotation = other.transform.rotation;
-                BulletExp.SetActive(true);
+                BulletExplosion.transform.position = other.transform.position;
+                BulletExplosion.transform.rotation = other.transform.rotation;
+                BulletExplosion.SetActive(true);
             }
 
             if (other.CompareTag("Cop"))
             {
-                CopHandler CH = other.gameObject.GetComponent<CopHandler>();
+                CH = other.gameObject.GetComponent<CopHandler>();
                 if (CH == null) { return; }
 
                 CH.copHealthCurrent -= bulletDamage;
 
 
-                GameObject damageUIGo = PoolManager.Instance.GetPooledDamageUI();
+                damageUIGo = PoolManager.Instance.GetPooledDamageUI();
                 if (damageUIGo != null)
                 {
                     damageUIGo.transform.position = other.transform.position;
 
-                    DamageUIHandler DUIH = damageUIGo.GetComponentInChildren<DamageUIHandler>();
+                    DUIH = damageUIGo.GetComponentInChildren<DamageUIHandler>();
                     DUIH.damageValue = bulletDamage;
 
                     damageUIGo.SetActive(true);
