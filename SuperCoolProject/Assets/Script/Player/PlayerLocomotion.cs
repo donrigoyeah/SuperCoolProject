@@ -20,6 +20,13 @@ public class PlayerLocomotion : MonoBehaviour
     private Vector3 playerVelocity;
     public Vector3 targetAimPosition;
 
+    [Header("PlayerMovement")]
+    private float rayDistance;
+    private Plane groundPlane;
+    private Ray ray;
+    private Vector3 move;
+    private Vector3 point;
+    
     [Header("Dash")]
     [SerializeField] public GameObject dashUiGO;
     [SerializeField] public Image dashUi;
@@ -129,7 +136,7 @@ public class PlayerLocomotion : MonoBehaviour
 
     void Movement()
     {
-        Vector3 move = new Vector3(inputHandler.inputMovement.x, 0, inputHandler.inputMovement.y);
+        move = new Vector3(inputHandler.inputMovement.x, 0, inputHandler.inputMovement.y);
         controller.Move(move * Time.deltaTime * playerSpeed);
 
 
@@ -176,13 +183,12 @@ public class PlayerLocomotion : MonoBehaviour
         // Handle Mouse Input
         else
         {
-            Ray ray = MainCamera.ScreenPointToRay(inputHandler.inputAim);
-            Plane groundPlane = new Plane(Vector3.up, Vector3.zero); // represent a plane in 3D space
-            float rayDistance;
+            ray = MainCamera.ScreenPointToRay(inputHandler.inputAim);
+            groundPlane = new Plane(Vector3.up, Vector3.zero); // represent a plane in 3D space
 
             if (groundPlane.Raycast(ray, out rayDistance))
             {
-                Vector3 point = ray.GetPoint(rayDistance);
+                point = ray.GetPoint(rayDistance);
                 LookAt(point);
             }
         }

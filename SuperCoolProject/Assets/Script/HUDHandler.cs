@@ -16,6 +16,7 @@ public class HUDHandler : MonoBehaviour
     public Camera MiniMapCamera;
     public float cameraZoomOut = 200; // TODO: This is entire Island. Maybe Have it follow the player instead
     public float cameraZoomIn = 50;
+    private int zoomiSteps;
 
     [Header("DayTime")]
     public RectTransform DayNightCircle;
@@ -143,7 +144,7 @@ public class HUDHandler : MonoBehaviour
 
     IEnumerator MiniMapCameraZoomOut()
     {
-        int zoomiSteps = 40;
+        zoomiSteps = 40;
         for (int i = 0; i <= zoomiSteps; i++)
         {
             yield return new WaitForSeconds(timeThreshold / zoomiSteps);
