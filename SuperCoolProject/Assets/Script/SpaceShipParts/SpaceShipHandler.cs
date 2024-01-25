@@ -15,12 +15,15 @@ public class SpaceShipHandler : MonoBehaviour
     public GameObject NewAbilityWithKey;
     public Button okButton;
     public bool showNewUpgradeBinging = false;
+    private PlayerManager PM;
+    private SpaceShipPartHandler spaceShipPartHandler;
+    private PlayerLocomotion PL;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            PlayerManager PM = other.gameObject.GetComponent<PlayerManager>();
+            PM = other.gameObject.GetComponent<PlayerManager>();
 
             // Showing the current values of the resources
             StartCoroutine(PM.UnfoldResource(PM.ResourceUISphere, 50));
@@ -34,8 +37,8 @@ public class SpaceShipHandler : MonoBehaviour
             {
                 StartCoroutine(PlayRetrieveParticle(true));
 
-                SpaceShipPartHandler spaceShipPartHandler = PM.currentPart.GetComponent<SpaceShipPartHandler>();
-                PlayerLocomotion PL = PM.GetComponent<PlayerLocomotion>();
+                spaceShipPartHandler = PM.currentPart.GetComponent<SpaceShipPartHandler>();
+                PL = PM.GetComponent<PlayerLocomotion>();
                 PL.playerSpeed = spaceShipPartHandler.previousPlayerSpeed;
 
                 GameManager.Instance.currentSpaceShipParts++;
@@ -112,7 +115,7 @@ public class SpaceShipHandler : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            PlayerManager PM = other.gameObject.GetComponent<PlayerManager>();
+            PM = other.gameObject.GetComponent<PlayerManager>();
 
             StartCoroutine(PM.FoldResource(PM.ResourceUISphere));
             StartCoroutine(PM.FoldResource(PM.ResourceUISquare));
@@ -160,6 +163,7 @@ public class SpaceShipHandler : MonoBehaviour
         }
     }
 
+    // Gets called on button in editor
     public void CloseUpgradeScreen()
     {
         showNewUpgradeBinging = false;

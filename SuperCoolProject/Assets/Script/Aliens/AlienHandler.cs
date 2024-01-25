@@ -86,6 +86,7 @@ public class AlienHandler : MonoBehaviour
 
     [Header("This Alien")]
     public Transform MyTransform;
+    private Vector2 MyTransform2D;
     public AlienAge currentAge;
 
     public bool isRendered = true;
@@ -103,11 +104,21 @@ public class AlienHandler : MonoBehaviour
     public RawImage currentStateIcon;
     public Texture[] allStateIcons; // 0: eye, 1: crosshair, 2: wind, 3: heart, 4: shield
     public Vector3 targetPosition = new Vector3(0, 0, -11);
+    private float currentShortestDistanceLooking;
+    private float currentDistanceLooking;
+    private float randDirXRoaming;
+    private float randDirZRoaming;
+    private GameObject newBornAlienPoolGo;
+    private AlienHandler newBornAlien;
+    private float randomOffSetBabySpawn;
+
 
     [Header("Target Alien")]
     public GameObject targetAlien;
     public GameObject lastTargetAlien;
+    private AlienHandler targetAlienHandler;
     private AlienHandler closestAlienHandler;
+    private Vector2 TargetAlienTransformFound2D;
 
     [Header("General AlienStuff")]
     public GameObject[] alienSpecies; // 0:Sphere > 1:Square > 2:Triangle  
@@ -121,6 +132,7 @@ public class AlienHandler : MonoBehaviour
     public ParticleSystem resourceSteam;
     public ParticleSystem alienActionFog;
     ParticleSystem.MainModule alienActionFogMain;
+    ParticleSystem.MainModule resourceSteamMain;
     public float alienSpeed;
     public float lookRadius = 10;
     private float delta;
@@ -132,6 +144,15 @@ public class AlienHandler : MonoBehaviour
     public int timeToChild = 5;
     public int timeToSexual = 15;
     public int timeToFullGrown = 25;
+    private GameObject deadAlienGO;
+    private DeadAlienHandler deadAlien;
+    private Vector2 CameraFollowSpot2D;
+    private float lookTimeIdle;
+    private bool isPlayerBullet;
+    private GameObject damageUIGo;
+    private DamageUIHandler DUIH;
+
+
 
     [Header("Dissolve")]
     public Material dissolve;
@@ -242,6 +263,8 @@ public class AlienHandler : MonoBehaviour
     private void FixedUpdate()
     {
         delta = Time.deltaTime;
+        MyTransform2D = new Vector2(MyTransform.position.x, MyTransform.position.z);
+
         HandleUpdateTimers(delta);
 
         // If is dead, skip everytthing
@@ -295,11 +318,8 @@ public class AlienHandler : MonoBehaviour
             }
         }
 
-        float currentShortestDistance = lookRadius;
-        float currentDistance = lookRadius;
-
-        Vector2 MyTransform2D = new Vector2(MyTransform.position.x, MyTransform.position.z);
-        Vector2 TargetAlienTransformFound2D;
+        currentShortestDistanceLooking = lookRadius;
+        currentDistanceLooking = lookRadius;
 
         aliensInRange = Physics.OverlapSphere(MyTransform.position, lookRadius, layerMaskAlien);
 
@@ -360,14 +380,14 @@ public class AlienHandler : MonoBehaviour
             if (TargetAlienTransformFound == null) { continue; }
 
             TargetAlienTransformFound2D = new Vector2(TargetAlienTransformFound.position.x, TargetAlienTransformFound.position.z);
-            currentDistance = Vector2.Distance(MyTransform2D, TargetAlienTransformFound2D);
+            currentDistanceLooking = Vector2.Distance(MyTransform2D, TargetAlienTransformFound2D);
 
-            if (currentDistance < currentShortestDistance)
+            if (currentDistanceLooking < currentShortestDistanceLooking)
             {
-                currentShortestDistance = currentDistance;
+                currentShortestDistanceLooking = currentDistanceLooking;
             }
 
-            if (currentShortestDistance <= 2)
+            if (currentShortestDistanceLooking <= 2)
             {
                 break;
             }
@@ -380,7 +400,7 @@ public class AlienHandler : MonoBehaviour
         }
         else
         {
-            AlienHandler targetAlienHandler = targetAlien.GetComponent<AlienHandler>();
+            targetAlienHandler = targetAlien.GetComponent<AlienHandler>();
 
             if (targetAlienHandler == null)
             {
@@ -431,9 +451,9 @@ public class AlienHandler : MonoBehaviour
             // Find new target
             while (targetPosition == Vector3.zero || (targetPosition.x * targetPosition.x + targetPosition.z * targetPosition.z) > worldRadiusSquared)
             {
-                float randDirX = UnityEngine.Random.Range(0, 2) - .5f;
-                float randDirZ = UnityEngine.Random.Range(0, 2) - .5f;
-                targetPosition = MyTransform.position + new Vector3(randDirX, 0, randDirZ) * 10;
+                randDirXRoaming = UnityEngine.Random.Range(0, 2) - .5f;
+                randDirZRoaming = UnityEngine.Random.Range(0, 2) - .5f;
+                targetPosition = MyTransform.position + new Vector3(randDirXRoaming, 0, randDirZRoaming) * 10;
             }
         }
     }
@@ -516,15 +536,15 @@ public class AlienHandler : MonoBehaviour
             if (brainWashed == true) { amountOfBabies = 1; }
             for (var i = 0; i < amountOfBabies; i++)
             {
-                GameObject alienPoolGo = PoolManager.Instance.GetPooledAliens(brainWashed);
-                if (alienPoolGo != null)
+                newBornAlienPoolGo = PoolManager.Instance.GetPooledAliens(brainWashed);
+                if (newBornAlienPoolGo != null)
                 {
-                    float randomOffSet = (UnityEngine.Random.Range(0, 5) - 2) / 2;
+                    randomOffSetBabySpawn = (UnityEngine.Random.Range(0, 5) - 2) / 2;
 
-                    AlienHandler newBornAlien = alienPoolGo.GetComponent<AlienHandler>();
+                    newBornAlien = newBornAlienPoolGo.GetComponent<AlienHandler>();
                     newBornAlien.ResetVariable();
                     newBornAlien.currentSpecies = currentSpecies;
-                    newBornAlien.transform.position = new Vector3(MyTransform.position.x + randomOffSet, 0.5f, MyTransform.position.z + randomOffSet);
+                    newBornAlien.transform.position = new Vector3(MyTransform.position.x + randomOffSetBabySpawn, 0.5f, MyTransform.position.z + randomOffSetBabySpawn);
                     newBornAlien.gameObject.SetActive(true);
                 }
             }
@@ -554,13 +574,13 @@ public class AlienHandler : MonoBehaviour
         {
             AlienManager.Instance.KillAlien(currentSpecies);
         }
-        GameObject deadAlienGO = PoolManager.Instance.GetPooledDeadAlien();
+        deadAlienGO = PoolManager.Instance.GetPooledDeadAlien();
         if (deadAlienGO != null)
         {
             deadAlienGO.transform.position = MyTransform.position;
             deadAlienGO.transform.rotation = MyTransform.rotation;
 
-            DeadAlienHandler deadAlien = deadAlienGO.GetComponent<DeadAlienHandler>();
+            deadAlien = deadAlienGO.GetComponent<DeadAlienHandler>();
             deadAlien.Rigidbodies[currentSpecies].position = this.transform.position;
             deadAlien.transform.rotation = MyTransform.rotation;
             deadAlien.bulletForce = bulletForce;
@@ -724,8 +744,8 @@ public class AlienHandler : MonoBehaviour
 
     private void HandleRendering()
     {
-        Vector2 MyTransform2D = new Vector2(MyTransform.position.x, MyTransform.position.z);
-        Vector2 CameraFollowSpot2D = new Vector2(GameManager.Instance.CameraFollowSpot.position.x, GameManager.Instance.CameraFollowSpot.position.z);
+        MyTransform2D = new Vector2(MyTransform.position.x, MyTransform.position.z);
+        CameraFollowSpot2D = new Vector2(GameManager.Instance.CameraFollowSpot.position.x, GameManager.Instance.CameraFollowSpot.position.z);
         if (Vector2.Distance(MyTransform2D, CameraFollowSpot2D) > 50)
         {
             if (isRendered == true)
@@ -757,7 +777,7 @@ public class AlienHandler : MonoBehaviour
         canAct = true;
         isDead = false;
 
-        ParticleSystem.MainModule resourceSteamMain = resourceSteamGO.GetComponent<ParticleSystem>().main;
+        resourceSteamMain = resourceSteamGO.GetComponent<ParticleSystem>().main;
 
         if (currentSpecies == 0)
         {
@@ -827,8 +847,8 @@ public class AlienHandler : MonoBehaviour
         HandleIdle();
         canAct = false;
         DiscardCurrentAction();
-        float lookTime = UnityEngine.Random.Range(0, (seconds + 1) * 10) / 10;
-        yield return new WaitForSeconds(lookTime);
+        lookTimeIdle = UnityEngine.Random.Range(0, (seconds + 1) * 10) / 10;
+        yield return new WaitForSeconds(lookTimeIdle);
         canAct = true;
         currentState = nextState;
     }
@@ -965,14 +985,14 @@ public class AlienHandler : MonoBehaviour
             CurrentBH = other.gameObject.GetComponent<BulletHandler>();
             currentBulletDamage = CurrentBH.bulletDamage;
             alienHealth -= currentBulletDamage;
-            bool isPlayerBullet = CurrentBH.isPlayerBullet;
+            isPlayerBullet = CurrentBH.isPlayerBullet;
 
-            GameObject damageUIGo = PoolManager.Instance.GetPooledDamageUI();
+            damageUIGo = PoolManager.Instance.GetPooledDamageUI();
             if (damageUIGo != null)
             {
                 damageUIGo.transform.position = MyTransform.position;
 
-                DamageUIHandler DUIH = damageUIGo.GetComponentInChildren<DamageUIHandler>();
+                DUIH = damageUIGo.GetComponentInChildren<DamageUIHandler>();
                 DUIH.damageValue = currentBulletDamage;
 
                 damageUIGo.SetActive(true);

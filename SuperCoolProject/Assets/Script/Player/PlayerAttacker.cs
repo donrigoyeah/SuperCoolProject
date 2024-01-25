@@ -7,6 +7,8 @@ using static AlienHandler;
 
 public class PlayerAttacker : MonoBehaviour
 {
+    private Transform myTransform;
+
     [Header("Lazer Sight Stuff")]
     [SerializeField] private LineRenderer laserSightLeft;
     [SerializeField] private LineRenderer laserSightRight;
@@ -23,6 +25,13 @@ public class PlayerAttacker : MonoBehaviour
     [SerializeField] public RectTransform AimTargetIndicator;
     [SerializeField] private Vector2 lastInput;
     [SerializeField] private Vector3 AimTargetLocation;
+    private int stepsEnableLazer;
+    private float durationOfAnimationEnableLazer;
+    private int stepsDisableLazer;
+    private float durationOfAnimationDisableLazer;
+    private int stepsCloseAim;
+    private float durationOfAnimationCloseAim;
+    private RaycastHit hit;
 
     [Header("Lazer Gun Stuff")]
     [SerializeField] public GameObject overheatUIGO;
@@ -41,7 +50,9 @@ public class PlayerAttacker : MonoBehaviour
     [SerializeField] private float bulletDamage = 10;
     [SerializeField] private float bulletDamageBoost = 2;
     [SerializeField] private bool leftRightSwitch;
-    private Transform myTransform;
+    private GameObject bulletPoolGo;
+    private GameObject muzzlePoolGo;
+    private BulletHandler BH;
 
     [Header("Grenade stuff")]
     [SerializeField] public GameObject grenadeCooldownUIGO;
@@ -63,6 +74,10 @@ public class PlayerAttacker : MonoBehaviour
     public GameObject grenadeTrajectoryParent;
     public Sprite sprite;
     public float vertecCount = 12;
+    private GameObject grenadePoolGo;
+    private GrenadeHandler currentGH;
+
+
 
     [Header("Grenade Trajectory Physics stuff")]
     [SerializeField] private int PhysicsFrame = 62;
@@ -74,6 +89,8 @@ public class PlayerAttacker : MonoBehaviour
     private PlayerManager playerManager;
     private Animator playerAnim;
     private CharacterController controller;
+    private float delta;
+    private AlienHandler CurrentCollidingAH;
 
 
 
@@ -120,7 +137,7 @@ public class PlayerAttacker : MonoBehaviour
         if (playerManager.isInteracting == true || playerManager.isAlive == false) { return; }
         else
         {
-            float delta = Time.deltaTime;
+            delta = Time.deltaTime;
             HandleWeaponHeat(delta);
             HandleGrenadeCooldown(delta);
             //HandleEnableLazerSight();
@@ -145,7 +162,6 @@ public class PlayerAttacker : MonoBehaviour
 
                 if (currentWeaponHeat > boostWeaponHeatThreshold)
                 {
-                    Debug.Log("Code Explanation for Extra Damage");
                     SpawnLazer(bulletDamage + bulletDamageBoost * currentWeaponHeat / boostWeaponHeatThreshold);
                 }
                 else
@@ -232,8 +248,8 @@ public class PlayerAttacker : MonoBehaviour
     {
         //TODO: Add Recoil
 
-        GameObject bulletPoolGo = PoolManager.Instance.GetPooledBullets();
-        GameObject muzzlePoolGo = PoolManager.Instance.GetPooledMuzzle();
+        bulletPoolGo = PoolManager.Instance.GetPooledBullets();
+        muzzlePoolGo = PoolManager.Instance.GetPooledMuzzle();
 
         if (bulletPoolGo != null)
         {
@@ -272,7 +288,7 @@ public class PlayerAttacker : MonoBehaviour
             }
             leftRightSwitch = !leftRightSwitch;
 
-            BulletHandler BH = bulletPoolGo.GetComponent<BulletHandler>();
+            BH = bulletPoolGo.GetComponent<BulletHandler>();
             BH.isPlayerBullet = true;
             BH.bulletDamage = damage;
             bulletPoolGo.SetActive(true);
@@ -348,14 +364,14 @@ public class PlayerAttacker : MonoBehaviour
         laserSightLeft.SetPosition(1, Vector3.zero);
         laserSightRight.SetPosition(1, Vector3.zero);
 
-        int steps = 10;
-        float durationOfAnimation = 0.1f;
-        for (int i = 0; i < steps; i++)
+        stepsEnableLazer = 10;
+        durationOfAnimationEnableLazer = 0.1f;
+        for (int i = 0; i < stepsEnableLazer; i++)
         {
-            yield return new WaitForSeconds(durationOfAnimation / steps);
+            yield return new WaitForSeconds(durationOfAnimationEnableLazer / stepsEnableLazer);
 
-            laserSightLeft.SetPosition(1, (Vector3.forward * lazerSightRange * i) / steps);
-            laserSightRight.SetPosition(1, (Vector3.forward * lazerSightRange * i) / steps);
+            laserSightLeft.SetPosition(1, (Vector3.forward * lazerSightRange * i) / stepsEnableLazer);
+            laserSightRight.SetPosition(1, (Vector3.forward * lazerSightRange * i) / stepsEnableLazer);
         }
 
 
@@ -367,14 +383,14 @@ public class PlayerAttacker : MonoBehaviour
         laserSightLeft.SetPosition(1, (Vector3.forward * lazerSightRange));
         laserSightRight.SetPosition(1, (Vector3.forward * lazerSightRange));
 
-        int steps = 10;
-        float durationOfAnimation = 0.1f;
+        stepsDisableLazer = 10;
+        durationOfAnimationDisableLazer = 0.1f;
 
-        for (int i = 0; i < steps; i++)
+        for (int i = 0; i < stepsDisableLazer; i++)
         {
-            yield return new WaitForSeconds(durationOfAnimation / steps);
-            laserSightLeft.SetPosition(0, (Vector3.forward * lazerSightRange * i) / steps);
-            laserSightRight.SetPosition(0, (Vector3.forward * lazerSightRange * i) / steps);
+            yield return new WaitForSeconds(durationOfAnimationDisableLazer / stepsDisableLazer);
+            laserSightLeft.SetPosition(0, (Vector3.forward * lazerSightRange * i) / stepsDisableLazer);
+            laserSightRight.SetPosition(0, (Vector3.forward * lazerSightRange * i) / stepsDisableLazer);
 
             // Remove Laser from end to start
             //laserSightLeft.SetPosition(1, (Vector3.forward * lazerSightRange) - (Vector3.forward * lazerSightRange * i / steps));
@@ -389,8 +405,6 @@ public class PlayerAttacker : MonoBehaviour
 
     private void AimLockTarget()
     {
-        RaycastHit hit;
-
         // Use Spherecast here instead of ray to have a better detactionChance
         if (Physics.SphereCast(transform.position + Vector3.up / 2, 2, transform.forward, out hit, lazerSightRange))
         {
@@ -445,14 +459,14 @@ public class PlayerAttacker : MonoBehaviour
         AimTargetIndicator.localScale = Vector3.one;
         AimTargetIndicator.localRotation = Quaternion.Euler(0, 0, 0);
 
-        int steps = 30;
-        float durationOfAnimation = 0.5f;
+        stepsCloseAim = 30;
+        durationOfAnimationCloseAim = 0.5f;
 
-        for (int i = 0; i < steps; i++)
+        for (int i = 0; i < stepsCloseAim; i++)
         {
-            yield return new WaitForSeconds(durationOfAnimation / steps);
-            AimTargetIndicator.localScale = Vector3.one - (Vector3.one * i / (2 * steps)); // Results in Vector3.one/2
-            AimTargetIndicator.localRotation = Quaternion.Euler(0, 0, 180 * i / steps);
+            yield return new WaitForSeconds(durationOfAnimationCloseAim / stepsCloseAim);
+            AimTargetIndicator.localScale = Vector3.one - (Vector3.one * i / (2 * stepsCloseAim)); // Results in Vector3.one/2
+            AimTargetIndicator.localRotation = Quaternion.Euler(0, 0, 180 * i / stepsCloseAim);
         }
     }
 
@@ -548,11 +562,11 @@ public class PlayerAttacker : MonoBehaviour
     private void LaunchGrenade()
     {
         // GameObject NewGrenade = Instantiate(grenadePrefab, grenadespawnPoint.transform.position, transform.rotation);
-        GameObject grenadePoolGo = PoolManager.Instance.GetPooledGrenade();
+        grenadePoolGo = PoolManager.Instance.GetPooledGrenade();
         grenadePoolGo.SetActive(true);
         grenadePoolGo.transform.position = grenadespawnPoint.transform.position;
         grenadePoolGo.transform.rotation = grenadespawnPoint.transform.rotation;
-        GrenadeHandler currentGH = grenadePoolGo.GetComponent<GrenadeHandler>();
+        currentGH = grenadePoolGo.GetComponent<GrenadeHandler>();
         currentGH.time = 0;
         currentGH.playerAttacker = this;
         StartCoroutine(DisableAfterSeconds(2, grenadePoolGo));
@@ -569,7 +583,7 @@ public class PlayerAttacker : MonoBehaviour
         // Less resources on all the alien instances
         if (other.gameObject.CompareTag("Alien"))
         {
-            AlienHandler CurrentCollidingAH = other.gameObject.GetComponent<AlienHandler>();
+            CurrentCollidingAH = other.gameObject.GetComponent<AlienHandler>();
             if (CurrentCollidingAH.isDead) { return; }
 
             if (CurrentCollidingAH.currentAge == AlienAge.resource)
@@ -603,7 +617,6 @@ public class PlayerAttacker : MonoBehaviour
     IEnumerator ResetGrenadeTransform()
     {
         yield return new WaitForSeconds(2f);
-        Debug.Log("ff");
 
         grenadeTrajectoryParent.transform.SetParent(transform);
 

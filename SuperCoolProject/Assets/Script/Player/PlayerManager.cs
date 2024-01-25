@@ -77,6 +77,23 @@ public class PlayerManager : MonoBehaviour
     public ParticleSystem.MainModule ParticleSystem2Main;
     public ParticleSystem.MainModule ParticleSystem3Main;
 
+
+    private float dist;
+    private float currentDist;
+    private int loopAmount;
+    private GameObject ResourceAlienPoolGo;
+    private AlienHandler ResourceAlienPoolGoHandler;
+    private Vector3 targetRotation;
+    private Quaternion newRotation;
+    private int stepsUnfold;
+    private float animationDurationUnfold;
+    private int stepsFold;
+    private float animationDurationFold;
+    private RectTransform GORT;
+    private int stepsShield;
+    private float animationDurationShield;
+
+
     private int alienLayerMask = 1 << 9; // Lyer 9 is Alien, so only use this layer
 
     private void Awake()
@@ -271,10 +288,9 @@ public class PlayerManager : MonoBehaviour
         {
             closestResourceIndicator[neededResource].SetActive(false);
 
-            float dist = 1000;
-            float currentDist;
+            dist = 1000;
 
-            int loopAmount =
+            loopAmount =
                 neededResource == 0 ? AlienManager.Instance.resourceSphere.Count :
                 neededResource == 1 ? AlienManager.Instance.resourceSquare.Count :
                 neededResource == 2 ? AlienManager.Instance.resourceTriangle.Count : 0;
@@ -310,16 +326,16 @@ public class PlayerManager : MonoBehaviour
                     {
                         PoolManager.Instance.AlienPool[i].GetComponent<AlienHandler>().HandleDeath();
 
-                        GameObject alienPoolGo = PoolManager.Instance.GetPooledAliens(false);
-                        if (alienPoolGo != null)
+                        ResourceAlienPoolGo = PoolManager.Instance.GetPooledAliens(false);
+                        if (ResourceAlienPoolGo != null)
                         {
-                            AlienHandler alienPoolGoHandler = alienPoolGo.GetComponent<AlienHandler>();
-                            alienPoolGoHandler.currentSpecies = neededResource;
-                            alienPoolGoHandler.lifeTime = -10;
-                            alienPoolGo.transform.position = locationForResource;
-                            alienPoolGo.SetActive(true);
+                            ResourceAlienPoolGoHandler = ResourceAlienPoolGo.GetComponent<AlienHandler>();
+                            ResourceAlienPoolGoHandler.currentSpecies = neededResource;
+                            ResourceAlienPoolGoHandler.lifeTime = -10;
+                            ResourceAlienPoolGo.transform.position = locationForResource;
+                            ResourceAlienPoolGo.SetActive(true);
 
-                            closestResource[neededResource] = alienPoolGoHandler;
+                            closestResource[neededResource] = ResourceAlienPoolGoHandler;
                         }
                     }
                 }
@@ -339,9 +355,9 @@ public class PlayerManager : MonoBehaviour
 
         // 0:Sphere, 1:Square, 2:Triangle
         closestResourceIndicator[neededResource].SetActive(true);
-        Vector3 targetRotation = targetResource - MyTransform.position;
-        Quaternion rotation = Quaternion.LookRotation(targetRotation, Vector3.up);
-        closestResourceIndicator[neededResource].transform.rotation = rotation;
+        targetRotation = targetResource - MyTransform.position;
+        newRotation = Quaternion.LookRotation(targetRotation, Vector3.up);
+        closestResourceIndicator[neededResource].transform.rotation = newRotation;
     }
 
     private void DeactivateResourceDetectionIndicator(int neededResource)
@@ -486,30 +502,30 @@ public class PlayerManager : MonoBehaviour
 
     public IEnumerator UnfoldResource(GameObject Resource, float degree)
     {
-        int steps = 30;
-        float animationDuration = .3f;
+        stepsUnfold = 30;
+        animationDurationUnfold = .3f;
         Resource.gameObject.SetActive(true);
-        RectTransform GORT = Resource.GetComponent<RectTransform>();
+        GORT = Resource.GetComponent<RectTransform>();
         GORT.localScale = Vector3.zero;
-        for (int i = 0; i < steps; i++)
+        for (int i = 0; i < stepsUnfold; i++)
         {
-            yield return new WaitForSeconds(animationDuration / steps);
-            GORT.localScale = Vector3.one * 3 * i / steps;
-            GORT.localEulerAngles = new Vector3(0, 0, degree * i / steps);
+            yield return new WaitForSeconds(animationDurationUnfold / stepsUnfold);
+            GORT.localScale = Vector3.one * 3 * i / stepsUnfold;
+            GORT.localEulerAngles = new Vector3(0, 0, degree * i / stepsUnfold);
         }
     }
 
     public IEnumerator FoldResource(GameObject Resource)
     {
-        int steps = 30;
-        float animationDuration = .2f;
+        stepsFold = 30;
+        animationDurationFold = .2f;
 
-        RectTransform GORT = Resource.GetComponent<RectTransform>();
+        GORT = Resource.GetComponent<RectTransform>();
         GORT.localScale = Vector3.one * 2;
-        for (int i = 0; i < steps; i++)
+        for (int i = 0; i < stepsFold; i++)
         {
-            yield return new WaitForSeconds(animationDuration / steps);
-            GORT.localScale = Vector3.one * 2 - Vector3.one * 2 * i / steps;
+            yield return new WaitForSeconds(animationDurationFold / stepsFold);
+            GORT.localScale = Vector3.one * 2 - Vector3.one * 2 * i / stepsFold;
         }
         GORT.localEulerAngles = Vector3.zero;
         Resource.gameObject.SetActive(false);
@@ -517,16 +533,16 @@ public class PlayerManager : MonoBehaviour
 
     IEnumerator ShieldBreak(float timeToRecharge)
     {
-        int steps = 30;
-        float animationDuration = .5f;
+        stepsShield = 30;
+        animationDurationShield = .5f;
         playerShield = false;
         dissolve.SetFloat("_DissolveAmount", 0);
         audioSource.PlayOneShot(shieldBreakAudio, 1f);
 
-        for (int i = 0; i < steps; i++)
+        for (int i = 0; i < stepsShield; i++)
         {
-            yield return new WaitForSeconds(animationDuration / steps);
-            dissolve.SetFloat("_DissolveAmount", i / steps);
+            yield return new WaitForSeconds(animationDurationShield / stepsShield);
+            dissolve.SetFloat("_DissolveAmount", i / stepsShield);
         }
 
         playerShieldGO.SetActive(false);
