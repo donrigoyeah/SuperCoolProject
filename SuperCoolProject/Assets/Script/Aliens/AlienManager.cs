@@ -28,7 +28,7 @@ public class AlienManager : MonoBehaviour
     public int segmentWidthRange = 10;
     public int minSpawnRadius = 30;
     public int maxSpawnRadius = 70;
-    public int maxSleepDelay = 10;
+    public int maxInitialLifeTime = 10;
 
     [Header("Kill Stuff")]
     public int totalKillCount = 0;
@@ -112,7 +112,7 @@ public class AlienManager : MonoBehaviour
 
                 AlienHandler alienPoolGoHandler = alienPoolGo.GetComponent<AlienHandler>();
                 alienPoolGoHandler.currentSpecies = currentSpieziesForArea;
-                alienPoolGoHandler.lifeTime = Random.Range(0, maxSleepDelay);
+                alienPoolGoHandler.lifeTime = Random.Range(0, maxInitialLifeTime);
                 alienPoolGo.transform.position = new Vector3(randPosX, 0.1f, randPosZ);
                 alienPoolGo.SetActive(true);
             }

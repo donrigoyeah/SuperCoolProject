@@ -578,7 +578,7 @@ public class AlienHandler : MonoBehaviour
         if (MyTransform.position.y != 0.1f) { MyTransform.position = new Vector3(MyTransform.position.x, 0.1f, MyTransform.position.z); }
         if (anim[currentSpecies] != null) { anim[currentSpecies].Play("Armature|WALK"); }
 
-        if (currentState != AlienState.idle)
+        if (currentState != AlienState.idle || brainWashed == true) // If brainwashed can move anyway
         {
             MyTransform.position = Vector3.MoveTowards(MyTransform.position, targetPosition, speed);
         }
@@ -794,8 +794,6 @@ public class AlienHandler : MonoBehaviour
         StopAllCoroutines();
     }
 
-
-
     IEnumerator PlayActionParticle(AlienState currentState)
     {
         if (Vector3.Distance(MyTransform.position, GameManager.Instance.CameraFollowSpot.position) > 50)
@@ -906,8 +904,8 @@ public class AlienHandler : MonoBehaviour
                         lustTimer > lustTimerThreshold) // Babies
                     {
                         lustTimer = 0;
+                        StartCoroutine(PlayActionParticle(AlienState.loving)); // Loving Partilce
                         HandleMating();
-                        StartCoroutine(PlayActionParticle(currentState)); // Loving Partilce
                     }
                     break;
 
@@ -937,7 +935,11 @@ public class AlienHandler : MonoBehaviour
 
                             // Handles eat other alien
                             hungerTimer = 0;
-                            otherAlien.HandleDeathByCombat();
+                            if (other.gameObject.activeInHierarchy)
+                            {
+                                StartCoroutine(PlayActionParticle(AlienState.hunting));
+                                otherAlien.HandleDeathByCombat();
+                            }
                             if (brainWashed == false)
                             {
                                 StartCoroutine(IdleSecsUntilNewState(1f, AlienState.looking));
@@ -991,12 +993,11 @@ public class AlienHandler : MonoBehaviour
 
     public void HandleDeathByCombat()
     {
-        StartCoroutine(WaitForDeath(2));
+        StartCoroutine(WaitForDeath(.2f));
     }
 
     IEnumerator WaitForDeath(float time)
     {
-        StartCoroutine(PlayActionParticle(currentState));
         yield return new WaitForSeconds(time);
         HandleDeath();
     }

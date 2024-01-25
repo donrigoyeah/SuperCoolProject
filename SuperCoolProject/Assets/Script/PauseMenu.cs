@@ -80,17 +80,17 @@ public class PauseMenu : MonoBehaviour
         float currentTime = Time.time - startTime;
         string formattedTime = FormatTime(currentTime);
         playtimeText.text = "Playtime: " + formattedTime;
-        
-        if (Input.GetMouseButtonDown(0)) // Debugging to check if mouse is detecting button UI or not
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit))
-            {
-                Debug.Log("Mouse hit: " + hit.collider.gameObject.name);
-            }
-        }
+        //if (Input.GetMouseButtonDown(0)) // Debugging to check if mouse is detecting button UI or not
+        //{
+        //    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //    RaycastHit hit;
+
+        //    if (Physics.Raycast(ray, out hit))
+        //    {
+        //        Debug.Log("Mouse hit: " + hit.collider.gameObject.name);
+        //    }
+        //}
     }
 
     private string FormatTime(float timeInSeconds)
