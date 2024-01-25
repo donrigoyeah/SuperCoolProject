@@ -94,6 +94,7 @@ public class HUDHandler : MonoBehaviour
 
         if (HUDScaler.localScale != Vector3.one)
         {
+            currentHUD++;
             if (currentHUD == 1) { StartCoroutine(MiniMapCameraZoomOut()); } // Is MiniMap
             StartCoroutine(ScaleUp());
             EnableCurrentHUD(currentHUD);

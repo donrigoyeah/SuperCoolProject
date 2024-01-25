@@ -49,6 +49,7 @@ public class TreeAndStoneHandler : MonoBehaviour
     public void PlanetTreesAndStones()
     {
 
+        // TODO: Change tree colors based on alien population
         for (int i = 0; i < treeCount; i++)
         {
             r = Random.Range(30, GameManager.Instance.worldRadius);
