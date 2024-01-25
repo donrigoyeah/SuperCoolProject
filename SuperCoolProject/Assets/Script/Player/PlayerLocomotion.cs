@@ -82,9 +82,9 @@ public class PlayerLocomotion : MonoBehaviour
                 playerAnim.SetBool("IsWalking", false);
             }
 
-            if (inputHandler.inputDashing && dashCurrentCharge > 0 || GameManager.Instance.devMode)
+            if (inputHandler.inputDashing && dashCurrentCharge > 0)
             {
-                if (isDashing == false && canDash == true)
+                if (isDashing == false && canDash == true || GameManager.Instance.devMode)
                 {
                     StartCoroutine(Dash());
                 }
