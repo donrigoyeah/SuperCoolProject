@@ -27,7 +27,7 @@ public class PlayerAttacker : MonoBehaviour
     [Header("Lazer Gun Stuff")]
     [SerializeField] public GameObject overheatUIGO;
     [SerializeField] public Image overheatUI;
-    private Vector3 overheatUIScaling = Vector3.one * 0.05f;
+    private Vector3 overheatUIScaling = Vector3.one * 0.2f;
     [SerializeField] private float fireRate = 0.5f;
     [SerializeField] private float currentWeaponHeat = 0;
     [SerializeField] private float maxWeaponHeat = 100;
