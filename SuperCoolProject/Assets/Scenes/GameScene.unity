@@ -2547,56 +2547,12 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 7334238867359192586}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1113901034
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1113901035}
-  - component: {fileID: 1113901036}
-  m_Layer: 0
-  m_Name: Trees and Stones
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1113901035
+--- !u!4 &1113901035 stripped
 Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 4541615634722413569, guid: dc0441a832a308b46b117f0cdf6b58f9,
+    type: 3}
+  m_PrefabInstance: {fileID: 3161632916095767646}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1113901034}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2045070898}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1113901036
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1113901034}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff7ff06f8b057424d87d852274f4d3af, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  treeCount: 30
-  stoneCount: 50
-  lightSwitchDuration: 5
-  Tree: {fileID: 6230748906942654938, guid: 1940f64f92b152242bf54913300b85a8, type: 3}
-  Stone: {fileID: 920328342716842622, guid: e22803f6caff5bf46b0d4339b7fa8e82, type: 3}
-  allTreeLights: []
 --- !u!1 &1171402647 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3311312529497967774, guid: ffb68a391af645d4bbbf12099ca9e96e,
@@ -4694,6 +4650,74 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da1265cb2b38ea440abd21aea14cd315, type: 3}
+--- !u!1001 &3161632916095767646
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 2045070898}
+    m_Modifications:
+    - target: {fileID: 1331385986089524912, guid: dc0441a832a308b46b117f0cdf6b58f9,
+        type: 3}
+      propertyPath: m_Name
+      value: Trees and Stones
+      objectReference: {fileID: 0}
+    - target: {fileID: 4541615634722413569, guid: dc0441a832a308b46b117f0cdf6b58f9,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4541615634722413569, guid: dc0441a832a308b46b117f0cdf6b58f9,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4541615634722413569, guid: dc0441a832a308b46b117f0cdf6b58f9,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4541615634722413569, guid: dc0441a832a308b46b117f0cdf6b58f9,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4541615634722413569, guid: dc0441a832a308b46b117f0cdf6b58f9,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4541615634722413569, guid: dc0441a832a308b46b117f0cdf6b58f9,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4541615634722413569, guid: dc0441a832a308b46b117f0cdf6b58f9,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4541615634722413569, guid: dc0441a832a308b46b117f0cdf6b58f9,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4541615634722413569, guid: dc0441a832a308b46b117f0cdf6b58f9,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4541615634722413569, guid: dc0441a832a308b46b117f0cdf6b58f9,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: dc0441a832a308b46b117f0cdf6b58f9, type: 3}
 --- !u!1001 &4133404183190734745
 PrefabInstance:
   m_ObjectHideFlags: 0
