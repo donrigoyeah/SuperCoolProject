@@ -31,7 +31,8 @@ public class HUDHandler : MonoBehaviour
     private float minWaitDuration = .5f;
     private float timeThreshold = 2;
     private bool isResizing = false;
-    private float transitionDuration = .5f;
+    public float scalingTransitionDuration = .5f;
+    private int scalingTransitionSteps = 30;
 
 
     public static HUDHandler Instance;
@@ -94,7 +95,6 @@ public class HUDHandler : MonoBehaviour
 
         if (HUDScaler.localScale != Vector3.one)
         {
-            currentHUD++;
             if (currentHUD == 1) { StartCoroutine(MiniMapCameraZoomOut()); } // Is MiniMap
             StartCoroutine(ScaleUp());
             EnableCurrentHUD(currentHUD);
@@ -102,8 +102,9 @@ public class HUDHandler : MonoBehaviour
         else
         {
             currentHUD++;
+            // This here is just to zoom on the 
             if (currentHUD == 1) { StartCoroutine(MiniMapCameraZoomOut()); } // Is MiniMap
-            else if (currentHUD == HUDS.Length) { currentHUD = 0; } // loop back to 0
+            else if (currentHUD == HUDS.Length - 1) { currentHUD = 0; } // loop back to 0
             EnableCurrentHUD(currentHUD);
         }
     }
@@ -157,10 +158,11 @@ public class HUDHandler : MonoBehaviour
     {
         isResizing = true;
 
-        for (int i = 0; i <= 10; i++)
+
+        for (int i = 0; i <= scalingTransitionSteps; i++)
         {
-            yield return new WaitForSeconds(transitionDuration / 10);
-            HUDScaler.localScale = Vector3.one * .5f + Vector3.one * i * transitionDuration / 10;
+            yield return new WaitForSeconds(scalingTransitionDuration / scalingTransitionSteps);
+            HUDScaler.localScale = Vector3.one * .5f + Vector3.one * i / scalingTransitionSteps;
         }
 
         isResizing = false;
@@ -170,10 +172,10 @@ public class HUDHandler : MonoBehaviour
     {
         isResizing = true;
 
-        for (int i = 0; i <= 10; i++)
+        for (int i = 0; i <= scalingTransitionSteps; i++)
         {
-            yield return new WaitForSeconds(transitionDuration / 10);
-            HUDScaler.localScale = Vector3.one - Vector3.one * i * transitionDuration / 10;
+            yield return new WaitForSeconds(scalingTransitionDuration / scalingTransitionSteps);
+            HUDScaler.localScale = Vector3.one - Vector3.one * i / scalingTransitionSteps;
         }
 
         isResizing = false;
