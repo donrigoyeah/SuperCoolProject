@@ -27,6 +27,7 @@ public class PlayerAttacker : MonoBehaviour
     [Header("Lazer Gun Stuff")]
     [SerializeField] public GameObject overheatUIGO;
     [SerializeField] public Image overheatUI;
+    private Vector3 overheatUIScaling = Vector3.one * 0.2f;
     [SerializeField] private float fireRate = 0.5f;
     [SerializeField] private float currentWeaponHeat = 0;
     [SerializeField] private float maxWeaponHeat = 100;
@@ -123,7 +124,7 @@ public class PlayerAttacker : MonoBehaviour
             HandleWeaponHeat(delta);
             HandleGrenadeCooldown(delta);
             //HandleEnableLazerSight();
-            if (playerManager.canAim)
+            if (playerManager.canAim || GameManager.Instance.devMode)
             {
                 AimLockTarget();
             }
@@ -136,7 +137,8 @@ public class PlayerAttacker : MonoBehaviour
     {
         if (gunOverheated == false && nextFireTime > fireRate)
         {
-            overheatUI.color = Color.Lerp(Color.green, Color.red, overheatUI.fillAmount / 0.70f);
+            //overheatUI.color = Color.Lerp(Color.green, Color.red, overheatUI.fillAmount / 0.70f);
+            overheatUI.color = Color.red;
             if (inputHandler.inputPrimaryFire && !playerManager.isCarryingPart && !PauseMenu.Instance.isPaused)
             {
                 playerAnim.SetBool("IsShooting", true);
@@ -172,7 +174,7 @@ public class PlayerAttacker : MonoBehaviour
         // Overheated gun
         if (currentWeaponHeat > maxWeaponHeat)
         {
-            overheatUI.color = Color.red;
+            overheatUI.color = Color.white;
             gunOverheated = true;
             isLaserSight = false;
             if (!audioSource.isPlaying)
@@ -180,18 +182,18 @@ public class PlayerAttacker : MonoBehaviour
                 audioSource.PlayOneShot(gunOverheatedAudio, 1f);
                 audioSource.PlayOneShot(coolingDownAudio, 1f);
             }
-            Debug.Log("Overheated");
             //CameraShake.ResetCameraPosition();
             hasOverheatedOnce = true;
         }
 
-        if (currentWeaponHeat == 0)
+        if (currentWeaponHeat == 0 && hasOverheatedOnce == true)
         {
             if (!audioSource.isPlaying && hasOverheatedOnce)
             {
                 audioSource.PlayOneShot(gunReadyAudio, 1f);
             }
             hasOverheatedOnce = false;
+            overheatUI.color = Color.red;
         }
 
         // Return if current heat is 0
@@ -210,6 +212,7 @@ public class PlayerAttacker : MonoBehaviour
         {
             currentWeaponHeat -= gunCooldownSpeed;
             overheatUIGO.SetActive(true);
+            overheatUIGO.transform.localScale = overheatUIScaling * currentWeaponHeat / maxWeaponHeat;
         }
 
         // Gun is overheated and needs to cool down before use
@@ -432,7 +435,7 @@ public class PlayerAttacker : MonoBehaviour
         AimTargetLocation = Vector3.zero;
         laserSightLeft.enabled = false;
         laserSightRight.enabled = false;
-        
+
         return;
     }
 
@@ -573,15 +576,17 @@ public class PlayerAttacker : MonoBehaviour
             {
                 playerManager.HandleGainResource(CurrentCollidingAH.currentSpecies);
                 AlienManager.Instance.RemoveFromResourceList(CurrentCollidingAH);
-                CurrentCollidingAH.gameObject.SetActive(false);
+                CurrentCollidingAH.HandleDeath();
             }
             else
             {
                 if (CurrentCollidingAH.currentState == AlienState.hunting)
                 {
-                    Debug.Log("Got Hit by Alien");
                     playerManager.HandleHit();
-
+                    if (other.gameObject.activeInHierarchy)
+                    {
+                        CurrentCollidingAH.HandleDeathByCombat();
+                    }
                 }
             }
         }
