@@ -64,6 +64,11 @@ public class TimeManager : MonoBehaviour
     public Gradient dayToSunSet; // 18 - 0
     public Gradient sunsetToNight; // 0-6
 
+
+    private float lerp;
+    private string formattedTime;
+
+
     public static TimeManager Instance;
 
     private void Awake()
@@ -137,7 +142,7 @@ public class TimeManager : MonoBehaviour
     {
         for (float i = 0; i < time; i += Time.deltaTime)
         {
-            float lerp = i / time;
+            lerp = i / time;
             sun.color = sunColor.Evaluate(lerp);
             // sun.intensity = Mathf.Lerp(initialSunIntensity, finalSunIntensity, lerp); // Incase we have change of plans for intensity
             yield return null;
@@ -147,7 +152,7 @@ public class TimeManager : MonoBehaviour
     private void DisplayTimeText()
     {
         //string formattedTime = $"{hours:D2}:{minutes:D2}";
-        string formattedTime = $"{hours:D2} h";
+        formattedTime = $"{hours:D2} h";
         displayTime.text = "DAY " + days + "\n" + formattedTime;
     }
 }

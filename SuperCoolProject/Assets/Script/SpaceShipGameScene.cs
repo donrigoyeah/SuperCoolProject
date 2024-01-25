@@ -32,6 +32,10 @@ public class SpaceShipGameScene : MonoBehaviour
     public PlayerInputManager playerInputManager;
 
     bool isMainMenu;
+    private float verticleBobMovement;
+    private float elapsedTimeCrash;
+    private Vector3 startingPos;
+    private AlienHandler enteringAlien;
 
 
     private void Start()
@@ -76,18 +80,18 @@ public class SpaceShipGameScene : MonoBehaviour
 
     private void HandleBobbing()
     {
-        float verticleBobMovement = bobbleAmplitude * Mathf.Sin(Time.time / bobbleSpeed) + bobbleStart;
+        verticleBobMovement = bobbleAmplitude * Mathf.Sin(Time.time / bobbleSpeed) + bobbleStart;
         transform.position = new Vector3(transform.position.x, verticleBobMovement, transform.position.z);
     }
 
     IEnumerator CrashAnimation(float seconds)
     {
-        float elapsedTime = 0;
-        Vector3 startingPos = this.transform.position;
-        while (elapsedTime < seconds)
+        elapsedTimeCrash = 0;
+        startingPos = this.transform.position;
+        while (elapsedTimeCrash < seconds)
         {
-            this.transform.position = Vector3.Lerp(startingPos, endPosition, (elapsedTime / seconds));
-            elapsedTime += Time.deltaTime;
+            this.transform.position = Vector3.Lerp(startingPos, endPosition, (elapsedTimeCrash / seconds));
+            elapsedTimeCrash += Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
 
@@ -112,7 +116,7 @@ public class SpaceShipGameScene : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Alien"))
         {
-            AlienHandler enteringAlien = other.gameObject.GetComponent<AlienHandler>();
+            enteringAlien = other.gameObject.GetComponent<AlienHandler>();
             enteringAlien.HandleFleeing(this.gameObject, true); // this time its not an alienGO but the spaceship; true for isEvadingPlayer
         }
     }

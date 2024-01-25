@@ -38,6 +38,24 @@ public class AlienManager : MonoBehaviour
     public int triangleKilled = 0;
 
     public LoadingScreenHandler loadingScreenHandler;
+    private int oneSegmentOfPoulation;
+    private int currentPopulationSegment;
+    private int pieSliceSize;
+    private int currentSlize;
+    private int currentSpieziesForArea;
+    private GameObject alienPoolGo;
+    private AlienHandler alienPoolGoHandler;
+    private float r;
+    private float angle;
+    private float randPosX;
+    private float randPosZ;
+    private float totalValues;
+    private float totalAmount;
+
+    private AlienHandler PopulationUIAH;
+
+
+
 
     public static AlienManager Instance;
 
@@ -83,15 +101,15 @@ public class AlienManager : MonoBehaviour
     private void InitalSpawnAliens()
     {
         ClearResourceList();
-        int oneSegmentOfPoulation = Mathf.RoundToInt(PoolManager.Instance.alienAmount / segmentAmount);
-        int currentPopulationSegment = oneSegmentOfPoulation;
-        int pieSliceSize = 360 / segmentAmount;
-        int currentSlize = 0;
-        int currentSpieziesForArea = 0;
+        oneSegmentOfPoulation = Mathf.RoundToInt(PoolManager.Instance.alienAmount / segmentAmount);
+        currentPopulationSegment = oneSegmentOfPoulation;
+        pieSliceSize = 360 / segmentAmount;
+        currentSlize = 0;
+        currentSpieziesForArea = 0;
 
         for (int i = 0; i < PoolManager.Instance.alienAmount; i++)
         {
-            GameObject alienPoolGo = PoolManager.Instance.GetPooledAliens(false);
+            alienPoolGo = PoolManager.Instance.GetPooledAliens(false);
             if (alienPoolGo != null)
             {
                 if (i > currentPopulationSegment)
@@ -104,13 +122,13 @@ public class AlienManager : MonoBehaviour
 
                 }
 
-                float r = Random.Range(minSpawnRadius, maxSpawnRadius);
-                float angle = Random.Range(currentSlize - segmentWidthRange, currentSlize + segmentWidthRange);
+                r = Random.Range(minSpawnRadius, maxSpawnRadius);
+                angle = Random.Range(currentSlize - segmentWidthRange, currentSlize + segmentWidthRange);
 
-                float randPosX = r * Mathf.Cos(Mathf.Deg2Rad * angle);
-                float randPosZ = r * Mathf.Sin(Mathf.Deg2Rad * angle);
+                randPosX = r * Mathf.Cos(Mathf.Deg2Rad * angle);
+                randPosZ = r * Mathf.Sin(Mathf.Deg2Rad * angle);
 
-                AlienHandler alienPoolGoHandler = alienPoolGo.GetComponent<AlienHandler>();
+                alienPoolGoHandler = alienPoolGo.GetComponent<AlienHandler>();
                 alienPoolGoHandler.currentSpecies = currentSpieziesForArea;
                 alienPoolGoHandler.lifeTime = Random.Range(0, maxInitialLifeTime);
                 alienPoolGo.transform.position = new Vector3(randPosX, 0.1f, randPosZ);
@@ -173,16 +191,16 @@ public class AlienManager : MonoBehaviour
         {
             if (item.activeInHierarchy)
             {
-                AlienHandler itemAH = item.GetComponent<AlienHandler>();
-                if (itemAH.currentSpecies == 0)
+                PopulationUIAH = item.GetComponent<AlienHandler>();
+                if (PopulationUIAH.currentSpecies == 0)
                 {
                     sphereCount++;
                 }
-                else if (itemAH.currentSpecies == 1)
+                else if (PopulationUIAH.currentSpecies == 1)
                 {
                     squareCount++;
                 }
-                else if (itemAH.currentSpecies == 2)
+                else if (PopulationUIAH.currentSpecies == 2)
                 {
                     triangleCount++;
                 }
@@ -207,7 +225,7 @@ public class AlienManager : MonoBehaviour
 
     private void SetPieChart(float[] valuesToSet)
     {
-        float totalValues = 0;
+        totalValues = 0;
         for (int i = 0; i < imagesPieChart.Length; i++)
         {
             totalValues += FindPercentage(valuesToSet, i);
@@ -217,7 +235,7 @@ public class AlienManager : MonoBehaviour
 
     private float FindPercentage(float[] valuesToSet, int index)
     {
-        float totalAmount = 0;
+        totalAmount = 0;
         for (int i = 0; i < valuesToSet.Length; i++)
         {
             totalAmount += valuesToSet[i];
