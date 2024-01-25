@@ -346,9 +346,11 @@ MonoBehaviour:
   resourceInRange: []
   playerShield: 1
   shieldRechargeTime: 2
+  shieldRechargeTimeWithUpgrade: 1
   isCarryingPart: 0
   currentPart: {fileID: 0}
   isAlive: 1
+  canAim: 0
   isInteracting: 0
   invincibleFrames: 0.5
   timeSinceLastHit: 0
@@ -3889,6 +3891,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5626506917091373109}
     m_Modifications:
+    - target: {fileID: 1590924187153885377, guid: 89d86ad59dd1a394c96ea25a4cb97d65,
+        type: 3}
+      propertyPath: playOnAwake
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1590924187153885377, guid: 89d86ad59dd1a394c96ea25a4cb97d65,
+        type: 3}
+      propertyPath: moveWithTransform
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3218888375421251660, guid: 89d86ad59dd1a394c96ea25a4cb97d65,
         type: 3}
       propertyPath: m_Name

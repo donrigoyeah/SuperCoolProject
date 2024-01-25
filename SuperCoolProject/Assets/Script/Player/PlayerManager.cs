@@ -391,7 +391,7 @@ public class PlayerManager : MonoBehaviour
 
     private void MaterialEmmissionControler(int neededResource)
     {
-        // TODO: Need to use own colors here, new Color(0.4f, 0.9f, 0.7f, 1.0f); so this would not work
+        // TODO: Need to use own c,olors here, new Color(0.4f, 0.9f 0.7f, 1.0f); so this would not work
         if (neededResource == 0)
         {
             resourceMaterial[0].SetColor("_EmissionColor", Color.blue * (Mathf.Sin((currentSphereResource * lightBulbMultiplicator) * Time.time) + 0.5f));
