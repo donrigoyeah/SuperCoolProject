@@ -915,7 +915,7 @@ public class AlienHandler : MonoBehaviour
                     if (currentAge == AlienAge.resource) // You, the resource, gets trampled
                     {
                         AlienManager.Instance.RemoveFromResourceList(this);
-                        // TODO: Maybe add trampled particles?!
+                        // TODO: Maybe add trampled particles or sound?!
                         this.gameObject.SetActive(false);
                         return;
                     }
@@ -937,8 +937,7 @@ public class AlienHandler : MonoBehaviour
 
                             // Handles eat other alien
                             hungerTimer = 0;
-                            StartCoroutine(PlayActionParticle(currentState)); // Eating Partilce
-                            otherAlien.HandleDeath();
+                            otherAlien.HandleDeathByCombat();
                             if (brainWashed == false)
                             {
                                 StartCoroutine(IdleSecsUntilNewState(1f, AlienState.looking));
