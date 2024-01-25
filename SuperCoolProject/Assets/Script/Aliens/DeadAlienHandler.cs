@@ -15,7 +15,10 @@ public class DeadAlienHandler : MonoBehaviour
     public Material dissolve;
     public float dissolveRate = 0.0125f;
     public float refreshRate = 0.025f;
-
+    private float steps;
+    private float durtaion;
+    private float dissolveAMount;
+    
     [Header("Triangle Bone Position")]
     public Transform TBone1;
     public Transform TBone2;
@@ -173,13 +176,13 @@ public class DeadAlienHandler : MonoBehaviour
     IEnumerator Dissolve()
     {
         dissolve.SetFloat("_DissolveAmount", 0);
-        float durtaion = 1f;
-        float steps = 30;
+        durtaion = 1f;
+        steps = 30;
 
         for (int i = 0; i < steps; i++)
         {
             yield return new WaitForSeconds(durtaion / steps);
-            float dissolveAMount = (i / steps);
+            dissolveAMount = (i / steps);
             dissolve.SetFloat("_DissolveAmount", (dissolveAMount));
         }
         Rigidbodies[currentAlienSpecies].velocity = Vector3.zero;
