@@ -125,7 +125,7 @@ public class AlienHandler : MonoBehaviour
     public GameObject[] alienSpeciesChild; // 0:Sphere > 1:Square > 2:Triangle  
     public GameObject[] alienSpeciesAdult; // 0:Sphere > 1:Square > 2:Triangle  
     public Material[] alienColors; // 0:Blue > 1:Green > 2:Red  
-    public Animation[] anim;
+    //public Animation[] anim;
     public Renderer alienMiniMapMarker;
     public GameObject resourceSteamGO;
     public GameObject alienActionParticlesGO;
@@ -296,27 +296,28 @@ public class AlienHandler : MonoBehaviour
     }
     private void HandleIdle()
     {
-        if (anim[currentSpecies] != null) { anim[currentSpecies]["Armature|WALK"].speed = 1; }
+        //if (anim[currentSpecies] != null) { anim[currentSpecies]["Armature|WALK"].speed = 1; }
 
-        if (anim[currentSpecies] != null)
-        {
-            if (currentSpecies != 0)
-            {
-                anim[currentSpecies].Play("Armature|IDLE");
-            }
-        }
+        //if (anim[currentSpecies] != null)
+        //{
+        //    if (currentSpecies != 0)
+        //    {
+        //        anim[currentSpecies].Play("Armature|IDLE");
+        //    }
+        //}
+        return;
     }
 
     public void HandleLooking()
     {
         // TODO: Add missing animation!!
-        if (anim[currentSpecies] != null)
-        {
-            if (currentSpecies != 0)
-            {
-                anim[currentSpecies].Play("Armature|IDLE");
-            }
-        }
+        //if (anim[currentSpecies] != null)
+        //{
+        //    if (currentSpecies != 0)
+        //    {
+        //        anim[currentSpecies].Play("Armature|IDLE");
+        //    }
+        //}
 
         currentShortestDistanceLooking = lookRadius;
         currentDistanceLooking = lookRadius;
@@ -464,7 +465,7 @@ public class AlienHandler : MonoBehaviour
         {
             audioSource.PlayOneShot(RandomAudioSelector(evadingAudioList, currentSpecies), 1f);
         }
-        if (anim[currentSpecies] != null) { anim[currentSpecies]["Armature|WALK"].speed = 2; }
+        //if (anim[currentSpecies] != null) { anim[currentSpecies]["Armature|WALK"].speed = 2; }
 
         if (isEvadingPlayer == true || brainWashed == true)
         {
@@ -487,7 +488,7 @@ public class AlienHandler : MonoBehaviour
             audioSource.PlayOneShot(RandomAudioSelector(attackAudioList, currentSpecies), 1f);
         }
 
-        if (anim[currentSpecies] != null) { anim[currentSpecies]["Armature|WALK"].speed = 2; }
+        //if (anim[currentSpecies] != null) { anim[currentSpecies]["Armature|WALK"].speed = 2; }
 
 
         if (isAttackingPlayer == true || brainWashed == true)
@@ -562,7 +563,7 @@ public class AlienHandler : MonoBehaviour
     {
         isDead = true;
         brainWashed = false;
-        anim[currentSpecies].Stop();
+        //anim[currentSpecies].Stop();
         StopAllCoroutines();
         this.gameObject.SetActive(false);
         return;
@@ -596,7 +597,7 @@ public class AlienHandler : MonoBehaviour
     {
         //if (targetPosition == Vector3.zero) { return; }
         if (MyTransform.position.y != 0.1f) { MyTransform.position = new Vector3(MyTransform.position.x, 0.1f, MyTransform.position.z); }
-        if (anim[currentSpecies] != null) { anim[currentSpecies].Play("Armature|WALK"); }
+        //if (anim[currentSpecies] != null) { anim[currentSpecies].Play("Armature|WALK"); }
 
         if (currentState != AlienState.idle || brainWashed == true) // If brainwashed can move anyway
         {
