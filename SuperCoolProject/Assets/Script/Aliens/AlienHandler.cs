@@ -1025,12 +1025,12 @@ public class AlienHandler : MonoBehaviour
     AudioClip RandomAudioSelector(List<AudioClip[]> audioList, int state) // incase we plan to add more audio for each state
     {
         // TODO: think of something to have ot play an audio only 50% of the time?
-        //AudioClip[] selectedAudioArray = audioList[state];
+        AudioClip[] selectedAudioArray = audioList[state];
 
-        //int randomIndex = Random.Range(0, selectedAudioArray.Length);
-        //AudioClip selectedAudio = selectedAudioArray[randomIndex];
+        int randomIndex = Random.Range(0, selectedAudioArray.Length);
+        AudioClip selectedAudio = selectedAudioArray[randomIndex];
 
-        //return selectedAudio;
+        return selectedAudio;
         return null;
     }
 }
