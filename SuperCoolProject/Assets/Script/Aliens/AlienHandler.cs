@@ -87,6 +87,7 @@ public class AlienHandler : MonoBehaviour
     [Header("This Alien")]
     public Transform MyTransform;
     private Vector2 MyTransform2D;
+    private Rigidbody MyRigidbody;
     public AlienAge currentAge;
 
     public bool isRendered = true;
@@ -125,7 +126,7 @@ public class AlienHandler : MonoBehaviour
     public GameObject[] alienSpeciesChild; // 0:Sphere > 1:Square > 2:Triangle  
     public GameObject[] alienSpeciesAdult; // 0:Sphere > 1:Square > 2:Triangle  
     public Material[] alienColors; // 0:Blue > 1:Green > 2:Red  
-    //public Animation[] anim;
+    public Animation[] anim;
     public Renderer alienMiniMapMarker;
     public GameObject resourceSteamGO;
     public GameObject alienActionParticlesGO;
@@ -151,8 +152,6 @@ public class AlienHandler : MonoBehaviour
     private bool isPlayerBullet;
     private GameObject damageUIGo;
     private DamageUIHandler DUIH;
-
-
 
     [Header("Dissolve")]
     public Material dissolve;
@@ -207,6 +206,7 @@ public class AlienHandler : MonoBehaviour
     private void Awake()
     {
         alienManager = AlienManager.Instance; // TODO: Why this again here? I think to have the reference already and not all calls like HandleDeathByBullet();
+        MyRigidbody = this.gameObject.GetComponent<Rigidbody>();
     }
 
     private void Start()
@@ -294,30 +294,31 @@ public class AlienHandler : MonoBehaviour
             HandleUpdateTarget(targetAlien); // Most cost intense calculations here
         }
     }
+
     private void HandleIdle()
     {
-        //if (anim[currentSpecies] != null) { anim[currentSpecies]["Armature|WALK"].speed = 1; }
+        if (anim[currentSpecies] != null) { anim[currentSpecies]["Armature|WALK"].speed = 1; }
 
-        //if (anim[currentSpecies] != null)
-        //{
-        //    if (currentSpecies != 0)
-        //    {
-        //        anim[currentSpecies].Play("Armature|IDLE");
-        //    }
-        //}
+        if (anim[currentSpecies] != null)
+        {
+            if (currentSpecies != 0)
+            {
+                anim[currentSpecies].Play("Armature|IDLE");
+            }
+        }
         return;
     }
 
     public void HandleLooking()
     {
         // TODO: Add missing animation!!
-        //if (anim[currentSpecies] != null)
-        //{
-        //    if (currentSpecies != 0)
-        //    {
-        //        anim[currentSpecies].Play("Armature|IDLE");
-        //    }
-        //}
+        if (anim[currentSpecies] != null)
+        {
+            if (currentSpecies != 0)
+            {
+                anim[currentSpecies].Play("Armature|IDLE");
+            }
+        }
 
         currentShortestDistanceLooking = lookRadius;
         currentDistanceLooking = lookRadius;
@@ -338,21 +339,18 @@ public class AlienHandler : MonoBehaviour
             }
 
             // Check wheater its same Species or not
-            switch (currentSpecies == closestAlienHandler.currentSpecies)
+            if (currentSpecies == closestAlienHandler.currentSpecies)
             {
-                case true: // Same Species
-                    if (
-                        hasUterus != closestAlienHandler.hasUterus && // opposite Sex
-                        currentAge == AlienAge.sexualActive && // Sexual active
-                        closestAlienHandler.currentAge == AlienAge.sexualActive && // potential partner also sexual active
-                        lustTimer > lustTimerThreshold && // can mate
-                        closestAlienHandler.lustTimer > lustTimerThreshold // partner can mate
-                        )
-                    {
-                        SetTargetAlien(aliensInRange[i].gameObject);
-                    }
-                    break;
-
+                if (
+                    hasUterus != closestAlienHandler.hasUterus && // opposite Sex
+                    currentAge == AlienAge.sexualActive && // Sexual active
+                    closestAlienHandler.currentAge == AlienAge.sexualActive && // potential partner also sexual active
+                    lustTimer > lustTimerThreshold && // can mate
+                    closestAlienHandler.lustTimer > lustTimerThreshold // partner can mate
+                    )
+                {
+                    SetTargetAlien(aliensInRange[i].gameObject);
+                }
                 #region Who eats who
                 // Check to which state the alien switches
                 // 0:Sphere > 1:Square > 2:Triangle 
@@ -360,22 +358,23 @@ public class AlienHandler : MonoBehaviour
                 // Square eats Sphere / 1 eats 0
                 // Sphere eats Triangle / 0 eats 2
                 #endregion
-
-                case false: // Opposite Species
-                    if (hungerTimer > hungerTimerThreshold &&
-                        (currentSpecies == closestAlienHandler.currentSpecies + 1 ||
-                        (currentSpecies == 0 && closestAlienHandler.currentSpecies == 2))) // potential food || if closestAlienHandler is smaller
-                    {
-                        SetTargetAlien(aliensInRange[i].gameObject);
-                    }
-                    else if ((currentSpecies == closestAlienHandler.currentSpecies - 1 ||
-                        (currentSpecies == 2 && closestAlienHandler.currentSpecies == 0))) // 0:Sphere > 1:Square > 2:Triangle || if closestAlienHandler is bigger
-                    {
-                        SetTargetAlien(aliensInRange[i].gameObject);
-                    }
-                    break;
-
             }
+            else
+            {
+
+                if (hungerTimer > hungerTimerThreshold &&
+                    (currentSpecies == closestAlienHandler.currentSpecies + 1 ||
+                    (currentSpecies == 0 && closestAlienHandler.currentSpecies == 2))) // potential food || if closestAlienHandler is smaller
+                {
+                    SetTargetAlien(aliensInRange[i].gameObject);
+                }
+                else if ((currentSpecies == closestAlienHandler.currentSpecies - 1 ||
+                    (currentSpecies == 2 && closestAlienHandler.currentSpecies == 0))) // 0:Sphere > 1:Square > 2:Triangle || if closestAlienHandler is bigger
+                {
+                    SetTargetAlien(aliensInRange[i].gameObject);
+                }
+            }
+
 
             // Has found a target
             if (TargetAlienTransformFound == null) { continue; }
@@ -465,7 +464,7 @@ public class AlienHandler : MonoBehaviour
         {
             audioSource.PlayOneShot(RandomAudioSelector(evadingAudioList, currentSpecies), 1f);
         }
-        //if (anim[currentSpecies] != null) { anim[currentSpecies]["Armature|WALK"].speed = 2; }
+        if (anim[currentSpecies] != null) { anim[currentSpecies]["Armature|WALK"].speed = 2; }
 
         if (isEvadingPlayer == true || brainWashed == true)
         {
@@ -488,7 +487,7 @@ public class AlienHandler : MonoBehaviour
             audioSource.PlayOneShot(RandomAudioSelector(attackAudioList, currentSpecies), 1f);
         }
 
-        //if (anim[currentSpecies] != null) { anim[currentSpecies]["Armature|WALK"].speed = 2; }
+        if (anim[currentSpecies] != null) { anim[currentSpecies]["Armature|WALK"].speed = 2; }
 
 
         if (isAttackingPlayer == true || brainWashed == true)
@@ -563,7 +562,7 @@ public class AlienHandler : MonoBehaviour
     {
         isDead = true;
         brainWashed = false;
-        //anim[currentSpecies].Stop();
+        anim[currentSpecies].Stop();
         StopAllCoroutines();
         this.gameObject.SetActive(false);
         return;
@@ -597,7 +596,7 @@ public class AlienHandler : MonoBehaviour
     {
         //if (targetPosition == Vector3.zero) { return; }
         if (MyTransform.position.y != 0.1f) { MyTransform.position = new Vector3(MyTransform.position.x, 0.1f, MyTransform.position.z); }
-        //if (anim[currentSpecies] != null) { anim[currentSpecies].Play("Armature|WALK"); }
+        if (anim[currentSpecies] != null) { anim[currentSpecies].Play("Armature|WALK"); }
 
         if (currentState != AlienState.idle || brainWashed == true) // If brainwashed can move anyway
         {
@@ -770,6 +769,7 @@ public class AlienHandler : MonoBehaviour
         lustTimer = 0;
         hungerTimer = 0;
         lifeTime = 0;
+        MyRigidbody.velocity = Vector3.zero;
         currentAge = AlienAge.resource;
         timeToChild += UnityEngine.Random.Range(0, 10);
         hasUterus = UnityEngine.Random.Range(0, 2) == 1;
