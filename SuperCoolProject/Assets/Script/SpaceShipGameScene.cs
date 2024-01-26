@@ -29,8 +29,6 @@ public class SpaceShipGameScene : MonoBehaviour
 
     public GameObject LandingParticlesGO;
 
-    public PlayerInputManager playerInputManager;
-
     bool isMainMenu;
     private float verticleBobMovement;
     private float elapsedTimeCrash;
@@ -40,9 +38,11 @@ public class SpaceShipGameScene : MonoBehaviour
 
     private void Start()
     {
+        isMainMenu = SceneManager.GetActiveScene().buildIndex == 0;
+        if (isMainMenu) { return; }
+
         this.transform.position = startPosition;
 
-        isMainMenu = SceneManager.GetActiveScene().buildIndex == 0;
 
         DamageParticles = DamageParticlesGO.GetComponent<ParticleSystem>();
         DamageParticlesMain = DamageParticles.main;
@@ -51,6 +51,7 @@ public class SpaceShipGameScene : MonoBehaviour
         ExhaustParticlesMain = ExhaustParticles.main;
 
         SpaceShipCanvas.SetActive(false);
+
 
         if (GameManager.Instance.devMode)
         {
@@ -66,10 +67,9 @@ public class SpaceShipGameScene : MonoBehaviour
         }
         else
         {
-            playerInputManager.DisableJoining();
+            PlayerInputManager.instance.DisableJoining();
             StartCoroutine(CrashAnimation(animationDuration));
         }
-
     }
     private void FixedUpdate()
     {
@@ -101,7 +101,7 @@ public class SpaceShipGameScene : MonoBehaviour
         Destroy(LandingParticlesGO, 2);
 
         SpaceShipCanvas.SetActive(true);
-        playerInputManager.EnableJoining();
+        PlayerInputManager.instance.EnableJoining();
 
         DamageParticlesGO.transform.rotation = Quaternion.Euler(-90, 90, 90);
         DamageParticlesMain.startSpeed = 0.5f;
@@ -112,12 +112,12 @@ public class SpaceShipGameScene : MonoBehaviour
         ExhaustParticlesMain.startLifetime = 6f;
     }
 
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.gameObject.CompareTag("Alien"))
-    //    {
-    //        enteringAlien = other.gameObject.GetComponent<AlienHandler>();
-    //        enteringAlien.HandleFleeing(this.gameObject, true); // this time its not an alienGO but the spaceship; true for isEvadingPlayer
-    //    }
-    //}
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Alien"))
+        {
+            enteringAlien = other.gameObject.GetComponent<AlienHandler>();
+            enteringAlien.HandleFleeing(this.gameObject, true); // this time its not an alienGO but the spaceship; true for isEvadingPlayer
+        }
+    }
 }
