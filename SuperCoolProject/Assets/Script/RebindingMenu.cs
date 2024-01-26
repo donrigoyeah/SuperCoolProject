@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 public class RebindingMenu : MonoBehaviour
 {
-    public InputActionReference moveRef, jumpRef, fire1Ref, fireRef2, dashRef, interactRef;
+    public InputActionReference moveRef, fire1Ref, fireRef2, dashRef, interactRef;
 
     private void OnEnable()
     {

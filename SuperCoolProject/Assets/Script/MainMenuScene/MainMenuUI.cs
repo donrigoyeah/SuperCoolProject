@@ -10,9 +10,7 @@ public class MainMenuUI : MonoBehaviour
 {
     private bool loadScene = false;
 
-    [SerializeField]
-    private int scene;
-    [SerializeField]
+    public int scene;
     public TextMeshProUGUI loadingText;
 
     public Button playButton;

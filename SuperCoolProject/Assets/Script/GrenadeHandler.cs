@@ -6,9 +6,9 @@ public class GrenadeHandler : MonoBehaviour
 {
 
     private bool _isGhost;
-    [SerializeField] private float explosionForce = 700f;
-    [SerializeField] private float explosionRadius = 5f;
-    [SerializeField] private GameObject explosionEffect;
+    public float explosionForce = 700f;
+    public float explosionRadius = 5f;
+    public GameObject explosionEffect;
     private float countdown = 1f;
     private bool hasExploded = false;
 
@@ -45,7 +45,7 @@ public class GrenadeHandler : MonoBehaviour
     void Explosion()
     {
         // TODO: CHeck if we only need the  rb.AddExplosionForce(explosionForce, transform.position, explosionRadius); without the sphere cast
-        
+
         Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius);
 
         foreach (Collider nearbyObects in colliders)
@@ -67,7 +67,7 @@ public class GrenadeHandler : MonoBehaviour
         time = 0;
         hasExploded = false;
     }
-    
+
     float CalculateDamage(float distance)
     {
 

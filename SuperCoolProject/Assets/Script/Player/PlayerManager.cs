@@ -64,9 +64,9 @@ public class PlayerManager : MonoBehaviour
 
 
     [Header("Audio")]
-    [SerializeField] private AudioClip shieldRechargeAudio;
-    [SerializeField] private AudioClip shieldBreakAudio;
-    [SerializeField] private AudioClip deathAudio;
+    public AudioClip shieldRechargeAudio;
+    public AudioClip shieldBreakAudio;
+    public AudioClip deathAudio;
     private AudioSource audioSource;
 
     private InputHandler inputHandler;

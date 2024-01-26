@@ -38,13 +38,13 @@ public class AlienManager : MonoBehaviour
     public int triangleKilled = 0;
 
     public LoadingScreenHandler loadingScreenHandler;
+    private GameObject alienPoolGo;
+    private AlienHandler alienPoolGoHandler;
     private int oneSegmentOfPoulation;
     private int currentPopulationSegment;
     private int pieSliceSize;
     private int currentSlize;
     private int currentSpieziesForArea;
-    private GameObject alienPoolGo;
-    private AlienHandler alienPoolGoHandler;
     private float r;
     private float angle;
     private float randPosX;
@@ -53,9 +53,6 @@ public class AlienManager : MonoBehaviour
     private float totalAmount;
 
     private AlienHandler PopulationUIAH;
-
-
-
 
     public static AlienManager Instance;
 

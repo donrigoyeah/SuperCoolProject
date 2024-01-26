@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     public int maxPlayers = 2;
 
     [Header("Clone Juice")]
-    [SerializeField] public Image cloneJuiceUI;
+    public Image cloneJuiceUI;
     public float cloneCost = 20;
     public float currentCloneJuice;
     public float maxCloneJuice;
@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
     public Transform SpaceShipPartContainer;
     public int currentSpaceShipParts;
     public TextMeshProUGUI spaceShipPartsDisplay;
-    [SerializeField] private SpaceShipScriptable[] spaceShipScriptable;
+    public SpaceShipScriptable[] spaceShipScriptable;
 
     [Header("SpaceShipPartsBoolValues")]
     public bool hasAmmoBox = false;
@@ -45,7 +45,7 @@ public class GameManager : MonoBehaviour
     public bool hasAimAssist = false;
 
     [Header("References")]
-    [SerializeField] private PlayerInputManager playerInputManager;
+    public PlayerInputManager playerInputManager;
     public List<PlayerManager> players;
     public List<PlayerLocomotion> playersLocos;
     public Transform CameraFollowSpot; // For Cinemachine
@@ -95,7 +95,6 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         HandleSpawnShipParts();
-        respawnButton.text = TutorialHandler.Instance.interactionButton;
     }
 
     private void FixedUpdate()

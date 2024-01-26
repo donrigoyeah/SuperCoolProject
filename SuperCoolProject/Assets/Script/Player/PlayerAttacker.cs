@@ -10,21 +10,21 @@ public class PlayerAttacker : MonoBehaviour
     private Transform myTransform;
 
     [Header("Lazer Sight Stuff")]
-    [SerializeField] private LineRenderer laserSightLeft;
-    [SerializeField] private LineRenderer laserSightRight;
-    [SerializeField] private bool isLaserSight = true;
-    [SerializeField] public Transform lazerSpawnLocationRight;
-    [SerializeField] public Transform lazerSpawnLocationLeft;
-    [SerializeField] public bool isEnabled = false;
-    [SerializeField] public bool isDisabled = false;
-    [SerializeField] public float lazerSightRange = 20;
-    [SerializeField] public float lastTimeSinceLazer = 0;
-    [SerializeField] public float disableLazerAfterNoInput = 1f;
-    [SerializeField] public GameObject currentTargetEnemy;
-    [SerializeField] public GameObject AimTargetIndicatorGO;
-    [SerializeField] public RectTransform AimTargetIndicator;
-    [SerializeField] private Vector2 lastInput;
-    [SerializeField] private Vector3 AimTargetLocation;
+    public LineRenderer laserSightLeft;
+    public LineRenderer laserSightRight;
+    public bool isLaserSight = true;
+    public Transform lazerSpawnLocationRight;
+    public Transform lazerSpawnLocationLeft;
+    public bool isEnabled = false;
+    public bool isDisabled = false;
+    public float lazerSightRange = 20;
+    public float lastTimeSinceLazer = 0;
+    public float disableLazerAfterNoInput = 1f;
+    public GameObject currentTargetEnemy;
+    public GameObject AimTargetIndicatorGO;
+    public RectTransform AimTargetIndicator;
+    public Vector2 lastInput;
+    public Vector3 AimTargetLocation;
     private int stepsEnableLazer;
     private float durationOfAnimationEnableLazer;
     private int stepsDisableLazer;
@@ -34,35 +34,35 @@ public class PlayerAttacker : MonoBehaviour
     private RaycastHit hit;
 
     [Header("Lazer Gun Stuff")]
-    [SerializeField] public GameObject overheatUIGO;
-    [SerializeField] public Image overheatUI;
+    public GameObject overheatUIGO;
+    public Image overheatUI;
     private Vector3 overheatUIScaling = Vector3.one * 0.2f;
-    [SerializeField] private float fireRate = 0.5f;
-    [SerializeField] private float currentWeaponHeat = 0;
-    [SerializeField] private float maxWeaponHeat = 100;
-    [SerializeField] private float boostWeaponHeatThreshold = 70;
-    [SerializeField] private float singleLazerHeat = 10;
-    [SerializeField] private float gunCooldownSpeed = 0.003f;
-    [SerializeField] private float gunOverHeatCooldownSpeed = 0.003f;
-    [SerializeField] private bool gunOverheated = false;
-    [SerializeField] private float nextFireTime = 0f;
-    [SerializeField] private float bulletSpeed = 50;
-    [SerializeField] private float bulletDamage = 10;
-    [SerializeField] private float bulletDamageBoost = 2;
-    [SerializeField] private bool leftRightSwitch;
+    public float fireRate = 0.5f;
+    public float currentWeaponHeat = 0;
+    public float maxWeaponHeat = 100;
+    public float boostWeaponHeatThreshold = 70;
+    public float singleLazerHeat = 10;
+    public float gunCooldownSpeed = 0.003f;
+    public float gunOverHeatCooldownSpeed = 0.003f;
+    public bool gunOverheated = false;
+    public float nextFireTime = 0f;
+    public float bulletSpeed = 50;
+    public float bulletDamage = 10;
+    public float bulletDamageBoost = 2;
+    public bool leftRightSwitch;
     private GameObject bulletPoolGo;
     private GameObject muzzlePoolGo;
     private BulletHandler BH;
 
     [Header("Grenade stuff")]
-    [SerializeField] public GameObject grenadeCooldownUIGO;
-    [SerializeField] public Image grenadeCooldownUI;
-    [SerializeField] private LineRenderer grenadeLineRenderer;
-    [SerializeField] private GameObject grenadePrefab;
-    [SerializeField] private float currentGrenadeCooldownValue = 0f;
-    [SerializeField] private float grenadeCooldownSpeed = 1;
-    [SerializeField] private float grenadeCooldownMax = 10;
-    [SerializeField] private bool grenadeAvailable;
+    public GameObject grenadeCooldownUIGO;
+    public Image grenadeCooldownUI;
+    public LineRenderer grenadeLineRenderer;
+    public GameObject grenadePrefab;
+    public float currentGrenadeCooldownValue = 0f;
+    public float grenadeCooldownSpeed = 1;
+    public float grenadeCooldownMax = 10;
+    public bool grenadeAvailable;
     public bool grenadeKeyPressed = false;
     public Transform grenadespawnPoint;
     public Transform target;
@@ -77,12 +77,6 @@ public class PlayerAttacker : MonoBehaviour
     private GameObject grenadePoolGo;
     private GrenadeHandler currentGH;
 
-
-
-    [Header("Grenade Trajectory Physics stuff")]
-    [SerializeField] private int PhysicsFrame = 62;
-    private Scene simulateScene;
-    private PhysicsScene physicsScene;
 
     [Header("References")]
     private InputHandler inputHandler;
@@ -99,9 +93,9 @@ public class PlayerAttacker : MonoBehaviour
     //[SerializeField] private CameraShake CameraShake;
 
     [Header("Audio")]
-    [SerializeField] private AudioClip coolingDownAudio;
-    [SerializeField] private AudioClip gunReadyAudio;
-    [SerializeField] private AudioClip gunOverheatedAudio;
+    public AudioClip coolingDownAudio;
+    public AudioClip gunReadyAudio;
+    public AudioClip gunOverheatedAudio;
     private bool hasOverheatedOnce = false;
     private AudioSource audioSource;
 

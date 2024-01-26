@@ -68,7 +68,7 @@ public class AlienHandler : MonoBehaviour
     }
 
     #region Variables
-    int layerMaskAlien = 1 << 9; // Lyer 9 is Alien
+    private int layerMaskAlien = 1 << 9; // Lyer 9 is Alien
     private Collider[] aliensInRange;
     private float worldRadiusSquared;
     private int amountOfBabies;
@@ -165,29 +165,29 @@ public class AlienHandler : MonoBehaviour
 
     [Header("Alien Audio")]
     private bool playClipSpawned = false;
-    [SerializeField] private AudioSource audioSource;
+    public AudioSource audioSource;
 
 
     [Header("Water / Sphere Alien Audio")]
-    [SerializeField] private AudioClip[] sphereAttackAudio;
-    [SerializeField] private AudioClip[] sphereDyingAudio;
-    [SerializeField] private AudioClip[] sphereBeingAttackedAudio;
-    [SerializeField] private AudioClip[] sphereLovemakingAudio;
-    [SerializeField] private AudioClip[] sphereEvadingAudio;
+    public AudioClip[] sphereAttackAudio;
+    public AudioClip[] sphereDyingAudio;
+    public AudioClip[] sphereBeingAttackedAudio;
+    public AudioClip[] sphereLovemakingAudio;
+    public AudioClip[] sphereEvadingAudio;
 
     [Header("Oxygen / Square Alien Audio")]
-    [SerializeField] private AudioClip[] squareAttackAudio;
-    [SerializeField] private AudioClip[] squareDyingAudio;
-    [SerializeField] private AudioClip[] squareBeingAttackedAudio;
-    [SerializeField] private AudioClip[] squareLovemakingAudio;
-    [SerializeField] private AudioClip[] squareEvadingAudio;
+    public AudioClip[] squareAttackAudio;
+    public AudioClip[] squareDyingAudio;
+    public AudioClip[] squareBeingAttackedAudio;
+    public AudioClip[] squareLovemakingAudio;
+    public AudioClip[] squareEvadingAudio;
 
     [Header("Meat / Triangle Alien Audio")]
-    [SerializeField] private AudioClip[] triangleAttackAudio;
-    [SerializeField] private AudioClip[] triangleDyingAudio;
-    [SerializeField] private AudioClip[] triangleBeingAttackedAudio;
-    [SerializeField] private AudioClip[] triangleLovemakingAudio;
-    [SerializeField] private AudioClip[] triangleEvadingAudio;
+    public AudioClip[] triangleAttackAudio;
+    public AudioClip[] triangleDyingAudio;
+    public AudioClip[] triangleBeingAttackedAudio;
+    public AudioClip[] triangleLovemakingAudio;
+    public AudioClip[] triangleEvadingAudio;
 
     [Header("Array of all alien state")]
     private List<AudioClip[]> attackAudioList = new List<AudioClip[]>();

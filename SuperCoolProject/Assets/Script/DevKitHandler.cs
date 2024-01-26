@@ -7,14 +7,14 @@ using UnityEngine.UI;
 public class DevKitHandler : MonoBehaviour
 {
     [Header("Input Fields")]
-    [SerializeField] private InputField playerSpeed;
-    [SerializeField] private InputField alienHealth;
-    [SerializeField] private InputField alienAmount;
-    [SerializeField] private InputField alienAmountOfBabies;
+    public InputField playerSpeed;
+    public InputField alienHealth;
+    public InputField alienAmount;
+    public InputField alienAmountOfBabies;
 
     [Header("Canvas")]
-    [SerializeField] private GameObject devKit;
-    [SerializeField] private bool devKitOpen = true;
+    public GameObject devKit;
+    public bool devKitOpen = true;
 
 
     /*

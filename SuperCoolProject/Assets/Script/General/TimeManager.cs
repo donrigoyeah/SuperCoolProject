@@ -26,6 +26,7 @@ public class TimeManager : MonoBehaviour
         set
         {
             currentStateValue = value;
+            if (GameManager.Instance == null || TreeAndStoneHandler.Instance == null) { return; }
             // Handle Behaviour
             switch (value)
             {

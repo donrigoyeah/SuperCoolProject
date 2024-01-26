@@ -54,6 +54,8 @@ public class TutorialHandler : MonoBehaviour
         TutorialGameObject.SetActive(false);
         currentTutorialSlide = 0;
         totalTutorialSlides = tutorialSlides.Length;
+
+        GameManager.Instance.respawnButton.text = interactionButton;
     }
 
     public void EnableEntireTutorial()

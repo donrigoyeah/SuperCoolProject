@@ -6,15 +6,15 @@ using UnityEngine.UI;
 
 public class PlayerLocomotion : MonoBehaviour
 {
-    Transform myTransform;
-    Camera MainCamera;
+    private Transform myTransform;
+    private Camera MainCamera;
     private float horizontalInput;
     private float verticalInput;
     public bool canMove = true;
 
     public float playerSpeed;
-    [SerializeField] private float gravityValue;
-    [SerializeField] private float jumpForce;
+    public float gravityValue;
+    public float jumpForce;
 
     private CharacterController controller;
     private Vector3 playerVelocity;
@@ -26,10 +26,10 @@ public class PlayerLocomotion : MonoBehaviour
     private Ray ray;
     private Vector3 move;
     private Vector3 point;
-    
+
     [Header("Dash")]
-    [SerializeField] public GameObject dashUiGO;
-    [SerializeField] public Image dashUi;
+    public GameObject dashUiGO;
+    public Image dashUi;
     public float dashMaxValue = 100;
     public float dashCurrentCharge = 0;
     public float dashCost = 33;
@@ -41,9 +41,9 @@ public class PlayerLocomotion : MonoBehaviour
     private float dashExtraSpeed = 20f;
 
     [Header("Foot step Smoke Particle System")]
-    GameObject FSSGO;
-    Transform FSSTransform;
-    [SerializeField] private float deltaFSS;
+    private GameObject FSSGO;
+    private Transform FSSTransform;
+    public float deltaFSS;
     private float currentFSSTimer;
 
     [Header("References")]
@@ -54,7 +54,7 @@ public class PlayerLocomotion : MonoBehaviour
     private Animator playerAnim;
 
     [Header("Audio")]
-    [SerializeField] private AudioClip footstepAudio;
+    public AudioClip footstepAudio;
     private AudioSource audioSource;
 
 

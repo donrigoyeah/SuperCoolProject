@@ -5,13 +5,13 @@ using UnityEngine;
 
 public class RagdollHandler : MonoBehaviour
 {
- 
-    protected Rigidbody rigidbody;
-    protected BoxCollider boxCollider;
+
+    public Rigidbody rigidbody;
+    private BoxCollider boxCollider;
 
     public Collider[] childrenCollider;
     public Rigidbody[] childrenRigidbody;
-    
+
     private void Awake()
     {
         rigidbody = GetComponent<Rigidbody>();
@@ -19,12 +19,6 @@ public class RagdollHandler : MonoBehaviour
 
         childrenCollider = GetComponentsInChildren<Collider>();
         childrenRigidbody = GetComponentsInChildren<Rigidbody>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void RagdollActivate(bool activate)
@@ -38,13 +32,13 @@ public class RagdollHandler : MonoBehaviour
         {
             rigidbody.isKinematic = !activate;
         }
-        
+
         rigidbody.isKinematic = !activate;
     }
 
     public void OnCollisionEnter(Collision collision)
     {
-        if (collision.other.CompareTag("Bullet"))
+        if (collision.gameObject.CompareTag("Bullet"))
         {
             Debug.Log("gfs");
             RagdollActivate(true);

@@ -15,16 +15,16 @@ public class SpaceShipGameScene : MonoBehaviour
     public int animationSteps = 100;
     public float animationDuration = 3f;
 
-    Vector3 endPosition = new Vector3(0, 0, 15);
-    Vector3 startPosition = new Vector3(-260, 130, 15);
+    public Vector3 endPosition = new Vector3(0, 0, 15);
+    private Vector3 startPosition = new Vector3(-260, 130, 15);
 
     public GameObject SpaceShipCanvas;
     public GameObject DamageParticlesGO;
-    ParticleSystem DamageParticles;
+    private ParticleSystem DamageParticles;
     private ParticleSystem.MainModule DamageParticlesMain;
 
     public GameObject ExhaustParticlesGO;
-    ParticleSystem ExhaustParticles;
+    private ParticleSystem ExhaustParticles;
     private ParticleSystem.MainModule ExhaustParticlesMain;
 
     public GameObject LandingParticlesGO;

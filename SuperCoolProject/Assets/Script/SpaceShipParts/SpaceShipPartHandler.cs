@@ -17,10 +17,10 @@ public class SpaceShipPartHandler : MonoBehaviour
     public float playerSpeedReduction = 0f;
     public float previousPlayerSpeed = 10f;
     public TextMeshProUGUI UpgradeName;
-    [SerializeField] private ParticleSystem draggingParticles;
+    public ParticleSystem draggingParticles;
     public bool particleSpawned = false;
     private AudioSource audioSource;
-    [SerializeField] private AudioClip draggingAudio;
+    public AudioClip draggingAudio;
 
     public GameObject InteractionUIScreen;
     public TextMeshProUGUI InteractionButtonText;

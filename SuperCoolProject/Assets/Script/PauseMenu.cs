@@ -19,28 +19,35 @@ public class PauseMenu : MonoBehaviour
     public GameObject stats;
     public GameObject options;
     public Button resumeButton;
-    [SerializeField] private Slider musicSlider;
-    [SerializeField] private Slider sfxSlider;
-    [SerializeField] private AudioMixer myMixer;
+    public Slider musicSlider;
+    public Slider sfxSlider;
+    public AudioMixer myMixer;
 
     [Header("Resources Counter")]
-    [SerializeField] private Image ResourceSphere;
-    [SerializeField] private Image ResourceSquare;
-    [SerializeField] private Image ResourceTriangle;
-    [SerializeField] private Image CloneJuice;
-    [SerializeField] private TextMeshProUGUI spaceShipParts;
+    public Image ResourceSphere;
+    public Image ResourceSquare;
+    public Image ResourceTriangle;
+    public Image CloneJuice;
+    public TextMeshProUGUI spaceShipParts;
 
     [Header("Kill Counter")]
-    [SerializeField] private TextMeshProUGUI sphereKillCounter;
-    [SerializeField] private TextMeshProUGUI squareKillCounter;
-    [SerializeField] private TextMeshProUGUI triangleKillCounter;
+    public TextMeshProUGUI sphereKillCounter;
+    public TextMeshProUGUI squareKillCounter;
+    public TextMeshProUGUI triangleKillCounter;
 
-    [SerializeField] private TextMeshProUGUI playtimeText;
+    public TextMeshProUGUI playtimeText;
     private float startTime;
     public bool isPaused;
+    private float currentTime;
+    private string formattedTime;
+
+    private int hours;
+    private int minutes;
+    private int seconds;
+
 
     [Header("Camera Shake")]
-    [SerializeField] private CameraShake cameraShake;
+    public CameraShake cameraShake;
     //[SerializeField] private Slider cameraShakeSlider;
 
     //TODO: mouse sensivity
@@ -77,8 +84,8 @@ public class PauseMenu : MonoBehaviour
 
     void Update()
     {
-        float currentTime = Time.time - startTime;
-        string formattedTime = FormatTime(currentTime);
+        currentTime = Time.time - startTime;
+        formattedTime = FormatTime(currentTime);
         playtimeText.text = "Playtime: " + formattedTime;
 
         //if (Input.GetMouseButtonDown(0)) // Debugging to check if mouse is detecting button UI or not
@@ -95,9 +102,9 @@ public class PauseMenu : MonoBehaviour
 
     private string FormatTime(float timeInSeconds)
     {
-        int hours = (int)(timeInSeconds / 3600);
-        int minutes = (int)((timeInSeconds % 3600) / 60);
-        int seconds = (int)(timeInSeconds % 60);
+        hours = (int)(timeInSeconds / 3600);
+        minutes = (int)((timeInSeconds % 3600) / 60);
+        seconds = (int)(timeInSeconds % 60);
 
         return string.Format("{0:00}:{1:00}:{2:00}", hours, minutes, seconds);
     }
