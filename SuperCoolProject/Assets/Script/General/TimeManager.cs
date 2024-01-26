@@ -30,13 +30,24 @@ public class TimeManager : MonoBehaviour
             switch (value)
             {
                 case DayState.nightToSunrise:
-
-                    GameManager.Instance.TurnOffAllPlayerLights();
-                    StartCoroutine(TreeAndStoneHandler.Instance.TurnOffAllTreeLights());
+                    if (GameManager.Instance)
+                    {
+                        GameManager.Instance.TurnOffAllPlayerLights();
+                    }
+                    if (TreeAndStoneHandler.Instance)
+                    {
+                        StartCoroutine(TreeAndStoneHandler.Instance.TurnOffAllTreeLights());
+                    }
                     break;
                 case DayState.dayToSunSet:
-                    GameManager.Instance.TurnOnAllPlayerLights();
-                    StartCoroutine(TreeAndStoneHandler.Instance.TurnOnAllTreeLights());
+                    if (GameManager.Instance)
+                    {
+                        GameManager.Instance.TurnOnAllPlayerLights();
+                    }
+                    if (TreeAndStoneHandler.Instance)
+                    {
+                        StartCoroutine(TreeAndStoneHandler.Instance.TurnOnAllTreeLights());
+                    }
                     break;
             }
         }

@@ -143,7 +143,6 @@ public class GameManager : MonoBehaviour
     {
         numberOfPlayers++;
         players.Add(pm);
-        pm.isInteracting = true;
 
         PlayerLocomotion currentPlayerLoco = pm.GetComponent<PlayerLocomotion>();
         playersLocos.Add(currentPlayerLoco);
@@ -172,10 +171,15 @@ public class GameManager : MonoBehaviour
         {
             CameraFollowSpot.position = Vector3.zero;
             StartCoroutine(RaiseCameraSpeed(cameraSpeedRaiseDuration));
-            StartCoroutine(WaitSecBeforeTut(cameraSpeedRaiseDuration));
+            //StartCoroutine(WaitSecBeforeTut(cameraSpeedRaiseDuration));
         }
     }
 
+    IEnumerator WaitSecBeforeTut(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        HandleTutorialStart();
+    }
 
     private void HandleTutorialStart()
     {
@@ -206,12 +210,6 @@ public class GameManager : MonoBehaviour
         FreezeAllPlayers();
         TutorialHandler.Instance.EnableEntireTutorial();
         return;
-    }
-
-    IEnumerator WaitSecBeforeTut(float duration)
-    {
-        yield return new WaitForSeconds(duration);
-        HandleTutorialStart();
     }
 
     public void FreezeAllPlayers()

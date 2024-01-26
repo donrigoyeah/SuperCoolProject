@@ -157,12 +157,12 @@ public class HUDHandler : MonoBehaviour
     IEnumerator ScaleUp()
     {
         isResizing = true;
-
+        // TODO: Make variable for zooming
 
         for (int i = 0; i <= scalingTransitionSteps; i++)
         {
             yield return new WaitForSeconds(scalingTransitionDuration / scalingTransitionSteps);
-            HUDScaler.localScale = Vector3.one * .5f + Vector3.one * i / scalingTransitionSteps;
+            HUDScaler.localScale = Vector3.one + Vector3.one * i / scalingTransitionSteps;
         }
 
         isResizing = false;
@@ -174,8 +174,9 @@ public class HUDHandler : MonoBehaviour
 
         for (int i = 0; i <= scalingTransitionSteps; i++)
         {
+
             yield return new WaitForSeconds(scalingTransitionDuration / scalingTransitionSteps);
-            HUDScaler.localScale = Vector3.one - Vector3.one * i / scalingTransitionSteps;
+            HUDScaler.localScale = Vector3.one - Vector3.one * i * scalingTransitionDuration / scalingTransitionSteps;
         }
 
         isResizing = false;

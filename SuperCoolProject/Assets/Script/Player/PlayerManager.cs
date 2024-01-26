@@ -12,22 +12,22 @@ public class PlayerManager : MonoBehaviour
     public float playerResourceScanRadius = 100;
     public Collider[] aliensInRange;
     public Collider[] resourceInRange;
-    public bool playerShield;
-    public float shieldRechargeTime = 2;
-    public float shieldRechargeTimeWithUpgrade = 1;
     public bool isCarryingPart;
     public GameObject currentPart;
     public bool isAlive;
     public bool canAim;
     public bool isInteracting;
-    public float invincibleFrames = .5f;
-    public float timeSinceLastHit;
     public GameObject LightBeam;
     public GameObject deadPlayer;
     public GameObject playerShieldGO;
     public GameObject player;
 
-    [Header("Dissolve")]
+    [Header("Shield")]
+    public bool playerShield;
+    public float timeSinceLastHit;
+    public float invincibleFrames = .5f;
+    public float shieldRechargeTime = 2;
+    public float shieldRechargeTimeWithUpgrade = 1;
     public Material dissolve;
     public float dissolveRate = 0.0125f;
     public float refreshRate = 0.025f;
@@ -112,14 +112,15 @@ public class PlayerManager : MonoBehaviour
         ParticleSystem2Main = particleSystems[1].main;
         ParticleSystem3Main = particleSystems[1].main;
         UpgradeParticles.SetActive(false);
-
     }
 
     private void FixedUpdate()
     {
         timeSinceLastHit += Time.deltaTime;
-        HandleSurroundingAliens();
+        //HandleSurroundingAliens();
         HandleResource();
+
+        if (isAlive == true) { return; }
         HandleRespawn();
         HandleGameOver();
     }
@@ -189,34 +190,34 @@ public class PlayerManager : MonoBehaviour
         for (int i = 0; i < aliensInRange.Length; i++)
         {
             CurrentSurroundingAH = aliensInRange[i].gameObject.GetComponent<AlienHandler>();
-            if (CurrentSurroundingAH.brainWashed == false)
+            if (CurrentSurroundingAH.brainWashed == true) { continue; }
+
+            if (CurrentSurroundingAH.currentAge == AlienHandler.AlienAge.resource) // If sorrounding Alien is resource, put into resource Array
             {
-                if (CurrentSurroundingAH.currentAge == AlienHandler.AlienAge.resource) // If sorrounding Alien is resource, put into resource Array
-                {
-                    closestResource[CurrentSurroundingAH.currentSpecies] = CurrentSurroundingAH;
-                    continue;
-                }
-
-                if (CurrentSurroundingAH.brainWashed) // Interaction with player in TutorialScene, prevents HandleUpdateTarget error
-                {
-                    return;
-                }
-
-                CurrentSurroundingAH.targetAlien = this.gameObject;
-
-                if (CurrentSurroundingAH.currentAge == AlienHandler.AlienAge.fullyGrown)
-                {
-                    CurrentSurroundingAH.currentState = AlienHandler.AlienState.hunting;
-                    CurrentSurroundingAH.HandleAttacking(this.gameObject, true); // this time its not an alienGO but the player, isAttackingPlayer
-                    continue;
-                }
-                else
-                {
-                    CurrentSurroundingAH.currentState = AlienHandler.AlienState.evading;
-                    CurrentSurroundingAH.HandleFleeing(this.gameObject, true); // this time its not an alienGO but the player, isEvadingPlayer
-                    continue;
-                }
+                closestResource[CurrentSurroundingAH.currentSpecies] = CurrentSurroundingAH;
+                continue;
             }
+
+            if (CurrentSurroundingAH.brainWashed) // Interaction with player in TutorialScene, prevents HandleUpdateTarget error
+            {
+                return;
+            }
+
+            CurrentSurroundingAH.targetAlien = this.gameObject;
+
+            if (CurrentSurroundingAH.currentAge == AlienHandler.AlienAge.fullyGrown)
+            {
+                CurrentSurroundingAH.currentState = AlienHandler.AlienState.hunting;
+                CurrentSurroundingAH.HandleAttacking(this.gameObject, true); // this time its not an alienGO but the player, isAttackingPlayer
+                continue;
+            }
+            else
+            {
+                CurrentSurroundingAH.currentState = AlienHandler.AlienState.evading;
+                CurrentSurroundingAH.HandleFleeing(this.gameObject, true); // this time its not an alienGO but the player, isEvadingPlayer
+                continue;
+            }
+
         }
     }
 
