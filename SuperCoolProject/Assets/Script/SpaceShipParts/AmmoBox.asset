@@ -15,4 +15,4 @@ MonoBehaviour:
   partName: Ammo Box
   mass: 8
   abilityUnlockText: Grenades are now available
-  model: {fileID: 0}
+  model: {fileID: 919132149155446097, guid: 4de88eee9be3e8c42a788eaa73fd1a09, type: 3}

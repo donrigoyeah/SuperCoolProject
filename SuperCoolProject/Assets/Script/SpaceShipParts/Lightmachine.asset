@@ -15,4 +15,4 @@ MonoBehaviour:
   partName: Light machine
   mass: 9
   abilityUnlockText: All lights enabled
-  model: {fileID: 0}
+  model: {fileID: 919132149155446097, guid: 94dab628bbd6b614fb89aea3250a4f04, type: 3}

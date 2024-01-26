@@ -112,12 +112,12 @@ public class SpaceShipGameScene : MonoBehaviour
         ExhaustParticlesMain.startLifetime = 6f;
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Alien"))
-        {
-            enteringAlien = other.gameObject.GetComponent<AlienHandler>();
-            enteringAlien.HandleFleeing(this.gameObject, true); // this time its not an alienGO but the spaceship; true for isEvadingPlayer
-        }
-    }
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.gameObject.CompareTag("Alien"))
+    //    {
+    //        enteringAlien = other.gameObject.GetComponent<AlienHandler>();
+    //        enteringAlien.HandleFleeing(this.gameObject, true); // this time its not an alienGO but the spaceship; true for isEvadingPlayer
+    //    }
+    //}
 }

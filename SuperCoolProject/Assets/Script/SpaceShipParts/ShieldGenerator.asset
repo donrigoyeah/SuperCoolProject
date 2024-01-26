@@ -15,4 +15,4 @@ MonoBehaviour:
   partName: Shield Generator
   mass: 8
   abilityUnlockText: Your shield Generator is back online
-  model: {fileID: 0}
+  model: {fileID: 919132149155446097, guid: 8354d2ca7ae6be9448e167841ae9e637, type: 3}

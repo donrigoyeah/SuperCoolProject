@@ -15,4 +15,4 @@ MonoBehaviour:
   partName: Aim assist
   mass: 4
   abilityUnlockText: The auto aim is now back online
-  model: {fileID: 0}
+  model: {fileID: 2096028899990205421, guid: 8ad83d9e9ff5df244b58f10b1ae6f908, type: 3}

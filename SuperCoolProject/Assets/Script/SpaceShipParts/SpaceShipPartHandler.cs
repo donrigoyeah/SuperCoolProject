@@ -1,11 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using Unity.Mathematics;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class SpaceShipPartHandler : MonoBehaviour
 {
@@ -25,6 +19,8 @@ public class SpaceShipPartHandler : MonoBehaviour
     public GameObject InteractionUIScreen;
     public TextMeshProUGUI InteractionButtonText;
 
+    private GameObject currentPart;
+
     public bool isInteractingWithPlayer = false;
 
 
@@ -34,6 +30,11 @@ public class SpaceShipPartHandler : MonoBehaviour
         InteractionUIScreen.SetActive(false);
     }
 
+    private void Start()
+    {
+        currentPart = Instantiate(spaceShipData.model, this.transform);
+        currentPart.transform.position = this.transform.position;
+    }
 
     private void FixedUpdate()
     {

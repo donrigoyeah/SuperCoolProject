@@ -15,4 +15,4 @@ MonoBehaviour:
   partName: Clone Juicer
   mass: 10
   abilityUnlockText: Gain more juice
-  model: {fileID: 0}
+  model: {fileID: 919132149155446097, guid: ef1f35417812b974faf3b661fd403544, type: 3}
