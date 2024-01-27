@@ -112,7 +112,7 @@ MonoBehaviour:
   alienActionFog: {fileID: 2118769241431706716}
   alienSpeed: 3
   lookRadius: 10
-  timeToChild: 3
+  minTimeToChild: 5
   timeToSexual: 2
   timeToFullGrown: 10
   dissolve: {fileID: 2100000, guid: d5b2fb1daa206294894f6eea03c042e4, type: 2}
@@ -318,7 +318,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 94
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!1 &1058017370714696725
 GameObject:
