@@ -62,6 +62,10 @@ public class PlayerManager : MonoBehaviour
     public float currentSphereResourceInverse;
     public float currentSquareResourceInverse;
     public float currentTriangleResourceInverse;
+    public float sphere;
+    public float square;
+    public float triangle;
+    public float speedMultiplyer = 1f;
 
 
     [Header("Audio")]
@@ -125,6 +129,9 @@ public class PlayerManager : MonoBehaviour
         if (isAlive == true) { return; }
         HandleRespawn();
         HandleGameOver();
+        
+
+
     }
 
     public void HandleHit()
@@ -373,48 +380,51 @@ public class PlayerManager : MonoBehaviour
         if (currentSphereResource > 0) { currentSphereResource -= resourceDrain; }
         if (currentSquareResource > 0) { currentSquareResource -= resourceDrain; }
         if (currentTriangleResource > 0) { currentTriangleResource -= resourceDrain; }
-
+        
 
         // Will go from 0 to max
         currentSphereResourceInverse = maxSphereResource - currentSphereResource;
         currentSquareResourceInverse = maxSquareResource - currentSquareResource;
         currentTriangleResourceInverse = maxTriangleResource - currentTriangleResource;
 
-
+        MaterialEmmissionControler(0);
+        MaterialEmmissionControler(1);
+        MaterialEmmissionControler(2);
+        
         // Only show resource UI if below 75%
         if (currentSphereResource < 3 * maxSphereResource / 4)
         {
-            HandleResourceDetection(0);
-            MaterialEmmissionControler(0);
+            // HandleResourceDetection(0);
+            // MaterialEmmissionControler(0);
         }
         else
         {
-            DeactivateResourceDetectionIndicator(0);
-            MaterialEmmissionControler(0);
+            // DeactivateResourceDetectionIndicator(0);
+            // MaterialEmmissionControler(0);
         }
 
         // Only show resource UI if below 75%
         if (currentSquareResource < 3 * maxSquareResource / 4)
         {
-            HandleResourceDetection(1);
-            MaterialEmmissionControler(1);
+            // HandleResourceDetection(1);
+            // MaterialEmmissionControler(1);
         }
         else
         {
-            DeactivateResourceDetectionIndicator(1);
-            MaterialEmmissionControler(1);
+            // DeactivateResourceDetectionIndicator(1);
+            // MaterialEmmissionControler(1);
         }
 
         // Only show resource UI if below 75%
         if (currentTriangleResource < 3 * maxTriangleResource / 4)
         {
-            HandleResourceDetection(2);
-            MaterialEmmissionControler(2);
+            // HandleResourceDetection(2);
+            // MaterialEmmissionControler(2);
         }
         else
         {
-            DeactivateResourceDetectionIndicator(2);
-            MaterialEmmissionControler(2);
+            // DeactivateResourceDetectionIndicator(2);
+            // MaterialEmmissionControler(2);
         }
 
         // Update UI
@@ -436,15 +446,18 @@ public class PlayerManager : MonoBehaviour
         // TODO: Need to use own c,olors here, new Color(0.4f, 0.9f 0.7f, 1.0f); so this would not work
         if (neededResource == 0)
         {
-            resourceMaterial[0].SetColor("_EmissionColor", Color.blue * (Mathf.Sin((currentSphereResource * lightBulbMultiplicator) * Time.time) + 0.5f));
+            sphere += 1 / Mathf.Abs(currentSphereResource);
+            resourceMaterial[0].SetColor("_EmissionColor", Color.blue * (Mathf.Sin((currentSphereResource * sphere) * Time.time) + 0.5f));
         }
         if (neededResource == 1)
         {
-            resourceMaterial[1].SetColor("_EmissionColor", Color.yellow * (Mathf.Sin((currentSquareResource * lightBulbMultiplicator) * Time.time) + 0.5f));
+            square += 1 / Mathf.Abs(currentSquareResource);
+            resourceMaterial[1].SetColor("_EmissionColor", Color.yellow * (Mathf.Sin((currentSquareResource * square) * Time.time) + 0.5f));
         }
         if (neededResource == 2)
         {
-            resourceMaterial[2].SetColor("_EmissionColor", Color.red * (Mathf.Sin((currentTriangleResource * lightBulbMultiplicator) * Time.time) + 0.5f));
+            triangle += 1 / Mathf.Abs(currentTriangleResource);
+            resourceMaterial[2].SetColor("_EmissionColor", Color.red * (Mathf.Sin((currentTriangleResource * triangle) * Time.time) + 0.5f));
         }
     }
 

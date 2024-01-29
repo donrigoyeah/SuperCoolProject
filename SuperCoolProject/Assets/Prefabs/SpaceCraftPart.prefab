@@ -266,6 +266,7 @@ MonoBehaviour:
   draggingAudio: {fileID: 8300000, guid: d59fb6dd2d2cef449a5d15f4b1a765a0, type: 3}
   InteractionUIScreen: {fileID: 3182791398943959450}
   InteractionButtonText: {fileID: 1304582222319404967}
+  pickupOffset: {x: 2.2, y: 0, z: 0}
   isInteractingWithPlayer: 0
 --- !u!82 &2317353691738175354
 AudioSource:
