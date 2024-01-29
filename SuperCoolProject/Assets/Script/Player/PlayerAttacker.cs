@@ -586,7 +586,7 @@ public class PlayerAttacker : MonoBehaviour
             }
             else
             {
-                if (CurrentCollidingAH.currentState == AlienState.hunting)
+                if (CurrentCollidingAH.currentState == AlienHandler.AlienState.hunting)
                 {
                     playerManager.HandleHit();
                     if (other.gameObject.activeInHierarchy)

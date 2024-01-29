@@ -54,6 +54,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentStateValue: 5
+  aliensInRange:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  aliensInRangeCount: 0
   resourceScale: 0.7
   childScale: 0.6
   sexualActiveScale: 0.8
@@ -61,12 +73,13 @@ MonoBehaviour:
   brainWashed: 0
   MyTransform: {fileID: 414676901202353711}
   currentAge: 0
+  spawnAsAdults: 0
   isRendered: 1
   canAct: 1
   currentSpecies: 0
   hasUterus: 0
   alienHealth: 0
-  isDead: 0
+  isDead: 1
   lifeTime: 0
   lustTimer: 0
   hungerTimer: 0
@@ -82,7 +95,7 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 1cc0d735338a78849b58c8881c86f4aa, type: 3}
   - {fileID: 2800000, guid: 5f2b6bd99efada040b7a9a5f0a909fac, type: 3}
   - {fileID: 2800000, guid: 2ddc0a0c158f6354985b0c000189f295, type: 3}
-  targetPosition: {x: 0, y: 0, z: -11}
+  targetPosition3D: {x: 0, y: 0, z: 0}
   targetAlien: {fileID: 0}
   lastTargetAlien: {fileID: 0}
   alienSpecies:
@@ -112,8 +125,8 @@ MonoBehaviour:
   alienActionFog: {fileID: 2118769241431706716}
   alienSpeed: 3
   lookRadius: 10
-  minTimeToChild: 5
-  timeToSexual: 2
+  minTimeToChild: 15
+  timeToSexual: 5
   timeToFullGrown: 10
   dissolve: {fileID: 2100000, guid: d5b2fb1daa206294894f6eea03c042e4, type: 2}
   skinRenderer1: {fileID: 9056457758864906096}
@@ -172,7 +185,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 443d74a979995df4689059679e3f096c, type: 3}
   - {fileID: 8300000, guid: e872bd16213a44b4c965915f62ec1b02, type: 3}
   tickTimer: 0
-  tickTimerMax: 0.5
+  tickTimerMax: 1
   alienManager: {fileID: 0}
 --- !u!136 &1753352926865818878
 CapsuleCollider:
