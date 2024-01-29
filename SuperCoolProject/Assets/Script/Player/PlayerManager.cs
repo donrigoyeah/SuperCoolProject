@@ -10,7 +10,8 @@ public class PlayerManager : MonoBehaviour
     [Header("Player Variables")]
     public float playerDetectionRadius = 10;
     public float playerResourceScanRadius = 100;
-    public Collider[] aliensInRange;
+    public Collider[] aliensInRange = new Collider[10];
+    public int aliensInRangeCount;
     public Collider[] resourceInRange;
     public bool isCarryingPart;
     public GameObject currentPart;
@@ -108,7 +109,8 @@ public class PlayerManager : MonoBehaviour
         playerAnim = GetComponentInChildren<Animator>();
 
         dissolve = playerShieldGO.gameObject.GetComponent<Renderer>().material;
-        dissolve.SetFloat("_DissolveAmount", 0);
+        dissolve.SetFloat("_DissolveAmount", 1);
+        StartCoroutine(RespawnShield(2));
 
         ParticleSystem[] particleSystems = UpgradeParticles.GetComponentsInChildren<ParticleSystem>();
 
@@ -121,7 +123,7 @@ public class PlayerManager : MonoBehaviour
     private void FixedUpdate()
     {
         timeSinceLastHit += Time.deltaTime;
-        //HandleSurroundingAliens();
+        HandleSurroundingAliens();
         HandleResource();
 
         if (isAlive == true) { return; }
@@ -192,22 +194,18 @@ public class PlayerManager : MonoBehaviour
 
     private void HandleSurroundingAliens()
     {
-        aliensInRange = Physics.OverlapSphere(MyTransform.position, playerDetectionRadius, alienLayerMask);
 
-        for (int i = 0; i < aliensInRange.Length; i++)
+        aliensInRangeCount = Physics.OverlapSphereNonAlloc(MyTransform.position, playerDetectionRadius, aliensInRange, alienLayerMask);
+
+        for (int i = 0; i < aliensInRangeCount; i++)
         {
             CurrentSurroundingAH = aliensInRange[i].gameObject.GetComponent<AlienHandler>();
-            if (CurrentSurroundingAH.brainWashed == true) { continue; }
+            if (CurrentSurroundingAH.brainWashed == true) { continue; } // Interaction with player in TutorialScene, prevents HandleUpdateTarget error
 
             if (CurrentSurroundingAH.currentAge == AlienHandler.AlienAge.resource) // If sorrounding Alien is resource, put into resource Array
             {
                 closestResource[CurrentSurroundingAH.currentSpecies] = CurrentSurroundingAH;
                 continue;
-            }
-
-            if (CurrentSurroundingAH.brainWashed) // Interaction with player in TutorialScene, prevents HandleUpdateTarget error
-            {
-                return;
             }
 
             CurrentSurroundingAH.targetAlien = this.gameObject;
@@ -216,12 +214,14 @@ public class PlayerManager : MonoBehaviour
             {
                 CurrentSurroundingAH.currentState = AlienHandler.AlienState.hunting;
                 CurrentSurroundingAH.HandleAttacking(this.gameObject, true); // this time its not an alienGO but the player, isAttackingPlayer
+                CurrentSurroundingAH.HandleUpdateTarget(MyTransform.position);
                 continue;
             }
             else
             {
                 CurrentSurroundingAH.currentState = AlienHandler.AlienState.evading;
                 CurrentSurroundingAH.HandleFleeing(this.gameObject, true); // this time its not an alienGO but the player, isEvadingPlayer
+                CurrentSurroundingAH.HandleUpdateTarget(MyTransform.position);
                 continue;
             }
 
@@ -550,7 +550,7 @@ public class PlayerManager : MonoBehaviour
         stepsShield = 30;
         animationDurationShield = .5f;
         playerShield = false;
-        dissolve.SetFloat("_DissolveAmount", 0);
+        dissolve.SetFloat("_DissolveAmount", 0.01f); // Bug at 0 seems very opaque
         audioSource.PlayOneShot(shieldBreakAudio, 1f);
 
         for (int i = 0; i < stepsShield; i++)
@@ -559,11 +559,19 @@ public class PlayerManager : MonoBehaviour
             dissolve.SetFloat("_DissolveAmount", i / stepsShield);
         }
 
+        playerShield = false;
+
+        StartCoroutine(RespawnShield(timeToRecharge));
+    }
+
+    IEnumerator RespawnShield(float timeToRecharge)
+    {
         playerShieldGO.SetActive(false);
         yield return new WaitForSeconds(timeToRecharge);
-        dissolve.SetFloat("_DissolveAmount", 0);
+        dissolve.SetFloat("_DissolveAmount", 0.01f);
         playerShield = true;
         audioSource.PlayOneShot(shieldRechargeAudio, 1f);
         playerShieldGO.SetActive(true);
+
     }
 }

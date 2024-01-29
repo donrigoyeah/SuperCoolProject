@@ -116,8 +116,6 @@ public class PlayerAttacker : MonoBehaviour
 
     void Update()
     {
-
-
         if (playerManager.isInteracting == true || playerManager.isAlive == false) { return; }
         else
         {
@@ -148,8 +146,8 @@ public class PlayerAttacker : MonoBehaviour
     {
         if (gunOverheated == false && nextFireTime > fireRate)
         {
-            //overheatUI.color = Color.Lerp(Color.green, Color.red, overheatUI.fillAmount / 0.70f);
             overheatUI.color = Color.red;
+
             if (inputHandler.inputPrimaryFire && !playerManager.isCarryingPart && !PauseMenu.Instance.isPaused)
             {
                 playerAnim.SetBool("IsShooting", true);

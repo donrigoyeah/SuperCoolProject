@@ -148,7 +148,7 @@ public class TutorialHandler : MonoBehaviour
             currentAlienHandler.currentSpecies = species;
             currentAlienHandler.currentAge = AlienHandler.AlienAge.fullyGrown;
             currentAlienHandler.MyTransform.localScale = Vector3.one;
-            currentAlienHandler.targetPosition = alienEndPosition;
+            currentAlienHandler.targetPosition3D = alienEndPosition;
 
             currentAlienHandler.lustTimer = 20;
             currentAlienHandler.hasUterus = false;
