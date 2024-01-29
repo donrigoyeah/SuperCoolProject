@@ -449,7 +449,6 @@ MonoBehaviour:
   DamageParticlesGO: {fileID: 8990499587631485402}
   ExhaustParticlesGO: {fileID: 1590053913949543272}
   LandingParticlesGO: {fileID: 111306478523722498}
-  playerInputManager: {fileID: 0}
 --- !u!136 &3155349831873613873
 CapsuleCollider:
   m_ObjectHideFlags: 0

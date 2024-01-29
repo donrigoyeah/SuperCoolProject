@@ -20,7 +20,7 @@ public class SpaceShipPartHandler : MonoBehaviour
     public TextMeshProUGUI InteractionButtonText;
 
     private GameObject currentPart;
-
+    public Vector3 pickupOffset;
     public bool isInteractingWithPlayer = false;
 
 
@@ -60,6 +60,7 @@ public class SpaceShipPartHandler : MonoBehaviour
             playerLocomotion.playerSpeed -= playerSpeedReduction;
             playerManager.isCarryingPart = true;
             this.transform.parent = inputHandler.transform;
+            this.transform.localPosition = pickupOffset;
         }
         else if (!inputHandler.inputInteracting)
         {
