@@ -53,6 +53,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92d37729e291b4349b07b3bdacec80ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentStateValue: 0
   aliensInRange:
   - {fileID: 0}
   - {fileID: 0}
@@ -65,6 +66,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   aliensInRangeCount: 0
+  TargetAlienTransform: {fileID: 0}
   resourceScale: 0.7
   childScale: 0.6
   sexualActiveScale: 0.8
@@ -72,7 +74,6 @@ MonoBehaviour:
   brainWashed: 0
   MyTransform: {fileID: 414676901202353711}
   currentAge: 0
-  currentState: 4
   spawnAsAdults: 0
   isRendered: 1
   canAct: 1
@@ -96,6 +97,8 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 5f2b6bd99efada040b7a9a5f0a909fac, type: 3}
   - {fileID: 2800000, guid: 2ddc0a0c158f6354985b0c000189f295, type: 3}
   targetPosition3D: {x: 0, y: 0, z: 0}
+  hasNewTarget: 0
+  distanceToCurrentTarget: 0
   targetAlien: {fileID: 0}
   lastTargetAlien: {fileID: 0}
   alienSpecies:
@@ -5483,7 +5486,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7376151145612584595}
   - component: {fileID: 5356344968068921494}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Square
   m_TagString: square
   m_Icon: {fileID: 0}
@@ -5540,7 +5543,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8466971964781309730}
   - component: {fileID: 7543505279742811787}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Sphere
   m_TagString: sphere
   m_Icon: {fileID: 0}
@@ -5597,7 +5600,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7750546258101309282}
   - component: {fileID: 1970980452987584353}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Triangle
   m_TagString: triangle
   m_Icon: {fileID: 0}
