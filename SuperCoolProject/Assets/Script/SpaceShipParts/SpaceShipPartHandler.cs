@@ -32,6 +32,7 @@ public class SpaceShipPartHandler : MonoBehaviour
     private float randPosZ;
     private float randPosX;
     private int distanceIncrease;
+    public bool spaceshipPartReached = false;
     
     private void Awake()
     {
@@ -95,7 +96,17 @@ public class SpaceShipPartHandler : MonoBehaviour
     private void Update()
     {
         time += Time.deltaTime * speed;
-        transform.position = GameManager.Instance.Trajectory(time, new Vector3(randPosX, 0, randPosZ));
+
+        if (!spaceshipPartReached)
+        {
+            transform.position = GameManager.Instance.Trajectory(time, new Vector3(randPosX, 0, randPosZ));
+
+        }
+        
+        if (time >= 1f)
+        {
+            spaceshipPartReached = true;
+        }
         
     }
 
