@@ -65,7 +65,7 @@ public class PlayerManager : MonoBehaviour
     public float sphere;
     public float square;
     public float triangle;
-    public float speedMultiplyer = 1f;
+    public float time;
 
 
     [Header("Audio")]
@@ -387,9 +387,8 @@ public class PlayerManager : MonoBehaviour
         currentSquareResourceInverse = maxSquareResource - currentSquareResource;
         currentTriangleResourceInverse = maxTriangleResource - currentTriangleResource;
 
-        MaterialEmmissionControler(0);
-        MaterialEmmissionControler(1);
-        MaterialEmmissionControler(2);
+        MaterialEmmissionControler();
+
         
         // Only show resource UI if below 75%
         if (currentSphereResource < 3 * maxSphereResource / 4)
@@ -441,24 +440,21 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    private void MaterialEmmissionControler(int neededResource)
+    private void MaterialEmmissionControler()
     {
         // TODO: Need to use own c,olors here, new Color(0.4f, 0.9f 0.7f, 1.0f); so this would not work
-        if (neededResource == 0)
-        {
-            sphere += 1 / Mathf.Abs(currentSphereResource);
-            resourceMaterial[0].SetColor("_EmissionColor", Color.blue * (Mathf.Sin((currentSphereResource * sphere) * Time.time) + 0.5f));
-        }
-        if (neededResource == 1)
-        {
-            square += 1 / Mathf.Abs(currentSquareResource);
-            resourceMaterial[1].SetColor("_EmissionColor", Color.yellow * (Mathf.Sin((currentSquareResource * square) * Time.time) + 0.5f));
-        }
-        if (neededResource == 2)
-        {
-            triangle += 1 / Mathf.Abs(currentTriangleResource);
-            resourceMaterial[2].SetColor("_EmissionColor", Color.red * (Mathf.Sin((currentTriangleResource * triangle) * Time.time) + 0.5f));
-        }
+
+        sphere += 1 / Mathf.Abs(currentSphereResource);
+        resourceMaterial[0].SetColor("_EmissionColor", Color.blue * (Mathf.Sin((currentSphereResource * sphere) * Time.time) + 0.5f));
+
+
+        time = (Time.time * currentSquareResourceInverse) / 25;
+        square += 1 / Mathf.Abs(currentSquareResource);
+        resourceMaterial[1].SetColor("_EmissionColor", Color.yellow * (Mathf.PingPong(time, 3f)));
+
+        triangle += 1 / Mathf.Abs(currentTriangleResource);
+        resourceMaterial[2].SetColor("_EmissionColor", Color.red * (Mathf.Sin((currentTriangleResource * triangle) * Time.time) + 0.5f));
+
     }
 
     public void HandleGainResource(int rescourseIndex)

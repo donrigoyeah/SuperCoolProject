@@ -1,5 +1,7 @@
+using System;
 using TMPro;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class SpaceShipPartHandler : MonoBehaviour
 {
@@ -23,7 +25,14 @@ public class SpaceShipPartHandler : MonoBehaviour
     public Vector3 pickupOffset;
     public bool isInteractingWithPlayer = false;
 
-
+    private float speed = 0.2f;
+    public float time;
+    float radius = 0;
+    float angle = 0;
+    private float randPosZ;
+    private float randPosX;
+    
+    
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
@@ -34,6 +43,15 @@ public class SpaceShipPartHandler : MonoBehaviour
     {
         currentPart = Instantiate(spaceShipData.model, this.transform);
         currentPart.transform.position = this.transform.position;
+
+        time = 0f;
+        
+        int distanceIncrease = Random.Range(-100, 100);
+        int distanceIncreaseAgain = Random.Range(-150, 100);
+        radius = Random.Range(50 + distanceIncrease, 120);
+        angle = 360 / Random.Range(0, 30);
+        randPosX = radius * Mathf.Cos(angle);
+        randPosZ = radius * Mathf.Sin(angle);
     }
 
     private void FixedUpdate()
@@ -72,6 +90,17 @@ public class SpaceShipPartHandler : MonoBehaviour
             playerManager.currentPart = null;
             playerManager.isCarryingPart = false;
             this.transform.parent = null;
+        }
+    }
+
+    private void Update()
+    {
+        time += Time.deltaTime * speed;
+        transform.position = GameManager.Instance.Trajectory(time, new Vector3(randPosX, 0, randPosZ));
+
+        if (time >= 1f)
+        {
+            Debug.Log("sfsf");
         }
     }
 

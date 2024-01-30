@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.InputSystem;
+using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
@@ -43,7 +45,9 @@ public class GameManager : MonoBehaviour
     public bool hasRadar = false;
     public bool hasShieldGenerator = false;
     public bool hasAimAssist = false;
-
+    public Transform start;
+    public Transform arc;
+    
     [Header("References")]
     public PlayerInputManager playerInputManager;
     public List<PlayerManager> players;
@@ -325,7 +329,8 @@ public class GameManager : MonoBehaviour
 
             angle += 360 / totalSpaceShipParts;
             CurrentPartGO = Instantiate(SpaceShipPart, SpaceShipPartContainer);
-            CurrentPartGO.transform.position = new Vector3(randPosX, 0, randPosZ);
+            // CurrentPartGO.transform.position = new Vector3(randPosX, 0, randPosZ);
+            // CurrentPartGO.transform.position = new Vector3(30, 0, 30);
 
             CurrentPartHandler = CurrentPartGO.GetComponent<SpaceShipPartHandler>();
             CurrentPartHandler.UpgradeName.text = spaceShipScriptable[i].name;
@@ -393,6 +398,21 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public Vector3 Trajectory(float t, Vector3 end)
+    {
+        Vector3 ab = Vector3.Lerp(start.position, arc.position, t);
+        Vector3 bc = Vector3.Lerp(arc.position, end, t);
+        return Vector3.Lerp(ab, bc, t);
+    }
+
+    // private void OnDrawGizmos()
+    // {
+    //     for (int i = 0; i < 40; i++)
+    //     {
+    //         Gizmos.DrawWireSphere(Trajectory(i/40f), 0.1f);
+    //     }
+    //     Debug.Log("draw");
+    // }
 
     #endregion
 
