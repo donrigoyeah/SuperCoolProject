@@ -1067,10 +1067,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -1211,6 +1211,8 @@ MonoBehaviour:
   currentHours: 0
   currentTotalMinutes: 0
   currentPercentage: 0
+  lastInputTimer: 100
+  timeThreshold: 3
   scalingTransitionDuration: 0.5
 --- !u!114 &506797205
 MonoBehaviour:
@@ -4503,6 +4505,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: HUD System
       objectReference: {fileID: 0}
+    - target: {fileID: 4044361012322878466, guid: ffb68a391af645d4bbbf12099ca9e96e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6645594335082624833, guid: ffb68a391af645d4bbbf12099ca9e96e,
         type: 3}
       propertyPath: m_Pivot.x
@@ -4603,8 +4610,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8302185390053630008, guid: ffb68a391af645d4bbbf12099ca9e96e,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 1759514005637800030, guid: ffb68a391af645d4bbbf12099ca9e96e, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ffb68a391af645d4bbbf12099ca9e96e, type: 3}

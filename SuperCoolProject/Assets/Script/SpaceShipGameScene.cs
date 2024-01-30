@@ -91,7 +91,7 @@ public class SpaceShipGameScene : MonoBehaviour
         while (elapsedTimeCrash < seconds)
         {
             this.transform.position = Vector3.Lerp(startingPos, endPosition, (elapsedTimeCrash / seconds));
-            elapsedTimeCrash += Time.deltaTime;
+            elapsedTimeCrash += Time.fixedDeltaTime;
             yield return new WaitForEndOfFrame();
         }
 

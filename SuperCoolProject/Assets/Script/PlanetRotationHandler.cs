@@ -15,6 +15,6 @@ public class PlanetRotationHandler : MonoBehaviour
 
     private void FixedUpdate()
     {
-        MyTransform.Rotate(Vector3.up * rotationSpeed * Time.deltaTime);
+        MyTransform.Rotate(Vector3.up * rotationSpeed * Time.fixedDeltaTime);
     }
 }

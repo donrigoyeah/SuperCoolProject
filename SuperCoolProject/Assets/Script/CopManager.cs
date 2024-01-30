@@ -78,7 +78,7 @@ public class CopManager : MonoBehaviour
 
     public void HandleLandCopCar()
     {
-        CopCarCurrent.transform.position = Vector3.MoveTowards(CopCarCurrent.transform.position, new Vector3(CopCarCurrent.transform.position.x, 0, CopCarCurrent.transform.position.z), Time.deltaTime * copCarSpeed);
+        CopCarCurrent.transform.position = Vector3.MoveTowards(CopCarCurrent.transform.position, new Vector3(CopCarCurrent.transform.position.x, 0, CopCarCurrent.transform.position.z), Time.fixedDeltaTime * copCarSpeed);
         if (CopCarCurrent.transform.position.y <= 0)
         {
             hasLanded = true;
@@ -171,7 +171,7 @@ public class CopManager : MonoBehaviour
             return;
         }
 
-        CopCarCurrent.transform.position = Vector3.MoveTowards(CopCarCurrent.transform.position, CopCarCurrent.transform.position + Vector3.up * 100, Time.deltaTime * copCarSpeed);
+        CopCarCurrent.transform.position = Vector3.MoveTowards(CopCarCurrent.transform.position, CopCarCurrent.transform.position + Vector3.up * 100, Time.fixedDeltaTime * copCarSpeed);
     }
 
     public void FineServed()

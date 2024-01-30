@@ -95,7 +95,7 @@ public class SpaceShipPartHandler : MonoBehaviour
 
     private void Update()
     {
-        time += Time.deltaTime * speed;
+        time += Time.fixedDeltaTime * speed;
 
         if (!spaceshipPartReached)
         {

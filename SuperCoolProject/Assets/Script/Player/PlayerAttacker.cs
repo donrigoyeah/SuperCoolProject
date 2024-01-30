@@ -129,7 +129,7 @@ public class PlayerAttacker : MonoBehaviour
         if (playerManager.isInteracting == true || playerManager.isAlive == false) { return; }
         else
         {
-            delta = Time.deltaTime;
+            delta = Time.fixedDeltaTime;
             HandleWeaponHeat(delta);
             HandleGrenadeCooldown(delta);
             //HandleEnableLazerSight();
@@ -298,7 +298,7 @@ public class PlayerAttacker : MonoBehaviour
         if (isLaserSight)
         {
             lastInput = inputHandler.inputAim;
-            lastTimeSinceLazer += Time.deltaTime;
+            lastTimeSinceLazer += Time.fixedDeltaTime;
 
             // Check if the player is shooting
             bool isShooting = inputHandler.inputPrimaryFire && !playerManager.isCarryingPart && !PauseMenu.Instance.isPaused;

@@ -124,7 +124,7 @@ public class PlayerManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        timeSinceLastHit += Time.deltaTime;
+        timeSinceLastHit += Time.fixedDeltaTime;
         HandleSurroundingAliens();
         HandleResource();
 

@@ -17,7 +17,7 @@ public class FPS : MonoBehaviour
     {
         while (true)
         {
-            int fps = (int)(1f / Time.deltaTime);
+            int fps = (int)(1f / Time.fixedDeltaTime);
             DisplayFPS(fps);
 
             yield return new WaitForSeconds(0.2f);

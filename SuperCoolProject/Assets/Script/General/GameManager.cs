@@ -127,7 +127,7 @@ public class GameManager : MonoBehaviour
         float targetZNorm = targetZ / players.Count;
 
         //CameraFollowSpot.position = new Vector3(targetXNorm, targetYNorm, targetZNorm);
-        CameraFollowSpot.position = Vector3.Lerp(CameraFollowSpot.transform.position, new Vector3(targetXNorm, targetYNorm, targetZNorm), Time.deltaTime * cameraSpeed);
+        CameraFollowSpot.position = Vector3.Lerp(CameraFollowSpot.transform.position, new Vector3(targetXNorm, targetYNorm, targetZNorm), Time.fixedDeltaTime * cameraSpeed);
     }
 
     public void HideMouseCursor()

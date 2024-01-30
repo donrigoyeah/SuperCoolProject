@@ -102,7 +102,7 @@ public class TimeManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        timeCounter += Time.deltaTime * timeBoost;
+        timeCounter += Time.fixedDeltaTime * timeBoost;
 
         if (timeCounter >= secondsInMinutes)
         {
@@ -152,7 +152,7 @@ public class TimeManager : MonoBehaviour
 
     private IEnumerator ChangeColor(Gradient sunColor, float time, float initialSunIntensity, float finalSunIntensity)
     {
-        for (float i = 0; i < time; i += Time.deltaTime)
+        for (float i = 0; i < time; i += Time.fixedDeltaTime)
         {
             lerp = i / time;
             sun.color = sunColor.Evaluate(lerp);

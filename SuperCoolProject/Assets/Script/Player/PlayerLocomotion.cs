@@ -100,7 +100,7 @@ public class PlayerLocomotion : MonoBehaviour
             if (dashCurrentCharge < dashMaxValue)
             {
                 dashUiGO.SetActive(true);
-                dashCurrentCharge += Time.deltaTime * dashRechargeSpeed;
+                dashCurrentCharge += Time.fixedDeltaTime * dashRechargeSpeed;
                 dashUi.fillAmount = dashCurrentCharge / dashMaxValue;
             }
             else
@@ -137,12 +137,12 @@ public class PlayerLocomotion : MonoBehaviour
     void Movement()
     {
         move = new Vector3(inputHandler.inputMovement.x, 0, inputHandler.inputMovement.y);
-        controller.Move(move * Time.deltaTime * playerSpeed);
+        controller.Move(move * Time.fixedDeltaTime * playerSpeed);
 
 
         if (currentFSSTimer < deltaFSS)
         {
-            currentFSSTimer += Time.deltaTime;
+            currentFSSTimer += Time.fixedDeltaTime;
         }
 
         //Dust during movement particles
@@ -166,8 +166,8 @@ public class PlayerLocomotion : MonoBehaviour
         }
 
         // TODO: DO we need this? Maybe remove gravity at all and set y to fixed position (?!)
-        playerVelocity.y += gravityValue * Time.deltaTime;
-        controller.Move(playerVelocity * Time.deltaTime);
+        playerVelocity.y += gravityValue * Time.fixedDeltaTime;
+        controller.Move(playerVelocity * Time.fixedDeltaTime);
     }
 
     void Rotation()
