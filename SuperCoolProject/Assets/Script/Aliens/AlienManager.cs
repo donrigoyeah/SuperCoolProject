@@ -29,6 +29,7 @@ public class AlienManager : MonoBehaviour
     public int minSpawnRadius = 30;
     public int maxSpawnRadius = 70;
     public int maxInitialLifeTime = 10;
+    public int totalTimeToSpawnAliens = 3;
 
     [Header("Kill Stuff")]
     public int totalKillCount = 0;
@@ -72,7 +73,7 @@ public class AlienManager : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(SpawnAliensWithDelay());
+        StartCoroutine(SpawnAliens());
     }
 
 
@@ -89,14 +90,10 @@ public class AlienManager : MonoBehaviour
         resourceTriangle.Clear();
     }
 
-    IEnumerator SpawnAliensWithDelay()
+    IEnumerator SpawnAliens()
     {
-        yield return new WaitForSeconds(.5f);
-        InitalSpawnAliens();
-    }
+        if (PoolManager.Instance.alienAmount == 0) { yield return null; }
 
-    private void InitalSpawnAliens()
-    {
         ClearResourceList();
         oneSegmentOfPoulation = Mathf.RoundToInt(PoolManager.Instance.alienAmount / segmentAmount);
         currentPopulationSegment = oneSegmentOfPoulation;
@@ -127,16 +124,17 @@ public class AlienManager : MonoBehaviour
 
                 alienPoolGoHandler = alienPoolGo.GetComponent<AlienHandler>();
                 alienPoolGoHandler.currentSpecies = currentSpieziesForArea;
-                alienPoolGoHandler.lifeTime = Random.Range(0, maxInitialLifeTime);
+                alienPoolGoHandler.spawnAsAdults = true;
+                //alienPoolGoHandler.lifeTime = Random.Range(0, maxInitialLifeTime);
                 alienPoolGo.transform.position = new Vector3(randPosX, 0.1f, randPosZ);
                 alienPoolGo.SetActive(true);
+                //Debug.Break();
             }
+            yield return new WaitForSeconds((1 / PoolManager.Instance.alienAmount) * totalTimeToSpawnAliens);
         }
 
         loadingScreenHandler.currentAwakeCalls++;
-        return;
     }
-
 
     public void AddToResourceList(AlienHandler currentAlien)
     {
