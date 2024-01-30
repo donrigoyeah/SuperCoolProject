@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -10,8 +11,8 @@ public class PlayerManager : MonoBehaviour
     [Header("Player Variables")]
     public float playerDetectionRadius = 10;
     public float playerResourceScanRadius = 100;
-    public Collider[] aliensInRange = new Collider[10];
-    public int aliensInRangeCount;
+    public Collider[] aliensInRangePlayer = new Collider[10];
+    public int aliensInRangePlayerCount;
     public Collider[] resourceInRange;
     public bool isCarryingPart;
     public GameObject currentPart;
@@ -99,7 +100,7 @@ public class PlayerManager : MonoBehaviour
     private float animationDurationShield;
 
 
-    private int alienLayerMask = 1 << 9; // Lyer 9 is Alien, so only use this layer
+    private int layerMaskAlien = 1 << 9; // Lyer 9 is Alien
 
     private void Awake()
     {
@@ -129,7 +130,7 @@ public class PlayerManager : MonoBehaviour
         if (isAlive == true) { return; }
         HandleRespawn();
         HandleGameOver();
-        
+
 
 
     }
@@ -192,14 +193,23 @@ public class PlayerManager : MonoBehaviour
         currentTriangleResource = maxTriangleResource;
     }
 
+    void OnDrawGizmos()
+    {
+        // Draw a yellow sphere at the transform's position
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawSphere(MyTransform.position, playerDetectionRadius);
+    }
+
+
     private void HandleSurroundingAliens()
     {
+        aliensInRangePlayerCount = Physics.OverlapSphereNonAlloc(MyTransform.position, playerDetectionRadius, aliensInRangePlayer, layerMaskAlien, QueryTriggerInteraction.Ignore);
+        if (aliensInRangePlayerCount == 0) { return; }
 
-        aliensInRangeCount = Physics.OverlapSphereNonAlloc(MyTransform.position, playerDetectionRadius, aliensInRange, alienLayerMask);
-
-        for (int i = 0; i < aliensInRangeCount; i++)
+        Debug.Log("Cast Sphere to see aliens, Found: " + aliensInRangePlayerCount);
+        for (int i = 0; i < aliensInRangePlayerCount; i++)
         {
-            CurrentSurroundingAH = aliensInRange[i].gameObject.GetComponent<AlienHandler>();
+            CurrentSurroundingAH = aliensInRangePlayer[i].gameObject.GetComponentInParent<AlienHandler>();
             if (CurrentSurroundingAH.brainWashed == true) { continue; } // Interaction with player in TutorialScene, prevents HandleUpdateTarget error
 
             if (CurrentSurroundingAH.currentAge == AlienHandler.AlienAge.resource) // If sorrounding Alien is resource, put into resource Array
@@ -212,16 +222,16 @@ public class PlayerManager : MonoBehaviour
 
             if (CurrentSurroundingAH.currentAge == AlienHandler.AlienAge.fullyGrown)
             {
+                CurrentSurroundingAH.SetTargetAlien(this.gameObject);
                 CurrentSurroundingAH.currentState = AlienHandler.AlienState.hunting;
-                CurrentSurroundingAH.HandleAttacking(this.gameObject, true); // this time its not an alienGO but the player, isAttackingPlayer
-                CurrentSurroundingAH.HandleUpdateTarget(MyTransform.position);
+                //CurrentSurroundingAH.TargetAlienTransform = MyTransform;
                 continue;
             }
             else
             {
+                CurrentSurroundingAH.SetTargetAlien(this.gameObject);
                 CurrentSurroundingAH.currentState = AlienHandler.AlienState.evading;
-                CurrentSurroundingAH.HandleFleeing(this.gameObject, true); // this time its not an alienGO but the player, isEvadingPlayer
-                CurrentSurroundingAH.HandleUpdateTarget(MyTransform.position);
+                //CurrentSurroundingAH.TargetAlienTransform = MyTransform;
                 continue;
             }
 
@@ -380,7 +390,7 @@ public class PlayerManager : MonoBehaviour
         if (currentSphereResource > 0) { currentSphereResource -= resourceDrain; }
         if (currentSquareResource > 0) { currentSquareResource -= resourceDrain; }
         if (currentTriangleResource > 0) { currentTriangleResource -= resourceDrain; }
-        
+
 
         // Will go from 0 to max
         currentSphereResourceInverse = maxSphereResource - currentSphereResource;
@@ -390,7 +400,7 @@ public class PlayerManager : MonoBehaviour
         MaterialEmmissionControler(0);
         MaterialEmmissionControler(1);
         MaterialEmmissionControler(2);
-        
+
         // Only show resource UI if below 75%
         if (currentSphereResource < 3 * maxSphereResource / 4)
         {
