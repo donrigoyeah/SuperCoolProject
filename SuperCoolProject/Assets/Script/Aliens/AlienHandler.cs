@@ -464,7 +464,6 @@ public class AlienHandler : MonoBehaviour
         // Set state on closest target
         if (targetAlien == null)
         {
-            Debug.Log("Found nothing");
             StartCoroutine(IdleSecsUntilNewState(1f, AlienState.roaming));
             return;
         }
@@ -525,7 +524,6 @@ public class AlienHandler : MonoBehaviour
             targetPosition3D = MyTransform.position + new Vector3(randDirXRoaming, 0, randDirZRoaming) * 20;
             targetPosition2D = new Vector2(targetPosition3D.x, targetPosition3D.z);
             distanceToCurrentTarget = Vector2.Distance(MyTransform2D, targetPosition2D);
-            Debug.Log("New target Position: " + targetPosition3D);
 
             if ((targetPosition3D.x * targetPosition3D.x + targetPosition3D.z * targetPosition3D.z) < worldRadiusSquared || distanceToCurrentTarget > 1)
             {

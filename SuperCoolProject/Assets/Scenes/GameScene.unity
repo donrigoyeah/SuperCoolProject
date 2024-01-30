@@ -2738,6 +2738,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &1539342256 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6949711199792431943, guid: 04d1705c49be2ff449668c9f21cbf177,
+    type: 3}
+  m_PrefabInstance: {fileID: 1866789224722557377}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1544536867 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5939312767450188020, guid: 959b924f5e51a25468637aa813697924,
@@ -3591,7 +3597,7 @@ PrefabInstance:
     - target: {fileID: 292991685637541685, guid: 959b924f5e51a25468637aa813697924,
         type: 3}
       propertyPath: alienAmount
-      value: 1
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 292991685637541685, guid: 959b924f5e51a25468637aa813697924,
         type: 3}
@@ -3626,7 +3632,7 @@ PrefabInstance:
     - target: {fileID: 292991685637541685, guid: 959b924f5e51a25468637aa813697924,
         type: 3}
       propertyPath: alienAmountExtra
-      value: 0
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 292991685637541685, guid: 959b924f5e51a25468637aa813697924,
         type: 3}
@@ -4349,6 +4355,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 890592820}
     m_Modifications:
+    - target: {fileID: 937689487682581970, guid: bf09349e08449f448b0d27ddea6565dc,
+        type: 3}
+      propertyPath: arc
+      value: 
+      objectReference: {fileID: 1539342256}
+    - target: {fileID: 937689487682581970, guid: bf09349e08449f448b0d27ddea6565dc,
+        type: 3}
+      propertyPath: start
+      value: 
+      objectReference: {fileID: 1418008459}
     - target: {fileID: 937689487682581970, guid: bf09349e08449f448b0d27ddea6565dc,
         type: 3}
       propertyPath: Clouds
