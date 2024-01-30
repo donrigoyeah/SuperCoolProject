@@ -39,7 +39,6 @@ public class AlienHandler : MonoBehaviour
                     HandleAttacking(targetAlien);
                     break;
                 case AlienState.evading:
-                    Debug.Log("Switched to Evade");
                     HandleFleeing(targetAlien);
                     break;
                 case AlienState.loving:
@@ -383,16 +382,14 @@ public class AlienHandler : MonoBehaviour
             for (int i = 0; i < aliensInRangeCount; i++)
             {
                 if (aliensInRange[i] == null) { return; }
-                // Prevent checking on self and last alien
-                if (aliensInRange[i].gameObject == this.gameObject) { continue; }
 
-                // TODO: Make better check here
+                // Prevent checking on self and last alien
                 if (aliensInRange[i] == MyCollisionCollider) { continue; }
 
                 //if (aliensInRange[i].gameObject == lastTargetAlien) { continue; } // Can go behind last target if other interference happend in between
                 if (aliensInRange[i].gameObject.activeInHierarchy == false) { continue; }
 
-                targetAlienHandler = aliensInRange[i].gameObject.GetComponent<AlienHandler>();
+                targetAlienHandler = aliensInRange[i].gameObject.GetComponentInParent<AlienHandler>();
                 if (targetAlienHandler.currentAge == AlienAge.resource)
                 {
                     continue;
@@ -409,7 +406,7 @@ public class AlienHandler : MonoBehaviour
                         targetAlienHandler.lustTimer > lustTimerThreshold // partner can mate
                         )
                     {
-                        SetTargetAlien(aliensInRange[i].gameObject);
+                        SetTargetAlien(targetAlienHandler.gameObject);
                         StartCoroutine(IdleSecsUntilNewState(1f, AlienState.loving));
                         targetAlienHandler.currentState = AlienState.loving;
                         targetAlienHandler.targetAlienHandler = this;
@@ -432,9 +429,10 @@ public class AlienHandler : MonoBehaviour
                         (currentSpecies == targetAlienHandler.currentSpecies + 1 ||
                         (currentSpecies == 0 && targetAlienHandler.currentSpecies == 2))) // potential food || if closestAlienHandler is smaller || hunting state
                     {
-                        SetTargetAlien(aliensInRange[i].gameObject);
+                        SetTargetAlien(targetAlienHandler.gameObject);
                         StartCoroutine(IdleSecsUntilNewState(1f, AlienState.hunting));
                         targetAlienHandler.currentState = AlienState.evading;
+                        targetAlienHandler.targetAlienHandler = this;
                     }
                     //else if ((currentSpecies == targetAlienHandler.currentSpecies - 1 ||
                     //    (currentSpecies == 2 && targetAlienHandler.currentSpecies == 0))) // 0:Sphere > 1:Square > 2:Triangle || if closestAlienHandler is bigger
@@ -1038,15 +1036,15 @@ public class AlienHandler : MonoBehaviour
         }
 
         targetAlien = TargetGO;
-        TargetAlienTransform = targetAlien.transform;
+        if (targetAlien == null) { return; }
 
         if (brainWashed == false)
         {
-            TargetAlienTransform = targetAlien.GetComponent<Transform>();
+            TargetAlienTransform = targetAlien.transform;
             targetPosition3D = TargetAlienTransform.position;
             targetPosition2D = new Vector2(targetPosition3D.x, targetPosition3D.z);
+            HandleUpdateTarget();
         }
-        HandleUpdateTarget();
     }
 
     public IEnumerator IdleSecsUntilNewState(float seconds, AlienState nextState)

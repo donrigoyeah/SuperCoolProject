@@ -3597,7 +3597,7 @@ PrefabInstance:
     - target: {fileID: 292991685637541685, guid: 959b924f5e51a25468637aa813697924,
         type: 3}
       propertyPath: alienAmount
-      value: 150
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 292991685637541685, guid: 959b924f5e51a25468637aa813697924,
         type: 3}

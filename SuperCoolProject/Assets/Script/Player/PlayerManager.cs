@@ -207,7 +207,6 @@ public class PlayerManager : MonoBehaviour
         aliensInRangePlayerCount = Physics.OverlapSphereNonAlloc(MyTransform.position, playerDetectionRadius, aliensInRangePlayer, layerMaskAlien, QueryTriggerInteraction.Ignore);
         if (aliensInRangePlayerCount == 0) { return; }
 
-        Debug.Log("Cast Sphere to see aliens, Found: " + aliensInRangePlayerCount);
         for (int i = 0; i < aliensInRangePlayerCount; i++)
         {
             CurrentSurroundingAH = aliensInRangePlayer[i].gameObject.GetComponentInParent<AlienHandler>();
@@ -400,7 +399,7 @@ public class PlayerManager : MonoBehaviour
 
         MaterialEmmissionControler();
 
-        
+
         // Only show resource UI if below 75%
         if (currentSphereResource < 3 * maxSphereResource / 4)
         {
