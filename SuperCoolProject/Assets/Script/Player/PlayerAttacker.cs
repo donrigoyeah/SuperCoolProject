@@ -497,7 +497,7 @@ public class PlayerAttacker : MonoBehaviour
     {
         if (grenadeAvailable && GameManager.Instance.hasAmmoBox || GameManager.Instance.devMode)
         {
-            if (inputHandler.inputSecondaryFire)
+            if (inputHandler.inputSecondaryFire && grenadeAvailable)
             {
                 DrawTrajectory();
                 grenadeKeyPressed = true;

@@ -31,7 +31,7 @@ public class SpaceShipPartHandler : MonoBehaviour
     float angle = 0;
     private float randPosZ;
     private float randPosX;
-    
+    private int distanceIncrease;
     
     private void Awake()
     {
@@ -46,10 +46,9 @@ public class SpaceShipPartHandler : MonoBehaviour
 
         time = 0f;
         
-        int distanceIncrease = Random.Range(-100, 100);
-        int distanceIncreaseAgain = Random.Range(-150, 100);
+        distanceIncrease = Random.Range(-100, 100);
         radius = Random.Range(50 + distanceIncrease, 120);
-        angle = 360 / Random.Range(0, 30);
+        angle = 360 / Random.Range(1, 30);
         randPosX = radius * Mathf.Cos(angle);
         randPosZ = radius * Mathf.Sin(angle);
     }
@@ -97,11 +96,7 @@ public class SpaceShipPartHandler : MonoBehaviour
     {
         time += Time.deltaTime * speed;
         transform.position = GameManager.Instance.Trajectory(time, new Vector3(randPosX, 0, randPosZ));
-
-        if (time >= 1f)
-        {
-            Debug.Log("sfsf");
-        }
+        
     }
 
     private void OnTriggerEnter(Collider other)

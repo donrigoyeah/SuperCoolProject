@@ -343,6 +343,7 @@ MonoBehaviour:
   playerDetectionRadius: 10
   playerResourceScanRadius: 100
   aliensInRange: []
+  aliensInRangeCount: 0
   resourceInRange: []
   isCarryingPart: 0
   currentPart: {fileID: 0}
@@ -394,9 +395,10 @@ MonoBehaviour:
   currentSphereResourceInverse: 0
   currentSquareResourceInverse: 0
   currentTriangleResourceInverse: 0
-  sphere: 0
-  square: 0
-  triangle: 0
+  sphereEmissionTime: 0
+  squareEmissionTime: 0
+  triangleEmissionTime: 0
+  EmissionSpeedDivider: 25
   shieldRechargeAudio: {fileID: 8300000, guid: 7c4072b1b16aa7c47ac7c00b4e89bc31, type: 3}
   shieldBreakAudio: {fileID: 8300000, guid: ed490b7c5f0392e4eb9d586baf5045a8, type: 3}
   deathAudio: {fileID: 8300000, guid: fb8cde1c02d901c48bff064d2c4a6a2b, type: 3}
@@ -1640,7 +1642,7 @@ LineRenderer:
     textureMode: 0
     textureScale: {x: 1, y: 1}
     shadowBias: 0.5
-    generateLightingData: 0
+    generateLightingData: 1
   m_MaskInteraction: 0
   m_UseWorldSpace: 1
   m_Loop: 0
