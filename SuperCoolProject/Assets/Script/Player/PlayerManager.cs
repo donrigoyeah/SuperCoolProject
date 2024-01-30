@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class PlayerManager : MonoBehaviour
@@ -62,10 +63,10 @@ public class PlayerManager : MonoBehaviour
     public float currentSphereResourceInverse;
     public float currentSquareResourceInverse;
     public float currentTriangleResourceInverse;
-    public float sphere;
-    public float square;
-    public float triangle;
-    public float time;
+    public float sphereEmissionTime;
+    public float squareEmissionTime;
+    public float triangleEmissionTime;
+    public float EmissionSpeedDivider = 25f; //Increase it to slower the speed
 
 
     [Header("Audio")]
@@ -444,16 +445,15 @@ public class PlayerManager : MonoBehaviour
     {
         // TODO: Need to use own c,olors here, new Color(0.4f, 0.9f 0.7f, 1.0f); so this would not work
 
-        sphere += 1 / Mathf.Abs(currentSphereResource);
-        resourceMaterial[0].SetColor("_EmissionColor", Color.blue * (Mathf.Sin((currentSphereResource * sphere) * Time.time) + 0.5f));
+        sphereEmissionTime = (Time.time * currentSphereResourceInverse) / EmissionSpeedDivider;
+        resourceMaterial[0].SetColor("_EmissionColor", Color.blue * (Mathf.PingPong(sphereEmissionTime, 5f)));
 
 
-        time = (Time.time * currentSquareResourceInverse) / 25;
-        square += 1 / Mathf.Abs(currentSquareResource);
-        resourceMaterial[1].SetColor("_EmissionColor", Color.yellow * (Mathf.PingPong(time, 3f)));
+        squareEmissionTime = (Time.time * currentSquareResourceInverse) / EmissionSpeedDivider;
+        resourceMaterial[1].SetColor("_EmissionColor", Color.yellow * (Mathf.PingPong(squareEmissionTime, 3f)));
 
-        triangle += 1 / Mathf.Abs(currentTriangleResource);
-        resourceMaterial[2].SetColor("_EmissionColor", Color.red * (Mathf.Sin((currentTriangleResource * triangle) * Time.time) + 0.5f));
+        triangleEmissionTime = (Time.time * currentTriangleResourceInverse) / EmissionSpeedDivider;
+        resourceMaterial[2].SetColor("_EmissionColor", Color.red * (Mathf.PingPong(triangleEmissionTime, 3f)));
 
     }
 
