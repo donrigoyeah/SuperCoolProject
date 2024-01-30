@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class PoolManager : MonoBehaviour
 {
     // SharedInstances lets us access it from everyy file
@@ -73,7 +72,7 @@ public class PoolManager : MonoBehaviour
     public GameObject DeadAlien;
     public GameObject DeadAlienContainer;
 
-    [Header("Dead Alien")]
+    [Header("Damage UI")]
     public int damageUIAmounts;
     public List<GameObject> DamageUIPool;
     public GameObject DamageUI;

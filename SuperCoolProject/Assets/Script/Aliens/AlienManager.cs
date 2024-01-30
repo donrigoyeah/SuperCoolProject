@@ -92,6 +92,8 @@ public class AlienManager : MonoBehaviour
 
     IEnumerator SpawnAliens()
     {
+        if (PoolManager.Instance.alienAmount == 0) { yield return null; }
+
         ClearResourceList();
         oneSegmentOfPoulation = Mathf.RoundToInt(PoolManager.Instance.alienAmount / segmentAmount);
         currentPopulationSegment = oneSegmentOfPoulation;
@@ -126,10 +128,10 @@ public class AlienManager : MonoBehaviour
                 //alienPoolGoHandler.lifeTime = Random.Range(0, maxInitialLifeTime);
                 alienPoolGo.transform.position = new Vector3(randPosX, 0.1f, randPosZ);
                 alienPoolGo.SetActive(true);
-                Debug.Break();
+                //Debug.Break();
             }
+            yield return new WaitForSeconds((1 / PoolManager.Instance.alienAmount) * totalTimeToSpawnAliens);
         }
-        yield return new WaitForSeconds((1 / PoolManager.Instance.alienAmount) * totalTimeToSpawnAliens);
 
         loadingScreenHandler.currentAwakeCalls++;
     }
