@@ -497,7 +497,7 @@ public class PlayerAttacker : MonoBehaviour
     {
         if (grenadeAvailable && GameManager.Instance.hasAmmoBox || GameManager.Instance.devMode)
         {
-            if (inputHandler.inputSecondaryFire)
+            if (inputHandler.inputSecondaryFire && grenadeAvailable)
             {
                 DrawTrajectory();
                 grenadeKeyPressed = true;
@@ -617,7 +617,5 @@ public class PlayerAttacker : MonoBehaviour
 
         target.localPosition = new Vector3(0, 2, 0);
         target.localRotation = Quaternion.Euler(0, -90, 0);
-
-
     }
 }
