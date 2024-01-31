@@ -10,32 +10,33 @@ using UnityEngine.UI;
 public class PlayerManager : MonoBehaviour
 {
     [Header("Player Variables")]
-    public float playerDetectionRadius = 10;
-    public float playerResourceScanRadius = 100;
-    public Collider[] aliensInRangePlayer = new Collider[10];
-    public int aliensInRangePlayerCount;
-    public Collider[] resourceInRange;
-    public bool isCarryingPart;
-    public GameObject currentPart;
     public bool isAlive;
     public bool canAim;
     public bool isInteracting;
+    public bool isCarryingPart;
+    public float playerResourceScanRadius = 100;
+    public Collider[] resourceInRange;
+    public float playerDetectionRadius = 10;
+    public int aliensInRangePlayerCount;
+    public Collider[] aliensInRangePlayer = new Collider[10];
+    public GameObject currentPart;
     public GameObject LightBeam;
     public GameObject deadPlayer;
-    public GameObject playerShieldGO;
-    public GameObject player;
+    Transform MyTransform;
 
     [Header("Shield")]
-    public bool playerShield;
+    public bool hasShield;
+    public GameObject playerShieldGO;
+    public Material dissolve;
     public float timeSinceLastHit;
     public float invincibleFrames = .5f;
     public float shieldRechargeTime = 2;
     public float shieldRechargeTimeWithUpgrade = 1;
-    public Material dissolve;
     public float dissolveRate = 0.0125f;
     public float refreshRate = 0.025f;
 
     [Header("Resource Variables")]
+    AlienHandler[] closestResource = new AlienHandler[] { null, null, null };  // 0:Sphere, 1:Square, 2:Triangle
     public float lightBulbMultiplicator = 1;
     public float maxSphereResource = 100;
     public float maxSquareResource = 100;
@@ -46,10 +47,8 @@ public class PlayerManager : MonoBehaviour
     public bool sphereUnfolded = false;
     public bool squareUnfolded = false;
     public bool triangleUnfolded = false;
-    AlienHandler[] closestResource = new AlienHandler[] { null, null, null };  // 0:Sphere, 1:Square, 2:Triangle
-    Transform MyTransform;
 
-    public float resourceDrain = .1f;
+    public float resourceDrain = .015f;
     public float resourceGain = 5;
 
     // 0:Sphere, 1:Square, 2:Triangle
@@ -59,7 +58,6 @@ public class PlayerManager : MonoBehaviour
     public GameObject ResourceUISquare;
     public GameObject ResourceUITriangle;
     public GameObject[] closestResourceIndicator;  // 0:Sphere, 1:Square, 2:Triangle
-    public Light resourceIndicatorLight;
     public Material[] resourceMaterial; // 0:Sphere, 1:Square, 2:Triangle
     public float currentSphereResourceInverse;
     public float currentSquareResourceInverse;
@@ -83,7 +81,6 @@ public class PlayerManager : MonoBehaviour
     public ParticleSystem.MainModule ParticleSystem1Main;
     public ParticleSystem.MainModule ParticleSystem2Main;
     public ParticleSystem.MainModule ParticleSystem3Main;
-
 
     private float dist;
     private float currentDist;
@@ -144,7 +141,7 @@ public class PlayerManager : MonoBehaviour
         }
         else
         {
-            if (playerShield == false)
+            if (hasShield == false)
             {
                 HandleDeath();
             }
@@ -506,8 +503,11 @@ public class PlayerManager : MonoBehaviour
             GameManager.Instance.HandleDrainCloneJuice();
             // TODO: Add Transition/ Fade to black/ camera shutter effect?!
 
-            isAlive = true;
+            currentSphereResource = maxSphereResource;
+            currentSquareResource = maxSquareResource;
+            currentTriangleResource = maxTriangleResource;
             MyTransform.position = Vector3.zero;
+            isAlive = true;
         }
     }
 
@@ -552,9 +552,9 @@ public class PlayerManager : MonoBehaviour
 
     IEnumerator ShieldBreak(float timeToRecharge)
     {
+        hasShield = false;
         stepsShield = 30;
         animationDurationShield = .5f;
-        playerShield = false;
         dissolve.SetFloat("_DissolveAmount", 0.01f); // Bug at 0 seems very opaque
         audioSource.PlayOneShot(shieldBreakAudio, 1f);
 
@@ -563,9 +563,6 @@ public class PlayerManager : MonoBehaviour
             yield return new WaitForSeconds(animationDurationShield / stepsShield);
             dissolve.SetFloat("_DissolveAmount", i / stepsShield);
         }
-
-        playerShield = false;
-
         StartCoroutine(RespawnShield(timeToRecharge));
     }
 
@@ -574,7 +571,7 @@ public class PlayerManager : MonoBehaviour
         playerShieldGO.SetActive(false);
         yield return new WaitForSeconds(timeToRecharge);
         dissolve.SetFloat("_DissolveAmount", 0.01f);
-        playerShield = true;
+        hasShield = true;
         audioSource.PlayOneShot(shieldRechargeAudio, 1f);
         playerShieldGO.SetActive(true);
 

@@ -74,12 +74,7 @@ public class HUDHandler : MonoBehaviour
 
         if (lastInputTimer > timeThreshold)
         {
-            Debug.Log("HUD Local scale: " + HUDScaler.localScale);
-            if (HUDScaler.localScale == Vector3.one)
-            {
-                Debug.Log("HUD scale should scaling");
-                StartCoroutine(ScaleDown());
-            }
+            if (HUDScaler.localScale == Vector3.one) { StartCoroutine(ScaleDown()); }
         }
         if (currentHUD == 2)
         {
@@ -159,16 +154,8 @@ public class HUDHandler : MonoBehaviour
     IEnumerator ScaleUp()
     {
         isResizing = true;
+
         // TODO: Make variable for zooming
-
-        /*
-        for (int i = 1; i == scalingTransitionSteps; i++)
-        {
-            yield return new WaitForSeconds(scalingTransitionDuration / scalingTransitionSteps);
-            HUDScaler.localScale = (Vector3.one / 2) + (Vector3.one * (i / scalingTransitionSteps)) / 2;
-        }
-        */
-
         float delta = 0;
         Vector3 half = Vector3.one / 2f;
         WaitForEndOfFrame frame = new WaitForEndOfFrame();
@@ -185,15 +172,6 @@ public class HUDHandler : MonoBehaviour
     IEnumerator ScaleDown()
     {
         isResizing = true;
-        Debug.Log("HUD scale is scaling");
-
-        /*
-        for (int i = 1; i == scalingTransitionSteps; i++)
-        {
-            yield return new WaitForSeconds(scalingTransitionDuration / scalingTransitionSteps);
-            HUDScaler.localScale = Vector3.one - (Vector3.one * (i / scalingTransitionSteps)) / 2;
-        }
-        */
 
         float delta = 0;
         Vector3 half = Vector3.one / 2f;
@@ -206,7 +184,6 @@ public class HUDHandler : MonoBehaviour
             yield return frame;
         }
 
-        Debug.Log("HUD scale after scaling: " + HUDScaler.localScale);
         isResizing = false;
     }
 }

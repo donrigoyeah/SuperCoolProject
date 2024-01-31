@@ -76,6 +76,9 @@ public class PlayerAttacker : MonoBehaviour
     public float vertecCount = 12;
     private GameObject grenadePoolGo;
     private GrenadeHandler currentGH;
+    private Vector3 pos1;
+    private Vector3 post2;
+    private Vector3 pos3;
 
 
     [Header("References")]
@@ -368,6 +371,7 @@ public class PlayerAttacker : MonoBehaviour
 
 
     }
+
     IEnumerator DisableLazers()
     {
         laserSightLeft.SetPosition(0, Vector3.zero);
@@ -473,9 +477,9 @@ public class PlayerAttacker : MonoBehaviour
 
         for (float ratio = 0; ratio <= 1; ratio += 1 / vertecCount)
         {
-            var pos1 = Vector3.Lerp(grenadespawnPoint.position, arcHeight.position, ratio);
-            var post2 = Vector3.Lerp(arcHeight.position, target.position, ratio);
-            var pos3 = Vector3.Lerp(pos1, post2, ratio);
+            pos1 = Vector3.Lerp(grenadespawnPoint.position, arcHeight.position, ratio);
+            post2 = Vector3.Lerp(arcHeight.position, target.position, ratio);
+            pos3 = Vector3.Lerp(pos1, post2, ratio);
 
             pointList.Add(pos3);
         }

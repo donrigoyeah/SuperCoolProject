@@ -13,10 +13,12 @@ public class SpaceShipGameScene : MonoBehaviour
 
     [Header("Game Scene Stuff")]
     public int animationSteps = 100;
-    public float animationDuration = 3f;
+    public float animationDurationStart = 3f;
+    public float animationDurationWin = 3f;
 
-    public Vector3 endPosition = new Vector3(0, 0, 15);
+    public Vector3 gamePosition = new Vector3(0, 0, 15);
     private Vector3 startPosition = new Vector3(-260, 130, 15);
+    private Vector3 winPosition = new Vector3(-260, 130, 15);
 
     public GameObject SpaceShipCanvas;
     public GameObject DamageParticlesGO;
@@ -32,6 +34,7 @@ public class SpaceShipGameScene : MonoBehaviour
     bool isMainMenu;
     private float verticleBobMovement;
     private float elapsedTimeCrash;
+    private float elapsedTimeWin;
     private Vector3 startingPos;
     private AlienHandler enteringAlien;
 
@@ -42,8 +45,11 @@ public class SpaceShipGameScene : MonoBehaviour
         if (isMainMenu) { return; }
 
         this.transform.position = startPosition;
+    }
 
 
+    public void StartIntroOfSpaceShip()
+    {
         DamageParticles = DamageParticlesGO.GetComponent<ParticleSystem>();
         DamageParticlesMain = DamageParticles.main;
 
@@ -55,7 +61,7 @@ public class SpaceShipGameScene : MonoBehaviour
 
         if (GameManager.Instance.devMode)
         {
-            this.transform.position = endPosition;
+            this.transform.position = gamePosition;
             GameManager.Instance.Clouds.SetActive(false);
             DamageParticlesGO.transform.rotation = Quaternion.Euler(-90, 90, 90);
             DamageParticlesMain.startSpeed = 0.5f;
@@ -64,11 +70,13 @@ public class SpaceShipGameScene : MonoBehaviour
             ExhaustParticlesGO.transform.rotation = Quaternion.Euler(-90, 90, 90);
             ExhaustParticlesMain.startSpeed = 0.5f;
             ExhaustParticlesMain.startLifetime = 6f;
+
+            GameManager.Instance.HandleSpawnShipParts();
         }
         else
         {
             PlayerInputManager.instance.DisableJoining();
-            StartCoroutine(CrashAnimation(animationDuration));
+            StartCoroutine(CrashAnimation(animationDurationStart));
         }
     }
     private void FixedUpdate()
@@ -90,15 +98,16 @@ public class SpaceShipGameScene : MonoBehaviour
         startingPos = this.transform.position;
         while (elapsedTimeCrash < seconds)
         {
-            this.transform.position = Vector3.Lerp(startingPos, endPosition, (elapsedTimeCrash / seconds));
+            this.transform.position = Vector3.Lerp(startingPos, gamePosition, (elapsedTimeCrash / seconds));
             elapsedTimeCrash += Time.fixedDeltaTime;
             yield return new WaitForEndOfFrame();
         }
 
         // TODO: Add cameraShake
-        this.transform.position = endPosition;
+        this.transform.position = gamePosition;
         LandingParticlesGO.SetActive(true);
         Destroy(LandingParticlesGO, 2);
+        GameManager.Instance.HandleSpawnShipParts();
 
         SpaceShipCanvas.SetActive(true);
         PlayerInputManager.instance.EnableJoining();
@@ -110,6 +119,27 @@ public class SpaceShipGameScene : MonoBehaviour
         ExhaustParticlesGO.transform.rotation = Quaternion.Euler(-90, 90, 90);
         ExhaustParticlesMain.startSpeed = 0.5f;
         ExhaustParticlesMain.startLifetime = 6f;
+    }
+
+    public IEnumerator WinAnimation()
+    {
+        elapsedTimeWin = 0;
+        startingPos = this.transform.position;
+        PlayerInputManager.instance.DisableJoining();
+        DamageParticlesGO.SetActive(false);
+
+        while (elapsedTimeWin < animationDurationWin)
+        {
+            this.transform.position = Vector3.Lerp(startingPos, winPosition, (elapsedTimeWin / animationDurationWin));
+            elapsedTimeWin += Time.fixedDeltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+
+        // TODO: Add cameraShake
+        this.transform.position = winPosition;
+
+        //TODO: Rotate in the right direction on win
+        ExhaustParticlesGO.transform.rotation = Quaternion.Euler(-90, 90, 90);
     }
 
     private void OnTriggerEnter(Collider other)
