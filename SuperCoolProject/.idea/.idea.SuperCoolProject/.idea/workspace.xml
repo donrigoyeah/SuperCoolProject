@@ -57,7 +57,7 @@
   </component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
     <configuration name="Standalone Player" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="$PROJECT_DIR$/../../../../BuiltProjects/New folder\SuperCoolProject.exe" />
+      <option name="EXE_PATH" value="$PROJECT_DIR$/../../../../BuiltProjects/PlanetB_AliensActive\SuperCoolProject.exe" />
       <option name="PROGRAM_PARAMETERS" value="" />
       <option name="WORKING_DIRECTORY" value="U:\UnityProjects\BuiltProjects\New folder" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -299,6 +299,7 @@
       <workItem from="1706627360067" duration="5957000" />
       <workItem from="1706635403555" duration="2837000" />
       <workItem from="1706804742148" duration="1405000" />
+      <workItem from="1706811791439" duration="650000" />
     </task>
     <servers />
   </component>
