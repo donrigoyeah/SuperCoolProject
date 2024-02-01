@@ -70,8 +70,6 @@ public class AlienHandler : MonoBehaviour
     public int aliensInRangeCount;
     private float worldRadiusSquared;
     private int amountOfBabies;
-    public Transform TargetAlienTransform;
-    private AlienHandler otherAlienHandler;
     private BulletHandler CurrentBH;
     private float currentBulletDamage;
 
@@ -120,7 +118,9 @@ public class AlienHandler : MonoBehaviour
     [Header("Target Alien")]
     public GameObject targetAlien;
     public GameObject lastTargetAlien;
-    private AlienHandler targetAlienHandler;
+    public AlienHandler targetAlienHandler;
+    public Transform TargetAlienTransform;
+    public AlienHandler otherAlienHandler;
     private Vector2 TargetAlienTransform2D;
 
     [Header("General AlienStuff")]
@@ -264,9 +264,11 @@ public class AlienHandler : MonoBehaviour
 
     private void FixedUpdate()
     {
+        HandleRendering();
+        if (canAct == false) { return; }
+
         delta = Time.fixedDeltaTime;
         HandleUpdateVariables(delta);
-        HandleRendering();
 
         // For Aliens within 50 units of cameraSpot
         if (isRendered)
@@ -298,12 +300,14 @@ public class AlienHandler : MonoBehaviour
         }
 
         // Finaly move the alien
+
         HandleMovement();
     }
 
     #region Functions for Alien Handler
     private void HandleMovement()
     {
+        Debug.Log("Alien is walking to: " + targetPosition3D);
         // If is doing action, is resource or dead -> return
         if (canAct == false || currentAge == AlienAge.resource || isDead == true) { return; }
 
@@ -313,19 +317,18 @@ public class AlienHandler : MonoBehaviour
 
         if (anim[currentSpecies] != null) { anim[currentSpecies].Play("Armature|WALK"); }
 
-
+        // Prevent spinning or tilting
+        if (distanceToCurrentTarget > 2)
+        {
+            MyTransform.LookAt(targetPosition3D);
+        }
 
         // If brainwashed can move anyway
         if (brainWashed == true || currentState != AlienState.idle)
         {
             MyTransform.position = Vector3.MoveTowards(MyTransform.position, targetPosition3D, speed);
         }
-
-        // Prevent spinning or tilting
-        if (distanceToCurrentTarget > 1)
-        {
-            MyTransform.LookAt(targetPosition3D);
-        }
+        Debug.Log("Alien current Position: " + MyTransform.position);
 
         if (currentState == AlienState.evading || currentState == AlienState.hunting)
         {
@@ -539,6 +542,10 @@ public class AlienHandler : MonoBehaviour
         {
             if (TargetAlienTransform == null) { return; }
             if (TargetAlienTransform.position == Vector3.zero) { return; }
+            if (TargetAlienTransform.gameObject.activeInHierarchy == false)
+            {
+                StartCoroutine(IdleSecsUntilNewState(1f, AlienState.looking));
+            }
 
             if (currentState == AlienState.evading) // Away from target
             {
@@ -779,56 +786,60 @@ public class AlienHandler : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (currentAge == AlienAge.resource)
-            // Handle Alien interaction
-            if (other.gameObject.CompareTag("Alien"))
-            {
-                otherAlienHandler = other.gameObject.GetComponent<AlienHandler>();
-                if (otherAlienHandler == null) { return; }
+        if (currentAge == AlienAge.resource) { return; }
 
-                if (currentSpecies == otherAlienHandler.currentSpecies)
+        // Handle Alien interaction
+        if (other.gameObject.transform.parent && other.gameObject.transform.parent.CompareTag("Alien"))
+        {
+            otherAlienHandler = other.gameObject.GetComponentInParent<AlienHandler>();
+            if (otherAlienHandler == null) { return; }
+            if (targetAlienHandler != otherAlienHandler) { return; }
+
+            if (currentSpecies == otherAlienHandler.currentSpecies)
+            {
+                //if (hasUterus == true && // opposite Sex
+                //    otherAlienHandler.hasUterus == false &&
+                //    currentAge == AlienAge.sexualActive && // Sexual active
+                //    otherAlienHandler.currentAge == AlienAge.sexualActive && // potential partner also sexual active
+                //    lustTimer > lustTimerThreshold && // can mate
+                //    otherAlienHandler.lustTimer > lustTimerThreshold // partner can mate)
+                //    )
+                //{
+                lustTimer = 0;
+                otherAlienHandler.lustTimer = 0;
+                StartCoroutine(PlayActionParticle(AlienState.loving)); // Loving Partilce
+                HandleMating();
+                //}
+            }
+            else
+            {
+                if (otherAlienHandler.currentAge == AlienAge.resource) // You, the resource, gets trampled
                 {
-                    if (hasUterus == true && // opposite Sex
-                        otherAlienHandler.hasUterus == false &&
-                        currentAge == AlienAge.sexualActive && // Sexual active
-                        otherAlienHandler.currentAge == AlienAge.sexualActive && // potential partner also sexual active
-                        lustTimer > lustTimerThreshold && // can mate
-                        otherAlienHandler.lustTimer > lustTimerThreshold // partner can mate)
-                        )
-                    {
-                        lustTimer = 0;
-                        otherAlienHandler.lustTimer = 0;
-                        StartCoroutine(PlayActionParticle(AlienState.loving)); // Loving Partilce
-                        HandleMating();
-                    }
+                    AlienManager.Instance.RemoveFromResourceList(otherAlienHandler);
+                    otherAlienHandler.HandleDeath();
+                    return;
                 }
                 else
                 {
-                    if (otherAlienHandler.currentAge == AlienAge.resource) // You, the resource, gets trampled
+                    Debug.Log("Should be eating: " + (targetAlienHandler == otherAlienHandler).ToString());
+                    Debug.Log("targetAlienHandler: " + targetAlienHandler);
+                    Debug.Log("otherAlienHandler: " + otherAlienHandler);
+
+                    // Handles eat other alien
+                    hungerTimer = 0;
+                    if (other.gameObject.activeInHierarchy)
                     {
-                        AlienManager.Instance.RemoveFromResourceList(otherAlienHandler);
-                        otherAlienHandler.HandleDeath();
-                        return;
+                        StartCoroutine(PlayActionParticle(AlienState.hunting));
+                        otherAlienHandler.HandleDeathByCombat();
                     }
-                    else
-                    {
-                        if (targetAlienHandler != otherAlienHandler) { return; }
 
-                        // Handles eat other alien
-                        hungerTimer = 0;
-                        if (other.gameObject.activeInHierarchy)
-                        {
-                            StartCoroutine(PlayActionParticle(AlienState.hunting));
-                            otherAlienHandler.HandleDeathByCombat();
-                        }
+                    if (brainWashed == true) { return; }// For tutorial
 
-                        if (brainWashed == true) { return; }// For tutorial
-
-                        StartCoroutine(IdleSecsUntilNewState(1f, AlienState.looking));
-                    }
+                    StartCoroutine(IdleSecsUntilNewState(1f, AlienState.looking));
                 }
-                return;
             }
+            return;
+        }
 
         // Handle Bullet interaction
         if (other.gameObject.CompareTag("Bullet"))
@@ -871,7 +882,7 @@ public class AlienHandler : MonoBehaviour
 
     private IEnumerator PlayActionParticle(AlienState currentState)
     {
-        if (isRendered)
+        if (isRendered == false)
         {
             yield return null;
         }
@@ -891,6 +902,7 @@ public class AlienHandler : MonoBehaviour
             //{
 
             //}
+
             alienActionParticlesGO.SetActive(true);
             yield return new WaitForSeconds(1f);
             alienActionParticlesGO.SetActive(false);
@@ -952,6 +964,7 @@ public class AlienHandler : MonoBehaviour
     {
         yield return new WaitForSeconds(time);
         brainWashed = false; // AKA tutuorial scene
+        StartCoroutine(HandleAge(true));
     }
 
     private IEnumerator WaitForDeath(float time)
@@ -960,17 +973,17 @@ public class AlienHandler : MonoBehaviour
         HandleDeath();
     }
 
-    AudioClip RandomAudioSelector(List<AudioClip[]> audioList, int state) // incase we plan to add more audio for each state
+    AudioClip RandomAudioSelector(List<AudioClip[]> audioList, int species) // incase we plan to add more audio for each state
     {
+        return null;
         // TODO: think of something to have ot play an audio only 50% of the time?
-        AudioClip[] selectedAudioArray = audioList[state];
+        AudioClip[] selectedAudioArray = audioList[species];
 
         int randomIndex = Random.Range(0, selectedAudioArray.Length);
         AudioClip selectedAudio = selectedAudioArray[randomIndex];
 
         return selectedAudio;
     }
-
 
     #endregion
 
@@ -1051,8 +1064,11 @@ public class AlienHandler : MonoBehaviour
     {
         canAct = false;
         HandleIdleAnimation();
+        if (brainWashed == false)
+        {
+            DiscardCurrentAction(); // To prevent the lost of target Alien
+        }
         currentState = nextState;
-        //DiscardCurrentAction(); // To prevent the lost of target Alien
         lookTimeIdle = UnityEngine.Random.Range(0, (seconds + 1) * 10) / 10;
         yield return new WaitForSeconds(lookTimeIdle);
         canAct = true;

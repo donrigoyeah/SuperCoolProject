@@ -9,29 +9,42 @@ public class GrenadeHandler : MonoBehaviour
     public float explosionForce = 700f;
     public float explosionRadius = 5f;
     public GameObject explosionEffect;
-    private float countdown = 1f;
-    private bool hasExploded = false;
 
     public PlayerAttacker playerAttacker;
     public float speed;
 
     public float time;
     public Vector3 x;
-    public AlienHandler alienHandler;
+
+    private float distance;
+    private float damage;
+
+    private AlienHandler alien;
+    private Rigidbody rb;
+    private bool hasExploded = false;
+
+    private int layerMaskAlien = 1 << 9; // Lyer 9 is Alien
+
 
     private void Start()
     {
         time = 0f;
     }
 
-    private void Update()
+    private void OnEnable()
+    {
+        hasExploded = false;
+    }
+
+    private void FixedUpdate()
     {
         time += Time.fixedDeltaTime * speed;
         transform.position = playerAttacker.Evaluate(time);
 
-        if (time >= 1f)
+        if (transform.position.y < .1f || hasExploded == false)
         {
             Explode();
+            hasExploded = true;
         }
     }
 
@@ -46,32 +59,24 @@ public class GrenadeHandler : MonoBehaviour
     {
         // TODO: CHeck if we only need the  rb.AddExplosionForce(explosionForce, transform.position, explosionRadius); without the sphere cast
 
-        Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius);
+        Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius, layerMaskAlien);
 
         foreach (Collider nearbyObects in colliders)
         {
-            AlienHandler alien = nearbyObects.GetComponent<AlienHandler>();
-            if (alien != null)
+            rb = nearbyObects.GetComponent<Rigidbody>();
+            if (rb != null)
             {
-                Rigidbody rb = nearbyObects.GetComponent<Rigidbody>();
-                if (rb != null)
-                {
-                    float distance = Vector3.Distance(transform.position, alien.transform.position);
-
-                    float damage = CalculateDamage(distance);
-
-                    alien.alienHealth -= (int)damage;
-                }
+                distance = Vector3.Distance(transform.position, nearbyObects.transform.position);
+                damage = CalculateDamage(distance);
+                alien.alienHealth -= damage;
             }
         }
         time = 0;
-        hasExploded = false;
     }
 
     float CalculateDamage(float distance)
     {
-
-        float maxDamage = 4f;
+        float maxDamage = 50;
         float minDamage = 1f;
         float maxDistance = explosionRadius;
 

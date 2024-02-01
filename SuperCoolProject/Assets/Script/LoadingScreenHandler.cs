@@ -19,11 +19,13 @@ public class LoadingScreenHandler : MonoBehaviour
 
     public bool hasFinishedLoading;
 
+    public SpaceShipGameScene SpaceShipGameScene;
+
     private void Awake()
     {
         SharedInstance = this;
         hasFinishedLoading = false;
-        LoadingScreen.SetActive(true);
+        LoadingScreen.SetActive(false);
     }
 
     private void Update()
@@ -31,6 +33,7 @@ public class LoadingScreenHandler : MonoBehaviour
         if (hasFinishedLoading)
         {
             LoadingScreen.SetActive(false);
+            return;
         }
 
         float loadingAmount = (currentLoadedPools / numberOfPools + currentAwakeCalls / totalAwakeCalls) / 2;
@@ -39,6 +42,7 @@ public class LoadingScreenHandler : MonoBehaviour
         if (loadingAmount >= 1)
         {
             hasFinishedLoading = true;
+            SpaceShipGameScene.StartIntroOfSpaceShip();
         }
     }
 }

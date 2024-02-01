@@ -1,5 +1,8 @@
 using System;
+using System.Collections;
 using TMPro;
+using Unity.Burst.Intrinsics;
+using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -8,12 +11,15 @@ public class SpaceShipPartHandler : MonoBehaviour
     private InputHandler inputHandler;
     private PlayerManager playerManager;
     private PlayerLocomotion playerLocomotion;
+    private Transform myTransform;
+    public GameObject draggingParticles;
+    public GameObject flyingParticles;
+    public GameObject landingParticles;
 
     public SpaceShipScriptable spaceShipData;
     public float playerSpeedReduction = 0f;
     public float previousPlayerSpeed = 10f;
     public TextMeshProUGUI UpgradeName;
-    public ParticleSystem draggingParticles;
     public bool particleSpawned = false;
     private AudioSource audioSource;
     public AudioClip draggingAudio;
@@ -25,38 +31,36 @@ public class SpaceShipPartHandler : MonoBehaviour
     public Vector3 pickupOffset;
     public bool isInteractingWithPlayer = false;
 
-    private float speed = 0.2f;
+    private float flyingSpeed = 0.2f;
     public float time;
-    float radius = 0;
-    float angle = 0;
-    private float randPosZ;
-    private float randPosX;
-    private int distanceIncrease;
-    public bool spaceshipPartReached = false;
-    
+    public bool hasLanded = false;
+
+    public float targetPositionX;
+    public float targetPositionZ;
+
+    public Transform arc;
+    private Vector3 ab;
+    private Vector3 bc;
+
+
     private void Awake()
     {
+        myTransform = this.transform;
         audioSource = GetComponent<AudioSource>();
         InteractionUIScreen.SetActive(false);
+        draggingParticles.SetActive(false);
+        flyingParticles.SetActive(true);
     }
 
     private void Start()
     {
         currentPart = Instantiate(spaceShipData.model, this.transform);
         currentPart.transform.position = this.transform.position;
-
-        time = 0f;
-        
-        distanceIncrease = Random.Range(-100, 100);
-        radius = Random.Range(50 + distanceIncrease, 120);
-        angle = 360 / Random.Range(1, 30);
-        randPosX = radius * Mathf.Cos(angle);
-        randPosZ = radius * Mathf.Sin(angle);
     }
 
     private void FixedUpdate()
     {
-        if (inputHandler == null || playerLocomotion == null || playerManager == null || isInteractingWithPlayer == false) { return; }
+        if (inputHandler == null || playerLocomotion == null || playerManager == null || isInteractingWithPlayer == false || hasLanded == false) { return; }
 
         if (inputHandler.inputInteracting)
         {
@@ -65,7 +69,7 @@ public class SpaceShipPartHandler : MonoBehaviour
 
             if (!particleSpawned)
             {
-                draggingParticles.gameObject.SetActive(true);
+                draggingParticles.SetActive(true);
                 particleSpawned = true;
             }
 
@@ -77,38 +81,56 @@ public class SpaceShipPartHandler : MonoBehaviour
             playerLocomotion.playerSpeed = previousPlayerSpeed;
             playerLocomotion.playerSpeed -= playerSpeedReduction;
             playerManager.isCarryingPart = true;
-            this.transform.parent = inputHandler.transform;
-            this.transform.localPosition = pickupOffset;
+            myTransform.parent = inputHandler.transform;
+            myTransform.localPosition = pickupOffset;
         }
         else if (!inputHandler.inputInteracting)
         {
             InteractionUIScreen.SetActive(true);
-            draggingParticles.gameObject.SetActive(false);
+            draggingParticles.SetActive(false);
             particleSpawned = false;
 
             playerLocomotion.playerSpeed = previousPlayerSpeed;
             playerManager.currentPart = null;
             playerManager.isCarryingPart = false;
-            this.transform.parent = null;
+            myTransform.parent = null;
         }
     }
 
-    private void Update()
+    public IEnumerator HandleFlyingParts()
     {
-        time += Time.fixedDeltaTime * speed;
+        flyingParticles.SetActive(true);
+        Vector3 targetPositon = new Vector3(targetPositionX, 0, targetPositionZ);
 
-        if (!spaceshipPartReached)
-        {
-            transform.position = GameManager.Instance.Trajectory(time, new Vector3(randPosX, 0, randPosZ));
+        float distanceToLandingPosition = 100;
 
-        }
-        
-        if (time >= 1f)
+        float delta = 0;
+        WaitForEndOfFrame frame = new WaitForEndOfFrame();
+
+        while (distanceToLandingPosition > 0)
         {
-            spaceshipPartReached = true;
+            delta += Time.deltaTime;
+            ab = Vector3.Lerp(Vector3.zero, arc.position, delta);
+            bc = Vector3.Lerp(arc.position, targetPositon, delta);
+            myTransform.position = Vector3.Lerp(ab, bc, delta);
+            distanceToLandingPosition = Vector3.Distance(myTransform.position, targetPositon);
+            yield return frame;
         }
-        
+
+        myTransform.position = targetPositon;
+        flyingParticles.SetActive(false);
+        hasLanded = true;
+
+        StartCoroutine(PlayLandingParticles());
     }
+
+    IEnumerator PlayLandingParticles()
+    {
+        landingParticles.SetActive(true);
+        yield return new WaitForSeconds(2);
+        landingParticles.SetActive(false);
+    }
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -122,7 +144,7 @@ public class SpaceShipPartHandler : MonoBehaviour
             InteractionButtonText.text = TutorialHandler.Instance.interactionButton;
             playerLocomotion.playerSpeed = previousPlayerSpeed;
             InteractionUIScreen.SetActive(true);
-            this.transform.parent = null;
+            myTransform.parent = null;
         }
     }
 
@@ -135,7 +157,7 @@ public class SpaceShipPartHandler : MonoBehaviour
             draggingParticles.gameObject.SetActive(false);
             playerManager.currentPart = null;
             playerManager.isCarryingPart = false;
-            this.transform.parent = null;
+            myTransform.parent = null;
             inputHandler = null;
             playerLocomotion = null;
             playerManager = null;

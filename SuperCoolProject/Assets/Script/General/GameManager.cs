@@ -45,15 +45,15 @@ public class GameManager : MonoBehaviour
     public bool hasRadar = false;
     public bool hasShieldGenerator = false;
     public bool hasAimAssist = false;
-    public Transform start;
-    public Transform arc;
-    
+
+
     [Header("References")]
     public PlayerInputManager playerInputManager;
     public List<PlayerManager> players;
     public List<PlayerLocomotion> playersLocos;
     public Transform CameraFollowSpot; // For Cinemachine
     public LoadingScreenHandler loadingScreenHandler;
+    public SpaceShipGameScene spaceShipGameScene;
 
     [Header("UI Elements")]
     public GameObject DeathScreen;
@@ -93,12 +93,6 @@ public class GameManager : MonoBehaviour
         spaceShipPartsDisplay.text = currentSpaceShipParts.ToString() + "/" + totalSpaceShipParts.ToString();
         currentCloneJuice = maxCloneJuice;
         cloneJuiceUI.fillAmount = currentCloneJuice / maxCloneJuice;
-        loadingScreenHandler.totalAwakeCalls++;
-    }
-
-    private void Start()
-    {
-        HandleSpawnShipParts();
     }
 
     private void FixedUpdate()
@@ -174,7 +168,12 @@ public class GameManager : MonoBehaviour
         {
             CameraFollowSpot.position = Vector3.zero;
             StartCoroutine(RaiseCameraSpeed(cameraSpeedRaiseDuration));
-            //StartCoroutine(WaitSecBeforeTut(cameraSpeedRaiseDuration));
+            if (devMode == false)
+            {
+                Debug.Log("Start Tutorial");
+                FreezeAllAliens();
+                StartCoroutine(WaitSecBeforeTut(cameraSpeedRaiseDuration));
+            }
         }
     }
 
@@ -184,9 +183,11 @@ public class GameManager : MonoBehaviour
         HandleTutorialStart();
     }
 
+
+
     private void HandleTutorialStart()
     {
-        Debug.Log("start Turtorial here. Uncomment the foloowing line up to return");
+        Debug.Log("TODO: Remove this later");
         FreezeAllPlayers();
         TutorialHandler.Instance.EnableEntireTutorial();
         return;
@@ -196,7 +197,7 @@ public class GameManager : MonoBehaviour
         {
             hideTut = PlayerPrefs.GetInt("hideTutorial");
 
-            if (hideTut == 1 || devMode == true)
+            if (hideTut == 1)
             {
                 UnFreezeAllPlayers();
                 return;
@@ -215,6 +216,21 @@ public class GameManager : MonoBehaviour
         return;
     }
 
+    public void FreezeAllAliens()
+    {
+        foreach (var item in AlienManager.Instance.allAlienHandlers)
+        {
+            item.canAct = false;
+        }
+    }
+    public void UnFreezeAllAliens()
+    {
+        foreach (var item in AlienManager.Instance.allAlienHandlers)
+        {
+            item.canAct = true;
+        }
+    }
+
     public void FreezeAllPlayers()
     {
         foreach (PlayerLocomotion player in playersLocos)
@@ -226,6 +242,7 @@ public class GameManager : MonoBehaviour
             player.isInteracting = true;
         }
     }
+
     public void UnFreezeAllPlayers()
     {
         foreach (PlayerLocomotion player in playersLocos)
@@ -249,6 +266,7 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
     public void TurnOffAllPlayerLights()
     {
         foreach (PlayerManager player in players)
@@ -299,7 +317,16 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Player won");
 
-        CopManager.Instance.HandleSpawnCopCar(AlienManager.Instance.totalKillCount);
+        foreach (var item in players)
+        {
+            item.gameObject.SetActive(false);
+        }
+
+        if (spaceShipGameScene != null)
+        {
+            StartCoroutine(spaceShipGameScene.WinAnimation());
+        }
+        //CopManager.Instance.HandleSpawnCopCar(AlienManager.Instance.totalKillCount);
 
     }
 
@@ -307,6 +334,10 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("You Lost");
         hasLost = true;
+        foreach (var item in players)
+        {
+            item.isAlive = false;
+        }
         GameOverScreen.SetActive(true);
     }
 
@@ -314,41 +345,41 @@ public class GameManager : MonoBehaviour
 
     #region Handle SpaceShip Parts
 
-    private void HandleSpawnShipParts()
+    public void HandleSpawnShipParts()
     {
         float radius = 0;
         float angle = 0;
+        int distanceIncrease;
+        float randPosPartX;
+        float randPosPartZ;
+
         for (int i = 0; i < totalSpaceShipParts - 1; i++)
         {
-            int distanceIncrease = i * 10;
-
-            radius = Random.Range(50 + distanceIncrease, 80 + distanceIncrease);
-
-            float randPosX = radius * Mathf.Cos(angle);
-            float randPosZ = radius * Mathf.Sin(angle);
-
             angle += 360 / totalSpaceShipParts;
-            CurrentPartGO = Instantiate(SpaceShipPart, SpaceShipPartContainer);
-            // CurrentPartGO.transform.position = new Vector3(randPosX, 0, randPosZ);
-            // CurrentPartGO.transform.position = new Vector3(30, 0, 30);
+            distanceIncrease = i * 10;
+            radius = Random.Range(50 + distanceIncrease, 80 + distanceIncrease);
+            randPosPartX = radius * Mathf.Cos(angle);
+            randPosPartZ = radius * Mathf.Sin(angle);
 
+            CurrentPartGO = Instantiate(SpaceShipPart, SpaceShipPartContainer);
             CurrentPartHandler = CurrentPartGO.GetComponent<SpaceShipPartHandler>();
+            CurrentPartHandler.targetPositionX = randPosPartX;
+            CurrentPartHandler.targetPositionZ = randPosPartZ;
             CurrentPartHandler.UpgradeName.text = spaceShipScriptable[i].name;
             CurrentPartHandler.spaceShipData = spaceShipScriptable[i];
+            StartCoroutine(CurrentPartHandler.HandleFlyingParts());
+
         }
 
         // Spawn Antenna last and in front of player
         CurrentPartGO = Instantiate(SpaceShipPart, SpaceShipPartContainer);
-        CurrentPartGO.transform.position = AntennaSpawnLocation;
-
         CurrentPartHandler = CurrentPartGO.GetComponent<SpaceShipPartHandler>();
+        CurrentPartGO.transform.position = AntennaSpawnLocation;
         CurrentPartHandler.UpgradeName.text = spaceShipScriptable[totalSpaceShipParts - 1].name;
         CurrentPartHandler.spaceShipData = spaceShipScriptable[totalSpaceShipParts - 1];
+        StartCoroutine(CurrentPartHandler.HandleFlyingParts());
 
         TutorialHandler.Instance.totalAmountOfSpaceShpParts.text = totalSpaceShipParts.ToString();
-
-        // After loading all aliens sent finished state to Loading Screen
-        loadingScreenHandler.currentAwakeCalls++;
     }
 
     //Space Ships parts are collected and abilities are unlocked here
@@ -397,28 +428,5 @@ public class GameManager : MonoBehaviour
             HandleWin();
         }
     }
-
-    public Vector3 Trajectory(float t, Vector3 end)
-    {
-        Vector3 ab = Vector3.Lerp(start.position, arc.position, t);
-        Vector3 bc = Vector3.Lerp(arc.position, end, t);
-        return Vector3.Lerp(ab, bc, t);
-    }
-
-    // private void OnDrawGizmos()
-    // {
-    //     for (int i = 0; i < 40; i++)
-    //     {
-    //         Gizmos.DrawWireSphere(Trajectory(i/40f), 0.1f);
-    //     }
-    //     Debug.Log("draw");
-    // }
-
     #endregion
-
-
-
-    // TODO: Handle stuff like day/night cycle here
-    // Handle spaceship parts collected
-    // Handle gametime
 }
