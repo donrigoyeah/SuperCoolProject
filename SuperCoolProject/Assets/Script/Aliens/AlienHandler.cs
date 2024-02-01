@@ -307,7 +307,6 @@ public class AlienHandler : MonoBehaviour
     #region Functions for Alien Handler
     private void HandleMovement()
     {
-        Debug.Log("Alien is walking to: " + targetPosition3D);
         // If is doing action, is resource or dead -> return
         if (canAct == false || currentAge == AlienAge.resource || isDead == true) { return; }
 
@@ -328,7 +327,6 @@ public class AlienHandler : MonoBehaviour
         {
             MyTransform.position = Vector3.MoveTowards(MyTransform.position, targetPosition3D, speed);
         }
-        Debug.Log("Alien current Position: " + MyTransform.position);
 
         if (currentState == AlienState.evading || currentState == AlienState.hunting)
         {
@@ -350,9 +348,8 @@ public class AlienHandler : MonoBehaviour
         {
             if (distanceToCurrentTarget < 1f)
             {
-                if (brainWashed == true) { return; }
-
                 canAct = false;
+                if (brainWashed == true) { return; }
                 StartCoroutine(IdleSecsUntilNewState(1f, AlienState.looking));
                 hasNewTarget = false;
             }
