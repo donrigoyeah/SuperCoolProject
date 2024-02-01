@@ -65,10 +65,9 @@ public class TutorialHandler : MonoBehaviour
 
     public void EnableEntireTutorial()
     {
+        Time.timeScale = 0;
         TutorialGameObject.SetActive(true);
         EventSystem.current.SetSelectedGameObject(nextButton.gameObject);
-        Time.timeScale = 0;
-
 
         primaryFireButtonText.text = primaryShootButton;
     }
@@ -93,55 +92,55 @@ public class TutorialHandler : MonoBehaviour
             Time.timeScale = 1;
             return;
         }
-
-        if (currentTutorialSlide == 2) // After second slide
+        else
         {
-            ShowFoodCircleOrder();
-        }
-        else if (currentTutorialSlide == 3)
-        {
-            ShowReproduction();
-        }
-        else if (currentTutorialSlide == 4)
-        {
-            ShowDefense();
-        }
-        else if (currentTutorialSlide < totalTutorialSlides)
-        {
+            if (currentTutorialSlide == 2) // After second slide
+            {
+                ShowFoodCircleOrder();
+                return;
+            }
+            else if (currentTutorialSlide == 3)
+            {
+                ShowReproduction();
+                return;
+            }
+            else if (currentTutorialSlide == 4)
+            {
+                ShowDefense();
+                return;
+            }
             EnableCertainSlide(currentTutorialSlide);
         }
-
     }
 
     private void EnableCertainSlide(int slideIndex)
     {
-        Time.timeScale = 0;
-
         foreach (var item in tutorialSlides)
         {
             item.SetActive(false);
         }
         tutorialSlides[slideIndex].SetActive(true);
+        Time.timeScale = 0;
     }
 
     private void ShowFoodCircleOrder()
     {
-        TutorialGameObject.SetActive(false);
         Time.timeScale = 1;
+        TutorialGameObject.SetActive(false);
         StartCoroutine(DoTheFoodCircle());
     }
 
     private void ShowReproduction()
     {
-        TutorialGameObject.SetActive(false);
         Time.timeScale = 1;
+        TutorialGameObject.SetActive(false);
         StartCoroutine(DoTheReproduction());
     }
 
     private void ShowDefense()
     {
-        TutorialGameObject.SetActive(false);
         Time.timeScale = 1;
+        TutorialGameObject.SetActive(false);
         StartCoroutine(DoTheDefense());
     }
 
@@ -151,15 +150,13 @@ public class TutorialHandler : MonoBehaviour
         if (alienPoolGo != null)
         {
             currentAlienHandler = alienPoolGo.GetComponent<AlienHandler>();
-            AlienManager.Instance.allAlienHandlers.Add(currentAlienHandler);
-
             currentAlienHandler.BrainwashAlien();
             currentAlienHandler.currentSpecies = species;
             currentAlienHandler.currentAge = AlienHandler.AlienAge.fullyGrown;
             currentAlienHandler.MyTransform.localScale = Vector3.one;
             currentAlienHandler.targetPosition3D = alienEndPosition;
-            currentAlienHandler.ActivateCurrentModels(species);
             currentAlienHandler.distanceToCurrentTarget = 999;
+            currentAlienHandler.ActivateCurrentModels(species);
 
             currentAlienHandler.lustTimer = 20;
             currentAlienHandler.hasUterus = false;
@@ -171,11 +168,13 @@ public class TutorialHandler : MonoBehaviour
             if (currentTargetAlien != null)
             {
                 currentAlienHandler.targetAlien = currentTargetAlien.gameObject;
+                currentAlienHandler.SetTarget(currentTargetAlien.gameObject);
                 currentAlienHandler.targetAlienHandler = currentTargetAlien;
             }
 
             currentAlienTransform = alienPoolGo.transform;
             currentAlienTransform.position = alienStartPosition;
+
             if (isLoving == true)
             {
                 currentAlienHandler.hasUterus = true;
@@ -187,12 +186,14 @@ public class TutorialHandler : MonoBehaviour
             {
                 currentAlienHandler.currentState = AlienHandler.AlienState.hunting;
             }
+
             currentAlienHandler.HandleUpdateTarget();
         }
         if (currentAlienHandler == null)
         {
             return null;
         }
+        AlienManager.Instance.allAlienHandlers.Add(currentAlienHandler);
         return currentAlienHandler;
     }
 

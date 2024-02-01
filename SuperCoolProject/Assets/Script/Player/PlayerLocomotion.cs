@@ -74,7 +74,7 @@ public class PlayerLocomotion : MonoBehaviour
     {
         // Player can not move!
         if (canMove == false) { return; }
-        
+
         // Player is Alive
         if (playerManager.isAlive)
         {
@@ -100,7 +100,7 @@ public class PlayerLocomotion : MonoBehaviour
             if (dashCurrentCharge < dashMaxValue)
             {
                 dashUiGO.SetActive(true);
-                dashCurrentCharge += Time.fixedDeltaTime * dashRechargeSpeed;
+                dashCurrentCharge += Time.deltaTime * dashRechargeSpeed;
                 dashUi.fillAmount = dashCurrentCharge / dashMaxValue;
             }
             else
