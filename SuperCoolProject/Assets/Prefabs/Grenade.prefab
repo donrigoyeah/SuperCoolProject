@@ -118,13 +118,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c8e44807ca26194687ce6d02116ded9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rb: {fileID: 0}
   explosionForce: 700
   explosionRadius: 5
   explosionEffect: {fileID: 518168211817822157, guid: fb7d9e6c815c64345a2b9b60dd55c223,
     type: 3}
   playerAttacker: {fileID: 9130882823596995695, guid: 12858b1f8789e0e428bbcdcab1837ac1,
     type: 3}
-  speed: 0.5
+  speed: 1
+  time: 0
   x: {x: 0, y: 0, z: 0}
-  alienHandler: {fileID: 0}

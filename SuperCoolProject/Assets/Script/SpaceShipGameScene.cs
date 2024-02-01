@@ -148,6 +148,8 @@ public class SpaceShipGameScene : MonoBehaviour
         if (other.gameObject.CompareTag("Alien"))
         {
             enteringAlien = other.gameObject.GetComponent<AlienHandler>();
+            if (enteringAlien.brainWashed == true) { return; } // Interaction with player in TutorialScene, prevents HandleUpdateTarget error
+
             enteringAlien.SetTarget(this.gameObject); // this time its not an alienGO but the spaceship; true for isEvadingPlayer
             enteringAlien.currentState = AlienHandler.AlienState.evading; // this time its not an alienGO but the spaceship; true for isEvadingPlayer
         }

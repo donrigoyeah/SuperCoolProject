@@ -300,7 +300,6 @@ public class AlienHandler : MonoBehaviour
         }
 
         // Finaly move the alien
-
         HandleMovement();
     }
 
@@ -629,7 +628,7 @@ public class AlienHandler : MonoBehaviour
 
             deadAlienGO.gameObject.SetActive(true);
         }
-        Debug.Log("Work wrok wrokokr");
+        Debug.Log("TODO: Dead Alien Ragdoll here");
         HandleDeath();
     }
 
@@ -794,19 +793,20 @@ public class AlienHandler : MonoBehaviour
 
             if (currentSpecies == otherAlienHandler.currentSpecies)
             {
-                //if (hasUterus == true && // opposite Sex
-                //    otherAlienHandler.hasUterus == false &&
-                //    currentAge == AlienAge.sexualActive && // Sexual active
-                //    otherAlienHandler.currentAge == AlienAge.sexualActive && // potential partner also sexual active
-                //    lustTimer > lustTimerThreshold && // can mate
-                //    otherAlienHandler.lustTimer > lustTimerThreshold // partner can mate)
-                //    )
-                //{
-                lustTimer = 0;
-                otherAlienHandler.lustTimer = 0;
-                StartCoroutine(PlayActionParticle(AlienState.loving)); // Loving Partilce
-                HandleMating();
-                //}
+                // TODO: not a better way with just targetAlien?
+                //hasUterus == true && // opposite Sex
+                //otherAlienHandler.hasUterus == false &&
+                //currentAge == AlienAge.sexualActive && // Sexual active
+                //otherAlienHandler.currentAge == AlienAge.sexualActive && // potential partner also sexual active
+                //lustTimer > lustTimerThreshold && // can mate
+                //otherAlienHandler.lustTimer > lustTimerThreshold // partner can mate)
+                if (currentState == AlienState.loving && otherAlienHandler.currentState == AlienState.loving)
+                {
+                    lustTimer = 0;
+                    otherAlienHandler.lustTimer = 0;
+                    StartCoroutine(PlayActionParticle(AlienState.loving)); // Loving Partilce
+                    HandleMating();
+                }
             }
             else
             {
@@ -818,10 +818,6 @@ public class AlienHandler : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("Should be eating: " + (targetAlienHandler == otherAlienHandler).ToString());
-                    Debug.Log("targetAlienHandler: " + targetAlienHandler);
-                    Debug.Log("otherAlienHandler: " + otherAlienHandler);
-
                     // Handles eat other alien
                     hungerTimer = 0;
                     if (other.gameObject.activeInHierarchy)
