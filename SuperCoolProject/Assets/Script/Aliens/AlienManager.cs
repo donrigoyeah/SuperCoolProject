@@ -128,7 +128,6 @@ public class AlienManager : MonoBehaviour
                 alienPoolGoHandler.currentSpecies = currentSpieziesForArea;
                 AddToResourceList(alienPoolGoHandler);
                 alienPoolGoHandler.spawnAsAdults = true;
-                //alienPoolGoHandler.lifeTime = Random.Range(0, maxInitialLifeTime);
                 alienPoolGo.transform.position = new Vector3(randPosX, 0.1f, randPosZ);
                 alienPoolGo.SetActive(true);
             }
