@@ -14,6 +14,7 @@ public class SpaceShipPartHandler : MonoBehaviour
     private Transform myTransform;
     public GameObject draggingParticles;
     public GameObject flyingParticles;
+    public GameObject landingParticles;
 
     public SpaceShipScriptable spaceShipData;
     public float playerSpeedReduction = 0f;
@@ -47,7 +48,7 @@ public class SpaceShipPartHandler : MonoBehaviour
         myTransform = this.transform;
         audioSource = GetComponent<AudioSource>();
         InteractionUIScreen.SetActive(false);
-        draggingParticles.SetActive(true);
+        draggingParticles.SetActive(false);
         flyingParticles.SetActive(true);
     }
 
@@ -120,6 +121,14 @@ public class SpaceShipPartHandler : MonoBehaviour
         flyingParticles.SetActive(false);
         hasLanded = true;
 
+        StartCoroutine(PlayLandingParticles());
+    }
+
+    IEnumerator PlayLandingParticles()
+    {
+        landingParticles.SetActive(true);
+        yield return new WaitForSeconds(2);
+        landingParticles.SetActive(false);
     }
 
 

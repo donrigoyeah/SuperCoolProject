@@ -343,7 +343,6 @@ MonoBehaviour:
   - {fileID: 5274793693502322082}
   - {fileID: 7991882302808134556}
   - {fileID: 7860369408348699713}
-  resourceIndicatorLight: {fileID: 0}
   resourceMaterial:
   - {fileID: 2100000, guid: c37d2f824c767f54293b5f4306714201, type: 2}
   - {fileID: 2100000, guid: 60e6af70e351b464b8dd695307e04ab4, type: 2}
@@ -372,7 +371,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canMove: 1
-  playerSpeed: 10
+  playerSpeed: 15
   gravityValue: -40
   jumpForce: 15
   targetAimPosition: {x: 0, y: 0, z: 0}

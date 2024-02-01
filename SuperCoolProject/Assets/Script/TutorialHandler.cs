@@ -19,6 +19,11 @@ public class TutorialHandler : MonoBehaviour
     public GameObject AlienPrefab;
     public GameObject currentAlien;
     public AlienHandler currentAlienHandler;
+    public AlienHandler alienHandler1;
+    public AlienHandler alienHandler2;
+    public AlienHandler alienHandler3;
+    public AlienHandler alienHandler4;
+    public AlienHandler alienHandler5;
     public Transform currentAlienTransform;
     public float spawnDelay = 5;
     public Vector3 alienStartPosition;
@@ -138,9 +143,9 @@ public class TutorialHandler : MonoBehaviour
         StartCoroutine(DoTheDefense());
     }
 
-    private AlienHandler SpawnAdultAlien(int species, bool isLoving)
+    private AlienHandler SpawnAdultAlien(int species, bool isLoving, AlienHandler currentTargetAlien)
     {
-        GameObject alienPoolGo = PoolManager.Instance.GetPooledAliens(false);
+        GameObject alienPoolGo = PoolManager.Instance.GetPooledAliens(true);
         if (alienPoolGo != null)
         {
             currentAlienHandler = alienPoolGo.GetComponent<AlienHandler>();
@@ -149,15 +154,21 @@ public class TutorialHandler : MonoBehaviour
             currentAlienHandler.currentAge = AlienHandler.AlienAge.fullyGrown;
             currentAlienHandler.MyTransform.localScale = Vector3.one;
             currentAlienHandler.targetPosition3D = alienEndPosition;
+            currentAlienHandler.ActivateCurrentModels(species);
+            currentAlienHandler.distanceToCurrentTarget = 999;
 
             currentAlienHandler.lustTimer = 20;
             currentAlienHandler.hasUterus = false;
             currentAlienHandler.hungerTimer = 20;
-            currentAlienHandler.ActivateCurrentModels(species);
             currentAlienHandler.lifeTime = 999; // Hackerman
-            currentAlienHandler.currentState = AlienHandler.AlienState.idle;
             currentAlienHandler.HandleStateIcon(AlienHandler.AlienState.hunting);
             currentAlienHandler.hungerTimer = 1000;
+
+            if (currentTargetAlien != null)
+            {
+                currentAlienHandler.targetAlien = currentTargetAlien.gameObject;
+                currentAlienHandler.targetAlienHandler = currentTargetAlien;
+            }
 
             currentAlienTransform = alienPoolGo.transform;
             currentAlienTransform.position = alienStartPosition;
@@ -165,8 +176,14 @@ public class TutorialHandler : MonoBehaviour
             {
                 currentAlienHandler.hasUterus = true;
                 currentAlienHandler.maxAmountOfBabies = 2;
+                currentAlienHandler.currentState = AlienHandler.AlienState.loving;
                 currentAlienHandler.HandleStateIcon(AlienHandler.AlienState.loving);
             }
+            else
+            {
+                currentAlienHandler.currentState = AlienHandler.AlienState.hunting;
+            }
+            currentAlienHandler.HandleUpdateTarget();
         }
         if (currentAlienHandler == null)
         {
@@ -178,13 +195,13 @@ public class TutorialHandler : MonoBehaviour
     IEnumerator DoTheFoodCircle()
     {
         GameManager.Instance.CameraFollowSpot.position = cameraPositionForTut;
-        SpawnAdultAlien(0, false);
+        alienHandler1 = SpawnAdultAlien(0, false, null);
         yield return new WaitForSeconds(spawnDelay);
-        SpawnAdultAlien(1, false);
+        alienHandler2 = SpawnAdultAlien(1, false, alienHandler1);
         yield return new WaitForSeconds(spawnDelay);
-        SpawnAdultAlien(2, false);
+        alienHandler3 = SpawnAdultAlien(2, false, alienHandler2);
         yield return new WaitForSeconds(spawnDelay);
-        LoveAlien1 = SpawnAdultAlien(0, false);
+        LoveAlien1 = SpawnAdultAlien(0, false, alienHandler3);
         yield return new WaitForSeconds(spawnDelay + 1);
 
         EnableCertainSlide(currentTutorialSlide);
@@ -193,7 +210,7 @@ public class TutorialHandler : MonoBehaviour
 
     IEnumerator DoTheReproduction()
     {
-        LoveAlien2 = SpawnAdultAlien(0, true);
+        LoveAlien2 = SpawnAdultAlien(0, true, LoveAlien1);
         LoveAlien1.HandleStateIcon(AlienHandler.AlienState.loving);
         LoveAlien1.targetAlien = LoveAlien2.gameObject;
         LoveAlien1.transform.LookAt(LoveAlien2.transform);

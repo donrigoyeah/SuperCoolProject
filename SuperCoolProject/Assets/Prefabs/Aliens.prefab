@@ -53,7 +53,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92d37729e291b4349b07b3bdacec80ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentStateValue: 0
+  currentStateValue: 4
   aliensInRange:
   - {fileID: 0}
   - {fileID: 0}
@@ -66,7 +66,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   aliensInRangeCount: 0
-  TargetAlienTransform: {fileID: 0}
   resourceScale: 0.7
   childScale: 0.6
   sexualActiveScale: 0.8
@@ -74,13 +73,14 @@ MonoBehaviour:
   brainWashed: 0
   MyTransform: {fileID: 414676901202353711}
   currentAge: 0
+  MyCollisionCollider: {fileID: 0}
   spawnAsAdults: 0
   isRendered: 1
   canAct: 1
   currentSpecies: 0
   hasUterus: 0
   alienHealth: 0
-  isDead: 1
+  isDead: 0
   lifeTime: 0
   lustTimer: 0
   hungerTimer: 0
@@ -101,6 +101,9 @@ MonoBehaviour:
   distanceToCurrentTarget: 0
   targetAlien: {fileID: 0}
   lastTargetAlien: {fileID: 0}
+  targetAlienHandler: {fileID: 0}
+  TargetAlienTransform: {fileID: 0}
+  otherAlienHandler: {fileID: 0}
   alienSpecies:
   - {fileID: 8329259287624427090}
   - {fileID: 6981288141397108614}
@@ -209,10 +212,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 2.5
-  m_Height: 8
+  m_Radius: 3.5
+  m_Height: 7
   m_Direction: 1
-  m_Center: {x: 0, y: 2, z: 0}
+  m_Center: {x: 0, y: 3.5, z: 0}
 --- !u!82 &9042210739735769762
 AudioSource:
   m_ObjectHideFlags: 0

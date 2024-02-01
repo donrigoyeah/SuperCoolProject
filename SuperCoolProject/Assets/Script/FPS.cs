@@ -15,12 +15,14 @@ public class FPS : MonoBehaviour
 
     private IEnumerator FramesPerSecond()
     {
+        WaitForEndOfFrame frame = new WaitForEndOfFrame();
+
         while (true)
         {
             int fps = (int)(1f / Time.fixedDeltaTime);
             DisplayFPS(fps);
 
-            yield return new WaitForSeconds(0.2f);
+            yield return frame;
         }
     }
 

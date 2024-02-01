@@ -93,7 +93,6 @@ public class GameManager : MonoBehaviour
         spaceShipPartsDisplay.text = currentSpaceShipParts.ToString() + "/" + totalSpaceShipParts.ToString();
         currentCloneJuice = maxCloneJuice;
         cloneJuiceUI.fillAmount = currentCloneJuice / maxCloneJuice;
-        loadingScreenHandler.totalAwakeCalls++;
     }
 
     private void FixedUpdate()
@@ -169,7 +168,11 @@ public class GameManager : MonoBehaviour
         {
             CameraFollowSpot.position = Vector3.zero;
             StartCoroutine(RaiseCameraSpeed(cameraSpeedRaiseDuration));
-            //StartCoroutine(WaitSecBeforeTut(cameraSpeedRaiseDuration));
+            if (devMode == false)
+            {
+                Debug.Log("Start Tutorial");
+                StartCoroutine(WaitSecBeforeTut(cameraSpeedRaiseDuration));
+            }
         }
     }
 
@@ -181,7 +184,7 @@ public class GameManager : MonoBehaviour
 
     private void HandleTutorialStart()
     {
-        Debug.Log("start Turtorial here. Uncomment the foloowing line up to return");
+        Debug.Log("Debug Show Tutorial");
         FreezeAllPlayers();
         TutorialHandler.Instance.EnableEntireTutorial();
         return;
@@ -191,7 +194,7 @@ public class GameManager : MonoBehaviour
         {
             hideTut = PlayerPrefs.GetInt("hideTutorial");
 
-            if (hideTut == 1 || devMode == true)
+            if (hideTut == 1)
             {
                 UnFreezeAllPlayers();
                 return;
@@ -328,20 +331,22 @@ public class GameManager : MonoBehaviour
     {
         float radius = 0;
         float angle = 0;
+        int distanceIncrease;
+        float randPosPartX;
+        float randPosPartZ;
+
         for (int i = 0; i < totalSpaceShipParts - 1; i++)
         {
-            int distanceIncrease = i * 10;
-
-            radius = Random.Range(50 + distanceIncrease, 80 + distanceIncrease);
-
-            float randPosX = radius * Mathf.Cos(angle);
-            float randPosZ = radius * Mathf.Sin(angle);
-
             angle += 360 / totalSpaceShipParts;
+            distanceIncrease = i * 10;
+            radius = Random.Range(50 + distanceIncrease, 80 + distanceIncrease);
+            randPosPartX = radius * Mathf.Cos(angle);
+            randPosPartZ = radius * Mathf.Sin(angle);
+
             CurrentPartGO = Instantiate(SpaceShipPart, SpaceShipPartContainer);
             CurrentPartHandler = CurrentPartGO.GetComponent<SpaceShipPartHandler>();
-            CurrentPartHandler.targetPositionX = randPosX;
-            CurrentPartHandler.targetPositionZ = randPosZ;
+            CurrentPartHandler.targetPositionX = randPosPartX;
+            CurrentPartHandler.targetPositionZ = randPosPartZ;
             CurrentPartHandler.UpgradeName.text = spaceShipScriptable[i].name;
             CurrentPartHandler.spaceShipData = spaceShipScriptable[i];
             StartCoroutine(CurrentPartHandler.HandleFlyingParts());
@@ -357,9 +362,6 @@ public class GameManager : MonoBehaviour
         StartCoroutine(CurrentPartHandler.HandleFlyingParts());
 
         TutorialHandler.Instance.totalAmountOfSpaceShpParts.text = totalSpaceShipParts.ToString();
-
-        // After loading all aliens sent finished state to Loading Screen
-        loadingScreenHandler.currentAwakeCalls++;
     }
 
     //Space Ships parts are collected and abilities are unlocked here
@@ -408,21 +410,5 @@ public class GameManager : MonoBehaviour
             HandleWin();
         }
     }
-
-    // private void OnDrawGizmos()
-    // {
-    //     for (int i = 0; i < 40; i++)
-    //     {
-    //         Gizmos.DrawWireSphere(Trajectory(i/40f), 0.1f);
-    //     }
-    //     Debug.Log("draw");
-    // }
-
     #endregion
-
-
-
-    // TODO: Handle stuff like day/night cycle here
-    // Handle spaceship parts collected
-    // Handle gametime
 }

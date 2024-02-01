@@ -25,7 +25,7 @@ public class LoadingScreenHandler : MonoBehaviour
     {
         SharedInstance = this;
         hasFinishedLoading = false;
-        LoadingScreen.SetActive(true);
+        LoadingScreen.SetActive(false);
     }
 
     private void Update()

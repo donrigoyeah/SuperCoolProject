@@ -128,11 +128,11 @@ public class AlienManager : MonoBehaviour
                 //alienPoolGoHandler.lifeTime = Random.Range(0, maxInitialLifeTime);
                 alienPoolGo.transform.position = new Vector3(randPosX, 0.1f, randPosZ);
                 alienPoolGo.SetActive(true);
-                //Debug.Break();
             }
-            yield return new WaitForSeconds((1 / PoolManager.Instance.alienAmount) * totalTimeToSpawnAliens);
+            yield return new WaitForSeconds((1 / PoolManager.Instance.alienAmount));//* totalTimeToSpawnAliens
         }
 
+        Debug.Log("AlienManager wakepupcall");
         loadingScreenHandler.currentAwakeCalls++;
     }
 

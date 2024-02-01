@@ -76,10 +76,7 @@ public class HUDHandler : MonoBehaviour
         {
             if (HUDScaler.localScale == Vector3.one) { StartCoroutine(ScaleDown()); }
         }
-        if (currentHUD == 2)
-        {
-            HandleDisplayTimeOfDay();
-        }
+        if (currentHUD == 2) { HandleDisplayTimeOfDay(); }
     }
 
     public void ChangeHUD()

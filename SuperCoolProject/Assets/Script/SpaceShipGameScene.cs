@@ -12,8 +12,7 @@ public class SpaceShipGameScene : MonoBehaviour
     public float bobbleStart = 23.5f;
 
     [Header("Game Scene Stuff")]
-    public int animationSteps = 100;
-    public float animationDurationStart = 3f;
+    public float animationDurationStart = 1f;
     public float animationDurationWin = 3f;
 
     public Vector3 gamePosition = new Vector3(0, 0, 15);
@@ -96,11 +95,13 @@ public class SpaceShipGameScene : MonoBehaviour
     {
         elapsedTimeCrash = 0;
         startingPos = this.transform.position;
+        WaitForEndOfFrame frame = new WaitForEndOfFrame();
+
         while (elapsedTimeCrash < seconds)
         {
             this.transform.position = Vector3.Lerp(startingPos, gamePosition, (elapsedTimeCrash / seconds));
             elapsedTimeCrash += Time.fixedDeltaTime;
-            yield return new WaitForEndOfFrame();
+            yield return frame;
         }
 
         // TODO: Add cameraShake
