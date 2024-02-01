@@ -264,9 +264,11 @@ public class AlienHandler : MonoBehaviour
 
     private void FixedUpdate()
     {
+        HandleRendering();
+        if (canAct == false) { return; }
+
         delta = Time.fixedDeltaTime;
         HandleUpdateVariables(delta);
-        HandleRendering();
 
         // For Aliens within 50 units of cameraSpot
         if (isRendered)

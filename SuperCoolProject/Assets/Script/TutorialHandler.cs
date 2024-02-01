@@ -79,6 +79,7 @@ public class TutorialHandler : MonoBehaviour
         TutorialGameObject.SetActive(false);
         Time.timeScale = 1;
         GameManager.Instance.UnFreezeAllPlayers();
+        GameManager.Instance.UnFreezeAllAliens();
     }
 
     public void NextSlide()
@@ -88,6 +89,7 @@ public class TutorialHandler : MonoBehaviour
         {
             TutorialGameObject.SetActive(false);
             GameManager.Instance.UnFreezeAllPlayers();
+            GameManager.Instance.UnFreezeAllAliens();
             Time.timeScale = 1;
             return;
         }
@@ -149,6 +151,8 @@ public class TutorialHandler : MonoBehaviour
         if (alienPoolGo != null)
         {
             currentAlienHandler = alienPoolGo.GetComponent<AlienHandler>();
+            AlienManager.Instance.allAlienHandlers.Add(currentAlienHandler);
+
             currentAlienHandler.BrainwashAlien();
             currentAlienHandler.currentSpecies = species;
             currentAlienHandler.currentAge = AlienHandler.AlienAge.fullyGrown;

@@ -171,6 +171,7 @@ public class GameManager : MonoBehaviour
             if (devMode == false)
             {
                 Debug.Log("Start Tutorial");
+                FreezeAllAliens();
                 StartCoroutine(WaitSecBeforeTut(cameraSpeedRaiseDuration));
             }
         }
@@ -182,9 +183,11 @@ public class GameManager : MonoBehaviour
         HandleTutorialStart();
     }
 
+
+
     private void HandleTutorialStart()
     {
-        Debug.Log("Debug Show Tutorial");
+        Debug.Log("TODO: Remove this later");
         FreezeAllPlayers();
         TutorialHandler.Instance.EnableEntireTutorial();
         return;
@@ -211,6 +214,21 @@ public class GameManager : MonoBehaviour
         FreezeAllPlayers();
         TutorialHandler.Instance.EnableEntireTutorial();
         return;
+    }
+
+    public void FreezeAllAliens()
+    {
+        foreach (var item in AlienManager.Instance.allAlienHandlers)
+        {
+            item.canAct = false;
+        }
+    }
+    public void UnFreezeAllAliens()
+    {
+        foreach (var item in AlienManager.Instance.allAlienHandlers)
+        {
+            item.canAct = true;
+        }
     }
 
     public void FreezeAllPlayers()

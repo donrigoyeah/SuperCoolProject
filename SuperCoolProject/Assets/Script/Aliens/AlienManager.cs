@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class AlienManager : MonoBehaviour
 {
     [Header("Current Alien Population")]
+    public List<AlienHandler> allAlienHandlers = new List<AlienHandler>(PoolManager.Instance.alienAmount + PoolManager.Instance.alienAmountExtra);
     // 0:Sphere, 1:Square, 2:Triangle
     public int sphereCount;
     public int squareCount;
@@ -123,7 +124,9 @@ public class AlienManager : MonoBehaviour
                 randPosZ = r * Mathf.Sin(Mathf.Deg2Rad * angle);
 
                 alienPoolGoHandler = alienPoolGo.GetComponent<AlienHandler>();
+                allAlienHandlers.Add(alienPoolGoHandler);
                 alienPoolGoHandler.currentSpecies = currentSpieziesForArea;
+                AddToResourceList(alienPoolGoHandler);
                 alienPoolGoHandler.spawnAsAdults = true;
                 //alienPoolGoHandler.lifeTime = Random.Range(0, maxInitialLifeTime);
                 alienPoolGo.transform.position = new Vector3(randPosX, 0.1f, randPosZ);
