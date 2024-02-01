@@ -155,7 +155,6 @@ public class TutorialHandler : MonoBehaviour
             currentAlienHandler.currentAge = AlienHandler.AlienAge.fullyGrown;
             currentAlienHandler.MyTransform.localScale = Vector3.one;
             currentAlienHandler.targetPosition3D = alienEndPosition;
-            currentAlienHandler.distanceToCurrentTarget = 999;
             currentAlienHandler.ActivateCurrentModels(species);
 
             currentAlienHandler.lustTimer = 20;
@@ -170,6 +169,7 @@ public class TutorialHandler : MonoBehaviour
                 currentAlienHandler.targetAlien = currentTargetAlien.gameObject;
                 currentAlienHandler.SetTarget(currentTargetAlien.gameObject);
                 currentAlienHandler.targetAlienHandler = currentTargetAlien;
+                currentAlienHandler.HandleUpdateTarget();
             }
 
             currentAlienTransform = alienPoolGo.transform;
@@ -187,7 +187,6 @@ public class TutorialHandler : MonoBehaviour
                 currentAlienHandler.currentState = AlienHandler.AlienState.hunting;
             }
 
-            currentAlienHandler.HandleUpdateTarget();
         }
         if (currentAlienHandler == null)
         {
@@ -201,6 +200,7 @@ public class TutorialHandler : MonoBehaviour
     {
         GameManager.Instance.CameraFollowSpot.position = cameraPositionForTut;
         alienHandler1 = SpawnAdultAlien(0, false, null);
+        alienHandler1.transform.LookAt(alienEndPosition);
         yield return new WaitForSeconds(spawnDelay);
         alienHandler2 = SpawnAdultAlien(1, false, alienHandler1);
         yield return new WaitForSeconds(spawnDelay);
@@ -215,10 +215,15 @@ public class TutorialHandler : MonoBehaviour
 
     IEnumerator DoTheReproduction()
     {
-        LoveAlien2 = SpawnAdultAlien(0, true, LoveAlien1);
+        LoveAlien1.GetComponent<AlienHandler>().currentState = AlienHandler.AlienState.loving;
         LoveAlien1.HandleStateIcon(AlienHandler.AlienState.loving);
+
+        LoveAlien2 = SpawnAdultAlien(0, true, LoveAlien1);
+        LoveAlien2.GetComponent<AlienHandler>().currentState = AlienHandler.AlienState.loving;
+
         LoveAlien1.targetAlien = LoveAlien2.gameObject;
         LoveAlien1.transform.LookAt(LoveAlien2.transform);
+
         yield return new WaitForSeconds(spawnDelay + 1);
         EnableCertainSlide(currentTutorialSlide);
         TutorialGameObject.SetActive(true);
@@ -226,13 +231,15 @@ public class TutorialHandler : MonoBehaviour
 
     IEnumerator DoTheDefense()
     {
-        //SpawnAdultAlien(0, false, true);
+        //SpawnAdultAlien(0, false, sadtrue);
         LoveAlien1.currentState = AlienHandler.AlienState.hunting;
-        LoveAlien2.currentState = AlienHandler.AlienState.hunting;
-        LoveAlien2.targetAlien = GameManager.Instance.players[0].gameObject;
         LoveAlien1.targetAlien = GameManager.Instance.players[0].gameObject;
         LoveAlien1.transform.LookAt(GameManager.Instance.players[0].gameObject.transform);
+
+        LoveAlien2.currentState = AlienHandler.AlienState.hunting;
+        LoveAlien2.targetAlien = GameManager.Instance.players[0].gameObject;
         LoveAlien2.transform.LookAt(GameManager.Instance.players[0].gameObject.transform);
+
         yield return new WaitForSeconds(1);
         LoveAlien1.brainWashed = false;
         LoveAlien2.brainWashed = false;

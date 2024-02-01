@@ -135,7 +135,6 @@ public class AlienManager : MonoBehaviour
             yield return new WaitForSeconds((1 / PoolManager.Instance.alienAmount));//* totalTimeToSpawnAliens
         }
 
-        Debug.Log("AlienManager wakepupcall");
         loadingScreenHandler.currentAwakeCalls++;
     }
 

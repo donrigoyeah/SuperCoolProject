@@ -67,6 +67,7 @@ public class PlayerAttacker : MonoBehaviour
     public Transform grenadespawnPoint;
     public Transform target;
     public Transform arcHeight;
+    public float trajectorySpeed = 2;
     public Vector3 ac;
     public Vector3 cb;
     public Vector3 cachedResult;
@@ -477,9 +478,9 @@ public class PlayerAttacker : MonoBehaviour
 
         for (float ratio = 0; ratio <= 1; ratio += 1 / vertecCount)
         {
-            pos1 = Vector3.Lerp(grenadespawnPoint.position, arcHeight.position, ratio);
-            post2 = Vector3.Lerp(arcHeight.position, target.position, ratio);
-            pos3 = Vector3.Lerp(pos1, post2, ratio);
+            pos1 = Vector3.Lerp(grenadespawnPoint.position, arcHeight.position, ratio * trajectorySpeed);
+            post2 = Vector3.Lerp(arcHeight.position, target.position, ratio * trajectorySpeed);
+            pos3 = Vector3.Lerp(pos1, post2, ratio * trajectorySpeed);
 
             pointList.Add(pos3);
         }
@@ -559,15 +560,18 @@ public class PlayerAttacker : MonoBehaviour
     {
         // GameObject NewGrenade = Instantiate(grenadePrefab, grenadespawnPoint.transform.position, transform.rotation);
         grenadePoolGo = PoolManager.Instance.GetPooledGrenade();
-        grenadePoolGo.SetActive(true);
-        grenadePoolGo.transform.position = grenadespawnPoint.transform.position;
-        grenadePoolGo.transform.rotation = grenadespawnPoint.transform.rotation;
-        currentGH = grenadePoolGo.GetComponent<GrenadeHandler>();
-        currentGH.time = 0;
-        currentGH.playerAttacker = this;
-        StartCoroutine(DisableAfterSeconds(2, grenadePoolGo));
-        // GrenadeHandler currentGH = NewGrenade.GetComponent<GrenadeHandler>();
-        // currentGH.playerAttacker = this;
+        if (grenadePoolGo != null)
+        {
+            grenadePoolGo.SetActive(true);
+            grenadePoolGo.transform.position = grenadespawnPoint.transform.position;
+            grenadePoolGo.transform.rotation = grenadespawnPoint.transform.rotation;
+            currentGH = grenadePoolGo.GetComponent<GrenadeHandler>();
+            currentGH.time = 0;
+            currentGH.playerAttacker = this;
+            StartCoroutine(DisableAfterSeconds(2, grenadePoolGo));
+            // GrenadeHandler currentGH = NewGrenade.GetComponent<GrenadeHandler>();
+            // currentGH.playerAttacker = this;
+        }
     }
 
     #endregion
@@ -579,7 +583,7 @@ public class PlayerAttacker : MonoBehaviour
         // Less resources on all the alien instances
         if (other.gameObject.CompareTag("Alien"))
         {
-            
+
             CurrentCollidingAH = other.gameObject.GetComponent<AlienHandler>();
             if (CurrentCollidingAH.isDead) { return; }
 

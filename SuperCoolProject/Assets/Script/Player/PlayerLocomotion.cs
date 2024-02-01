@@ -73,16 +73,20 @@ public class PlayerLocomotion : MonoBehaviour
     void Update()
     {
         // Player can not move!
-        if (canMove == false) { return; }
+        if (canMove == false) { playerAnim.SetBool("IsWalking", false); return; }
 
         // Player is Alive
         if (playerManager.isAlive)
         {
+            if (inputHandler.inputAim != Vector2.zero && !playerManager.isInteracting)
+            {
+                Rotation();
+            }
+
             if (inputHandler.inputMovement != Vector2.zero && !playerManager.isInteracting)
             {
                 playerAnim.SetBool("IsWalking", true);
                 Movement();
-                Rotation();
             }
             else
             {
