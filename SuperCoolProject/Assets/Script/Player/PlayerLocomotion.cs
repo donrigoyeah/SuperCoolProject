@@ -74,7 +74,7 @@ public class PlayerLocomotion : MonoBehaviour
     {
         // Player can not move!
         if (canMove == false) { return; }
-
+        
         // Player is Alive
         if (playerManager.isAlive)
         {

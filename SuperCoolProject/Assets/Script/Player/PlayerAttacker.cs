@@ -575,6 +575,7 @@ public class PlayerAttacker : MonoBehaviour
         // Less resources on all the alien instances
         if (other.gameObject.CompareTag("Alien"))
         {
+            
             CurrentCollidingAH = other.gameObject.GetComponent<AlienHandler>();
             if (CurrentCollidingAH.isDead) { return; }
 
