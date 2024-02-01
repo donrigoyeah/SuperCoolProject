@@ -135,7 +135,6 @@ public class PlayerManager : MonoBehaviour
     public void HandleHit()
     {
         if(!isAlive) {return; }
-        
         if (timeSinceLastHit < invincibleFrames)
         {
             return;
