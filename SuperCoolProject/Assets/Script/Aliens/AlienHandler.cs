@@ -409,7 +409,7 @@ public class AlienHandler : MonoBehaviour
                         targetAlienHandler.lustTimer > lustTimerThreshold // partner can mate
                         )
                     {
-                        SetTargetAlien(targetAlienHandler.gameObject);
+                        SetTarget(targetAlienHandler.gameObject);
                         StartCoroutine(IdleSecsUntilNewState(1f, AlienState.loving));
                         targetAlienHandler.currentState = AlienState.loving;
                         targetAlienHandler.targetAlienHandler = this;
@@ -432,7 +432,7 @@ public class AlienHandler : MonoBehaviour
                         (currentSpecies == targetAlienHandler.currentSpecies + 1 ||
                         (currentSpecies == 0 && targetAlienHandler.currentSpecies == 2))) // potential food || if closestAlienHandler is smaller || hunting state
                     {
-                        SetTargetAlien(targetAlienHandler.gameObject);
+                        SetTarget(targetAlienHandler.gameObject);
                         StartCoroutine(IdleSecsUntilNewState(1f, AlienState.hunting));
                         targetAlienHandler.currentState = AlienState.evading;
                         targetAlienHandler.targetAlienHandler = this;
@@ -440,7 +440,7 @@ public class AlienHandler : MonoBehaviour
                     //else if ((currentSpecies == targetAlienHandler.currentSpecies - 1 ||
                     //    (currentSpecies == 2 && targetAlienHandler.currentSpecies == 0))) // 0:Sphere > 1:Square > 2:Triangle || if closestAlienHandler is bigger
                     //{
-                    //    SetTargetAlien(aliensInRange[i].gameObject);
+                    //    SetTarget(aliensInRange[i].gameObject);
                     //}
                 }
 
@@ -1013,7 +1013,7 @@ public class AlienHandler : MonoBehaviour
             return;
         }
 
-        SetTargetAlien(currentTargetGO);
+        SetTarget(currentTargetGO);
     } // Use this here on the player as well to scare the aliens away
 
     public void HandleAttacking(GameObject currentTargetGO) // Player makes them flee as well and by acting als targetAlien in PlayerManager
@@ -1028,7 +1028,7 @@ public class AlienHandler : MonoBehaviour
 
         if (brainWashed == true) { return; }
 
-        SetTargetAlien(currentTargetGO);
+        SetTarget(currentTargetGO);
     }
 
     private void HandleLoveApproach(GameObject targetAlien)
@@ -1041,7 +1041,7 @@ public class AlienHandler : MonoBehaviour
         }
     }
 
-    public void SetTargetAlien(GameObject TargetGO)
+    public void SetTarget(GameObject TargetGO)
     {
         if (targetAlien != null)
         {

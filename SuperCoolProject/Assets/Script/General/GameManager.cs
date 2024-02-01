@@ -374,7 +374,8 @@ public class GameManager : MonoBehaviour
         // Spawn Antenna last and in front of player
         CurrentPartGO = Instantiate(SpaceShipPart, SpaceShipPartContainer);
         CurrentPartHandler = CurrentPartGO.GetComponent<SpaceShipPartHandler>();
-        CurrentPartGO.transform.position = AntennaSpawnLocation;
+        CurrentPartHandler.targetPositionX = AntennaSpawnLocation.x;
+        CurrentPartHandler.targetPositionZ = AntennaSpawnLocation.z;
         CurrentPartHandler.UpgradeName.text = spaceShipScriptable[totalSpaceShipParts - 1].name;
         CurrentPartHandler.spaceShipData = spaceShipScriptable[totalSpaceShipParts - 1];
         StartCoroutine(CurrentPartHandler.HandleFlyingParts());

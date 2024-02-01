@@ -221,14 +221,14 @@ public class PlayerManager : MonoBehaviour
 
             if (CurrentSurroundingAH.currentAge == AlienHandler.AlienAge.fullyGrown)
             {
-                CurrentSurroundingAH.SetTargetAlien(this.gameObject);
+                CurrentSurroundingAH.SetTarget(this.gameObject);
                 CurrentSurroundingAH.currentState = AlienHandler.AlienState.hunting;
                 //CurrentSurroundingAH.TargetAlienTransform = MyTransform;
                 continue;
             }
             else
             {
-                CurrentSurroundingAH.SetTargetAlien(this.gameObject);
+                CurrentSurroundingAH.SetTarget(this.gameObject);
                 CurrentSurroundingAH.currentState = AlienHandler.AlienState.evading;
                 //CurrentSurroundingAH.TargetAlienTransform = MyTransform;
                 continue;
