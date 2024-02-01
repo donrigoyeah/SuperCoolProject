@@ -444,9 +444,9 @@ MonoBehaviour:
   bobbleAmplitude: 0.02
   bobbleSpeed: 0.5
   bobbleStart: 23.5
-  animationSteps: 100
-  animationDuration: 2
-  endPosition: {x: 0, y: 0, z: 15}
+  animationDurationStart: 1
+  animationDurationWin: 3
+  gamePosition: {x: 0, y: 0, z: 15}
   SpaceShipCanvas: {fileID: 1675704904367416502}
   DamageParticlesGO: {fileID: 8990499587631485402}
   ExhaustParticlesGO: {fileID: 1590053913949543272}
@@ -578,8 +578,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.7485605, y: 1.8785999, z: 1.8472519}
-  m_Center: {x: 0.374282, y: 9.642428e-16, z: -0.42362538}
+  m_Size: {x: 1.7485605, y: 2.3031821, z: 2.2163432}
+  m_Center: {x: 0.374282, y: 3.8064136e-15, z: -0.60817003}
 --- !u!114 &3022947434942135248
 MonoBehaviour:
   m_ObjectHideFlags: 0

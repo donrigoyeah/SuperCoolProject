@@ -89,7 +89,7 @@ public class PlayerManager : MonoBehaviour
     private AlienHandler ResourceAlienPoolGoHandler;
     private Vector3 targetRotation;
     private Quaternion newRotation;
-    private int stepsUnfold;
+    public int stepsUnfold;
     private float animationDurationUnfold;
     private int stepsFold;
     private float animationDurationFold;
@@ -135,6 +135,8 @@ public class PlayerManager : MonoBehaviour
 
     public void HandleHit()
     {
+        if(!isAlive) {return; }
+        
         if (timeSinceLastHit < invincibleFrames)
         {
             return;
@@ -532,6 +534,7 @@ public class PlayerManager : MonoBehaviour
             GORT.localScale = Vector3.one * 3 * i / stepsUnfold;
             GORT.localEulerAngles = new Vector3(0, 0, degree * i / stepsUnfold);
         }
+
     }
 
     public IEnumerator FoldResource(GameObject Resource)
