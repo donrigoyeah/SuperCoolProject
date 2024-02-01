@@ -5561,6 +5561,16 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1139254413652998083, guid: c80505f0b68aa6f4dbb7fa8f96b9436d,
         type: 3}
+      propertyPath: maxSpawnRadius
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 1139254413652998083, guid: c80505f0b68aa6f4dbb7fa8f96b9436d,
+        type: 3}
+      propertyPath: minSpawnRadius
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 1139254413652998083, guid: c80505f0b68aa6f4dbb7fa8f96b9436d,
+        type: 3}
       propertyPath: loadingScreenHandler
       value: 
       objectReference: {fileID: 506797206}

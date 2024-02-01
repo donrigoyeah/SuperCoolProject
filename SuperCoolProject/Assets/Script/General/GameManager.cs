@@ -170,7 +170,6 @@ public class GameManager : MonoBehaviour
             StartCoroutine(RaiseCameraSpeed(cameraSpeedRaiseDuration));
             if (devMode == false)
             {
-                Debug.Log("Start Tutorial");
                 FreezeAllAliens();
                 StartCoroutine(WaitSecBeforeTut(cameraSpeedRaiseDuration));
             }

@@ -1057,10 +1057,10 @@ public class AlienHandler : MonoBehaviour
     {
         canAct = false;
         HandleIdleAnimation();
-        if (brainWashed == false)
-        {
-            DiscardCurrentAction(); // To prevent the lost of target Alien
-        }
+        //if (brainWashed == false)
+        //{
+        //    DiscardCurrentAction(); // To prevent the lost of target Alien
+        //}
         currentState = nextState;
         lookTimeIdle = UnityEngine.Random.Range(0, (seconds + 1) * 10) / 10;
         yield return new WaitForSeconds(lookTimeIdle);

@@ -59,7 +59,7 @@ public class GrenadeHandler : MonoBehaviour
     {
         // TODO: CHeck if we only need the  rb.AddExplosionForce(explosionForce, transform.position, explosionRadius); without the sphere cast
 
-        Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius, layerMaskAlien);
+        Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius, layerMaskAlien, QueryTriggerInteraction.Ignore);
 
         foreach (Collider nearbyObects in colliders)
         {
@@ -68,7 +68,11 @@ public class GrenadeHandler : MonoBehaviour
             {
                 distance = Vector3.Distance(transform.position, nearbyObects.transform.position);
                 damage = CalculateDamage(distance);
-                alien.alienHealth -= damage;
+                AlienHandler nearAlien = nearbyObects.gameObject.GetComponentInParent<AlienHandler>();
+                if (nearAlien != null)
+                {
+                    nearAlien.alienHealth -= damage;
+                }
             }
         }
         time = 0;
