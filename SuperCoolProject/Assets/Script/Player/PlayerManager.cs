@@ -121,7 +121,7 @@ public class PlayerManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        timeSinceLastHit += Time.fixedDeltaTime;
+        timeSinceLastHit += Time.deltaTime;
         HandleSurroundingAliens();
         HandleResource();
 
@@ -191,12 +191,12 @@ public class PlayerManager : MonoBehaviour
         currentTriangleResource = maxTriangleResource;
     }
 
-    void OnDrawGizmos()
-    {
-        // Draw a yellow sphere at the transform's position
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawSphere(MyTransform.position, playerDetectionRadius);
-    }
+    //void OnDrawGizmos()
+    //{
+    //    // Draw a yellow sphere at the transform's position
+    //    Gizmos.color = Color.yellow;
+    //    Gizmos.DrawSphere(MyTransform.position, playerDetectionRadius);
+    //}
 
 
     private void HandleSurroundingAliens()

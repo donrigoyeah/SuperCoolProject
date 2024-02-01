@@ -84,7 +84,7 @@ public class TutorialHandler : MonoBehaviour
     public void NextSlide()
     {
         currentTutorialSlide++;
-        if (currentTutorialSlide > totalTutorialSlides) // After last ok press
+        if (currentTutorialSlide == totalTutorialSlides) // After last ok press
         {
             TutorialGameObject.SetActive(false);
             GameManager.Instance.UnFreezeAllPlayers();
@@ -207,7 +207,7 @@ public class TutorialHandler : MonoBehaviour
         alienHandler3 = SpawnAdultAlien(2, false, alienHandler2);
         yield return new WaitForSeconds(spawnDelay);
         LoveAlien1 = SpawnAdultAlien(0, false, alienHandler3);
-        yield return new WaitForSeconds(spawnDelay + 1);
+        yield return new WaitForSeconds(spawnDelay + 1.5f);
 
         EnableCertainSlide(currentTutorialSlide);
         TutorialGameObject.SetActive(true);

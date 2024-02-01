@@ -1109,8 +1109,8 @@ MonoBehaviour:
   alienHandler4: {fileID: 0}
   alienHandler5: {fileID: 0}
   currentAlienTransform: {fileID: 0}
-  spawnDelay: 2
-  alienStartPosition: {x: -23, y: 0, z: -11}
+  spawnDelay: 2.2
+  alienStartPosition: {x: -25, y: 0, z: -11}
   alienEndPosition: {x: 5, y: 0, z: -11}
   cameraPositionForTut: {x: 0, y: 0, z: -11}
   LoveAlien1: {fileID: 0}
@@ -4660,12 +4660,37 @@ PrefabInstance:
     - target: {fileID: 699558176809233568, guid: 8a39cf38023b57946be252867c65b70b,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 867407021513246187, guid: 8a39cf38023b57946be252867c65b70b,
         type: 3}
       propertyPath: m_text
       value: The Aliens are protecting their offsprings
+      objectReference: {fileID: 0}
+    - target: {fileID: 1049350487055085183, guid: 8a39cf38023b57946be252867c65b70b,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1049350487055085183, guid: 8a39cf38023b57946be252867c65b70b,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1049350487055085183, guid: 8a39cf38023b57946be252867c65b70b,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1049350487055085183, guid: 8a39cf38023b57946be252867c65b70b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1049350487055085183, guid: 8a39cf38023b57946be252867c65b70b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 1108370448267401204, guid: 8a39cf38023b57946be252867c65b70b,
         type: 3}
@@ -4704,6 +4729,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 134
+      objectReference: {fileID: 0}
+    - target: {fileID: 1963581592298407746, guid: 8a39cf38023b57946be252867c65b70b,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.92387956
+      objectReference: {fileID: 0}
+    - target: {fileID: 1963581592298407746, guid: 8a39cf38023b57946be252867c65b70b,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.38268343
+      objectReference: {fileID: 0}
+    - target: {fileID: 1963581592298407746, guid: 8a39cf38023b57946be252867c65b70b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 45
       objectReference: {fileID: 0}
     - target: {fileID: 2054848811460540635, guid: 8a39cf38023b57946be252867c65b70b,
         type: 3}
@@ -4893,7 +4933,7 @@ PrefabInstance:
     - target: {fileID: 7009943369631669211, guid: 8a39cf38023b57946be252867c65b70b,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7281877038645789277, guid: 8a39cf38023b57946be252867c65b70b,
         type: 3}
@@ -4909,6 +4949,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7878260462295476301, guid: 8a39cf38023b57946be252867c65b70b,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.92387956
+      objectReference: {fileID: 0}
+    - target: {fileID: 7878260462295476301, guid: 8a39cf38023b57946be252867c65b70b,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.38268343
+      objectReference: {fileID: 0}
+    - target: {fileID: 7878260462295476301, guid: 8a39cf38023b57946be252867c65b70b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -45
       objectReference: {fileID: 0}
     - target: {fileID: 8102864972558949003, guid: 8a39cf38023b57946be252867c65b70b,
         type: 3}
