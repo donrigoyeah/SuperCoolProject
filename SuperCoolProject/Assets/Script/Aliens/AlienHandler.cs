@@ -787,7 +787,7 @@ public class AlienHandler : MonoBehaviour
         if (currentAge == AlienAge.resource) { return; }
 
         // Handle Alien interaction
-        if (other.gameObject.transform.parent.CompareTag("Alien"))
+        if (other.gameObject.transform.parent && other.gameObject.transform.parent.CompareTag("Alien"))
         {
             otherAlienHandler = other.gameObject.GetComponentInParent<AlienHandler>();
             if (otherAlienHandler == null) { return; }
