@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class AlienManager : MonoBehaviour
 {
     [Header("Current Alien Population")]
-    public List<AlienHandler> allAlienHandlers = new List<AlienHandler>(PoolManager.Instance.alienAmount + PoolManager.Instance.alienAmountExtra);
+    public List<AlienHandler> allAlienHandlers = new List<AlienHandler>(300);
     // 0:Sphere, 1:Square, 2:Triangle
     public int sphereCount;
     public int squareCount;
