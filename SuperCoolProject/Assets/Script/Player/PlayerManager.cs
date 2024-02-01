@@ -93,7 +93,6 @@ public class PlayerManager : MonoBehaviour
     private float animationDurationUnfold;
     private int stepsFold;
     private float animationDurationFold;
-    private RectTransform GORT;
     private int stepsShield;
     private float animationDurationShield;
 
@@ -523,6 +522,8 @@ public class PlayerManager : MonoBehaviour
 
     public IEnumerator UnfoldResource(GameObject Resource, float degree)
     {
+        RectTransform GORT;
+
         stepsUnfold = 30;
         animationDurationUnfold = .3f;
         Resource.gameObject.SetActive(true);
@@ -541,6 +542,7 @@ public class PlayerManager : MonoBehaviour
     {
         stepsFold = 30;
         animationDurationFold = .2f;
+        RectTransform GORT;
 
         GORT = Resource.GetComponent<RectTransform>();
         GORT.localScale = Vector3.one * 2;
