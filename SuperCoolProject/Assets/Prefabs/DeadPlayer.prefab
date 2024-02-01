@@ -3324,7 +3324,6 @@ GameObject:
   - component: {fileID: 6957146649907236505}
   - component: {fileID: 5975608871709565873}
   - component: {fileID: 2344008535444441786}
-  - component: {fileID: 8803170346848635889}
   - component: {fileID: 2567293882480777045}
   m_Layer: 0
   m_Name: Armature.003
@@ -3411,29 +3410,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f443a9d8e993b54d9fa9486ac63cc4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rigidbody: {fileID: 383467136632441256}
   childrenCollider: []
   childrenRigidbody: []
---- !u!65 &8803170346848635889
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7996086268359437582}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.06, y: 0.06, z: 0.06}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &2567293882480777045
 MonoBehaviour:
   m_ObjectHideFlags: 0
