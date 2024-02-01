@@ -19,17 +19,19 @@ public class SpaceShipHandler : MonoBehaviour
     private SpaceShipPartHandler spaceShipPartHandler;
     private PlayerLocomotion PL;
 
+    
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
             PM = other.gameObject.GetComponent<PlayerManager>();
-
+            
+            Debug.Log("1");
             // Showing the current values of the resources
             StartCoroutine(PM.UnfoldResource(PM.ResourceUISphere, 50));
             StartCoroutine(PM.UnfoldResource(PM.ResourceUISquare, 25));
             StartCoroutine(PM.UnfoldResource(PM.ResourceUITriangle, 0));
-
+            Debug.Log("fsf");
             // PlayerManager PM = other.gameObject.GetComponent<PlayerManager>();
             if (PM.currentPart == null || PM.isCarryingPart == false) { return; } // If come empty handed to spacehsip return
 
