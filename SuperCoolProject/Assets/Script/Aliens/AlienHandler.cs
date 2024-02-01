@@ -694,8 +694,9 @@ public class AlienHandler : MonoBehaviour
         {
             lastTargetAlien = targetAlien;
         }
+        Debug.Log("Stack overflow error is coming from next two lines. Comment them out and error stops popping up");
         targetAlien = null;
-        TargetAlienTransform = null;
+        TargetAlienTransform = null; 
         targetPosition3D = Vector3.zero;
         targetPosition2D = Vector2.zero;
     }
