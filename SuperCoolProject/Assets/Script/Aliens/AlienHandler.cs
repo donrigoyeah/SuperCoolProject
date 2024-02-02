@@ -152,7 +152,7 @@ public class AlienHandler : MonoBehaviour
     private DeadAlienHandler deadAlien;
     private Vector2 CameraFollowSpot2D;
     private float randomNumber;
-    private float distanceToCameraSpot;
+    public float distanceToCameraSpot;
     private float lookTimeIdle;
     private bool isPlayerBullet;
     private GameObject damageUIGo;
@@ -934,7 +934,7 @@ public class AlienHandler : MonoBehaviour
 
         // Child Life
         resourceSteamGO.SetActive(false);
-        MyRigidbody.constraints = RigidbodyConstraints.FreezePosition | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+        MyRigidbody.constraints = RigidbodyConstraints.FreezePosition | RigidbodyConstraints.FreezeRotation;
         alienHealth = alienLifeChild;
         currentAge = AlienAge.child;
         currentState = AlienState.roaming;
