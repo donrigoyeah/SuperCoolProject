@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
+using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour
 {
@@ -57,7 +58,8 @@ public class GameManager : MonoBehaviour
 
     [Header("UI Elements")]
     public GameObject DeathScreen;
-    public TextMeshProUGUI respawnButton;
+    public Button respawnButton;
+    public Button restartButton;
     public GameObject GameOverScreen;
     public Image DeathScreenCloneJuiceUI;
     public GameObject Clouds;
@@ -181,8 +183,6 @@ public class GameManager : MonoBehaviour
         HandleTutorialStart();
     }
 
-
-
     private void HandleTutorialStart()
     {
         Debug.Log("TODO: Remove this later");
@@ -258,6 +258,14 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void RespawnAllPlayers()
+    {
+        foreach (var item in players)
+        {
+            item.HandleRespawn();
+        }
+    }
+
     public void TurnOnAllPlayerLights()
     {
         if (hasLightmachine == false) { return; }
@@ -297,10 +305,10 @@ public class GameManager : MonoBehaviour
     {
         currentCloneJuice -= cloneCost;
         cloneJuiceUI.fillAmount = currentCloneJuice / maxCloneJuice;
-        if (currentCloneJuice < 0)
-        {
-            HandleLoss();
-        }
+        //if (currentCloneJuice < 0)
+        //{
+        //    HandleLoss();
+        //}
     }
 
     public void HandleGainCloneJuivce(float gain)
@@ -342,6 +350,7 @@ public class GameManager : MonoBehaviour
             item.isAlive = false;
         }
         GameOverScreen.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(respawnButton.gameObject);
     }
 
     #endregion

@@ -15,4 +15,4 @@ MonoBehaviour:
   partName: Antenna
   mass: 6
   abilityUnlockText: Your connection to the ships radar is working now
-  model: {fileID: 919132149155446097, guid: dbca07ea1ad2eb446ae735601fd2ecd5, type: 3}
+  model: {fileID: 4098610907734464495, guid: 04733ccf8effcbc46a02a988ce667983, type: 3}

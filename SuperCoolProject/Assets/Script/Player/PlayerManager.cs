@@ -1,10 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class PlayerManager : MonoBehaviour
@@ -127,11 +125,7 @@ public class PlayerManager : MonoBehaviour
         HandleResource();
 
         if (isAlive == true) { return; }
-        HandleRespawn();
         HandleGameOver();
-
-
-
     }
 
     public void HandleHit()
@@ -184,6 +178,7 @@ public class PlayerManager : MonoBehaviour
         if (GameManager.Instance.players.Count == 1)
         {
             GameManager.Instance.DeathScreen.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(GameManager.Instance.respawnButton.gameObject);
             GameManager.Instance.DeathScreenCloneJuiceUI.fillAmount = GameManager.Instance.currentCloneJuice / GameManager.Instance.maxCloneJuice;
         }
         
@@ -503,9 +498,9 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    private void HandleRespawn()
+    public void HandleRespawn()
     {
-        if (!isAlive && inputHandler.inputInteracting)
+        if (!isAlive)
         {
             if (GameManager.Instance.DeathScreen.activeInHierarchy)
             {

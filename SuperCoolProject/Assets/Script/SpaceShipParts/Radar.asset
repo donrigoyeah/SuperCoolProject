@@ -15,4 +15,4 @@ MonoBehaviour:
   partName: Radar
   mass: 6
   abilityUnlockText: The radar is working. minimap online
-  model: {fileID: 919132149155446097, guid: 1e7fc33390f182847907da8767af9c01, type: 3}
+  model: {fileID: 7266412628360476474, guid: 9049cd6481610ad41ad6838db86682ac, type: 3}

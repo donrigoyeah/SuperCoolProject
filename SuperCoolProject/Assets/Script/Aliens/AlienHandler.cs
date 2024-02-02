@@ -265,25 +265,28 @@ public class AlienHandler : MonoBehaviour
 
     private void FixedUpdate()
     {
+        HandleTickUpdateVariables();
         HandleRendering();
+
         if (canAct == false) { return; }
 
+        HandleUpdateTarget();
         delta = Time.deltaTime;
         HandleUpdateVariables(delta);
 
         // For Aliens within 50 units of cameraSpot
         //if (isRendered)
         //{
-        if (tickTimer >= tickTimerMax + randomNumber)
-        {
-            // Reset Tick timer
-            tickTimer -= tickTimerMax;
-            HandleTickUpdateVariables();
+        //if (tickTimer >= tickTimerMax + randomNumber)
+        //{
+        //    // Reset Tick timer
+        //    tickTimer -= tickTimerMax;
+        //    HandleTickUpdateVariables();
 
-            // Dont update the target if brainwashed
-            //if (brainWashed == true || currentState == AlienState.roaming || targetAlien == null) { return; }
-            HandleUpdateTarget();
-        }
+        //    // Dont update the target if brainwashed
+        //    //if (brainWashed == true || currentState == AlienState.roaming || targetAlien == null) { return; }
+        //    HandleUpdateTarget();
+        //}
         //}
         //else
         //{
