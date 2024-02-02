@@ -38,7 +38,7 @@ public class GrenadeHandler : MonoBehaviour
 
     private void FixedUpdate()
     {
-        time += Time.fixedDeltaTime * speed;
+        time += Time.deltaTime * speed;
         transform.position = playerAttacker.Evaluate(time);
 
         if (transform.position.y < .1f || hasExploded == false)

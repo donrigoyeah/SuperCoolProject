@@ -58,7 +58,7 @@ public class CopHandler : MonoBehaviour
 
     private void FixedUpdate()
     {
-        fireTimer += Time.fixedDeltaTime;
+        fireTimer += Time.deltaTime;
         if (closestPlayer == null) { FindClosestPlayer(); }
         if (copHealthCurrent < 0) { HandleDeath(); }
 
@@ -108,7 +108,7 @@ public class CopHandler : MonoBehaviour
 
         if (closestPlayer == null) { return; }
 
-        stepCop = copSpeed * Time.fixedDeltaTime;
+        stepCop = copSpeed * Time.deltaTime;
 
         if (CopManager.Instance.hasBeenServed == true && isAggro == false)
         {

@@ -66,7 +66,8 @@ public class AlienHandler : MonoBehaviour
 
     #region Variables
     private int layerMaskAlien = 1 << 9; // Lyer 9 is Alien
-    public Collider[] aliensInRange = new Collider[10];
+    //public Collider[] aliensInRange = new Collider[10];
+    public List<Collider> aliensInRange = new List<Collider>(10);
     public int aliensInRangeCount;
     private float worldRadiusSquared;
     private int amountOfBabies;
@@ -267,7 +268,7 @@ public class AlienHandler : MonoBehaviour
         HandleRendering();
         if (canAct == false) { return; }
 
-        delta = Time.fixedDeltaTime;
+        delta = Time.deltaTime;
         HandleUpdateVariables(delta);
 
         // For Aliens within 50 units of cameraSpot
@@ -369,93 +370,105 @@ public class AlienHandler : MonoBehaviour
         currentShortestDistanceLooking = lookRadius;
         currentDistanceLooking = lookRadius;
 
-        aliensInRangeCount = Physics.OverlapSphereNonAlloc(MyTransform.position, lookRadius, aliensInRange, layerMaskAlien, QueryTriggerInteraction.Ignore);
+        // TODO: Try out different things
+        //aliensInRangeCount = Physics.OverlapSphereNonAlloc(MyTransform.position, lookRadius, aliensInRange, layerMaskAlien, QueryTriggerInteraction.Ignore);
+
+        aliensInRangeCount = aliensInRange.Count;
 
         if (aliensInRangeCount == 0)
         {
-            StartCoroutine(IdleSecsUntilNewState(1f, AlienState.roaming));
-            return;
-        }
-        else
-        {
-            for (int i = 0; i < aliensInRangeCount; i++)
+            foreach (var item in Physics.OverlapSphere(MyTransform.position, lookRadius, layerMaskAlien, QueryTriggerInteraction.Ignore))
             {
-                if (aliensInRange[i] == null) { return; }
-
-                // Prevent checking on self and last alien
-                if (aliensInRange[i] == MyCollisionCollider) { continue; }
-
-                //if (aliensInRange[i].gameObject == lastTargetAlien) { continue; } // Can go behind last target if other interference happend in between
-                if (aliensInRange[i].gameObject.activeInHierarchy == false) { continue; }
-
-                targetAlienHandler = aliensInRange[i].gameObject.GetComponentInParent<AlienHandler>();
-                if (targetAlienHandler.currentAge == AlienAge.resource)
-                {
-                    continue;
-                }
-
-                // Find potential Alien to trigger certain State
-                if (currentSpecies == targetAlienHandler.currentSpecies)
-                {
-                    if (
-                        hasUterus != targetAlienHandler.hasUterus && // opposite Sex
-                        currentAge == AlienAge.sexualActive && // Sexual active
-                        targetAlienHandler.currentAge == AlienAge.sexualActive && // potential partner also sexual active
-                        lustTimer > lustTimerThreshold && // can mate
-                        targetAlienHandler.lustTimer > lustTimerThreshold // partner can mate
-                        )
-                    {
-                        SetTarget(targetAlienHandler.gameObject);
-                        StartCoroutine(IdleSecsUntilNewState(1f, AlienState.loving));
-                        targetAlienHandler.currentState = AlienState.loving;
-                        targetAlienHandler.targetAlienHandler = this;
-                        break;
-                    }
-
-                    #region Who Eats Who
-                    // This aliens eats the other
-                    // 0:Sphere > 1:Square > 2:Triangle 
-                    // Triangle eats Square / 2 eats 1
-                    // Square eats Sphere / 1 eats 0
-                    // Sphere eats Triangle / 0 eats 2
-                    #endregion
-
-                }
-                else
-                {
-
-                    if (hungerTimer > hungerTimerThreshold &&
-                        (currentSpecies == targetAlienHandler.currentSpecies + 1 ||
-                        (currentSpecies == 0 && targetAlienHandler.currentSpecies == 2))) // potential food || if closestAlienHandler is smaller || hunting state
-                    {
-                        SetTarget(targetAlienHandler.gameObject);
-                        StartCoroutine(IdleSecsUntilNewState(1f, AlienState.hunting));
-                        targetAlienHandler.currentState = AlienState.evading;
-                        targetAlienHandler.targetAlienHandler = this;
-                    }
-                    //else if ((currentSpecies == targetAlienHandler.currentSpecies - 1 ||
-                    //    (currentSpecies == 2 && targetAlienHandler.currentSpecies == 0))) // 0:Sphere > 1:Square > 2:Triangle || if closestAlienHandler is bigger
-                    //{
-                    //    SetTarget(aliensInRange[i].gameObject);
-                    //}
-                }
-
-                //if (TargetAlienTransform == null) { continue; } // Continue the for loop to find another target
-
-                //TargetAlienTransform2D = new Vector2(TargetAlienTransform.position.x, TargetAlienTransform.position.z);
-                //currentDistanceLooking = Vector2.Distance(MyTransform2D, TargetAlienTransform2D);
-
-                //if (currentDistanceLooking < currentShortestDistanceLooking)
-                //{
-                //    currentShortestDistanceLooking = currentDistanceLooking;
-                //}
-
-                //if (currentShortestDistanceLooking <= 2)
-                //{
-                //    break;
-                //}
+                aliensInRange.Add(item);
+            }
+            if (aliensInRange.Count == 0)
+            {
+                StartCoroutine(IdleSecsUntilNewState(1f, AlienState.roaming));
+                return;
             }
         }
+
+        for (int i = 0; i < aliensInRangeCount; i++)
+        {
+            if (aliensInRange[i] == null) { return; }
+
+            // Prevent checking on self and last alien
+            if (aliensInRange[i] == MyCollisionCollider) { continue; }
+
+            //if (aliensInRange[i].gameObject == lastTargetAlien) { continue; } // Can go behind last target if other interference happend in between
+            if (aliensInRange[i].gameObject.activeInHierarchy == false) { continue; }
+
+            targetAlienHandler = aliensInRange[i].gameObject.GetComponentInParent<AlienHandler>();
+            if (targetAlienHandler.currentAge == AlienAge.resource)
+            {
+                continue;
+            }
+
+            // Find potential Alien to trigger certain State
+            if (currentSpecies == targetAlienHandler.currentSpecies)
+            {
+                if (
+                    hasUterus != targetAlienHandler.hasUterus && // opposite Sex
+                    currentAge == AlienAge.sexualActive && // Sexual active
+                    targetAlienHandler.currentAge == AlienAge.sexualActive && // potential partner also sexual active
+                    lustTimer > lustTimerThreshold && // can mate
+                    targetAlienHandler.lustTimer > lustTimerThreshold // partner can mate
+                    )
+                {
+                    currentState = AlienState.loving;
+                    SetTarget(aliensInRange[i].gameObject);
+
+                    targetAlienHandler.currentState = AlienState.loving;
+                    targetAlienHandler.SetTarget(this.gameObject);
+                    break;
+                }
+
+                #region Who Eats Who
+                // This aliens eats the other
+                // 0:Sphere > 1:Square > 2:Triangle 
+                // Triangle eats Square / 2 eats 1
+                // Square eats Sphere / 1 eats 0
+                // Sphere eats Triangle / 0 eats 2
+                #endregion
+
+            }
+            else
+            {
+
+                if (hungerTimer > hungerTimerThreshold &&
+                    (currentSpecies == targetAlienHandler.currentSpecies + 1 ||
+                    (currentSpecies == 0 && targetAlienHandler.currentSpecies == 2))) // potential food || if closestAlienHandler is smaller || hunting state
+                {
+                    currentState = AlienState.hunting;
+                    SetTarget(aliensInRange[i].gameObject);
+
+                    targetAlienHandler.currentState = AlienState.evading;
+                    targetAlienHandler.SetTarget(this.gameObject);
+                }
+                else if ((currentSpecies == targetAlienHandler.currentSpecies - 1 ||
+                    (currentSpecies == 2 && targetAlienHandler.currentSpecies == 0))) // 0:Sphere > 1:Square > 2:Triangle || if closestAlienHandler is bigger
+                {
+                    currentState = AlienState.evading;
+                    SetTarget(aliensInRange[i].gameObject);
+                }
+            }
+
+            //if (TargetAlienTransform == null) { continue; } // Continue the for loop to find another target
+
+            //TargetAlienTransform2D = new Vector2(TargetAlienTransform.position.x, TargetAlienTransform.position.z);
+            //currentDistanceLooking = Vector2.Distance(MyTransform2D, TargetAlienTransform2D);
+
+            //if (currentDistanceLooking < currentShortestDistanceLooking)
+            //{
+            //    currentShortestDistanceLooking = currentDistanceLooking;
+            //}
+
+            //if (currentShortestDistanceLooking <= 2)
+            //{
+            //    break;
+            //}
+        }
+
 
 
         // Set state on closest target
@@ -552,7 +565,7 @@ public class AlienHandler : MonoBehaviour
                 targetPosition3D = TargetAlienTransform.position;
             }
         }
-
+        if (targetPosition3D == null) { return; }
         targetPosition2D = new Vector2(targetPosition3D.x, targetPosition3D.z);
         distanceToCurrentTarget = Vector2.Distance(MyTransform2D, targetPosition2D);
     }
@@ -695,8 +708,8 @@ public class AlienHandler : MonoBehaviour
             lastTargetAlien = targetAlien;
         }
         Debug.Log("Stack overflow error is coming from next two lines. Comment them out and error stops popping up");
-        targetAlien = null;
-        TargetAlienTransform = null; 
+        //targetAlien = null;
+        //TargetAlienTransform = null;
         targetPosition3D = Vector3.zero;
         targetPosition2D = Vector2.zero;
     }

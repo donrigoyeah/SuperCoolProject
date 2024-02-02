@@ -102,7 +102,7 @@ public class TimeManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        timeCounter += Time.fixedDeltaTime * timeBoost;
+        timeCounter += Time.deltaTime * timeBoost;
 
         if (timeCounter >= secondsInMinutes)
         {
@@ -124,7 +124,7 @@ public class TimeManager : MonoBehaviour
     {
         if (hour == 6)
         {
-            StartCoroutine(ChangeColor(nightToSunrise, 5f, 0f, 1f));
+            StartCoroutine(ChangeColor(nightToSunrise, 5f, 0.5f, 1f));
             currentState = DayState.nightToSunrise;
 
 
@@ -137,7 +137,7 @@ public class TimeManager : MonoBehaviour
         }
         else if (hour == 18)
         {
-            StartCoroutine(ChangeColor(dayToSunSet, 5f, 1.0f, 1f));
+            StartCoroutine(ChangeColor(dayToSunSet, 5f, 1.5f, 1f));
             currentState = DayState.dayToSunSet;
         }
         else if (hour == 24)
@@ -152,7 +152,7 @@ public class TimeManager : MonoBehaviour
 
     private IEnumerator ChangeColor(Gradient sunColor, float time, float initialSunIntensity, float finalSunIntensity)
     {
-        for (float i = 0; i < time; i += Time.fixedDeltaTime)
+        for (float i = 0; i < time; i += Time.deltaTime)
         {
             lerp = i / time;
             sun.color = sunColor.Evaluate(lerp);

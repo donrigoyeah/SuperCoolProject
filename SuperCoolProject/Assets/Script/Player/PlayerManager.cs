@@ -15,10 +15,11 @@ public class PlayerManager : MonoBehaviour
     public bool isInteracting;
     public bool isCarryingPart;
     public float playerResourceScanRadius = 100;
-    public Collider[] resourceInRange;
+    //public List<Collider> resourceInRange;
     public float playerDetectionRadius = 10;
     public int aliensInRangePlayerCount;
-    public Collider[] aliensInRangePlayer = new Collider[10];
+    //public Collider[] aliensInRangePlayer = new Collider[10];
+    public List<Collider> aliensInRangePlayer;
     public GameObject currentPart;
     public GameObject LightBeam;
     public GameObject deadPlayer;
@@ -134,7 +135,7 @@ public class PlayerManager : MonoBehaviour
 
     public void HandleHit()
     {
-        if(!isAlive) {return; }
+        if (!isAlive) { return; }
         if (timeSinceLastHit < invincibleFrames)
         {
             return;
@@ -201,7 +202,14 @@ public class PlayerManager : MonoBehaviour
 
     private void HandleSurroundingAliens()
     {
-        aliensInRangePlayerCount = Physics.OverlapSphereNonAlloc(MyTransform.position, playerDetectionRadius, aliensInRangePlayer, layerMaskAlien, QueryTriggerInteraction.Ignore);
+        aliensInRangePlayer.Clear();
+        foreach (var item in Physics.OverlapSphere(MyTransform.position, playerDetectionRadius, layerMaskAlien, QueryTriggerInteraction.Ignore))
+        {
+            aliensInRangePlayer.Add(item);
+        }
+        aliensInRangePlayerCount = aliensInRangePlayer.Count;
+
+        //aliensInRangePlayerCount = Physics.OverlapSphereNonAlloc(MyTransform.position, playerDetectionRadius, aliensInRangePlayer, layerMaskAlien, QueryTriggerInteraction.Ignore);
         if (aliensInRangePlayerCount == 0) { return; }
 
         for (int i = 0; i < aliensInRangePlayerCount; i++)
@@ -400,36 +408,36 @@ public class PlayerManager : MonoBehaviour
         // Only show resource UI if below 75%
         if (currentSphereResource < 3 * maxSphereResource / 4)
         {
-            // HandleResourceDetection(0);
+            HandleResourceDetection(0);
             // MaterialEmmissionControler(0);
         }
         else
         {
-            // DeactivateResourceDetectionIndicator(0);
+            DeactivateResourceDetectionIndicator(0);
             // MaterialEmmissionControler(0);
         }
 
         // Only show resource UI if below 75%
         if (currentSquareResource < 3 * maxSquareResource / 4)
         {
-            // HandleResourceDetection(1);
+            HandleResourceDetection(1);
             // MaterialEmmissionControler(1);
         }
         else
         {
-            // DeactivateResourceDetectionIndicator(1);
+            DeactivateResourceDetectionIndicator(1);
             // MaterialEmmissionControler(1);
         }
 
         // Only show resource UI if below 75%
         if (currentTriangleResource < 3 * maxTriangleResource / 4)
         {
-            // HandleResourceDetection(2);
+            HandleResourceDetection(2);
             // MaterialEmmissionControler(2);
         }
         else
         {
-            // DeactivateResourceDetectionIndicator(2);
+            DeactivateResourceDetectionIndicator(2);
             // MaterialEmmissionControler(2);
         }
 

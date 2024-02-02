@@ -358,6 +358,7 @@ MonoBehaviour:
   shieldBreakAudio: {fileID: 8300000, guid: ed490b7c5f0392e4eb9d586baf5045a8, type: 3}
   deathAudio: {fileID: 8300000, guid: fb8cde1c02d901c48bff064d2c4a6a2b, type: 3}
   UpgradeParticles: {fileID: 7577551550591442129}
+  stepsUnfold: 0
 --- !u!114 &7595266375327355587
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -371,7 +372,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canMove: 1
-  playerSpeed: 15
+  playerSpeed: 10
   gravityValue: -40
   jumpForce: 15
   targetAimPosition: {x: 0, y: 0, z: 0}
@@ -441,6 +442,7 @@ MonoBehaviour:
   grenadespawnPoint: {fileID: 7748597816388016088}
   target: {fileID: 8506864488556925417}
   arcHeight: {fileID: 7833440952029296131}
+  trajectorySpeed: 0
   ac: {x: 0.022381645, y: 19.08405, z: 5.796304}
   cb: {x: 0, y: 2.9, z: 6}
   cachedResult: {x: 0.0011190824, y: 3.7092028, z: 5.989815}

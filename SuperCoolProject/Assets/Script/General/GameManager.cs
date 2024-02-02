@@ -121,7 +121,7 @@ public class GameManager : MonoBehaviour
         float targetZNorm = targetZ / players.Count;
 
         //CameraFollowSpot.position = new Vector3(targetXNorm, targetYNorm, targetZNorm);
-        CameraFollowSpot.position = Vector3.Lerp(CameraFollowSpot.transform.position, new Vector3(targetXNorm, targetYNorm, targetZNorm), Time.fixedDeltaTime * cameraSpeed);
+        CameraFollowSpot.position = Vector3.Lerp(CameraFollowSpot.transform.position, new Vector3(targetXNorm, targetYNorm, targetZNorm), Time.deltaTime * cameraSpeed);
     }
 
     public void HideMouseCursor()
@@ -170,7 +170,6 @@ public class GameManager : MonoBehaviour
             StartCoroutine(RaiseCameraSpeed(cameraSpeedRaiseDuration));
             if (devMode == false)
             {
-                FreezeAllAliens();
                 StartCoroutine(WaitSecBeforeTut(cameraSpeedRaiseDuration));
             }
         }
@@ -188,6 +187,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("TODO: Remove this later");
         FreezeAllPlayers();
+        FreezeAllAliens();
         TutorialHandler.Instance.EnableEntireTutorial();
         return;
 
@@ -199,11 +199,13 @@ public class GameManager : MonoBehaviour
             if (hideTut == 1)
             {
                 UnFreezeAllPlayers();
+                UnFreezeAllAliens();
                 return;
             }
             else
             {
                 FreezeAllPlayers();
+                FreezeAllAliens();
                 TutorialHandler.Instance.EnableEntireTutorial();
                 return;
             }
@@ -211,6 +213,7 @@ public class GameManager : MonoBehaviour
 
         Debug.Log("has no PlayerPrefs");
         FreezeAllPlayers();
+        FreezeAllAliens();
         TutorialHandler.Instance.EnableEntireTutorial();
         return;
     }
@@ -222,6 +225,7 @@ public class GameManager : MonoBehaviour
             item.canAct = false;
         }
     }
+
     public void UnFreezeAllAliens()
     {
         foreach (var item in AlienManager.Instance.allAlienHandlers)
