@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.17276844, g: 0.21589246, b: 0.2978263, a: 1}
+  m_IndirectSpecularColor: {r: 0.17276807, g: 0.21589197, b: 0.29782572, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1263,6 +1263,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 4133404183190734745}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &705789653 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2714339203262179276, guid: 4e9f40b14e37beb4ea8ac8f132bf56b0,
+    type: 3}
+  m_PrefabInstance: {fileID: 4133404183190734745}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &740997346 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6189315057265808951, guid: 8a39cf38023b57946be252867c65b70b,
@@ -1532,6 +1544,18 @@ Transform:
   - {fileID: 1418008459}
   m_Father: {fileID: 986437707}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &919552866 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4265928529309229664, guid: 81c6b5e65c6ab9b4baec02a6208dde50,
+    type: 3}
+  m_PrefabInstance: {fileID: 1689847967071268754}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &942861253
 GameObject:
   m_ObjectHideFlags: 0
@@ -2969,6 +2993,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 4692399122801173976}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1798356562 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 937689487682581970, guid: bf09349e08449f448b0d27ddea6565dc,
+    type: 3}
+  m_PrefabInstance: {fileID: 4692399122801173976}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 109ceb8310df21a4ebfad50b040233ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1821839599 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8565966556133376978, guid: ffb68a391af645d4bbbf12099ca9e96e,
@@ -2987,18 +3023,6 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 4802670096955318320}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1883348909 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1090954414154331737, guid: 4e9f40b14e37beb4ea8ac8f132bf56b0,
-    type: 3}
-  m_PrefabInstance: {fileID: 4133404183190734745}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1917941945
 GameObject:
   m_ObjectHideFlags: 3
@@ -3595,6 +3619,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 506797201}
     m_Modifications:
+    - target: {fileID: 4265928529309229664, guid: 81c6b5e65c6ab9b4baec02a6208dde50,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 506797202}
     - target: {fileID: 6767771335195840124, guid: 81c6b5e65c6ab9b4baec02a6208dde50,
         type: 3}
       propertyPath: m_Pivot.x
@@ -4017,11 +4046,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 506797201}
     m_Modifications:
-    - target: {fileID: 1090954414154331737, guid: 4e9f40b14e37beb4ea8ac8f132bf56b0,
+    - target: {fileID: 2714339203262179276, guid: 4e9f40b14e37beb4ea8ac8f132bf56b0,
         type: 3}
-      propertyPath: m_text
-      value: BUTTON
-      objectReference: {fileID: 0}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1798356562}
     - target: {fileID: 5114784885420805789, guid: 4e9f40b14e37beb4ea8ac8f132bf56b0,
         type: 3}
       propertyPath: m_Name
@@ -4317,7 +4346,12 @@ PrefabInstance:
         type: 3}
       propertyPath: respawnButton
       value: 
-      objectReference: {fileID: 1883348909}
+      objectReference: {fileID: 705789653}
+    - target: {fileID: 937689487682581970, guid: bf09349e08449f448b0d27ddea6565dc,
+        type: 3}
+      propertyPath: restartButton
+      value: 
+      objectReference: {fileID: 919552866}
     - target: {fileID: 937689487682581970, guid: bf09349e08449f448b0d27ddea6565dc,
         type: 3}
       propertyPath: GameOverScreen
