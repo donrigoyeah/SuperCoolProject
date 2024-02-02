@@ -15,4 +15,4 @@ MonoBehaviour:
   partName: Fuel Canister
   mass: 8
   abilityUnlockText: Your mechanics are oiled
-  model: {fileID: 919132149155446097, guid: a332ebf8667f5574abece050ed814ae4, type: 3}
+  model: {fileID: 4636232796644792656, guid: bf90d09c80573b44b844ee02081ac31a, type: 3}
