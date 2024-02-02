@@ -272,33 +272,33 @@ public class AlienHandler : MonoBehaviour
         HandleUpdateVariables(delta);
 
         // For Aliens within 50 units of cameraSpot
-        if (isRendered)
+        //if (isRendered)
+        //{
+        if (tickTimer >= tickTimerMax + randomNumber)
         {
-            if (tickTimer >= tickTimerMax + randomNumber)
-            {
-                // Reset Tick timer
-                tickTimer -= tickTimerMax;
-                HandleTickUpdateVariables();
+            // Reset Tick timer
+            tickTimer -= tickTimerMax;
+            HandleTickUpdateVariables();
 
-                // Dont update the target if brainwashed
-                //if (brainWashed == true || currentState == AlienState.roaming || targetAlien == null) { return; }
-                HandleUpdateTarget();
-            }
+            // Dont update the target if brainwashed
+            //if (brainWashed == true || currentState == AlienState.roaming || targetAlien == null) { return; }
+            HandleUpdateTarget();
         }
-        else
-        {
-            // For Aliens outside 50 units of cameraSpot
-            if (tickTimer >= tickTimerMax + randomNumber * 3)
-            {
-                // Reset Tick timer
-                tickTimer -= tickTimerMax;
-                HandleTickUpdateVariables();
+        //}
+        //else
+        //{
+        //    // For Aliens outside 50 units of cameraSpot
+        //    if (tickTimer >= tickTimerMax + randomNumber * 3)
+        //    {
+        //        // Reset Tick timer
+        //        tickTimer -= tickTimerMax;
+        //        HandleTickUpdateVariables();
 
-                // Dont update the target if brainwashed
-                //if (brainWashed == true || currentState == AlienState.roaming || targetAlien == null) { return; }
-                HandleUpdateTarget();
-            }
-        }
+        //        // Dont update the target if brainwashed
+        //        //if (brainWashed == true || currentState == AlienState.roaming || targetAlien == null) { return; }
+        //        HandleUpdateTarget();
+        //    }
+        //}
 
         // Finaly move the alien
         HandleMovement();
@@ -359,6 +359,8 @@ public class AlienHandler : MonoBehaviour
 
     public void HandleLooking()
     {
+        if (isRendered == false) { return; }
+
         if (anim[currentSpecies] != null)
         {
             if (currentSpecies != 0)
