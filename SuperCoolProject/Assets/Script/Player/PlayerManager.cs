@@ -35,6 +35,7 @@ public class PlayerManager : MonoBehaviour
     public float shieldRechargeTimeWithUpgrade = 1;
     public float dissolveRate = 0.0125f;
     public float refreshRate = 0.025f;
+    public float counter;
 
     [Header("Resource Variables")]
     AlienHandler[] closestResource = new AlienHandler[] { null, null, null };  // 0:Sphere, 1:Square, 2:Triangle
@@ -108,7 +109,7 @@ public class PlayerManager : MonoBehaviour
         playerAnim = GetComponentInChildren<Animator>();
 
         dissolve = playerShieldGO.gameObject.GetComponent<Renderer>().material;
-        dissolve.SetFloat("_DissolveAmount", 1);
+        dissolve.SetFloat("_DissolveAmount", 0.016f);
         StartCoroutine(RespawnShield(2));
 
         ParticleSystem[] particleSystems = UpgradeParticles.GetComponentsInChildren<ParticleSystem>();
@@ -185,7 +186,10 @@ public class PlayerManager : MonoBehaviour
             GameManager.Instance.DeathScreen.SetActive(true);
             GameManager.Instance.DeathScreenCloneJuiceUI.fillAmount = GameManager.Instance.currentCloneJuice / GameManager.Instance.maxCloneJuice;
         }
-
+        
+        dissolve.SetFloat("_DissolveAmount", 0.016f);
+        hasShield = true;
+        counter = 0;
         // Reset all resource variables back to max on new clone
         currentSphereResource = maxSphereResource;
         currentSquareResource = maxSquareResource;
@@ -567,14 +571,18 @@ public class PlayerManager : MonoBehaviour
         hasShield = false;
         stepsShield = 30;
         animationDurationShield = .5f;
-        dissolve.SetFloat("_DissolveAmount", 0.01f); // Bug at 0 seems very opaque
+        dissolve.SetFloat("_DissolveAmount", 0.016f); // Bug at 0 seems very opaque
         audioSource.PlayOneShot(shieldBreakAudio, 1f);
+
 
         for (int i = 0; i < stepsShield; i++)
         {
-            yield return new WaitForSeconds(animationDurationShield / stepsShield);
-            dissolve.SetFloat("_DissolveAmount", i / stepsShield);
+            counter += dissolveRate;
+            yield return new WaitForSeconds(refreshRate);
+            dissolve.SetFloat("_DissolveAmount", counter);
         }
+
+        counter = 0;
         StartCoroutine(RespawnShield(timeToRecharge));
     }
 
@@ -582,7 +590,7 @@ public class PlayerManager : MonoBehaviour
     {
         playerShieldGO.SetActive(false);
         yield return new WaitForSeconds(timeToRecharge);
-        dissolve.SetFloat("_DissolveAmount", 0.01f);
+        dissolve.SetFloat("_DissolveAmount", 0.016f);
         hasShield = true;
         audioSource.PlayOneShot(shieldRechargeAudio, 1f);
         playerShieldGO.SetActive(true);

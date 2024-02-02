@@ -292,7 +292,6 @@ MonoBehaviour:
   isInteracting: 0
   isCarryingPart: 0
   playerResourceScanRadius: 100
-  resourceInRange: []
   playerDetectionRadius: 10
   aliensInRangePlayerCount: 0
   aliensInRangePlayer:
@@ -319,7 +318,8 @@ MonoBehaviour:
   shieldRechargeTime: 2
   shieldRechargeTimeWithUpgrade: 1
   dissolveRate: 0.125
-  refreshRate: 0.0025
+  refreshRate: 0.25
+  counter: 0
   lightBulbMultiplicator: 0.5
   maxSphereResource: 100
   maxSquareResource: 100

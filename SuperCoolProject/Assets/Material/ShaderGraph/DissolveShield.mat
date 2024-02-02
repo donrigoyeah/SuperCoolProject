@@ -48,7 +48,7 @@ Material:
     - _Smoothness: 0.465
     - _speed: 3.93
     m_Colors:
-    - _Color: {r: 0.0071134567, g: 1, b: 0, a: 1}
+    - _Color: {r: 0.32101846, g: 1, b: 0, a: 1}
     - _DissolveColor: {r: 2.519016, g: 0.7489094, b: 0, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &7853080584769367130
