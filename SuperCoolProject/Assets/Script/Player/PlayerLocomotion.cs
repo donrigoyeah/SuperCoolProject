@@ -56,7 +56,7 @@ public class PlayerLocomotion : MonoBehaviour
     [Header("Audio")]
     public AudioClip footstepAudio;
     private AudioSource audioSource;
-
+    public AudioClip walkingAudio;
 
     private void OnEnable()
     {
@@ -166,6 +166,7 @@ public class PlayerLocomotion : MonoBehaviour
                 FSSGO = null;
             }
             // Reset timer to limit spawns
+            
             currentFSSTimer = 0;
         }
 

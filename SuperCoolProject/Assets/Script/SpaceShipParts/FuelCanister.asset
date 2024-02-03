@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90b23d16c9521294e9645c1c2973370e, type: 3}
   m_Name: FuelCanister
   m_EditorClassIdentifier: 
-  partName: Fuel Canister
+  partName: FuelCanister
   mass: 8
   abilityUnlockText: Your mechanics are oiled
   model: {fileID: 4636232796644792656, guid: bf90d09c80573b44b844ee02081ac31a, type: 3}

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90b23d16c9521294e9645c1c2973370e, type: 3}
   m_Name: AimAssist
   m_EditorClassIdentifier: 
-  partName: Aim assist
+  partName: AimAssist
   mass: 4
   abilityUnlockText: The auto aim is now back online
   model: {fileID: 2096028899990205421, guid: 8ad83d9e9ff5df244b58f10b1ae6f908, type: 3}
