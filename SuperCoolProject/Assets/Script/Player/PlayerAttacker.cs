@@ -480,16 +480,14 @@ public class PlayerAttacker : MonoBehaviour
 
     private void DrawTrajectory()
     {
+        Debug.Log("I am sorry if you made any changes to this function I dont remember so I redid it");
         grenadeLineRenderer.enabled = true;
         var pointList = new List<Vector3>();
 
-        for (float ratio = 0; ratio <= 1; ratio += 1 / vertecCount)
+        for (float t = 0; t <= 1; t += 1 / vertecCount)
         {
-            pos1 = Vector3.Lerp(grenadespawnPoint.position, arcHeight.position, ratio * trajectorySpeed);
-            post2 = Vector3.Lerp(arcHeight.position, target.position, ratio * trajectorySpeed);
-            pos3 = Vector3.Lerp(pos1, post2, ratio * trajectorySpeed);
-
-            pointList.Add(pos3);
+            Vector3 point = Evaluate(t);
+            pointList.Add(point);
         }
 
         grenadeLineRenderer.positionCount = pointList.Count;

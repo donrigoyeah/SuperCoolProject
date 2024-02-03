@@ -191,6 +191,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PartTrailParticle
       objectReference: {fileID: 0}
+    - target: {fileID: 7768678134731991909, guid: bffbebc8d6432314ea8c466138a6219f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
