@@ -81,7 +81,7 @@ public class SpaceShipHandler : MonoBehaviour
                     abilityText.text = spaceShipPartHandler.spaceShipData.abilityUnlockText;
                 }
 
-                if (spaceShipPartHandler.spaceShipData.partName == "CloneJuicerr")
+                if (spaceShipPartHandler.spaceShipData.partName == "CloneJuicer")
                 {
                     GameManager.Instance.hasCloneJuicer = true;
                     abilityText.text = spaceShipPartHandler.spaceShipData.abilityUnlockText;
@@ -93,6 +93,12 @@ public class SpaceShipHandler : MonoBehaviour
                     abilityText.text = spaceShipPartHandler.spaceShipData.abilityUnlockText;
                     showNewUpgradeBinging = true;
                     upgradeButtonBinding.text = TutorialHandler.Instance.toggleNavButton;
+                }
+                
+                if (spaceShipPartHandler.spaceShipData.partName == "AimAssist")
+                {
+                    GameManager.Instance.hasAimAssist = true;
+                    abilityText.text = spaceShipPartHandler.spaceShipData.abilityUnlockText;
                 }
 
                 StartCoroutine(ShowInfoPanel());

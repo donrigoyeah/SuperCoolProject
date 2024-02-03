@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90b23d16c9521294e9645c1c2973370e, type: 3}
   m_Name: Lightmachine
   m_EditorClassIdentifier: 
-  partName: Light machine
+  partName: Lightmachine
   mass: 9
   abilityUnlockText: All lights enabled
   model: {fileID: 5304241075857651688, guid: b76c26c23f343a14da39689ec2baa526, type: 3}

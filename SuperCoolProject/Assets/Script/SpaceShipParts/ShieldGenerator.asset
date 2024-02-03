@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90b23d16c9521294e9645c1c2973370e, type: 3}
   m_Name: ShieldGenerator
   m_EditorClassIdentifier: 
-  partName: Shield Generator
+  partName: ShieldGenerator
   mass: 8
   abilityUnlockText: Your shield Generator is back online
   model: {fileID: 8624084515823831375, guid: 783c78f380d09f840adba5f0a704a7f8, type: 3}

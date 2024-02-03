@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90b23d16c9521294e9645c1c2973370e, type: 3}
   m_Name: CloneJuicer
   m_EditorClassIdentifier: 
-  partName: Clone Juicer
+  partName: CloneJuicer
   mass: 10
   abilityUnlockText: Gain more juice
   model: {fileID: 122871715098034252, guid: 22fed9c97e40f85428b668fa18b77fec, type: 3}

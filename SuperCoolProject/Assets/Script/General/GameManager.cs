@@ -435,7 +435,6 @@ public class GameManager : MonoBehaviour
             }
         }
 
-
         if (currentSpaceShipParts == totalSpaceShipParts)
         {
             HandleWin();
