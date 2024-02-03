@@ -96,6 +96,7 @@ public class PlayerAttacker : MonoBehaviour
     public AudioClip gunOverheatedAudio;
     public AudioClip collectingResource;
     public List<AudioClip> shootLazer;
+    public AudioClip canNotShootLazer;
     public AudioClip shootGrenade;
     private bool hasOverheatedOnce = false;
     private AudioSource audioSource;
@@ -172,6 +173,10 @@ public class PlayerAttacker : MonoBehaviour
                 playerAnim.SetBool("IsShooting", false);
                 CameraShake.Instance.ResetCameraPosition();
             }
+        }
+        if (gunOverheated == false && inputHandler.inputPrimaryFire)
+        {
+            audioSource.PlayOneShot(canNotShootLazer);
         }
     }
 

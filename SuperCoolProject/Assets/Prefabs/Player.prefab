@@ -461,7 +461,8 @@ MonoBehaviour:
   collectingResource: {fileID: 8300000, guid: 5b6d4b4a6a7648547a6bcb2c9e92b710, type: 3}
   shootLazer:
   - {fileID: 8300000, guid: 51cc3e3f623c2a14e86fe8df65c1d7c3, type: 3}
-  - {fileID: 8300000, guid: 78fa53c333841a543af81b9144cbf177, type: 3}
+  - {fileID: 8300000, guid: bd920f65611f3604dababb828b58b27c, type: 3}
+  canNotShootLazer: {fileID: 8300000, guid: 05360ce3cf5168d4d8d58a78ea8dc613, type: 3}
   shootGrenade: {fileID: 8300000, guid: cb90d022d146fe44fa5041132fad6d43, type: 3}
 --- !u!114 &6940714301392089187
 MonoBehaviour:
