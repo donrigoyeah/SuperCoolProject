@@ -134,6 +134,7 @@ MonoBehaviour:
   minTimeToChild: 15
   timeToSexual: 5
   timeToFullGrown: 10
+  distanceToCameraSpot: 0
   dissolve: {fileID: 2100000, guid: d5b2fb1daa206294894f6eea03c042e4, type: 2}
   skinRenderer1: {fileID: 9056457758864906096}
   skinRenderer2: {fileID: 6698669378251940842}
@@ -146,53 +147,92 @@ MonoBehaviour:
   refreshRate: 0.0025
   audioSource: {fileID: 9042210739735769762}
   sphereAttackAudio:
-  - {fileID: 8300000, guid: 897389d0c6f60f442a0b38dc2caec62d, type: 3}
-  - {fileID: 8300000, guid: 68ef82fb747120e428b77558dc1ca803, type: 3}
+  - {fileID: 8300000, guid: 5cab955f98923424f8fd373eada38d67, type: 3}
+  - {fileID: 8300000, guid: dfc93422b0df5d94da6f6c6f59efae7c, type: 3}
+  - {fileID: 8300000, guid: 0e0bf52434988bf46981a63bd35c2785, type: 3}
+  - {fileID: 8300000, guid: 5ceb613127d842f4bbc0f9396ccc5adb, type: 3}
+  - {fileID: 8300000, guid: 4c9770c0a6ed9b74189681a36b1814ac, type: 3}
   sphereDyingAudio:
-  - {fileID: 8300000, guid: 94d13dcb3e3f97f4782522d363079c3e, type: 3}
-  - {fileID: 8300000, guid: 8825a3ce22f12c4478ec30d1e1afbb4c, type: 3}
+  - {fileID: 8300000, guid: c9cba79a33b5ea34eb3c0c04c3897f5b, type: 3}
+  - {fileID: 8300000, guid: 06ccb5bebe22df74eb850b072106703e, type: 3}
+  - {fileID: 8300000, guid: 587e042daaa7d7f4b8b70d7642bc3244, type: 3}
   sphereBeingAttackedAudio:
-  - {fileID: 8300000, guid: 69b264261d1dba146898b4a56e413a4d, type: 3}
-  - {fileID: 8300000, guid: f19c7784b774b0444a6f4b27987cac04, type: 3}
+  - {fileID: 8300000, guid: 269aee03058ea2040b24eac2dc5e06c5, type: 3}
+  - {fileID: 8300000, guid: 52bf5870a194fa24e948d7200ae10fe3, type: 3}
+  - {fileID: 8300000, guid: e3d7f0287f1d94441945c6f41523e9ac, type: 3}
+  - {fileID: 8300000, guid: 0ad7a74867f9b0746b2d49166c32fb4b, type: 3}
+  - {fileID: 8300000, guid: 07cf0e626570f694ab17d1fd7b44d3c0, type: 3}
   sphereLovemakingAudio:
-  - {fileID: 8300000, guid: e6c212c295b917c409f9107a638daf90, type: 3}
-  - {fileID: 8300000, guid: 70bc1e62da40974429e8d3d29000c524, type: 3}
+  - {fileID: 8300000, guid: bb4a0c39f3d63094e888a808f186138a, type: 3}
+  - {fileID: 8300000, guid: 9a7176099d6638346be91f91559f8798, type: 3}
+  - {fileID: 8300000, guid: 9889b24934a41de41bbe7488aa3cd8bc, type: 3}
+  - {fileID: 8300000, guid: 6840876c318e0b64cab507da36710f32, type: 3}
   sphereEvadingAudio:
-  - {fileID: 8300000, guid: f7ef59f3b41c32647958cf0c640b1ad4, type: 3}
-  - {fileID: 8300000, guid: 404aa2f2cdd6d27468dbfd17bba63b7e, type: 3}
+  - {fileID: 8300000, guid: bc4f7cce94aede44594a2591a9165d37, type: 3}
+  - {fileID: 8300000, guid: 0bb547256333d7d4493fefe3e302026e, type: 3}
+  - {fileID: 8300000, guid: ff2522d0d43778340ae8479676c9418a, type: 3}
   squareAttackAudio:
-  - {fileID: 8300000, guid: 6c2381c38c8baa14faa81ad1e11b7a7e, type: 3}
-  - {fileID: 8300000, guid: 7dd9f251e7d47c34aba2dd661ee0b757, type: 3}
+  - {fileID: 8300000, guid: f8b959bf96adcc5489d0b47bb909d161, type: 3}
+  - {fileID: 8300000, guid: 093dafabebd0afb4dbe0b6613637e538, type: 3}
+  - {fileID: 8300000, guid: 263df3aa0fa13ec4fb81c399e284fa84, type: 3}
+  - {fileID: 8300000, guid: afc379d69fde45a43b8360d76b685694, type: 3}
+  - {fileID: 8300000, guid: dc9132caede706744836da2612eb2197, type: 3}
+  - {fileID: 8300000, guid: 3b21054fe46d8bd41a209dc3bc5032a9, type: 3}
   squareDyingAudio:
-  - {fileID: 8300000, guid: 5a07f54bd5c18f847898d99f08e5ce5b, type: 3}
-  - {fileID: 8300000, guid: 1a7bf873e0cf74c4993c6b4fd5ab847b, type: 3}
+  - {fileID: 8300000, guid: aacd0a6a9b73737418699594c43d0965, type: 3}
+  - {fileID: 8300000, guid: 9b12627ce6002414ca2cd910bde98bca, type: 3}
+  - {fileID: 8300000, guid: 54ac3f5412df61b4fa37f2a6be18b331, type: 3}
+  - {fileID: 8300000, guid: ff72dbe644e515b44b0cde9df01d1860, type: 3}
+  - {fileID: 8300000, guid: ffdfb62e832f7964791e631a1cbc4502, type: 3}
   squareBeingAttackedAudio:
-  - {fileID: 8300000, guid: 2630f3688d85cae4ebce40c454b6cd20, type: 3}
-  - {fileID: 8300000, guid: 19978e984c364c1478f834c4a9249aef, type: 3}
+  - {fileID: 8300000, guid: 8251f0fcd95e9e84a9da8d6303b22d1b, type: 3}
+  - {fileID: 8300000, guid: 894322856cd6c014a91216b3965a673b, type: 3}
+  - {fileID: 8300000, guid: d08ccfa2907afb14e8c4099078afd902, type: 3}
+  - {fileID: 8300000, guid: 50ab3bfcc2896bf4b994c277703b0327, type: 3}
+  - {fileID: 8300000, guid: 8ab956fc972a1594a83e5eac7e8e233c, type: 3}
+  - {fileID: 8300000, guid: a0e71e98e867e1e4bb999cae50094753, type: 3}
   squareLovemakingAudio:
-  - {fileID: 8300000, guid: b037d86e5ba4ef14aa090637018e919b, type: 3}
-  - {fileID: 8300000, guid: 40086cdae73af87418208298773d3e75, type: 3}
+  - {fileID: 8300000, guid: 0777f4270d4cfb0499090b980cbea487, type: 3}
+  - {fileID: 8300000, guid: ad5971039129a9549a9142e310688014, type: 3}
+  - {fileID: 8300000, guid: df0160bebb1596042bc481664da5b528, type: 3}
   squareEvadingAudio:
-  - {fileID: 8300000, guid: 037bc63cad21f894e99e28649673aa35, type: 3}
-  - {fileID: 8300000, guid: 12b03e9eb5abe964b879210f0baa764e, type: 3}
+  - {fileID: 8300000, guid: 566bb5ca1d15a5445bc0f6442230307e, type: 3}
+  - {fileID: 8300000, guid: df0160bebb1596042bc481664da5b528, type: 3}
+  - {fileID: 8300000, guid: d08ccfa2907afb14e8c4099078afd902, type: 3}
   triangleAttackAudio:
-  - {fileID: 8300000, guid: 2eff191479af41246a4d7eb9b333d66f, type: 3}
-  - {fileID: 8300000, guid: 766cf36c0c2d0e94b92f41b168d79f1a, type: 3}
+  - {fileID: 8300000, guid: 6837c66597211ee498e83d6b6f09160b, type: 3}
+  - {fileID: 8300000, guid: 22e18bbc1d3930d4db849c84d2735cd6, type: 3}
+  - {fileID: 8300000, guid: 71e35c6568bf3634f8b2db05360709d9, type: 3}
+  - {fileID: 8300000, guid: 8469411760c4f01468c16e6a4d4485b5, type: 3}
+  - {fileID: 8300000, guid: 1ca34afa5d4976446bf76725f5e1706b, type: 3}
+  - {fileID: 8300000, guid: 212bd694a2cc4f34fb349db321854fee, type: 3}
   triangleDyingAudio:
-  - {fileID: 8300000, guid: 5468e92e8ea803a42baa6209cd2d3867, type: 3}
-  - {fileID: 8300000, guid: 4102126669fda394382d6f87117c9071, type: 3}
+  - {fileID: 8300000, guid: fbde7695da91ddf44889bb3ea0d43d13, type: 3}
+  - {fileID: 8300000, guid: 3d813b0d4f281134a824ab3e73d94c09, type: 3}
+  - {fileID: 8300000, guid: 13e4e4e2001c4c849a9836ab433d451d, type: 3}
+  - {fileID: 8300000, guid: e6c3499fe7a2a0e42af0b3486dd77214, type: 3}
+  - {fileID: 8300000, guid: 4b1bd334e48a8494ab344e6718b9ce01, type: 3}
   triangleBeingAttackedAudio:
-  - {fileID: 8300000, guid: 4f7ad141ecf304c4ea60fec7db27f70a, type: 3}
-  - {fileID: 8300000, guid: 2097d6de71ddba94eb0d971db90ddbb5, type: 3}
+  - {fileID: 8300000, guid: 16b29f74065bafb4ab3ec25a74bf7b98, type: 3}
+  - {fileID: 8300000, guid: a90c09e815e727a47888940c6a91f103, type: 3}
+  - {fileID: 8300000, guid: 85fb3e06a3705cf4b91fe315eb074c01, type: 3}
+  - {fileID: 8300000, guid: ac3af7b1af3db6540939a8485f45ffab, type: 3}
+  - {fileID: 8300000, guid: 870d341ba9cfdc54493bc382e9c96d79, type: 3}
   triangleLovemakingAudio:
-  - {fileID: 8300000, guid: f7f8931e616861c4f9731ca1207776f8, type: 3}
-  - {fileID: 8300000, guid: 7f269d7291ec4384da4e0966b0a5c813, type: 3}
+  - {fileID: 8300000, guid: 01088532c0ae19a418e49bf00f75b87b, type: 3}
+  - {fileID: 8300000, guid: 36c6e302795bc774ea90d741239834cd, type: 3}
+  - {fileID: 8300000, guid: 9f5865f035747db419290f9b58518a74, type: 3}
+  - {fileID: 8300000, guid: 7deb84d99fa24204aafb73d4ddb4be89, type: 3}
+  - {fileID: 8300000, guid: 937c97a400c87674bb0dd505ac53f0c8, type: 3}
   triangleEvadingAudio:
-  - {fileID: 8300000, guid: 443d74a979995df4689059679e3f096c, type: 3}
-  - {fileID: 8300000, guid: e872bd16213a44b4c965915f62ec1b02, type: 3}
+  - {fileID: 8300000, guid: d1d795094c75ff6468719734c7f8cd62, type: 3}
+  - {fileID: 8300000, guid: 68f8dffe8568df84cadfca59aa59622a, type: 3}
+  - {fileID: 8300000, guid: de43a50b7953fdf49be21ea9bd76fff9, type: 3}
+  - {fileID: 8300000, guid: 692d9f8341b1ae24d975b9c3cc467b1f, type: 3}
+  - {fileID: 8300000, guid: 18838e5715faaae448f005c22208aa5e, type: 3}
+  - {fileID: 8300000, guid: 1c6e829c024983b42b5e9746d1d88635, type: 3}
   tickTimer: 0
   tickTimerMax: 1
-  alienManager: {fileID: 0}
 --- !u!136 &1753352926865818878
 CapsuleCollider:
   m_ObjectHideFlags: 0
