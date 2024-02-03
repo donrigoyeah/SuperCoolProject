@@ -386,7 +386,10 @@ MonoBehaviour:
   canDash: 0
   isDashing: 0
   deltaFSS: 0.2
-  footstepAudio: {fileID: 8300000, guid: da2a6eb0d4102284abdc66f885d4a59b, type: 3}
+  footstepAudio:
+  - {fileID: 8300000, guid: 0c628b4ac08bd654885f71ce056a3aac, type: 3}
+  - {fileID: 8300000, guid: 5b6d4b4a6a7648547a6bcb2c9e92b710, type: 3}
+  - {fileID: 8300000, guid: 59dcaf7ba5d6ac842b859b0e67608035, type: 3}
 --- !u!114 &9130882823596995695
 MonoBehaviour:
   m_ObjectHideFlags: 0

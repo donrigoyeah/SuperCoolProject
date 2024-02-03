@@ -54,9 +54,8 @@ public class PlayerLocomotion : MonoBehaviour
     private Animator playerAnim;
 
     [Header("Audio")]
-    public AudioClip footstepAudio;
     private AudioSource audioSource;
-    public AudioClip walkingAudio;
+    public List<AudioClip> footstepAudio;
 
     private void OnEnable()
     {
@@ -152,7 +151,7 @@ public class PlayerLocomotion : MonoBehaviour
         //Dust during movement particles
         if (move.magnitude > 0.1f && currentFSSTimer >= deltaFSS)
         {
-            audioSource.PlayOneShot(footstepAudio, 1f);
+            audioSource.PlayOneShot(RandomAudioSelector(footstepAudio), 1f);
 
             // Spawn Footstep Smoke GO
             FSSGO = PoolManager.Instance.GetPooledFSS();
@@ -166,7 +165,7 @@ public class PlayerLocomotion : MonoBehaviour
                 FSSGO = null;
             }
             // Reset timer to limit spawns
-            
+
             currentFSSTimer = 0;
         }
 
@@ -228,4 +227,13 @@ public class PlayerLocomotion : MonoBehaviour
         yield return new WaitForSeconds(sec);
         objectToDeactivate.SetActive(false);
     }
+
+    AudioClip RandomAudioSelector(List<AudioClip> audioList) // incase we plan to add more audio for each state
+    {
+        int randomIndex = Random.Range(0, audioList.Count);
+        AudioClip selectedAudio = audioList[randomIndex];
+
+        return selectedAudio;
+    }
+
 }

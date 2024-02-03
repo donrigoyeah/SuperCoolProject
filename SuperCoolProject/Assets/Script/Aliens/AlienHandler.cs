@@ -203,13 +203,10 @@ public class AlienHandler : MonoBehaviour
     public float tickTimer;
     public float tickTimerMax = .5f;
 
-    public AlienManager alienManager;
-
     #endregion
 
     private void Awake()
     {
-        alienManager = AlienManager.Instance; // TODO: Why this again here? I think to have the reference already and not all calls like HandleDeathByBullet();
         MyRigidbody = this.gameObject.GetComponent<Rigidbody>();
         resourceSteamMain = resourceSteamGO.GetComponent<ParticleSystem>().main;
     }
@@ -987,7 +984,6 @@ public class AlienHandler : MonoBehaviour
 
     AudioClip RandomAudioSelector(List<AudioClip[]> audioList, int species) // incase we plan to add more audio for each state
     {
-        return null;
         // TODO: think of something to have ot play an audio only 50% of the time?
         AudioClip[] selectedAudioArray = audioList[species];
 
