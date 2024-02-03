@@ -145,6 +145,13 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 50e87ee599495614d9103dc7be4d5128, type: 2}
   dissolveRate: 0.1
   refreshRate: 0.0025
+  aliensEating:
+  - {fileID: 8300000, guid: 4753ad8510b701c4e88f944cd3bd454f, type: 3}
+  - {fileID: 8300000, guid: 2ee94e250d1dc414188f18ed0aee10db, type: 3}
+  - {fileID: 8300000, guid: 9c1fa74b53583b14392b7753d7a70108, type: 3}
+  aliensLoving:
+  - {fileID: 8300000, guid: c7f0300a14605754a8f1df66b7233477, type: 3}
+  - {fileID: 8300000, guid: c57768ed355229e4fae44b716c1516ea, type: 3}
   audioSource: {fileID: 9042210739735769762}
   sphereAttackAudio:
   - {fileID: 8300000, guid: 5cab955f98923424f8fd373eada38d67, type: 3}

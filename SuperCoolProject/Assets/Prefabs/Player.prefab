@@ -354,8 +354,8 @@ MonoBehaviour:
   squareEmissionTime: 0
   triangleEmissionTime: 0
   EmissionSpeedDivider: 25
-  shieldRechargeAudio: {fileID: 8300000, guid: 7c4072b1b16aa7c47ac7c00b4e89bc31, type: 3}
-  shieldBreakAudio: {fileID: 8300000, guid: ed490b7c5f0392e4eb9d586baf5045a8, type: 3}
+  shieldRechargeAudio: {fileID: 8300000, guid: aa3450b58cfe9b3419b2271ac158fce3, type: 3}
+  shieldBreakAudio: {fileID: 8300000, guid: f4a26e77fef35fe469beb70e7df50210, type: 3}
   deathAudio: {fileID: 8300000, guid: fb8cde1c02d901c48bff064d2c4a6a2b, type: 3}
   UpgradeParticles: {fileID: 7577551550591442129}
   stepsUnfold: 0
@@ -388,8 +388,10 @@ MonoBehaviour:
   deltaFSS: 0.2
   footstepAudio:
   - {fileID: 8300000, guid: 0c628b4ac08bd654885f71ce056a3aac, type: 3}
-  - {fileID: 8300000, guid: 5b6d4b4a6a7648547a6bcb2c9e92b710, type: 3}
   - {fileID: 8300000, guid: 59dcaf7ba5d6ac842b859b0e67608035, type: 3}
+  - {fileID: 8300000, guid: 3334671ea6c43fa42b383fa7962c7a77, type: 3}
+  - {fileID: 8300000, guid: 8625417d6a9e10746b80e5f761f91914, type: 3}
+  - {fileID: 8300000, guid: 266e7cfafa6ae2b43bb972702fed7d01, type: 3}
 --- !u!114 &9130882823596995695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -454,8 +456,13 @@ MonoBehaviour:
   sprite: {fileID: 0}
   vertecCount: 12
   coolingDownAudio: {fileID: 8300000, guid: 768114da9783619489d3a27a79174be0, type: 3}
-  gunReadyAudio: {fileID: 8300000, guid: a2cee32e3e45fb447b19fa9965de9962, type: 3}
-  gunOverheatedAudio: {fileID: 8300000, guid: d5976fbf954fad7428c906af1458f483, type: 3}
+  gunReadyAudio: {fileID: 8300000, guid: 93fd702d2ff6bd84e91a94813dc16c58, type: 3}
+  gunOverheatedAudio: {fileID: 8300000, guid: 8cd8e3a808300d94594154637d6b8b36, type: 3}
+  collectingResource: {fileID: 8300000, guid: 5b6d4b4a6a7648547a6bcb2c9e92b710, type: 3}
+  shootLazer:
+  - {fileID: 8300000, guid: 51cc3e3f623c2a14e86fe8df65c1d7c3, type: 3}
+  - {fileID: 8300000, guid: 78fa53c333841a543af81b9144cbf177, type: 3}
+  shootGrenade: {fileID: 8300000, guid: cb90d022d146fe44fa5041132fad6d43, type: 3}
 --- !u!114 &6940714301392089187
 MonoBehaviour:
   m_ObjectHideFlags: 0
