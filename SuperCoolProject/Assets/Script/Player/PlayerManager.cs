@@ -181,7 +181,7 @@ public class PlayerManager : MonoBehaviour
             EventSystem.current.SetSelectedGameObject(GameManager.Instance.respawnButton.gameObject);
             GameManager.Instance.DeathScreenCloneJuiceUI.fillAmount = GameManager.Instance.currentCloneJuice / GameManager.Instance.maxCloneJuice;
         }
-        
+
         dissolve.SetFloat("_DissolveAmount", 0.016f);
         hasShield = true;
         counter = 0;

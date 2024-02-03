@@ -169,6 +169,8 @@ public class AlienHandler : MonoBehaviour
 
     [Header("Alien Audio")]
     private bool playClipSpawned = false;
+    public List<AudioClip> aliensEating;
+    public List<AudioClip> aliensLoving;
     public AudioSource audioSource;
 
     [Header("Water / Sphere Alien Audio")]
@@ -583,7 +585,7 @@ public class AlienHandler : MonoBehaviour
 
         if (!audioSource.isPlaying)
         {
-            audioSource.PlayOneShot(RandomAudioSelector(lovemakingAudioList, currentSpecies), 1f);
+            audioSource.PlayOneShot(RandomAudioSelectorAliens(lovemakingAudioList, currentSpecies), 1f);
         }
 
         if (hasUterus == true)
@@ -821,6 +823,7 @@ public class AlienHandler : MonoBehaviour
                     lustTimer = 0;
                     otherAlienHandler.lustTimer = 0;
                     StartCoroutine(PlayActionParticle(AlienState.loving)); // Loving Partilce
+                    audioSource.PlayOneShot(RandomAudioSelectorFoley(aliensLoving));
                     HandleMating();
                 }
             }
@@ -840,6 +843,7 @@ public class AlienHandler : MonoBehaviour
                     {
                         StartCoroutine(PlayActionParticle(AlienState.hunting));
                         otherAlienHandler.HandleDeathByCombat();
+                        audioSource.PlayOneShot(RandomAudioSelectorFoley(aliensEating));
                     }
 
                     if (brainWashed == true) { return; }// For tutorial
@@ -857,7 +861,7 @@ public class AlienHandler : MonoBehaviour
 
             if (!audioSource.isPlaying)
             {
-                audioSource.PlayOneShot(RandomAudioSelector(beingAttackedAudioList, currentSpecies), 1f);
+                audioSource.PlayOneShot(RandomAudioSelectorAliens(beingAttackedAudioList, currentSpecies), 1f);
             }
 
             CurrentBH = other.gameObject.GetComponent<BulletHandler>();
@@ -982,13 +986,21 @@ public class AlienHandler : MonoBehaviour
         HandleDeath();
     }
 
-    AudioClip RandomAudioSelector(List<AudioClip[]> audioList, int species) // incase we plan to add more audio for each state
+    AudioClip RandomAudioSelectorAliens(List<AudioClip[]> audioList, int species) // incase we plan to add more audio for each state
     {
         // TODO: think of something to have ot play an audio only 50% of the time?
         AudioClip[] selectedAudioArray = audioList[species];
 
         int randomIndex = Random.Range(0, selectedAudioArray.Length);
         AudioClip selectedAudio = selectedAudioArray[randomIndex];
+
+        return selectedAudio;
+    }
+
+    AudioClip RandomAudioSelectorFoley(List<AudioClip> audioList) // incase we plan to add more audio for each state
+    {
+        int randomIndex = Random.Range(0, audioList.Count);
+        AudioClip selectedAudio = audioList[randomIndex];
 
         return selectedAudio;
     }
@@ -1012,7 +1024,7 @@ public class AlienHandler : MonoBehaviour
     {
         if (!audioSource.isPlaying)
         {
-            audioSource.PlayOneShot(RandomAudioSelector(evadingAudioList, currentSpecies), 1f);
+            audioSource.PlayOneShot(RandomAudioSelectorAliens(evadingAudioList, currentSpecies), 1f);
         }
         if (anim[currentSpecies] != null) { anim[currentSpecies]["Armature|WALK"].speed = 2; }
 
@@ -1028,7 +1040,7 @@ public class AlienHandler : MonoBehaviour
     {
         if (!audioSource.isPlaying)
         {
-            audioSource.PlayOneShot(RandomAudioSelector(attackAudioList, currentSpecies), 1f);
+            audioSource.PlayOneShot(RandomAudioSelectorAliens(attackAudioList, currentSpecies), 1f);
         }
 
         if (anim[currentSpecies] != null) { anim[currentSpecies]["Armature|WALK"].speed = 2; }

@@ -94,6 +94,10 @@ public class PlayerAttacker : MonoBehaviour
     public AudioClip coolingDownAudio;
     public AudioClip gunReadyAudio;
     public AudioClip gunOverheatedAudio;
+    public AudioClip collectingResource;
+    public List<AudioClip> shootLazer;
+    public AudioClip canNotShootLazer;
+    public AudioClip shootGrenade;
     private bool hasOverheatedOnce = false;
     private AudioSource audioSource;
 
@@ -169,6 +173,10 @@ public class PlayerAttacker : MonoBehaviour
                 playerAnim.SetBool("IsShooting", false);
                 CameraShake.Instance.ResetCameraPosition();
             }
+        }
+        if (gunOverheated == false && inputHandler.inputPrimaryFire)
+        {
+            audioSource.PlayOneShot(canNotShootLazer);
         }
     }
 
@@ -272,10 +280,12 @@ public class PlayerAttacker : MonoBehaviour
                     StartCoroutine(DisableAfterSeconds(1, muzzlePoolGo));
                 }
             }
+
             if (AimTargetLocation != Vector3.zero)
             {
                 bulletPoolGo.transform.LookAt(AimTargetLocation, Vector3.up);
             }
+
             leftRightSwitch = !leftRightSwitch;
 
             BH = bulletPoolGo.GetComponent<BulletHandler>();
@@ -284,6 +294,9 @@ public class PlayerAttacker : MonoBehaviour
             bulletPoolGo.SetActive(true);
             BH.rb.velocity = Vector3.zero;
             BH.rb.velocity = bulletPoolGo.transform.forward * bulletSpeed;
+
+            audioSource.PlayOneShot(RandomAudioSelector(shootLazer), 1f);
+
         }
     }
 
@@ -566,6 +579,7 @@ public class PlayerAttacker : MonoBehaviour
             // GrenadeHandler currentGH = NewGrenade.GetComponent<GrenadeHandler>();
             // currentGH.playerAttacker = this;
         }
+        audioSource.PlayOneShot(shootGrenade);
     }
 
     #endregion
@@ -583,6 +597,8 @@ public class PlayerAttacker : MonoBehaviour
 
             if (CurrentCollidingAH.currentAge == AlienAge.resource)
             {
+                audioSource.PlayOneShot(collectingResource, 1f);
+
                 playerManager.HandleGainResource(CurrentCollidingAH.currentSpecies);
                 AlienManager.Instance.RemoveFromResourceList(CurrentCollidingAH);
                 CurrentCollidingAH.HandleDeath();
@@ -620,5 +636,13 @@ public class PlayerAttacker : MonoBehaviour
 
         target.localPosition = new Vector3(0, 2, 0);
         target.localRotation = Quaternion.Euler(0, -90, 0);
+    }
+
+    AudioClip RandomAudioSelector(List<AudioClip> audioList) // incase we plan to add more audio for each state
+    {
+        int randomIndex = Random.Range(0, audioList.Count);
+        AudioClip selectedAudio = audioList[randomIndex];
+
+        return selectedAudio;
     }
 }
