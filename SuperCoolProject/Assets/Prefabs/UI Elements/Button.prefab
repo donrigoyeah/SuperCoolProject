@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2375087622051732648}
   - component: {fileID: 6672960087059879871}
   - component: {fileID: 3889544716611161348}
+  - component: {fileID: 6481693149526503370}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -121,9 +122,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: TutorialHandler, Assembly-CSharp
-        m_MethodName: NextSlide
+      - m_Target: {fileID: 1619891061397699481, guid: 35cfc5853c421864f87dda1e31f532c0,
+          type: 3}
+        m_TargetAssemblyTypeName: SoundManager, Assembly-CSharp
+        m_MethodName: PlaySoundClickSound
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -133,6 +135,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &6481693149526503370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 177736686218603510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02142c03da4fe3b479267a061691b8c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7451972435951237007
 GameObject:
   m_ObjectHideFlags: 0

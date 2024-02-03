@@ -24,6 +24,11 @@ public class MainMenuUI : MonoBehaviour
     }
 
 
+    public void SelectInitialButtonOnScreen(Button buttonToSelect)
+    {
+        EventSystem.current.SetSelectedGameObject(buttonToSelect.gameObject);
+    }
+
     // Updates once per frame
     void Update()
     {

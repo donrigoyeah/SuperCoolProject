@@ -90,12 +90,6 @@ public class PlayerAttacker : MonoBehaviour
     private float delta;
     private AlienHandler CurrentCollidingAH;
 
-
-
-    // TODO: Imlement again
-    //[Header("Camera Shake")]
-    //[SerializeField] private CameraShake CameraShake;
-
     [Header("Audio")]
     public AudioClip coolingDownAudio;
     public AudioClip gunReadyAudio;
@@ -165,7 +159,7 @@ public class PlayerAttacker : MonoBehaviour
                     SpawnLazer(bulletDamage);
                 }
 
-                // CameraShake.ShakeCamera();
+                CameraShake.Instance.ShakeCamera(0);
                 currentWeaponHeat += singleLazerHeat;
                 nextFireTime = 0;
                 return;
@@ -173,7 +167,7 @@ public class PlayerAttacker : MonoBehaviour
             else
             {
                 playerAnim.SetBool("IsShooting", false);
-                // CameraShake.ResetCameraPosition();
+                CameraShake.Instance.ResetCameraPosition();
             }
         }
     }
@@ -194,7 +188,7 @@ public class PlayerAttacker : MonoBehaviour
                 audioSource.PlayOneShot(gunOverheatedAudio, 1f);
                 audioSource.PlayOneShot(coolingDownAudio, 1f);
             }
-            //CameraShake.ResetCameraPosition();
+            CameraShake.Instance.ResetCameraPosition();
             hasOverheatedOnce = true;
         }
 

@@ -71,10 +71,10 @@ public class SpaceShipGameScene : MonoBehaviour
             ExhaustParticlesMain.startLifetime = 6f;
 
             GameManager.Instance.HandleSpawnShipParts();
+            PlayerInputManager.instance.EnableJoining();
         }
         else
         {
-            PlayerInputManager.instance.DisableJoining();
             StartCoroutine(CrashAnimation(animationDurationStart));
         }
     }
@@ -100,18 +100,13 @@ public class SpaceShipGameScene : MonoBehaviour
         while (elapsedTimeCrash < seconds)
         {
             this.transform.position = Vector3.Lerp(startingPos, gamePosition, (elapsedTimeCrash / seconds));
-            elapsedTimeCrash += Time.fixedDeltaTime;
+            elapsedTimeCrash += Time.deltaTime;
             yield return frame;
         }
-
-        // TODO: Add cameraShake
         this.transform.position = gamePosition;
+
         LandingParticlesGO.SetActive(true);
         Destroy(LandingParticlesGO, 2);
-        GameManager.Instance.HandleSpawnShipParts();
-
-        SpaceShipCanvas.SetActive(true);
-        PlayerInputManager.instance.EnableJoining();
 
         DamageParticlesGO.transform.rotation = Quaternion.Euler(-90, 90, 90);
         DamageParticlesMain.startSpeed = 0.5f;
@@ -120,6 +115,12 @@ public class SpaceShipGameScene : MonoBehaviour
         ExhaustParticlesGO.transform.rotation = Quaternion.Euler(-90, 90, 90);
         ExhaustParticlesMain.startSpeed = 0.5f;
         ExhaustParticlesMain.startLifetime = 6f;
+
+
+        SpaceShipCanvas.SetActive(true);
+        GameManager.Instance.HandleSpawnShipParts();
+        PlayerInputManager.instance.EnableJoining();
+        StartCoroutine(CameraShakeAfterCrash());
     }
 
     public IEnumerator WinAnimation()
@@ -153,5 +154,13 @@ public class SpaceShipGameScene : MonoBehaviour
             enteringAlien.SetTarget(this.gameObject); // this time its not an alienGO but the spaceship; true for isEvadingPlayer
             enteringAlien.currentState = AlienHandler.AlienState.evading; // this time its not an alienGO but the spaceship; true for isEvadingPlayer
         }
+    }
+
+    IEnumerator CameraShakeAfterCrash()
+    {
+        CameraShake.Instance.ShakeCamera(10);
+        yield return new WaitForSeconds(1);
+        CameraShake.Instance.ResetCameraPosition();
+
     }
 }
