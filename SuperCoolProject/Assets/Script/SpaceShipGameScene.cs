@@ -21,6 +21,7 @@ public class SpaceShipGameScene : MonoBehaviour
 
     public GameObject SpaceShipCanvas;
     public GameObject DamageParticlesGO;
+    public GameObject SpaceShipEntrance;
     private ParticleSystem DamageParticles;
     private ParticleSystem.MainModule DamageParticlesMain;
 
@@ -42,7 +43,7 @@ public class SpaceShipGameScene : MonoBehaviour
     {
         isMainMenu = SceneManager.GetActiveScene().buildIndex == 0;
         if (isMainMenu) { return; }
-
+        SpaceShipEntrance.SetActive(false);
         this.transform.position = startPosition;
     }
 
@@ -72,6 +73,7 @@ public class SpaceShipGameScene : MonoBehaviour
 
             GameManager.Instance.HandleSpawnShipParts();
             PlayerInputManager.instance.EnableJoining();
+            SpaceShipEntrance.SetActive(true);
         }
         else
         {
@@ -121,6 +123,7 @@ public class SpaceShipGameScene : MonoBehaviour
         GameManager.Instance.HandleSpawnShipParts();
         PlayerInputManager.instance.EnableJoining();
         StartCoroutine(CameraShakeAfterCrash());
+        SpaceShipEntrance.SetActive(true);
     }
 
     public IEnumerator WinAnimation()
