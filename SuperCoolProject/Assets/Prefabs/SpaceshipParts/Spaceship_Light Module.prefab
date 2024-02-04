@@ -110,6 +110,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Spaceship_LightModule
       objectReference: {fileID: 0}
+    - target: {fileID: 6512510688612296998, guid: 94dab628bbd6b614fb89aea3250a4f04,
+        type: 3}
+      propertyPath: m_TagString
+      value: Rotate
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

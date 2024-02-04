@@ -4,6 +4,7 @@ using TMPro;
 using Unity.Burst.Intrinsics;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class SpaceShipPartHandler : MonoBehaviour
@@ -42,7 +43,12 @@ public class SpaceShipPartHandler : MonoBehaviour
     private Vector3 ab;
     private Vector3 bc;
 
-
+    public Transform[] childrenList;
+    public float rotateSpeed = 75;
+    public Transform rotatingPart;
+    public bool noRotationRequired = false;
+    public float antennaRotation;
+    
     private void Awake()
     {
         myTransform = this.transform;
@@ -50,16 +56,42 @@ public class SpaceShipPartHandler : MonoBehaviour
         InteractionUIScreen.SetActive(false);
         draggingParticles.SetActive(false);
         flyingParticles.SetActive(true);
+        
     }
 
     private void Start()
     {
         currentPart = Instantiate(spaceShipData.model, this.transform);
         currentPart.transform.position = this.transform.position;
+        
+        Rotator();
+
+        if (spaceShipData.partName == "AmmoBox" || spaceShipData.partName == "FuelCanister" || spaceShipData.partName == "Antenna")
+        {
+            noRotationRequired = true;
+        }
+
+    }
+
+    private void Update()
+    {
+
+        
+        if (!noRotationRequired)
+        {        
+            rotatingPart.Rotate(0, rotateSpeed * Time.deltaTime, 0, Space.World);
+        }
+
+        if (spaceShipData.partName == "Antenna")
+        {
+            
+            rotatingPart.Rotate(0,Mathf.Sin(Time.time) * 1f , 0, Space.World);
+        }
     }
 
     private void FixedUpdate()
     {
+        
         if (inputHandler == null || playerLocomotion == null || playerManager == null || isInteractingWithPlayer == false || hasLanded == false) { return; }
 
         if (inputHandler.inputInteracting)
@@ -165,4 +197,17 @@ public class SpaceShipPartHandler : MonoBehaviour
 
     }
 
+    private void Rotator()
+    {
+        childrenList = gameObject.GetComponentsInChildren<Transform>();
+
+        foreach (Transform radarTransform in childrenList)
+        {
+            if (radarTransform.gameObject.CompareTag("Rotate"))
+            {
+                rotatingPart = radarTransform;
+            }
+        }
+    }
+    
 }

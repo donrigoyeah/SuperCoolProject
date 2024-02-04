@@ -9,7 +9,6 @@ public class TreeAndStoneHandler : MonoBehaviour
     public int stoneCount = 0;
     public float lightSwitchDuration = 5f;
 
-
     [Header("References")]
     public GameObject Tree;
     public GameObject Stone;
@@ -21,7 +20,6 @@ public class TreeAndStoneHandler : MonoBehaviour
     Transform tmpStoneTransform;
     Material treeColor;
     Material stoneColor;
-
 
     private float r;
     private float angle;

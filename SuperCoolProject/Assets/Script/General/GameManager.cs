@@ -62,6 +62,8 @@ public class GameManager : MonoBehaviour
     public Button restartButton;
     public GameObject GameOverScreen;
     public Image DeathScreenCloneJuiceUI;
+    public TextMeshProUGUI deathScreenReason;
+
     public GameObject Clouds;
 
 
@@ -386,6 +388,13 @@ public class GameManager : MonoBehaviour
             radius = Random.Range(50 + distanceIncrease, 80 + distanceIncrease);
             randPosPartX = radius * Mathf.Cos(angle);
             randPosPartZ = radius * Mathf.Sin(angle);
+
+            while (Physics.OverlapSphere(new Vector3(randPosPartX, .5f, randPosPartZ), 0.1f).Length != 0)
+            {
+                radius = Random.Range(50 + distanceIncrease, 80 + distanceIncrease);
+                randPosPartX = radius * Mathf.Cos(angle);
+                randPosPartZ = radius * Mathf.Sin(angle);
+            };
 
             CurrentPartGO = Instantiate(SpaceShipPart, SpaceShipPartContainer);
             CurrentPartHandler = CurrentPartGO.GetComponent<SpaceShipPartHandler>();

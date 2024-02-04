@@ -120,17 +120,25 @@ public class AlienManager : MonoBehaviour
 
                 }
 
-                r = Random.Range(minSpawnRadius, maxSpawnRadius);
-                angle = Random.Range(currentSlize - segmentWidthRange, currentSlize + segmentWidthRange);
-
-                randPosX = r * Mathf.Cos(Mathf.Deg2Rad * angle);
-                randPosZ = r * Mathf.Sin(Mathf.Deg2Rad * angle);
-
                 alienPoolGoHandler = alienPoolGo.GetComponent<AlienHandler>();
                 allAlienHandlers.Add(alienPoolGoHandler);
                 alienPoolGoHandler.currentSpecies = currentSpieziesForArea;
                 AddToResourceList(alienPoolGoHandler);
                 alienPoolGoHandler.spawnAsAdults = true;
+
+                r = Random.Range(minSpawnRadius, maxSpawnRadius);
+                angle = Random.Range(currentSlize - segmentWidthRange, currentSlize + segmentWidthRange);
+                randPosX = r * Mathf.Cos(Mathf.Deg2Rad * angle);
+                randPosZ = r * Mathf.Sin(Mathf.Deg2Rad * angle);
+
+                while (Physics.OverlapSphere(new Vector3(randPosX, .5f, randPosZ), 0.1f).Length != 0)
+                {
+                    r = Random.Range(minSpawnRadius, maxSpawnRadius);
+                    angle = Random.Range(currentSlize - segmentWidthRange, currentSlize + segmentWidthRange);
+                    randPosX = r * Mathf.Cos(Mathf.Deg2Rad * angle);
+                    randPosZ = r * Mathf.Sin(Mathf.Deg2Rad * angle);
+                };
+
                 alienPoolGo.transform.position = new Vector3(randPosX, 0.1f, randPosZ);
                 alienPoolGo.SetActive(true);
             }
