@@ -321,6 +321,10 @@ MonoBehaviour:
   refreshRate: 0.25
   counter: 0
   lightBulbMultiplicator: 0.5
+  closestResource:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   maxSphereResource: 100
   maxSquareResource: 100
   maxTriangleResource: 100
@@ -330,7 +334,7 @@ MonoBehaviour:
   sphereUnfolded: 0
   squareUnfolded: 0
   triangleUnfolded: 0
-  resourceDrain: 0.015
+  resourceDrain: 0.03
   resourceGain: 20
   resourcePieCharts:
   - {fileID: 9071979888274502329}
@@ -372,7 +376,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canMove: 1
-  playerSpeed: 10
+  playerSpeed: 12
   gravityValue: -40
   jumpForce: 15
   targetAimPosition: {x: 0, y: 0, z: 0}

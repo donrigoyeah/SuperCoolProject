@@ -55,7 +55,7 @@ public class TreeAndStoneHandler : MonoBehaviour
             r = Random.Range(30, GameManager.Instance.worldRadius);
             angle = Random.Range(0, 360);
             randomRotation = Random.Range(0, 360);
-            randomScale = (Random.Range(0, 2) - .5f) + 1; // between 0.5 and 1.5
+            randomScale = Random.Range(1, 3); // between 0.5 and 1.5
 
             randPosX = r * Mathf.Cos(Mathf.Deg2Rad * angle);
             randPosZ = r * Mathf.Sin(Mathf.Deg2Rad * angle);
@@ -88,7 +88,7 @@ public class TreeAndStoneHandler : MonoBehaviour
             r = Random.Range(30, GameManager.Instance.worldRadius);
             angle = Random.Range(0, 360);
             randomRotation = Random.Range(0, 360);
-            randomScale = (Random.Range(0, 2) - .5f) + 1; // between 0.5 and 1.5
+            randomScale = Random.Range(1, 5); // between 0.5 and 1.5
 
             randPosX = r * Mathf.Cos(Mathf.Deg2Rad * angle);
             randPosZ = r * Mathf.Sin(Mathf.Deg2Rad * angle);

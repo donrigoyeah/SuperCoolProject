@@ -36,8 +36,8 @@ public class PlayerManager : MonoBehaviour
     public float counter;
 
     [Header("Resource Variables")]
-    AlienHandler[] closestResource = new AlienHandler[] { null, null, null };  // 0:Sphere, 1:Square, 2:Triangle
     public float lightBulbMultiplicator = 1;
+    public AlienHandler[] closestResource = new AlienHandler[] { null, null, null };  // 0:Sphere, 1:Square, 2:Triangle
     public float maxSphereResource = 100;
     public float maxSquareResource = 100;
     public float maxTriangleResource = 100;
@@ -48,7 +48,7 @@ public class PlayerManager : MonoBehaviour
     public bool squareUnfolded = false;
     public bool triangleUnfolded = false;
 
-    public float resourceDrain = .015f;
+    public float resourceDrain = .3f;
     public float resourceGain = 5;
 
     // 0:Sphere, 1:Square, 2:Triangle

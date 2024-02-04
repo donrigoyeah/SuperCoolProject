@@ -783,17 +783,19 @@ public class AlienHandler : MonoBehaviour
     {
         if (currentIndex == 0)
         {
-            resourceSteamMain.startColor = Color.blue;
+            resourceSteamMain.startColor = alienColors[0].color;
             alienMiniMapMarker.material = alienColors[0];
         }
-        else if (currentIndex == 1)
+
+        if (currentIndex == 1)
         {
-            resourceSteamMain.startColor = Color.green;
+            resourceSteamMain.startColor = alienColors[1].color;
             alienMiniMapMarker.material = alienColors[1];
         }
-        else if (currentIndex == 2)
+
+        if (currentIndex == 2)
         {
-            resourceSteamMain.startColor = Color.red;
+            resourceSteamMain.startColor = alienColors[2].color;
             alienMiniMapMarker.material = alienColors[2];
         }
     }
