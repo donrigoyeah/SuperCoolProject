@@ -14,7 +14,7 @@ TagManager:
   - Grenade
   - Cop
   - DeadBody
-  - Rotate
+  - Tree
   layers:
   - Default
   - TransparentFX

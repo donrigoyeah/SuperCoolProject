@@ -128,7 +128,6 @@ public class AlienHandler : MonoBehaviour
     public GameObject[] alienSpecies; // 0:Sphere > 1:Square > 2:Triangle  
     public GameObject[] alienSpeciesChild; // 0:Sphere > 1:Square > 2:Triangle  
     public GameObject[] alienSpeciesAdult; // 0:Sphere > 1:Square > 2:Triangle  
-    public Material[] alienColors; // 0:Blue > 1:Green > 2:Red  
     public Animation[] anim;
     public Renderer alienMiniMapMarker;
     public GameObject resourceSteamGO;
@@ -781,22 +780,24 @@ public class AlienHandler : MonoBehaviour
 
     private void UpdateResourceSteam(int currentIndex)
     {
+        if (AlienManager.Instance == null) { return; }
+
         if (currentIndex == 0)
         {
-            resourceSteamMain.startColor = alienColors[0].color;
-            alienMiniMapMarker.material = alienColors[0];
+            resourceSteamMain.startColor = AlienManager.Instance.alienColors[currentIndex].color;
+            alienMiniMapMarker.material = AlienManager.Instance.alienColors[currentIndex];
         }
 
         if (currentIndex == 1)
         {
-            resourceSteamMain.startColor = alienColors[1].color;
-            alienMiniMapMarker.material = alienColors[1];
+            resourceSteamMain.startColor = AlienManager.Instance.alienColors[currentIndex].color;
+            alienMiniMapMarker.material = AlienManager.Instance.alienColors[currentIndex];
         }
 
         if (currentIndex == 2)
         {
-            resourceSteamMain.startColor = alienColors[2].color;
-            alienMiniMapMarker.material = alienColors[2];
+            resourceSteamMain.startColor = AlienManager.Instance.alienColors[currentIndex].color;
+            alienMiniMapMarker.material = AlienManager.Instance.alienColors[currentIndex];
         }
     }
 

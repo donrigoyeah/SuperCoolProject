@@ -49,4 +49,16 @@ public class CameraShake : MonoBehaviour
     {
         cbmcp.m_AmplitudeGain = 0f;
     }
+
+
+    public void ZoomIn()
+    {
+        CinemachineVirtualCamera.m_Lens.FieldOfView = 60;
+
+    }
+
+    public void ZoomOut()
+    {
+        CinemachineVirtualCamera.m_Lens.FieldOfView = 70;
+    }
 }

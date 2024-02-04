@@ -9,7 +9,6 @@ public class TreeAndStoneHandler : MonoBehaviour
     public int stoneCount = 0;
     public float lightSwitchDuration = 5f;
 
-
     [Header("References")]
     public GameObject Tree;
     public GameObject Stone;
@@ -19,6 +18,8 @@ public class TreeAndStoneHandler : MonoBehaviour
     private Vector3 potentialPosition;
     Transform tmpTreeTransform;
     Transform tmpStoneTransform;
+    Material treeColor;
+    Material stoneColor;
 
     private float r;
     private float angle;
@@ -55,7 +56,7 @@ public class TreeAndStoneHandler : MonoBehaviour
             r = Random.Range(30, GameManager.Instance.worldRadius);
             angle = Random.Range(0, 360);
             randomRotation = Random.Range(0, 360);
-            randomScale = Random.Range(1, 3); // between 0.5 and 1.5
+            randomScale = Random.Range(1, 3);
 
             randPosX = r * Mathf.Cos(Mathf.Deg2Rad * angle);
             randPosZ = r * Mathf.Sin(Mathf.Deg2Rad * angle);
@@ -67,6 +68,8 @@ public class TreeAndStoneHandler : MonoBehaviour
             //while (Physics.OverlapSphere(potentialPosition, .1f, 9) != null)
 
             tmpTree = Instantiate(Tree);
+            treeColor = tmpTree.GetComponentInChildren<MeshRenderer>().material;
+            treeColor.color = AlienManager.Instance.alienColors[Random.Range(0, 3)].color;
             tmpTreeTransform = tmpTree.transform;
             tmpTreeTransform.position = potentialPosition;
             tmpTreeTransform.rotation = Quaternion.Euler(0, randomRotation, 0);
@@ -88,16 +91,19 @@ public class TreeAndStoneHandler : MonoBehaviour
             r = Random.Range(30, GameManager.Instance.worldRadius);
             angle = Random.Range(0, 360);
             randomRotation = Random.Range(0, 360);
-            randomScale = Random.Range(1, 5); // between 0.5 and 1.5
+            randomScale = Random.Range(1, 5);
 
             randPosX = r * Mathf.Cos(Mathf.Deg2Rad * angle);
             randPosZ = r * Mathf.Sin(Mathf.Deg2Rad * angle);
 
             potentialPosition = new Vector3(randPosX, 0, randPosZ);
+
             // TODO: Check wheater spot is free or not
             //while (Physics.OverlapSphere(potentialPosition, .1f, 9) != null)
 
             tmpStone = Instantiate(Stone);
+            stoneColor = tmpStone.GetComponentInChildren<MeshRenderer>().material;
+            stoneColor.color = AlienManager.Instance.alienColors[Random.Range(0, 3)].color;
             tmpStoneTransform = tmpStone.transform;
             tmpStoneTransform.position = potentialPosition;
             tmpStoneTransform.rotation = Quaternion.Euler(0, randomRotation, 0);

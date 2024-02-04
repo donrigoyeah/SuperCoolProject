@@ -17,7 +17,7 @@ public class PlayerLocomotion : MonoBehaviour
     public float jumpForce;
 
     private CharacterController controller;
-    private Vector3 playerVelocity;
+    public Vector3 playerVelocity;
     public Vector3 targetAimPosition;
 
     [Header("PlayerMovement")]
