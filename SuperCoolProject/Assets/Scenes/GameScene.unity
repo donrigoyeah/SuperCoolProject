@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.17276807, g: 0.21589197, b: 0.29782572, a: 1}
+  m_IndirectSpecularColor: {r: 0.17276844, g: 0.21589246, b: 0.2978263, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4676,6 +4676,16 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 506797205}
+    - target: {fileID: 2564602905737249614, guid: 8a39cf38023b57946be252867c65b70b,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: NextSlide
+      objectReference: {fileID: 0}
+    - target: {fileID: 2564602905737249614, guid: 8a39cf38023b57946be252867c65b70b,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TutorialHandler, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 2794078562686321078, guid: 8a39cf38023b57946be252867c65b70b,
         type: 3}
       propertyPath: m_Pivot.x

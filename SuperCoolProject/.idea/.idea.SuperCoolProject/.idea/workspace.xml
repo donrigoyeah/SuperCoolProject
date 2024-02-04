@@ -11,6 +11,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/ab14d35a27c043688812ae199c64b5aa151218/ea/0a2dd954/Quaternion.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f7237cf7abef49bfbb552d7eb076e422174200/f5/121ccf10/Mathf.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/Aliens/DeadAlienHandler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/General/TimeManager.cs" root0="FORCE_HIGHLIGHTING" />
@@ -304,6 +305,7 @@
       <workItem from="1706902559936" duration="675000" />
       <workItem from="1706961744918" duration="7364000" />
       <workItem from="1706976342375" duration="3383000" />
+      <workItem from="1707068561149" duration="11650000" />
     </task>
     <servers />
   </component>
