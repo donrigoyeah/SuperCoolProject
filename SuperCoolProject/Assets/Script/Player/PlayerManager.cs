@@ -123,9 +123,6 @@ public class PlayerManager : MonoBehaviour
         timeSinceLastHit += Time.deltaTime;
         HandleSurroundingAliens();
         HandleResource();
-
-        if (isAlive == true) { return; }
-        HandleGameOver();
     }
 
     public void HandleHit()
@@ -200,14 +197,6 @@ public class PlayerManager : MonoBehaviour
         currentTriangleResource = maxTriangleResource;
     }
 
-    //void OnDrawGizmos()
-    //{
-    //    // Draw a yellow sphere at the transform's position
-    //    Gizmos.color = Color.yellow;
-    //    Gizmos.DrawSphere(MyTransform.position, playerDetectionRadius);
-    //}
-
-
     private void HandleSurroundingAliens()
     {
         aliensInRangePlayer.Clear();
@@ -236,6 +225,7 @@ public class PlayerManager : MonoBehaviour
             if (CurrentSurroundingAH.currentAge == AlienHandler.AlienAge.fullyGrown)
             {
                 CurrentSurroundingAH.SetTarget(this.gameObject);
+                CurrentSurroundingAH.lastAlienState = CurrentSurroundingAH.currentState;
                 CurrentSurroundingAH.currentState = AlienHandler.AlienState.hunting;
                 //CurrentSurroundingAH.TargetAlienTransform = MyTransform;
                 continue;
@@ -243,6 +233,7 @@ public class PlayerManager : MonoBehaviour
             else
             {
                 CurrentSurroundingAH.SetTarget(this.gameObject);
+                CurrentSurroundingAH.lastAlienState = CurrentSurroundingAH.currentState;
                 CurrentSurroundingAH.currentState = AlienHandler.AlienState.evading;
                 //CurrentSurroundingAH.TargetAlienTransform = MyTransform;
                 continue;
@@ -399,6 +390,7 @@ public class PlayerManager : MonoBehaviour
 
     private void HandleResource()
     {
+        if (isAlive == false) { return; }
         // 0:Sphere, 1:Square, 2:Triangle
         if (currentSphereResource > 0) { currentSphereResource -= resourceDrain; }
         if (currentSquareResource > 0) { currentSquareResource -= resourceDrain; }
@@ -529,7 +521,7 @@ public class PlayerManager : MonoBehaviour
 
     private void HandleGameOver()
     {
-        if (GameManager.Instance.hasLost && inputHandler.inputJumping)
+        if (GameManager.Instance.hasLost)
         {
             SceneManager.LoadScene("MenuScene");
         }

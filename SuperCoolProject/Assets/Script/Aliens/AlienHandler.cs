@@ -65,6 +65,7 @@ public class AlienHandler : MonoBehaviour
     }
 
     #region Variables
+    public AlienState lastAlienState;
     private int layerMaskAlien = 1 << 9; // Lyer 9 is Alien
     //public Collider[] aliensInRange = new Collider[10];
     public List<Collider> aliensInRange = new List<Collider>(10);
@@ -318,7 +319,7 @@ public class AlienHandler : MonoBehaviour
         if (anim[currentSpecies] != null) { anim[currentSpecies].Play("Armature|WALK"); }
 
         // Prevent spinning or tilting
-        if (distanceToCurrentTarget > 2)
+        if (distanceToCurrentTarget > 1)
         {
             MyTransform.LookAt(targetPosition3D);
         }
@@ -333,17 +334,17 @@ public class AlienHandler : MonoBehaviour
         {
             if (distanceToCurrentTarget > lookRadius + 1)  // Add +1 so i is out of the lookradius
             {
-                if (currentState == AlienState.evading)
+                if (lastTargetAlien != null && targetAlien != null)
                 {
-                    if (lastTargetAlien != null)
-                    {
-                        targetAlien = lastTargetAlien;
-                    }
+                    targetAlien = lastTargetAlien;
                 }
+
+                Debug.Log("Lost target");
                 canAct = false;
                 StartCoroutine(IdleSecsUntilNewState(1f, AlienState.looking));
                 return;
             }
+
         }
         else // AlienStates: .resource .loving .looking .roaming
         {
