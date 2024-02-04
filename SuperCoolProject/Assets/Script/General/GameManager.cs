@@ -62,6 +62,8 @@ public class GameManager : MonoBehaviour
     public Button restartButton;
     public GameObject GameOverScreen;
     public Image DeathScreenCloneJuiceUI;
+    public TextMeshProUGUI deathScreenReason;
+
     public GameObject Clouds;
 
 

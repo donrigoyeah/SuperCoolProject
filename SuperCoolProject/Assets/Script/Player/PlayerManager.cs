@@ -139,7 +139,7 @@ public class PlayerManager : MonoBehaviour
         {
             if (hasShield == false)
             {
-                HandleDeath();
+                HandleDeath(true);
             }
             else
             {
@@ -150,7 +150,7 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    private void HandleDeath()
+    private void HandleDeath(bool byAlien)
     {
         // Set Variable to disable movement/input
         isAlive = false;
@@ -178,6 +178,15 @@ public class PlayerManager : MonoBehaviour
         if (GameManager.Instance.players.Count == 1)
         {
             GameManager.Instance.DeathScreen.SetActive(true);
+            if (byAlien == true)
+            {
+                GameManager.Instance.deathScreenReason.text = "Your clone got killed by an Alien!";
+            }
+            else
+            {
+                GameManager.Instance.deathScreenReason.text = "Your clone ran out of resources!";
+            }
+
             EventSystem.current.SetSelectedGameObject(GameManager.Instance.respawnButton.gameObject);
             GameManager.Instance.DeathScreenCloneJuiceUI.fillAmount = GameManager.Instance.currentCloneJuice / GameManager.Instance.maxCloneJuice;
         }
@@ -450,7 +459,7 @@ public class PlayerManager : MonoBehaviour
             currentSquareResource <= 0 ||
             currentTriangleResource <= 0)
         {
-            HandleDeath();
+            HandleDeath(false);
         }
     }
 
