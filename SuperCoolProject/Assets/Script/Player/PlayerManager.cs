@@ -515,6 +515,10 @@ public class PlayerManager : MonoBehaviour
             currentSquareResource = maxSquareResource;
             currentTriangleResource = maxTriangleResource;
             MyTransform.position = Vector3.zero;
+            isCarryingPart = false;
+            isInteracting = false;
+
+
             isAlive = true;
         }
     }

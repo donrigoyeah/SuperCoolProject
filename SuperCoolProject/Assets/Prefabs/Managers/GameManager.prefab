@@ -84,15 +84,19 @@ MonoBehaviour:
   playersLocos: []
   CameraFollowSpot: {fileID: 0}
   loadingScreenHandler: {fileID: 0}
+  spaceShipGameScene: {fileID: 0}
   DeathScreen: {fileID: 0}
   respawnButton: {fileID: 0}
+  restartButton: {fileID: 0}
   GameOverScreen: {fileID: 0}
   DeathScreenCloneJuiceUI: {fileID: 0}
+  deathScreenReason: {fileID: 0}
   Clouds: {fileID: 0}
   cameraSpeed: 1
   cameraSpeedRaiseBuffer: 2
   cameraSpeedRaiseDuration: 1
   cameraSpeedMultiplier: 4
+  cameraZOffset: 2
   playerDeadBody: 0
 --- !u!1 &9078134599936876708
 GameObject:

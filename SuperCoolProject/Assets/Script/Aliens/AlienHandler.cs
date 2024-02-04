@@ -30,29 +30,29 @@ public class AlienHandler : MonoBehaviour
             currentStateValue = value;
             HandleStateIcon(currentStateValue);
             // Handle Behaviour
-            switch (value)
-            {
-                case AlienState.looking:
-                    HandleLooking();
-                    break;
-                case AlienState.hunting:
-                    HandleAttacking(targetAlien);
-                    break;
-                case AlienState.evading:
-                    HandleFleeing(targetAlien);
-                    break;
-                case AlienState.loving:
-                    HandleLoveApproach(targetAlien);
-                    break;
-                case AlienState.roaming:
-                    HandleRoaming();
-                    break;
-                case AlienState.resource:
-                    break;
-                case AlienState.idle: // Do nothing
-                    HandleIdleAnimation();
-                    break;
-            }
+            //switch (value)
+            //{
+            //    case AlienState.looking:
+            //        HandleLooking();
+            //        break;
+            //    case AlienState.hunting:
+            //        HandleAttacking(targetAlien);
+            //        break;
+            //    case AlienState.evading:
+            //        HandleFleeing(targetAlien);
+            //        break;
+            //    case AlienState.loving:
+            //        HandleLoveApproach(targetAlien);
+            //        break;
+            //    case AlienState.roaming:
+            //        HandleRoaming();
+            //        break;
+            //    case AlienState.resource:
+            //        break;
+            //    case AlienState.idle: // Do nothing
+            //        HandleIdleAnimation();
+            //        break;
+            //}
         }
     } //this is public and accessible, and should be used to change "State"
 
@@ -195,7 +195,7 @@ public class AlienHandler : MonoBehaviour
     public AudioClip[] triangleEvadingAudio;
 
     [Header("Array of all alien state")]
-    private List<AudioClip[]> attackAudioList = new List<AudioClip[]>();
+    public List<AudioClip[]> attackAudioList = new List<AudioClip[]>();
     private List<AudioClip[]> dyingAudioList = new List<AudioClip[]>();
     private List<AudioClip[]> beingAttackedAudioList = new List<AudioClip[]>();
     private List<AudioClip[]> lovemakingAudioList = new List<AudioClip[]>();
@@ -267,11 +267,35 @@ public class AlienHandler : MonoBehaviour
         HandleTickUpdateVariables();
         HandleRendering();
 
+        if (isRendered == false) { return; }
         if (canAct == false) { return; }
 
-        HandleUpdateTarget();
         delta = Time.deltaTime;
+        HandleUpdateTarget();
         HandleUpdateVariables(delta);
+
+
+        if (currentState == AlienState.hunting)
+        {
+            HandleAttacking(targetAlien);
+        }
+        if (currentState == AlienState.evading)
+        {
+            HandleFleeing(targetAlien);
+        }
+        if (currentState == AlienState.loving)
+        {
+            HandleLoveApproach(targetAlien);
+        }
+        if (currentState == AlienState.roaming)
+        {
+            HandleRoaming();
+        }
+        if (currentState == AlienState.looking)
+        {
+            HandleLooking();
+        }
+
 
         // For Aliens within 50 units of cameraSpot
         //if (isRendered)
@@ -1026,6 +1050,8 @@ public class AlienHandler : MonoBehaviour
 
     public void HandleFleeing(GameObject currentTargetGO)
     {
+        if (currentTargetGO == null) { return; }
+
         if (!audioSource.isPlaying)
         {
             audioSource.PlayOneShot(RandomAudioSelectorAliens(evadingAudioList, currentSpecies), 1f);
@@ -1042,6 +1068,8 @@ public class AlienHandler : MonoBehaviour
 
     public void HandleAttacking(GameObject currentTargetGO) // Player makes them flee as well and by acting als targetAlien in PlayerManager
     {
+        if (currentTargetGO == null) { return; }
+
         if (!audioSource.isPlaying)
         {
             audioSource.PlayOneShot(RandomAudioSelectorAliens(attackAudioList, currentSpecies), 1f);
