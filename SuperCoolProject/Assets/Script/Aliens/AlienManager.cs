@@ -54,6 +54,9 @@ public class AlienManager : MonoBehaviour
     private float totalValues;
     private float totalAmount;
 
+    public Material[] alienColors; // 0:Blue > 1:Green > 2:Red  
+
+
     private AlienHandler PopulationUIAH;
 
     public static AlienManager Instance;

@@ -3116,10 +3116,60 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3962486824595711025, guid: 5a1cddd508ccd8642aadca25d5fcd657,
+        type: 3}
+      propertyPath: field of view
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 4011496363855694401, guid: 5a1cddd508ccd8642aadca25d5fcd657,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -179.49
+      objectReference: {fileID: 0}
+    - target: {fileID: 4011496363855694401, guid: 5a1cddd508ccd8642aadca25d5fcd657,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.8475854
+      objectReference: {fileID: 0}
+    - target: {fileID: 4011496363855694401, guid: 5a1cddd508ccd8642aadca25d5fcd657,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.53065914
+      objectReference: {fileID: 0}
+    - target: {fileID: 4011496363855694401, guid: 5a1cddd508ccd8642aadca25d5fcd657,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4011496363855694401, guid: 5a1cddd508ccd8642aadca25d5fcd657,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4011496363855694401, guid: 5a1cddd508ccd8642aadca25d5fcd657,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 64.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5747067522679324049, guid: 5a1cddd508ccd8642aadca25d5fcd657,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.8475854
+      objectReference: {fileID: 0}
+    - target: {fileID: 5747067522679324049, guid: 5a1cddd508ccd8642aadca25d5fcd657,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.53065914
+      objectReference: {fileID: 0}
     - target: {fileID: 7979589395730385939, guid: 5a1cddd508ccd8642aadca25d5fcd657,
         type: 3}
       propertyPath: shakeIntensity
       value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8075329454108913224, guid: 5a1cddd508ccd8642aadca25d5fcd657,
+        type: 3}
+      propertyPath: m_Lens.FieldOfView
+      value: 60
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5554,9 +5604,29 @@ PrefabInstance:
       objectReference: {fileID: 506797206}
     - target: {fileID: 1139254413652998083, guid: c80505f0b68aa6f4dbb7fa8f96b9436d,
         type: 3}
+      propertyPath: alienColors.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1139254413652998083, guid: c80505f0b68aa6f4dbb7fa8f96b9436d,
+        type: 3}
       propertyPath: totalTimeToSpawnAliens
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1139254413652998083, guid: c80505f0b68aa6f4dbb7fa8f96b9436d,
+        type: 3}
+      propertyPath: alienColors.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: b67f632216d52334bb0eb07fa4b4a1da, type: 2}
+    - target: {fileID: 1139254413652998083, guid: c80505f0b68aa6f4dbb7fa8f96b9436d,
+        type: 3}
+      propertyPath: alienColors.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: ce2b205562e7c674e9c2bd5cc9c0e13b, type: 2}
+    - target: {fileID: 1139254413652998083, guid: c80505f0b68aa6f4dbb7fa8f96b9436d,
+        type: 3}
+      propertyPath: alienColors.Array.data[2]
+      value: 
+      objectReference: {fileID: 2100000, guid: bcee1cfb4022c4c4baa972a255f5d436, type: 2}
     - target: {fileID: 1139254413652998083, guid: c80505f0b68aa6f4dbb7fa8f96b9436d,
         type: 3}
       propertyPath: imagesPieChart.Array.data[0]

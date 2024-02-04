@@ -70,6 +70,7 @@ public class GameManager : MonoBehaviour
     public int cameraSpeedRaiseBuffer = 2;
     public int cameraSpeedRaiseDuration = 2;
     public int cameraSpeedMultiplier = 3;
+    public float cameraZOffset = 2;
 
     [Header("Dead Body")]
     public bool playerDeadBody = false;
@@ -105,6 +106,7 @@ public class GameManager : MonoBehaviour
         if (players[0].isInteracting == true) { return; }
 
         HandleCameraTarget();
+        HandleCameraZoom();
     }
 
     private void HandleCameraTarget()
@@ -113,19 +115,29 @@ public class GameManager : MonoBehaviour
         float targetY = 0;
         float targetZ = 0;
 
-        foreach (var player in players)
+        foreach (var pm in players)
         {
-            targetX += player.transform.position.x;
-            targetY += player.transform.position.y;
-            targetZ += player.transform.position.z;
+            targetX += pm.transform.position.x;
+            targetY += pm.transform.position.y;
+            targetZ += pm.transform.position.z;
         }
 
         float targetXNorm = targetX / players.Count;
         float targetYNorm = targetY / players.Count;
-        float targetZNorm = targetZ / players.Count;
+        float targetZNorm = (targetZ / players.Count) - cameraZOffset;
 
-        //CameraFollowSpot.position = new Vector3(targetXNorm, targetYNorm, targetZNorm);
         CameraFollowSpot.position = Vector3.Lerp(CameraFollowSpot.transform.position, new Vector3(targetXNorm, targetYNorm, targetZNorm), Time.deltaTime * cameraSpeed);
+    }
+
+    private void HandleCameraZoom()
+    {
+        foreach (var playerLoco in playersLocos)
+        {
+            if (playerLoco.playerVelocity != Vector3.zero)
+            {
+                //zoomOuti = true;
+            }
+        }
     }
 
     public void HideMouseCursor()
