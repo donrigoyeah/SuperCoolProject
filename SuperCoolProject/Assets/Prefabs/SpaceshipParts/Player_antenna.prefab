@@ -110,6 +110,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player_antenna
       objectReference: {fileID: 0}
+    - target: {fileID: 8700725330082129686, guid: dbca07ea1ad2eb446ae735601fd2ecd5,
+        type: 3}
+      propertyPath: m_TagString
+      value: Rotate
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -40,7 +40,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2096028899990205421}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5dde6f788eeddea43a06745cc2b1511a, type: 3}
   m_Name: 
@@ -122,6 +122,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -5824510187379060028, guid: 36cf1700fb742c549b9c4c14b6b919a0,
+        type: 3}
+      propertyPath: m_TagString
+      value: Rotate
       objectReference: {fileID: 0}
     - target: {fileID: -3983353918920824184, guid: 36cf1700fb742c549b9c4c14b6b919a0,
         type: 3}
