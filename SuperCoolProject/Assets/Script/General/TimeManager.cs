@@ -69,6 +69,8 @@ public class TimeManager : MonoBehaviour
 
     [Header("Light")]
     public Light sun;
+    public Transform sunTransform;
+    public float sunAngle;
 
     [Header("Colors")]
     public Gradient nightToSunrise; // 6-12
@@ -97,13 +99,15 @@ public class TimeManager : MonoBehaviour
         // Set initial Time, State and Color
         hours = 6;
         currentState = DayState.sunriseToDay;
-        StartCoroutine(ChangeColor(sunriseToDay, 1f, 1f, 1.5f));
+        StartCoroutine(ChangeColor(sunriseToDay, 5f, 1f, 1.5f));
+        sunTransform = sun.GetComponent<Transform>();
     }
 
     private void FixedUpdate()
     {
         timeCounter += Time.deltaTime * timeBoost;
 
+        HandleSunMoonMovement();
         if (timeCounter >= secondsInMinutes)
         {
             minutes++;
@@ -114,33 +118,46 @@ public class TimeManager : MonoBehaviour
         {
             hours++;
             minutes = 0;
-            HourSettings(hours);
+            HourSettings();
         }
 
         DisplayTimeText();
     }
 
-    private void HourSettings(int hour)
+    private void HandleSunMoonMovement()
     {
-        if (hour == 6)
+        sunAngle = (((float)hours * 60) + (float)minutes) / ((float)24 * 60);
+        Debug.Log("hours: " + hours);
+        Debug.Log("hours / 24: " + sunAngle);
+
+        if (hours < 12)
+        {
+            sunTransform.eulerAngles = new Vector3((sunAngle * 360), 0, 0);
+        }
+        else
+        {
+            sunTransform.eulerAngles = new Vector3((sunAngle * 360) - 180, 0, 0);
+        }
+    }
+
+    private void HourSettings()
+    {
+        if (hours == 6)
         {
             StartCoroutine(ChangeColor(nightToSunrise, 5f, 0.5f, 1f));
             currentState = DayState.nightToSunrise;
-
-
         }
-        else if (hour == 12)
+        else if (hours == 12)
         {
             StartCoroutine(ChangeColor(sunriseToDay, 5f, 1f, 1.5f));
             currentState = DayState.sunriseToDay;
-
         }
-        else if (hour == 18)
+        else if (hours == 18)
         {
             StartCoroutine(ChangeColor(dayToSunSet, 5f, 1.5f, 1f));
             currentState = DayState.dayToSunSet;
         }
-        else if (hour == 24)
+        else if (hours == 24)
         {
             StartCoroutine(ChangeColor(sunsetToNight, 5f, 1f, 0.5f));
             currentState = DayState.sunsetToNight;
@@ -149,6 +166,7 @@ public class TimeManager : MonoBehaviour
             days++;
         }
     }
+
 
     private IEnumerator ChangeColor(Gradient sunColor, float time, float initialSunIntensity, float finalSunIntensity)
     {
