@@ -567,12 +567,12 @@ public class PlayerAttacker : MonoBehaviour
         if (grenadePoolGo != null && grenadeAvailable)
         {
             grenadeAvailable = false;
-            grenadePoolGo.SetActive(true);
             grenadePoolGo.transform.position = grenadespawnPoint.transform.position;
             grenadePoolGo.transform.rotation = grenadespawnPoint.transform.rotation;
             currentGH = grenadePoolGo.GetComponent<GrenadeHandler>();
             currentGH.time = 0;
             currentGH.playerAttacker = this;
+            grenadePoolGo.SetActive(true);
             StartCoroutine(DisableAfterSeconds(1, grenadePoolGo));
             // GrenadeHandler currentGH = NewGrenade.GetComponent<GrenadeHandler>();
             // currentGH.playerAttacker = this;
