@@ -110,7 +110,6 @@ public class AlienHandler : MonoBehaviour
     public Texture[] allStateIcons; // 0: eye, 1: crosshair, 2: wind, 3: heart, 4: shield
     public Vector3 targetPosition3D;
     private Vector2 targetPosition2D;
-    public bool hasNewTarget = false;
     public float distanceToCurrentTarget;
     private float currentShortestDistanceLooking;
     private float currentDistanceLooking;
@@ -207,6 +206,8 @@ public class AlienHandler : MonoBehaviour
     [Header("Tick stats")]
     public float tickTimer;
     public float tickTimerMax = .5f;
+    public bool hasNewTarget = false;
+
 
     [Header("DeadAliens")] // 0:Sphere > 1:Square > 2:Triangle
     public GameObject[] deadAliensPrerfabs;
@@ -276,8 +277,9 @@ public class AlienHandler : MonoBehaviour
         if (isRendered == false) { return; }
         if (canAct == false) { return; }
 
-        HandleUpdateTarget();
+        delta = Time.deltaTime;
         HandleUpdateVariables();
+        HandleUpdateTarget();
 
         if (currentAge == AlienAge.resource || isDead == true) { return; }
         HandleAnimation();
@@ -285,40 +287,316 @@ public class AlienHandler : MonoBehaviour
         // Finaly move the alien if it can
         HandleMovement();
 
-        if (tickTimer >= tickTimerMax + randomNumber)
-        {
-            // Reset Tick timer
-            tickTimer -= tickTimerMax;
+        //if (tickTimer >= tickTimerMax + randomNumber)
+        //{
+        //    // Reset Tick timer
+        //    tickTimer -= tickTimerMax;
 
-            if (currentState == AlienState.hunting)
+        if (currentState == AlienState.hunting)
+        {
+            HandleAttacking(targetAlien);
+            return;
+        }
+        if (currentState == AlienState.evading)
+        {
+            HandleFleeing(targetAlien);
+            return;
+        }
+        if (currentState == AlienState.loving)
+        {
+            HandleLoveApproach(targetAlien);
+            return;
+        }
+        if (currentState == AlienState.roaming)
+        {
+            HandleRoaming();
+            return;
+        }
+        if (currentState == AlienState.looking)
+        {
+            HandleLooking();
+            return;
+        }
+        //}
+    }
+
+    private void HandleDistanceCalculation()
+    {
+        MyTransform2D = new Vector2(MyTransform.position.x, MyTransform.position.z);
+        CameraFollowSpot2D = new Vector2(GameManager.Instance.CameraFollowSpot.position.x, GameManager.Instance.CameraFollowSpot.position.z);
+        distanceToCameraSpot = Vector2.Distance(MyTransform2D, CameraFollowSpot2D);
+    }
+
+    private void HandleRendering()
+    {
+        if (distanceToCameraSpot > renderDistance)
+        {
+            if (isRendered == true)
             {
-                HandleAttacking(targetAlien);
-                return;
+                DeactivateAllModels();
+                isRendered = false;
             }
-            if (currentState == AlienState.evading)
+        }
+        else
+        {
+            if (isRendered == false)
             {
-                HandleFleeing(targetAlien);
-                return;
+                ActivateCurrentModels(currentSpecies);
+                isRendered = true;
             }
-            if (currentState == AlienState.loving)
+        }
+    } // Commented out for now
+
+    public void SetTarget(GameObject currentTargetGO)
+    {
+        if (targetAlien != null)
+        {
+            lastTargetAlien = targetAlien;
+        }
+
+        targetAlien = currentTargetGO;
+    }
+
+    public void HandleUpdateTarget()
+    {
+        if (brainWashed == true) { return; }
+
+        if (currentState != AlienState.roaming)
+        {
+            if (TargetAlienTransform == null) { return; }
+
+            if (currentState == AlienState.evading) // Away from target
             {
-                HandleLoveApproach(targetAlien);
-                return;
+                targetPosition3D = MyTransform.position + (MyTransform.position - TargetAlienTransform.position);
             }
-            if (currentState == AlienState.roaming)
+            else // towards target
             {
-                HandleRoaming();
-                return;
+                targetPosition3D = TargetAlienTransform.position;
             }
-            if (currentState == AlienState.looking)
-            {
-                HandleLooking();
-                return;
-            }
+        }
+
+        if (targetPosition3D == Vector3.zero) { return; }
+
+        targetPosition2D = new Vector2(targetPosition3D.x, targetPosition3D.z);
+        distanceToCurrentTarget = Vector2.Distance(MyTransform2D, targetPosition2D);
+    }
+
+    private void DiscardCurrentAction()
+    {
+        if (targetAlien == null) { return; }
+
+        lastTargetAlien = targetAlien;
+        targetAlien = null;
+        TargetAlienTransform = null;
+        targetPosition3D = Vector3.zero;
+    }
+
+    private void HandleUpdateVariables()
+    {
+        lifeTime += delta;
+        lustTimer += delta;
+        hungerTimer += delta;
+        tickTimer += delta;
+        lifeTime += delta;
+        speed = (alienSpeed + ((lustTimer + hungerTimer) / 100)) * delta; // + ((2 * (lustTimer + hungerTimer)) / (lustTimer + hungerTimer)); TODO: make better?! Way too fast
+
+        randomNumber = Random.Range(1, 11) / 10;
+    }
+
+    private void ResetVariable()
+    {
+        lustTimer = 0;
+        hungerTimer = 0;
+        lifeTime = 0;
+        MyRigidbody.velocity = Vector3.zero;
+        currentAge = AlienAge.resource;
+        minTimeToChild += UnityEngine.Random.Range(0, 10); // This just get added on top of minTimeToChild 
+        hasUterus = UnityEngine.Random.Range(0, 2) == 1;
+        alienHealth = alienLifeResource;
+        brainWashed = false; // AKA tutuorial scene
+        canAct = true;
+        isDead = false;
+        spawnAsAdults = false;
+        gotAttackedByPlayer = false;
+    }
+
+    public void DeactivateAllModels()
+    {
+        for (int i = 0; i < alienSpecies.Length; i++)
+        {
+            alienSpecies[i].SetActive(false);
+            alienSpeciesChild[i].SetActive(false);
+            alienSpeciesAdult[i].SetActive(false);
         }
     }
 
-    #region Functions for Alien Handler
+    public void ActivateCurrentModels(int currentSpeziesIndex)
+    {
+        DeactivateAllModels();
+        if (currentAge == AlienAge.resource)
+        {
+            alienSpeciesChild[currentSpeziesIndex].SetActive(true);
+        }
+        else
+        {
+            alienSpeciesAdult[currentSpeziesIndex].SetActive(true);
+        }
+        alienSpecies[currentSpeziesIndex].SetActive(true);
+
+        MyCollisionCollider = alienSpecies[currentSpeziesIndex].GetComponentInChildren<Collider>();
+    }
+
+    private IEnumerator HandleAge(bool isSpawningAsAdult)
+    {
+        if (isSpawningAsAdult == false)
+        {
+            // Resource Life
+            UpdateResourceSteam(currentSpecies);
+            resourceSteamGO.SetActive(true);
+            MyRigidbody.constraints = RigidbodyConstraints.FreezePosition | RigidbodyConstraints.FreezeRotation;
+            currentAge = AlienAge.resource;
+            alienHealth = alienLifeResource;
+            MyTransform.localScale = Vector3.one * resourceScale;
+            yield return new WaitForSeconds(minTimeToChild);
+        }
+
+        // Child Life
+        resourceSteamGO.SetActive(false);
+        MyRigidbody.constraints = RigidbodyConstraints.FreezePosition | RigidbodyConstraints.FreezeRotation;
+        alienHealth = alienLifeChild;
+        currentAge = AlienAge.child;
+        currentState = AlienState.roaming;
+        MyTransform.localScale = Vector3.one * childScale;
+        alienSpeciesChild[currentSpecies].SetActive(false);
+        alienSpeciesAdult[currentSpecies].SetActive(true);
+        if (AlienManager.Instance.resourceSphere.Count + AlienManager.Instance.resourceSquare.Count + AlienManager.Instance.resourceTriangle.Count > 0)
+        {
+            AlienManager.Instance.RemoveFromResourceList(this); // TODO: Check if available in List?!
+        }
+        yield return new WaitForSeconds(timeToSexual);
+
+        // Sexual active Life
+        alienHealth = alienLifeSexual;
+        currentAge = AlienAge.sexualActive;
+        StartCoroutine(HandleGrowing(childScale, sexualActiveScale));
+        yield return new WaitForSeconds(timeToFullGrown);
+
+        // Full Grown Life
+        alienHealth = alienLifeFullGrown;
+        currentAge = AlienAge.fullyGrown;
+        StartCoroutine(HandleGrowing(sexualActiveScale, fullGrownScale));
+    }
+
+    private IEnumerator HandleGrowing(float oldFactor, float newFactor)
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            yield return new WaitForSeconds(.5f / 10); // Total duration of transform 0.5f seconds
+            MyTransform.localScale = Vector3.one * ((oldFactor + newFactor * i / 10) - (oldFactor * i / 10));
+        }
+    }
+
+
+
+    public void HandleDeath()
+    {
+        isDead = true;
+        brainWashed = false;
+        anim[currentSpecies].Stop();
+        StopAllCoroutines();
+        this.gameObject.SetActive(false);
+        return;
+    }
+
+    public void HandleDeathByBullet(bool isPlayerBullet, Vector3 bulletForce)
+    {
+        if (isPlayerBullet)
+        {
+            AlienManager.Instance.KillAlien(currentSpecies);
+        }
+        // deadAlienGO = PoolManager.Instance.GetPooledDeadAlien();
+
+        // Instantiate(deadAliensPrerfabs[currentSpecies], this.transform.position, this.transform.rotation);
+
+        // 0:Sphere > 1:Square > 2:Triangle
+
+        if (currentSpecies == 0)
+        {
+            deadAlienGO = PoolManager.Instance.GetPooledDeadSphereAlien();
+            deadAlienGO.transform.localPosition = MyTransform.position;
+            deadAlienGO.transform.localRotation = MyTransform.rotation;
+            deadAlienGO.gameObject.SetActive(true);
+        }
+
+        if (currentSpecies == 1)
+        {
+            deadAlienGO = PoolManager.Instance.GetPooledDeadSquareAlien();
+            deadAlienGO.transform.localPosition = MyTransform.position;
+            deadAlienGO.transform.localRotation = MyTransform.rotation;
+            deadAlienGO.gameObject.SetActive(true);
+        }
+
+        if (currentSpecies == 2)
+        {
+            deadAlienGO = PoolManager.Instance.GetPooledDeadTriangleAlien();
+            deadAlienGO.transform.localPosition = MyTransform.position;
+            deadAlienGO.transform.localRotation = MyTransform.rotation;
+            deadAlienGO.gameObject.SetActive(true);
+        }
+
+        Debug.Break();
+        /*if (deadAlienGO != null)
+        {
+            deadAlienGO.transform.position = MyTransform.position;
+            deadAlienGO.transform.rotation = MyTransform.rotation;
+
+            deadAlien = deadAlienGO.GetComponent<DeadAlienHandler>();
+            deadAlien.Rigidbodies[currentSpecies].position = this.transform.position;
+            deadAlien.transform.rotation = MyTransform.rotation;
+            deadAlien.bulletForce = bulletForce;
+            deadAlien.currentAlienSpecies = currentSpecies;
+
+        }*/
+        Debug.Log("TODO: Dead Alien Ragdoll here");
+        StartCoroutine(WaitForDeath(.2f));
+
+    }
+
+    public void HandleDeathByCombat()
+    {
+        isDead = true;
+        StartCoroutine(PlayActionParticle(AlienState.hunting));
+        StartCoroutine(WaitForDeath(1));
+    }
+
+    private IEnumerator WaitForDeath(float time)
+    {
+        if (!audioSource.isPlaying)
+        {
+            audioSource.PlayOneShot(RandomAudioSelectorAliens(dyingAudioList, currentSpecies), 1f);
+        }
+        yield return new WaitForSeconds(time);
+        HandleDeath();
+    }
+
+
+
+    public void BrainwashAlien()
+    {
+        brainWashed = true;
+        resourceSteamGO.SetActive(false);
+        StopAllCoroutines();
+    }
+
+    private IEnumerator UndoBrainWash(float time)
+    {
+        yield return new WaitForSeconds(time);
+        brainWashed = false; // AKA tutuorial scene
+        StartCoroutine(HandleAge(true));
+    }
+
+
+    #region Alien Actions
     private void HandleMovement()
     {
         // Outside bounds
@@ -327,8 +605,8 @@ public class AlienHandler : MonoBehaviour
         // Place on Floor
         if (MyTransform.position.y != -1) { MyTransform.position = new Vector3(MyTransform.position.x, -1, MyTransform.position.z); }
 
-        // If resetted TargetPosition via DiscardCurrentAction()
-        if (targetPosition3D == Vector3.zero) { StartCoroutine(IdleSecsUntilNewState(AlienState.looking)); }
+        // If not yet set to targetPosition
+        if (targetPosition3D == Vector3.zero) { return; }
 
         // Prevent spinning or tilting
         if (distanceToCurrentTarget > 1) { MyTransform.LookAt(targetPosition3D); }
@@ -353,7 +631,6 @@ public class AlienHandler : MonoBehaviour
             {
                 // Prevent the tutorial brainwashed aliens to walk away
                 if (brainWashed == true) { return; }
-
                 StartCoroutine(IdleSecsUntilNewState(AlienState.looking));
             }
         }
@@ -469,6 +746,7 @@ public class AlienHandler : MonoBehaviour
         // Set state on closest target
         if (targetAlien == null)
         {
+            Debug.Log("found nothing");
             StartCoroutine(IdleSecsUntilNewState(AlienState.roaming));
             return;
         }
@@ -519,10 +797,20 @@ public class AlienHandler : MonoBehaviour
 
     private void HandleRoaming()
     {
+        Debug.Log("do roaming");
+
         if (hasNewTarget == true) { return; }
         if (brainWashed == true) { return; }
 
-
+        if (targetPosition3D == Vector3.zero)
+        {
+            Debug.Log("TargetPosition3D is ZEROOOOOOOOO");
+            randDirXRoaming = Random.Range(0, 2) - .5f;
+            randDirZRoaming = Random.Range(0, 2) - .5f;
+            targetPosition3D = MyTransform.position + new Vector3(randDirXRoaming, 0, randDirZRoaming) * 20;
+            targetPosition2D = new Vector2(targetPosition3D.x, targetPosition3D.z);
+            distanceToCurrentTarget = Vector2.Distance(MyTransform2D, targetPosition2D);
+        }
         // Find new target that is not too close, inside the ring and has no other object there yet
         while (
             (targetPosition3D.x * targetPosition3D.x + targetPosition3D.z * targetPosition3D.z) > worldRadiusSquared ||
@@ -530,6 +818,7 @@ public class AlienHandler : MonoBehaviour
             Physics.OverlapSphere(new Vector3(targetPosition3D.x, 1, targetPosition3D.z), .1f).Length > 0
             )
         {
+            Debug.Log("TargetPosition3D is in loop");
             randDirXRoaming = Random.Range(0, 2) - .5f;
             randDirZRoaming = Random.Range(0, 2) - .5f;
             targetPosition3D = MyTransform.position + new Vector3(randDirXRoaming, 0, randDirZRoaming) * 20;
@@ -539,38 +828,43 @@ public class AlienHandler : MonoBehaviour
         }
     }
 
-    public void HandleUpdateTarget()
+    public void HandleFleeing(GameObject currentTargetGO)
     {
-        if (currentState != AlienState.roaming)
+        if (!audioSource.isPlaying)
         {
-            if (
-                TargetAlienTransform == null ||
-                TargetAlienTransform.position == Vector3.zero ||
-                TargetAlienTransform.gameObject.activeInHierarchy == false
-                )
-            {
-                StartCoroutine(IdleSecsUntilNewState(AlienState.looking));
-                return;
-            }
-
-            if (currentState == AlienState.evading) // Away from target
-            {
-                targetPosition3D = MyTransform.position + (MyTransform.position - TargetAlienTransform.position);
-            }
-            else // towards target
-            {
-                targetPosition3D = TargetAlienTransform.position;
-            }
+            audioSource.PlayOneShot(RandomAudioSelectorAliens(evadingAudioList, currentSpecies), 1f);
         }
 
-        if (targetPosition3D == null)
+        if (brainWashed == true) { return; }
+
+        if (currentTargetGO == null) { return; }
+        SetTarget(currentTargetGO);
+    } // Use this here on the player as well to scare the aliens away
+
+    public void HandleAttacking(GameObject currentTargetGO) // Player makes them flee as well and by acting als targetAlien in PlayerManager
+    {
+        if (!audioSource.isPlaying)
         {
-            StartCoroutine(IdleSecsUntilNewState(AlienState.looking));
-            return;
+            audioSource.PlayOneShot(RandomAudioSelectorAliens(attackAudioList, currentSpecies), 1f);
         }
 
-        targetPosition2D = new Vector2(targetPosition3D.x, targetPosition3D.z);
-        distanceToCurrentTarget = Vector2.Distance(MyTransform2D, targetPosition2D);
+        if (brainWashed == true) { return; }
+
+        if (currentTargetGO == null) { return; }
+        SetTarget(currentTargetGO);
+    }
+
+    private void HandleLoveApproach(GameObject currentTargetGO)
+    {
+        if (!audioSource.isPlaying)
+        {
+            audioSource.PlayOneShot(RandomAudioSelectorAliens(attackAudioList, currentSpecies), 1f);
+        }
+
+        if (brainWashed == true) { return; }
+
+        if (currentTargetGO == null) { return; }
+        SetTarget(currentTargetGO);
     }
 
     private void HandleMating()
@@ -614,101 +908,43 @@ public class AlienHandler : MonoBehaviour
         StartCoroutine(IdleSecsUntilNewState(AlienState.looking));
     }
 
-    public void HandleDeath()
+    #endregion
+
+
+    public IEnumerator IdleSecsUntilNewState(AlienState nextState)
     {
-        isDead = true;
-        brainWashed = false;
-        anim[currentSpecies].Stop();
-        StopAllCoroutines();
-        this.gameObject.SetActive(false);
-        return;
+        canAct = false;
+        hasNewTarget = false;
+        if (brainWashed == false)
+        {
+            DiscardCurrentAction(); // To prevent the lost of target Alien
+        }
+        currentState = nextState;
+        lookTimeIdle = UnityEngine.Random.Range(1, (randomNumber + 1) * 10) / 10;
+        yield return new WaitForSeconds(lookTimeIdle);
+        canAct = true;
     }
-
-    public void HandleDeathByBullet(bool isPlayerBullet, Vector3 bulletForce)
+    private IEnumerator PlayActionParticle(AlienState currentState)
     {
-        if (isPlayerBullet)
+        if (isRendered == false)
         {
-            AlienManager.Instance.KillAlien(currentSpecies);
-        }
-        // deadAlienGO = PoolManager.Instance.GetPooledDeadAlien();
-
-        // Instantiate(deadAliensPrerfabs[currentSpecies], this.transform.position, this.transform.rotation);
-        
-        // 0:Sphere > 1:Square > 2:Triangle
-        
-        if (currentSpecies == 0)
-        {
-            deadAlienGO = PoolManager.Instance.GetPooledDeadSphereAlien();
-            deadAlienGO.transform.localPosition = MyTransform.position;
-            deadAlienGO.transform.localRotation = MyTransform.rotation;
-            deadAlienGO.gameObject.SetActive(true);
-        }
-        
-        if (currentSpecies == 1)
-        {
-            deadAlienGO = PoolManager.Instance.GetPooledDeadSquareAlien();
-            deadAlienGO.transform.localPosition = MyTransform.position;
-            deadAlienGO.transform.localRotation = MyTransform.rotation;
-            deadAlienGO.gameObject.SetActive(true);
-        }
-        
-        if (currentSpecies == 2)
-        {
-            deadAlienGO = PoolManager.Instance.GetPooledDeadTriangleAlien();
-            deadAlienGO.transform.localPosition = MyTransform.position;
-            deadAlienGO.transform.localRotation = MyTransform.rotation;
-            deadAlienGO.gameObject.SetActive(true);
-        }
-        
-        Debug.Break();
-        /*if (deadAlienGO != null)
-        {
-            deadAlienGO.transform.position = MyTransform.position;
-            deadAlienGO.transform.rotation = MyTransform.rotation;
-
-            deadAlien = deadAlienGO.GetComponent<DeadAlienHandler>();
-            deadAlien.Rigidbodies[currentSpecies].position = this.transform.position;
-            deadAlien.transform.rotation = MyTransform.rotation;
-            deadAlien.bulletForce = bulletForce;
-            deadAlien.currentAlienSpecies = currentSpecies;
-
-        }*/
-        Debug.Log("TODO: Dead Alien Ragdoll here");
-        StartCoroutine(WaitForDeath(.2f));
-
-    }
-
-    public void HandleDeathByCombat()
-    {
-        isDead = true;
-        StartCoroutine(PlayActionParticle(AlienState.hunting));
-        StartCoroutine(WaitForDeath(1));
-    }
-
-    public void DeactivateAllModels()
-    {
-        for (int i = 0; i < alienSpecies.Length; i++)
-        {
-            alienSpecies[i].SetActive(false);
-            alienSpeciesChild[i].SetActive(false);
-            alienSpeciesAdult[i].SetActive(false);
-        }
-    }
-
-    public void ActivateCurrentModels(int currentSpeziesIndex)
-    {
-        DeactivateAllModels();
-        if (currentAge == AlienAge.resource)
-        {
-            alienSpeciesChild[currentSpeziesIndex].SetActive(true);
+            yield return null;
         }
         else
         {
-            alienSpeciesAdult[currentSpeziesIndex].SetActive(true);
-        }
-        alienSpecies[currentSpeziesIndex].SetActive(true);
+            if (currentState == AlienState.loving)
+            {
+                alienActionFogMain.startColor = new ParticleSystem.MinMaxGradient(Color.red, Color.magenta);
+            }
+            else if (currentState == AlienState.hunting)
+            {
+                alienActionFogMain.startColor = new ParticleSystem.MinMaxGradient(Color.gray, Color.black);
+            }
 
-        MyCollisionCollider = alienSpecies[currentSpeziesIndex].GetComponentInChildren<Collider>();
+            alienActionParticlesGO.SetActive(true);
+            yield return new WaitForSeconds(1f);
+            alienActionParticlesGO.SetActive(false);
+        }
     }
 
     public void HandleStateIcon(AlienState currentState)
@@ -736,82 +972,71 @@ public class AlienHandler : MonoBehaviour
         }
     }
 
-    private void DiscardCurrentAction()
+    private void UpdateResourceSteam(int currentIndex)
     {
-        if (targetAlien != null)
+        if (AlienManager.Instance == null) { return; }
+
+        if (currentIndex == 0)
         {
-            lastTargetAlien = targetAlien;
+            resourceSteamMain.startColor = AlienManager.Instance.alienColors[currentIndex].color;
+            alienMiniMapMarker.material = AlienManager.Instance.alienColors[currentIndex];
         }
-        targetAlien = null;
-        TargetAlienTransform = null;
-        targetPosition3D = Vector3.zero;
-        targetPosition2D = Vector2.zero;
-    }
 
-    private void HandleUpdateVariables()
-    {
-        delta = Time.deltaTime;
-
-        lifeTime += delta;
-        lustTimer += delta;
-        hungerTimer += delta;
-        tickTimer += delta;
-        lifeTime += delta;
-        speed = (alienSpeed + ((lustTimer + hungerTimer) / 100)) * delta; // + ((2 * (lustTimer + hungerTimer)) / (lustTimer + hungerTimer)); TODO: make better?! Way too fast
-
-        randomNumber = Random.Range(1, 11) / 10;
-    }
-
-    private void HandleDistanceCalculation()
-    {
-        MyTransform2D = new Vector2(MyTransform.position.x, MyTransform.position.z);
-        CameraFollowSpot2D = new Vector2(GameManager.Instance.CameraFollowSpot.position.x, GameManager.Instance.CameraFollowSpot.position.z);
-        distanceToCameraSpot = Vector2.Distance(MyTransform2D, CameraFollowSpot2D);
-    }
-
-    private void HandleRendering()
-    {
-        if (distanceToCameraSpot > 50)
+        if (currentIndex == 1)
         {
-            if (isRendered == true)
+            resourceSteamMain.startColor = AlienManager.Instance.alienColors[currentIndex].color;
+            alienMiniMapMarker.material = AlienManager.Instance.alienColors[currentIndex];
+        }
+
+        if (currentIndex == 2)
+        {
+            resourceSteamMain.startColor = AlienManager.Instance.alienColors[currentIndex].color;
+            alienMiniMapMarker.material = AlienManager.Instance.alienColors[currentIndex];
+        }
+    }
+
+    private void HandleAnimation()
+    {
+        if (anim[currentSpecies] != null) { return; }
+
+        if (currentState == AlienState.hunting || currentState == AlienState.loving || currentState == AlienState.roaming)
+        {
+            anim[currentSpecies]["Armature|WALK"].speed = 1;
+            anim[currentSpecies].Play("Armature|WALK");
+        }
+        if (currentState == AlienState.evading)
+        {
+            anim[currentSpecies]["Armature|WALK"].speed = 2;
+            anim[currentSpecies].Play("Armature|WALK");
+        }
+        if (currentState == AlienState.idle)
+        {
+            if (currentSpecies != 0)
             {
-                DeactivateAllModels();
-                isRendered = false;
+                anim[currentSpecies].Play("Armature|IDLE");
             }
         }
-        else
-        {
-            if (isRendered == false)
-            {
-                ActivateCurrentModels(currentSpecies);
-                isRendered = true;
-            }
-        }
-    } // Commented out for now
-
-    private void ResetVariable()
-    {
-        lustTimer = 0;
-        hungerTimer = 0;
-        lifeTime = 0;
-        MyRigidbody.velocity = Vector3.zero;
-        currentAge = AlienAge.resource;
-        minTimeToChild += UnityEngine.Random.Range(0, 10); // This just get added on top of minTimeToChild 
-        hasUterus = UnityEngine.Random.Range(0, 2) == 1;
-        alienHealth = alienLifeResource;
-        brainWashed = false; // AKA tutuorial scene
-        canAct = true;
-        isDead = false;
-        spawnAsAdults = false;
-        gotAttackedByPlayer = false;
     }
 
-    public void BrainwashAlien()
+    AudioClip RandomAudioSelectorAliens(List<AudioClip[]> audioList, int species) // incase we plan to add more audio for each state
     {
-        brainWashed = true;
-        resourceSteamGO.SetActive(false);
-        StopAllCoroutines();
+        // TODO: think of something to have ot play an audio only 50% of the time?
+        AudioClip[] selectedAudioArray = audioList[species];
+
+        int randomIndex = Random.Range(0, selectedAudioArray.Length);
+        AudioClip selectedAudio = selectedAudioArray[randomIndex];
+
+        return selectedAudio;
     }
+
+    AudioClip RandomAudioSelectorFoley(List<AudioClip> audioList) // incase we plan to add more audio for each state
+    {
+        int randomIndex = Random.Range(0, audioList.Count);
+        AudioClip selectedAudio = audioList[randomIndex];
+
+        return selectedAudio;
+    }
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -918,228 +1143,6 @@ public class AlienHandler : MonoBehaviour
 
             return;
         }
-    }
-
-    private void UpdateResourceSteam(int currentIndex)
-    {
-        if (AlienManager.Instance == null) { return; }
-
-        if (currentIndex == 0)
-        {
-            resourceSteamMain.startColor = AlienManager.Instance.alienColors[currentIndex].color;
-            alienMiniMapMarker.material = AlienManager.Instance.alienColors[currentIndex];
-        }
-
-        if (currentIndex == 1)
-        {
-            resourceSteamMain.startColor = AlienManager.Instance.alienColors[currentIndex].color;
-            alienMiniMapMarker.material = AlienManager.Instance.alienColors[currentIndex];
-        }
-
-        if (currentIndex == 2)
-        {
-            resourceSteamMain.startColor = AlienManager.Instance.alienColors[currentIndex].color;
-            alienMiniMapMarker.material = AlienManager.Instance.alienColors[currentIndex];
-        }
-    }
-
-    private IEnumerator PlayActionParticle(AlienState currentState)
-    {
-        if (isRendered == false)
-        {
-            yield return null;
-        }
-        else
-        {
-            if (currentState == AlienState.loving)
-            {
-                alienActionFogMain.startColor = new ParticleSystem.MinMaxGradient(Color.red, Color.magenta);
-            }
-            else if (currentState == AlienState.hunting)
-            {
-                alienActionFogMain.startColor = new ParticleSystem.MinMaxGradient(Color.gray, Color.black);
-            }
-
-            alienActionParticlesGO.SetActive(true);
-            yield return new WaitForSeconds(1f);
-            alienActionParticlesGO.SetActive(false);
-        }
-    }
-
-    private IEnumerator HandleAge(bool isSpawningAsAdult)
-    {
-        if (isSpawningAsAdult == false)
-        {
-            // Resource Life
-            UpdateResourceSteam(currentSpecies);
-            resourceSteamGO.SetActive(true);
-            MyRigidbody.constraints = RigidbodyConstraints.FreezePosition | RigidbodyConstraints.FreezeRotation;
-            currentAge = AlienAge.resource;
-            alienHealth = alienLifeResource;
-            MyTransform.localScale = Vector3.one * resourceScale;
-            yield return new WaitForSeconds(minTimeToChild);
-        }
-
-        // Child Life
-        resourceSteamGO.SetActive(false);
-        MyRigidbody.constraints = RigidbodyConstraints.FreezePosition | RigidbodyConstraints.FreezeRotation;
-        alienHealth = alienLifeChild;
-        currentAge = AlienAge.child;
-        currentState = AlienState.roaming;
-        MyTransform.localScale = Vector3.one * childScale;
-        alienSpeciesChild[currentSpecies].SetActive(false);
-        alienSpeciesAdult[currentSpecies].SetActive(true);
-        if (AlienManager.Instance.resourceSphere.Count + AlienManager.Instance.resourceSquare.Count + AlienManager.Instance.resourceTriangle.Count > 0)
-        {
-            AlienManager.Instance.RemoveFromResourceList(this); // TODO: Check if available in List?!
-        }
-        yield return new WaitForSeconds(timeToSexual);
-
-        // Sexual active Life
-        alienHealth = alienLifeSexual;
-        currentAge = AlienAge.sexualActive;
-        StartCoroutine(HandleGrowing(childScale, sexualActiveScale));
-        yield return new WaitForSeconds(timeToFullGrown);
-
-        // Full Grown Life
-        alienHealth = alienLifeFullGrown;
-        currentAge = AlienAge.fullyGrown;
-        StartCoroutine(HandleGrowing(sexualActiveScale, fullGrownScale));
-    }
-
-    private IEnumerator HandleGrowing(float oldFactor, float newFactor)
-    {
-        for (int i = 0; i < 10; i++)
-        {
-            yield return new WaitForSeconds(.5f / 10); // Total duration of transform 0.5f seconds
-            MyTransform.localScale = Vector3.one * ((oldFactor + newFactor * i / 10) - (oldFactor * i / 10));
-        }
-    }
-
-    private IEnumerator UndoBrainWash(float time)
-    {
-        yield return new WaitForSeconds(time);
-        brainWashed = false; // AKA tutuorial scene
-        StartCoroutine(HandleAge(true));
-    }
-
-    private IEnumerator WaitForDeath(float time)
-    {
-        if (!audioSource.isPlaying)
-        {
-            audioSource.PlayOneShot(RandomAudioSelectorAliens(dyingAudioList, currentSpecies), 1f);
-        }
-        yield return new WaitForSeconds(time);
-        HandleDeath();
-    }
-
-    AudioClip RandomAudioSelectorAliens(List<AudioClip[]> audioList, int species) // incase we plan to add more audio for each state
-    {
-        // TODO: think of something to have ot play an audio only 50% of the time?
-        AudioClip[] selectedAudioArray = audioList[species];
-
-        int randomIndex = Random.Range(0, selectedAudioArray.Length);
-        AudioClip selectedAudio = selectedAudioArray[randomIndex];
-
-        return selectedAudio;
-    }
-
-    AudioClip RandomAudioSelectorFoley(List<AudioClip> audioList) // incase we plan to add more audio for each state
-    {
-        int randomIndex = Random.Range(0, audioList.Count);
-        AudioClip selectedAudio = audioList[randomIndex];
-
-        return selectedAudio;
-    }
-
-    #endregion
-
-    private void HandleAnimation()
-    {
-        if (anim[currentSpecies] != null) { return; }
-
-        if (currentState == AlienState.hunting || currentState == AlienState.loving || currentState == AlienState.roaming)
-        {
-            anim[currentSpecies]["Armature|WALK"].speed = 1;
-            anim[currentSpecies].Play("Armature|WALK");
-        }
-        if (currentState == AlienState.evading)
-        {
-            anim[currentSpecies]["Armature|WALK"].speed = 2;
-            anim[currentSpecies].Play("Armature|WALK");
-        }
-        if (currentState == AlienState.idle)
-        {
-            if (currentSpecies != 0)
-            {
-                anim[currentSpecies].Play("Armature|IDLE");
-            }
-        }
-    }
-
-    public void HandleFleeing(GameObject currentTargetGO)
-    {
-        if (!audioSource.isPlaying)
-        {
-            audioSource.PlayOneShot(RandomAudioSelectorAliens(evadingAudioList, currentSpecies), 1f);
-        }
-
-        if (brainWashed == true) { return; }
-
-        if (currentTargetGO == null) { return; }
-        SetTarget(currentTargetGO);
-    } // Use this here on the player as well to scare the aliens away
-
-    public void HandleAttacking(GameObject currentTargetGO) // Player makes them flee as well and by acting als targetAlien in PlayerManager
-    {
-        if (!audioSource.isPlaying)
-        {
-            audioSource.PlayOneShot(RandomAudioSelectorAliens(attackAudioList, currentSpecies), 1f);
-        }
-
-        if (brainWashed == true) { return; }
-
-        if (currentTargetGO == null) { return; }
-        SetTarget(currentTargetGO);
-    }
-
-    private void HandleLoveApproach(GameObject currentTargetGO)
-    {
-        if (brainWashed == true) { return; }
-
-        if (currentTargetGO == null)
-        {
-            StartCoroutine(IdleSecsUntilNewState(AlienState.looking));
-        }
-    }
-
-    public void SetTarget(GameObject currentTargetGO)
-    {
-        if (targetAlien != null)
-        {
-            lastTargetAlien = targetAlien;
-        }
-
-        targetAlien = currentTargetGO;
-        if (targetAlien == null || brainWashed == true) { return; }
-
-        TargetAlienTransform = targetAlien.transform;
-        targetPosition3D = TargetAlienTransform.position;
-        targetPosition2D = new Vector2(targetPosition3D.x, targetPosition3D.z);
-    }
-
-    public IEnumerator IdleSecsUntilNewState(AlienState nextState)
-    {
-        canAct = false;
-        hasNewTarget = false;
-        if (brainWashed == false)
-        {
-            DiscardCurrentAction(); // To prevent the lost of target Alien
-        }
-        currentState = nextState;
-        lookTimeIdle = UnityEngine.Random.Range(0, (randomNumber + 1) * 10) / 10;
-        yield return new WaitForSeconds(lookTimeIdle);
-        canAct = true;
     }
 
 }

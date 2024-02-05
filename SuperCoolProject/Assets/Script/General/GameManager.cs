@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     public bool hasLost;
     public int numberOfPlayers;
     public int maxPlayers = 2;
+    public Vector3 playerSpawnLocation;
 
     [Header("Clone Juice")]
     public Image cloneJuiceUI;
@@ -166,6 +167,7 @@ public class GameManager : MonoBehaviour
         PlayerLocomotion currentPlayerLoco = pm.GetComponent<PlayerLocomotion>();
         playersLocos.Add(currentPlayerLoco);
 
+        pm.gameObject.transform.position = playerSpawnLocation;
         pm.gameObject.transform.LookAt(TutorialHandler.Instance.alienEndPosition);
 
         HUDHandler.Instance.HUDSystemGO.SetActive(true);

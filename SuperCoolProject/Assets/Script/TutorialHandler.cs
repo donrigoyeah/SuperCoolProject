@@ -164,10 +164,7 @@ public class TutorialHandler : MonoBehaviour
 
             if (currentTargetAlien != null)
             {
-                currentAlienHandler.targetAlien = currentTargetAlien.gameObject;
                 currentAlienHandler.SetTarget(currentTargetAlien.gameObject);
-                currentAlienHandler.targetAlienHandler = currentTargetAlien;
-                currentAlienHandler.HandleUpdateTarget();
             }
 
             currentAlienTransform = alienPoolGo.transform;
