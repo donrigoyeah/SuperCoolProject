@@ -115,6 +115,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plyer_radar
       objectReference: {fileID: 0}
+    - target: {fileID: 7202271454713460447, guid: e7cf97a09e315a648a301a5822b65b7d,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: fd2c7a177b89d464ca2981e0a8155bc8, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -48,7 +48,7 @@ MonoBehaviour:
   devMode: 0
   hideTut: 0
   worldRadius: 180
-  hasLost: 0
+  hasLost: 1
   numberOfPlayers: 0
   maxPlayers: 2
   cloneJuiceUI: {fileID: 0}
@@ -98,6 +98,11 @@ MonoBehaviour:
   cameraSpeedMultiplier: 4
   cameraZOffset: 2
   playerDeadBody: 0
+  playerAntenna: {fileID: 0}
+  spaceshipAntenna: {fileID: 0}
+  spaceshipShield: {fileID: 0}
+  spaceshipGrenadeModule: {fileID: 0}
+  playerGrenadeModule: {fileID: 0}
 --- !u!1 &9078134599936876708
 GameObject:
   m_ObjectHideFlags: 0
