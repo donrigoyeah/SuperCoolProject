@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
@@ -204,7 +205,10 @@ public class AlienHandler : MonoBehaviour
     [Header("Tick stats")]
     public float tickTimer;
     public float tickTimerMax = .5f;
-
+    
+    [Header("DeadAliens")] // 0:Sphere > 1:Square > 2:Triangle
+    public GameObject[] deadAliensPrerfabs;
+    
     #endregion
 
     private void Awake()
@@ -653,7 +657,10 @@ public class AlienHandler : MonoBehaviour
         {
             AlienManager.Instance.KillAlien(currentSpecies);
         }
-        deadAlienGO = PoolManager.Instance.GetPooledDeadAlien();
+        // deadAlienGO = PoolManager.Instance.GetPooledDeadAlien();
+
+        Instantiate(deadAliensPrerfabs[currentSpecies], this.transform.position, this.transform.rotation);
+        Debug.Break();
         if (deadAlienGO != null)
         {
             deadAlienGO.transform.position = MyTransform.position;

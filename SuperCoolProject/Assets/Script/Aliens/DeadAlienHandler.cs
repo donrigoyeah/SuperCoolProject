@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class DeadAlienHandler : MonoBehaviour
 {
-    public GameObject[] deadAlienSpecies; // 0:Sphere > 1:Square > 2:Triangle
     public Rigidbody[] Rigidbodies;
     public int currentAlienSpecies;
     public Vector3 bulletForce;
@@ -19,7 +18,7 @@ public class DeadAlienHandler : MonoBehaviour
     private float durtaion;
     private float dissolveAMount;
     
-    [Header("Triangle Bone Position")]
+    /*[Header("Triangle Bone Position")]
     public Transform TBone1;
     public Transform TBone2;
     public Transform TBone3;
@@ -62,11 +61,11 @@ public class DeadAlienHandler : MonoBehaviour
     private Vector3 SqBone5Pos;
     private Quaternion SqBone5Rot;
     private Vector3 SqBone6Pos;
-    private Quaternion SqBone6Rot;
+    private Quaternion SqBone6Rot;*/
 
     private void Awake()
     {
-        for (int i = 0; i < Rigidbodies.Length; i++)
+        /*for (int i = 0; i < Rigidbodies.Length; i++)
         {
             Rigidbodies[i].velocity = Vector3.zero;
             Rigidbodies[i].transform.position = Vector3.zero;
@@ -99,30 +98,30 @@ public class DeadAlienHandler : MonoBehaviour
         SqBone5Pos = SqBone5.position;
         SqBone5Rot = SqBone5.rotation;
         SqBone6Pos = SqBone6.position;
-        SqBone6Rot = SqBone6.rotation;
+        SqBone6Rot = SqBone6.rotation;*/
+        
+        
     }
 
     private void OnEnable()
     {
-        deadAlienSpecies[currentAlienSpecies].SetActive(true);
-        //ResetAllBones();
-
-        Rigidbodies[currentAlienSpecies].AddForce((bulletForce * 4) + Vector3.up * 4);
+        // GetComponent<Rigidbody>().AddForce((bulletForce * 4) + Vector3.up * 4);
         StartCoroutine(Dissolve());
     }
 
     private void OnDisable()
     {
-        for (int i = 0; i < Rigidbodies.Length; i++)
-        {
-            Rigidbodies[i].velocity = Vector3.zero;
-            Rigidbodies[i].transform.localPosition = Vector3.zero;
-            Rigidbodies[i].transform.rotation = Quaternion.identity;
-            deadAlienSpecies[i].SetActive(false);
-        }
-        bulletForce = Vector3.zero;
+        // for (int i = 0; i < Rigidbodies.Length; i++)
+        // {
+        //     Rigidbodies[i].velocity = Vector3.zero;
+        //     Rigidbodies[i].transform.localPosition = Vector3.zero;
+        //     Rigidbodies[i].transform.rotation = Quaternion.identity;
+        //     deadAlienSpecies[i].SetActive(false);
+        // }
+        // bulletForce = Vector3.zero;
     }
 
+    /*
     private void ResetAllBones()
     {
         if (currentAlienSpecies == 0)
@@ -171,6 +170,7 @@ public class DeadAlienHandler : MonoBehaviour
             TBone3.rotation = TBone3Rot;
         }
     }
+    */
 
 
     IEnumerator Dissolve()
@@ -185,7 +185,7 @@ public class DeadAlienHandler : MonoBehaviour
             dissolveAMount = (i / steps);
             dissolve.SetFloat("_DissolveAmount", (dissolveAMount));
         }
-        Rigidbodies[currentAlienSpecies].velocity = Vector3.zero;
+        // Rigidbodies[currentAlienSpecies].velocity = Vector3.zero;
         this.gameObject.SetActive(false);
     }
 }
