@@ -96,6 +96,8 @@ public class PlayerManager : MonoBehaviour
     private int stepsShield;
     private float animationDurationShield;
 
+    public GameObject playerShield;
+    public GameObject playerAntenna;
 
     private int layerMaskAlien = 1 << 9; // Lyer 9 is Alien
 
@@ -515,6 +517,10 @@ public class PlayerManager : MonoBehaviour
             currentSquareResource = maxSquareResource;
             currentTriangleResource = maxTriangleResource;
             MyTransform.position = Vector3.zero;
+            isCarryingPart = false;
+            isInteracting = false;
+
+
             isAlive = true;
         }
     }

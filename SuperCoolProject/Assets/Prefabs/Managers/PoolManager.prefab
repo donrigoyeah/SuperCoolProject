@@ -366,16 +366,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentAlienAmount: 0
-  alienAmount: 150
+  alienAmount: 50
   alienAmountExtra: 50
   AlienPool: []
   Alien: {fileID: 1047908099467871381, guid: d934f14e333eefc4697225457031ccaa, type: 3}
   AlienContainer: {fileID: 4323642014150451390}
-  bulletAmount: 50
+  bulletAmount: 20
   BulletPool: []
   Bullet: {fileID: 6380490836947165073, guid: db0ebcaaff17af448a2dedc92cd253e0, type: 3}
   BulletContainer: {fileID: 8584367784129225532}
-  bulletExpAmount: 50
+  bulletExpAmount: 10
   bulletExp: {fileID: 3124982679626853374, guid: b2874eb7576b98f4fa9f4c0a1481802b,
     type: 3}
   BulletExpPool: []
@@ -384,25 +384,25 @@ MonoBehaviour:
   muzzle: {fileID: 457618160108708804, guid: 68e3f1f0c9a54fe43b3f4eb7c9a41637, type: 3}
   MuzzlePool: []
   MuzzleContainer: {fileID: 5093162604507526556}
-  copAmount: 20
+  copAmount: 0
   CopPool: []
   Cop: {fileID: 2032304886088959342, guid: b13abde9a9f3f2d45a96444e1c1a70d4, type: 3}
   CopContainer: {fileID: 4625769313100265387}
-  copBulletAmount: 50
+  copBulletAmount: 0
   CopBulletPool: []
   CopBullet: {fileID: 5135924244302741668, guid: 420d83ed14eee3f459331707b193c9c1,
     type: 3}
   CopBulletContainer: {fileID: 1797174954782914179}
-  copMuzzleAmount: 50
+  copMuzzleAmount: 0
   copMuzzle: {fileID: 1755970707523638736, guid: f222355b19b25fb4fb2901d4e46718b5,
     type: 3}
   CopMuzzlePool: []
   CopMuzzleContainer: {fileID: 4420016760335093908}
-  FSSAmount: 30
+  FSSAmount: 10
   FSSPool: []
   FSS: {fileID: 1508112924898509174, guid: 55ea6eb2110f40441aabc76f408bd266, type: 3}
   FSSContainer: {fileID: 6639588495076246787}
-  deadAlienAmount: 15
+  deadAlienAmount: 5
   DeadAlienPool: []
   DeadAlien: {fileID: 7151926714197197924, guid: 9aa565877ecff9045b5de8c22120623f,
     type: 3}
@@ -412,7 +412,7 @@ MonoBehaviour:
   DamageUI: {fileID: 4331799705989807614, guid: 621ee631fcd4a4549a504b3943530792,
     type: 3}
   DamageUIContainer: {fileID: 5243428926135500847}
-  grenadeAmount: 15
+  grenadeAmount: 5
   GrenadePool: []
   grenade: {fileID: 2496734503096154801, guid: 632de922000647541804b1fae094b496, type: 3}
   GrenadeContainer: {fileID: 6835911651760370117}

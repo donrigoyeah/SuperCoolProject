@@ -77,6 +77,12 @@ public class GameManager : MonoBehaviour
     [Header("Dead Body")]
     public bool playerDeadBody = false;
 
+    [Header("Player/Spaceship Parts")] 
+    public SkinnedMeshRenderer playerAntenna;
+    public GameObject spaceshipAntenna;
+    public GameObject spaceshipShield;
+    public GameObject spaceshipGrenadeModule;
+    public GameObject playerGrenadeModule;
 
     public static GameManager Instance;
 
@@ -433,14 +439,30 @@ public class GameManager : MonoBehaviour
 
         if (hasShieldGenerator)
         {
+            spaceshipShield.SetActive(true);
             foreach (var item in players)
             {
                 item.shieldRechargeTime = item.shieldRechargeTimeWithUpgrade;
+            }
+            
+            foreach (PlayerManager playerAntennaa in players)
+            {
+                Debug.Log("aaa");
+                playerAntennaa.playerShield.gameObject.SetActive(true);
             }
         }
 
         if (hasAntenna)
         {
+            // playerAntenna.SetActive(true);
+            spaceshipAntenna.SetActive(true);
+
+            foreach (PlayerManager playerAntennaa in players)
+            {
+                Debug.Log("aaa");
+                playerAntennaa.playerAntenna.gameObject.SetActive(true);
+            }
+            
             HUDHandler.Instance.UnlockPopulation.SetActive(false);
 
         }
@@ -456,6 +478,12 @@ public class GameManager : MonoBehaviour
             {
                 item.canAim = true;
             }
+        }
+
+        if (hasAmmoBox)
+        {
+            playerGrenadeModule.SetActive(true);
+            spaceshipGrenadeModule.SetActive(true);
         }
 
         if (currentSpaceShipParts == totalSpaceShipParts)

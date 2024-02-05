@@ -106,7 +106,7 @@ public class PlayerAttacker : MonoBehaviour
         laserSightLeft.enabled = false;
         laserSightRight.enabled = false;
         AimTargetIndicatorGO.SetActive(false);
-
+        currentGrenadeCooldownValue = grenadeCooldownMax;
         audioSource = GetComponent<AudioSource>();
         inputHandler = GetComponent<InputHandler>();
         playerManager = GetComponent<PlayerManager>();
