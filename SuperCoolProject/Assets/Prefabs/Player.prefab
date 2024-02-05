@@ -666,13 +666,13 @@ MonoBehaviour:
   grenadeTrajectoryParent: {fileID: 8281562700616928910}
   sprite: {fileID: 0}
   vertecCount: 12
-  coolingDownAudio: {fileID: 8300000, guid: 768114da9783619489d3a27a79174be0, type: 3}
+  coolingDownAudio: {fileID: 8300000, guid: 29773ab441daa0447a2a3e11c2cbe3df, type: 3}
   gunReadyAudio: {fileID: 8300000, guid: 93fd702d2ff6bd84e91a94813dc16c58, type: 3}
   gunOverheatedAudio: {fileID: 8300000, guid: 8cd8e3a808300d94594154637d6b8b36, type: 3}
-  collectingResource: {fileID: 8300000, guid: 5b6d4b4a6a7648547a6bcb2c9e92b710, type: 3}
+  collectingResource: {fileID: 8300000, guid: 775e5f2a03fb56c4b966d819bbb4f021, type: 3}
   shootLazer:
   - {fileID: 8300000, guid: 51cc3e3f623c2a14e86fe8df65c1d7c3, type: 3}
-  - {fileID: 8300000, guid: bd920f65611f3604dababb828b58b27c, type: 3}
+  - {fileID: 8300000, guid: 2e6d26d6861644a438787b1bb815e300, type: 3}
   canNotShootLazer: {fileID: 8300000, guid: 05360ce3cf5168d4d8d58a78ea8dc613, type: 3}
   shootGrenade: {fileID: 8300000, guid: cb90d022d146fe44fa5041132fad6d43, type: 3}
 --- !u!114 &6940714301392089187
