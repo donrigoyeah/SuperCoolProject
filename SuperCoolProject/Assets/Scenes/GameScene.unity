@@ -345,6 +345,12 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 4867866325955719850}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &209192337 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2209023032547175013, guid: 04d1705c49be2ff449668c9f21cbf177,
+    type: 3}
+  m_PrefabInstance: {fileID: 1866789224722557377}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &209587704 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 392171690884057369, guid: 4229ebaa2fdab1541908186beea0c398,
@@ -495,6 +501,12 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &319814719 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1113333844844943787, guid: 04d1705c49be2ff449668c9f21cbf177,
+    type: 3}
+  m_PrefabInstance: {fileID: 1866789224722557377}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &322605004 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2677235062301177972, guid: fe31cc9dfbdb5ae40a524258982e4d8f,
@@ -1363,6 +1375,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &597544242 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8440804024602309721, guid: 04d1705c49be2ff449668c9f21cbf177,
+    type: 3}
+  m_PrefabInstance: {fileID: 1866789224722557377}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &617314327 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7555339036484860584, guid: 5a1cddd508ccd8642aadca25d5fcd657,
@@ -3102,12 +3120,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &1539342256 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6949711199792431943, guid: 04d1705c49be2ff449668c9f21cbf177,
-    type: 3}
-  m_PrefabInstance: {fileID: 1866789224722557377}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1544536867 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5939312767450188020, guid: 959b924f5e51a25468637aa813697924,
@@ -4559,16 +4571,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 919173420}
     m_Modifications:
-    - target: {fileID: 111306478523722498, guid: 04d1705c49be2ff449668c9f21cbf177,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1675704904367416502, guid: 04d1705c49be2ff449668c9f21cbf177,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2532741127938772720, guid: 04d1705c49be2ff449668c9f21cbf177,
         type: 3}
       propertyPath: m_Name
@@ -4599,16 +4601,6 @@ PrefabInstance:
       propertyPath: UpgradeInformationScreen
       value: 
       objectReference: {fileID: 1613040191}
-    - target: {fileID: 5705133691590812045, guid: 04d1705c49be2ff449668c9f21cbf177,
-        type: 3}
-      propertyPath: playerInputManager
-      value: 
-      objectReference: {fileID: 1325170218}
-    - target: {fileID: 5705133691590812045, guid: 04d1705c49be2ff449668c9f21cbf177,
-        type: 3}
-      propertyPath: animationDurationStart
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6825165279061734110, guid: 04d1705c49be2ff449668c9f21cbf177,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4659,55 +4651,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7254487039927400557, guid: 04d1705c49be2ff449668c9f21cbf177,
+    - target: {fileID: 8440804024602309721, guid: 04d1705c49be2ff449668c9f21cbf177,
         type: 3}
       propertyPath: m_IsActive
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7271784183084601907, guid: 04d1705c49be2ff449668c9f21cbf177,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 4.757912
-      objectReference: {fileID: 0}
-    - target: {fileID: 7271784183084601907, guid: 04d1705c49be2ff449668c9f21cbf177,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 3.654162
-      objectReference: {fileID: 0}
-    - target: {fileID: 7271784183084601907, guid: 04d1705c49be2ff449668c9f21cbf177,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 9.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 7271784183084601907, guid: 04d1705c49be2ff449668c9f21cbf177,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -2.4979
-      objectReference: {fileID: 0}
-    - target: {fileID: 8806735057921923104, guid: 04d1705c49be2ff449668c9f21cbf177,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8806735057921923104, guid: 04d1705c49be2ff449668c9f21cbf177,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8806735057921923104, guid: 04d1705c49be2ff449668c9f21cbf177,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8806735057921923104, guid: 04d1705c49be2ff449668c9f21cbf177,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8806735057921923104, guid: 04d1705c49be2ff449668c9f21cbf177,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 180
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5287,24 +5234,9 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 937689487682581970, guid: bf09349e08449f448b0d27ddea6565dc,
         type: 3}
-      propertyPath: arc
-      value: 
-      objectReference: {fileID: 1539342256}
-    - target: {fileID: 937689487682581970, guid: bf09349e08449f448b0d27ddea6565dc,
-        type: 3}
-      propertyPath: start
-      value: 
-      objectReference: {fileID: 1418008459}
-    - target: {fileID: 937689487682581970, guid: bf09349e08449f448b0d27ddea6565dc,
-        type: 3}
       propertyPath: Clouds
       value: 
       objectReference: {fileID: 102636596}
-    - target: {fileID: 937689487682581970, guid: bf09349e08449f448b0d27ddea6565dc,
-        type: 3}
-      propertyPath: devMode
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 937689487682581970, guid: bf09349e08449f448b0d27ddea6565dc,
         type: 3}
       propertyPath: DeathScreen
@@ -5332,19 +5264,19 @@ PrefabInstance:
       objectReference: {fileID: 872527411}
     - target: {fileID: 937689487682581970, guid: bf09349e08449f448b0d27ddea6565dc,
         type: 3}
-      propertyPath: TutorialHandler
+      propertyPath: spaceshipShield
       value: 
-      objectReference: {fileID: 506797205}
-    - target: {fileID: 937689487682581970, guid: bf09349e08449f448b0d27ddea6565dc,
-        type: 3}
-      propertyPath: tutorialHandler
-      value: 
-      objectReference: {fileID: 506797205}
+      objectReference: {fileID: 319814719}
     - target: {fileID: 937689487682581970, guid: bf09349e08449f448b0d27ddea6565dc,
         type: 3}
       propertyPath: CameraFollowSpot
       value: 
       objectReference: {fileID: 617314327}
+    - target: {fileID: 937689487682581970, guid: bf09349e08449f448b0d27ddea6565dc,
+        type: 3}
+      propertyPath: spaceshipAntenna
+      value: 
+      objectReference: {fileID: 209192337}
     - target: {fileID: 937689487682581970, guid: bf09349e08449f448b0d27ddea6565dc,
         type: 3}
       propertyPath: playerInputManager
@@ -5365,6 +5297,11 @@ PrefabInstance:
       propertyPath: spaceShipPartsDisplay
       value: 
       objectReference: {fileID: 1001025137}
+    - target: {fileID: 937689487682581970, guid: bf09349e08449f448b0d27ddea6565dc,
+        type: 3}
+      propertyPath: spaceshipGrenadeModule
+      value: 
+      objectReference: {fileID: 597544242}
     - target: {fileID: 937689487682581970, guid: bf09349e08449f448b0d27ddea6565dc,
         type: 3}
       propertyPath: DeathScreenCloneJuiceUI

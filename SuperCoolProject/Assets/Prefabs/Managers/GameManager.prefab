@@ -48,7 +48,7 @@ MonoBehaviour:
   devMode: 0
   hideTut: 0
   worldRadius: 180
-  hasLost: 0
+  hasLost: 1
   numberOfPlayers: 0
   maxPlayers: 2
   cloneJuiceUI: {fileID: 0}
@@ -84,16 +84,25 @@ MonoBehaviour:
   playersLocos: []
   CameraFollowSpot: {fileID: 0}
   loadingScreenHandler: {fileID: 0}
+  spaceShipGameScene: {fileID: 0}
   DeathScreen: {fileID: 0}
   respawnButton: {fileID: 0}
+  restartButton: {fileID: 0}
   GameOverScreen: {fileID: 0}
   DeathScreenCloneJuiceUI: {fileID: 0}
+  deathScreenReason: {fileID: 0}
   Clouds: {fileID: 0}
   cameraSpeed: 1
   cameraSpeedRaiseBuffer: 2
   cameraSpeedRaiseDuration: 1
   cameraSpeedMultiplier: 4
+  cameraZOffset: 2
   playerDeadBody: 0
+  playerAntenna: {fileID: 0}
+  spaceshipAntenna: {fileID: 0}
+  spaceshipShield: {fileID: 0}
+  spaceshipGrenadeModule: {fileID: 0}
+  playerGrenadeModule: {fileID: 0}
 --- !u!1 &9078134599936876708
 GameObject:
   m_ObjectHideFlags: 0
