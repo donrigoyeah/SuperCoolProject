@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PoolManager : MonoBehaviour
 {
@@ -83,6 +84,24 @@ public class PoolManager : MonoBehaviour
     public List<GameObject> GrenadePool;
     public GameObject grenade;
     public GameObject GrenadeContainer;
+    
+    [Header("Dead Triangle Aliens")]
+    public int deadTriangleAliensAmount;
+    public List<GameObject> deadTriangleAliensPool;
+    public GameObject deadTriangleAlien;
+    public GameObject deadTriangleContainer;
+    
+    [Header("Dead Sphere Aliens")]
+    public int deadSphereAliensAmount;
+    public List<GameObject> deadSphereAliensPool;
+    public GameObject deadSphereAlien;
+    public GameObject deadSphereContainer;
+
+    [Header("Dead Square Aliens")]
+    public int deadSquareAliensAmount;
+    public List<GameObject> deadSquareAliensPool;
+    public GameObject deadSquareAlien;
+    public GameObject deadSquareContainer;
 
     [Header("Reference")]
     public Transform DeadPlayerContainer;
@@ -111,7 +130,7 @@ public class PoolManager : MonoBehaviour
         CopMuzzlePooling();
 
         //Dead ALien
-        DeadAlienPooling();
+        // DeadAlienPooling();
 
         // UI Elements
         DamageUIPooling();
@@ -121,6 +140,11 @@ public class PoolManager : MonoBehaviour
 
         //Grenade Pooling
         GrenadePooling();
+        
+        //Dead Aliens Pooling
+        DeadTrianglePooling();
+        DeadSpherePooling();
+        DeadSquarePooling();
     }
 
     #region Alien Pooling
@@ -494,7 +518,7 @@ public class PoolManager : MonoBehaviour
 
     private void GrenadePooling()
     {
-        CopPool = new List<GameObject>();
+        GrenadePool = new List<GameObject>();
         GameObject tmp;
         for (int i = 0; i < grenadeAmount; i++)
         {
@@ -502,6 +526,96 @@ public class PoolManager : MonoBehaviour
             tmp.transform.SetParent(GrenadeContainer.transform);
             tmp.SetActive(false);
             GrenadePool.Add(tmp);
+        }
+        loadingScreenHandler.currentLoadedPools++;
+    }
+    #endregion
+    
+    #region Dead Sphere Alien Pooling
+    
+    public GameObject GetPooledDeadSphereAlien()
+    {
+        for (int i = 0; i < deadSphereAliensAmount; i++)
+        {
+            if (!deadSphereAliensPool[i].activeInHierarchy)
+            {
+                return deadSphereAliensPool[i];
+            }
+        }
+
+        return null;
+    }
+
+    private void DeadSpherePooling()
+    {
+        deadSphereAliensPool = new List<GameObject>();
+        GameObject tmp;
+        for (int i = 0; i < deadSphereAliensAmount; i++)
+        {
+            tmp = Instantiate(deadSphereAlien);
+            tmp.transform.SetParent(deadSphereContainer.transform);
+            tmp.SetActive(false);
+            deadSphereAliensPool.Add(tmp);
+        }
+        loadingScreenHandler.currentLoadedPools++;
+    }
+    #endregion
+
+    #region Dead Square Alien Pooling
+    
+    public GameObject GetPooledDeadSquareAlien()
+    {
+        for (int i = 0; i < deadSquareAliensAmount; i++)
+        {
+            if (!deadSquareAliensPool[i].activeInHierarchy)
+            {
+                return deadSquareAliensPool[i];
+            }
+        }
+
+        return null;
+    }
+
+    private void DeadSquarePooling()
+    {
+        deadSquareAliensPool = new List<GameObject>();
+        GameObject tmp;
+        for (int i = 0; i < deadSquareAliensAmount; i++)
+        {
+            tmp = Instantiate(deadSquareAlien);
+            tmp.transform.SetParent(deadSquareContainer.transform);
+            tmp.SetActive(false);
+            deadSquareAliensPool.Add(tmp);
+        }
+        loadingScreenHandler.currentLoadedPools++;
+    }
+    #endregion
+    
+    #region Dead Triangle Alien Pooling
+    
+    public GameObject GetPooledDeadTriangleAlien()
+    {
+        for (int i = 0; i < deadTriangleAliensAmount; i++)
+        {
+            if (!deadTriangleAliensPool[i].activeInHierarchy)
+            {
+                return deadTriangleAliensPool[i];
+            }
+        }
+
+        return null;
+    }
+
+    private void DeadTrianglePooling()
+    {
+        deadTriangleAliensPool = new List<GameObject>();
+        GameObject tmp;
+        for (int i = 0; i < deadTriangleAliensAmount; i++)
+        {
+            tmp = Instantiate(deadTriangleAlien);
+            tmp.transform.SetParent(deadTriangleContainer.transform);
+            tmp.SetActive(false);
+            deadTriangleAliensPool.Add(tmp);
         }
         loadingScreenHandler.currentLoadedPools++;
     }

@@ -632,9 +632,36 @@ public class AlienHandler : MonoBehaviour
         }
         // deadAlienGO = PoolManager.Instance.GetPooledDeadAlien();
 
-        Instantiate(deadAliensPrerfabs[currentSpecies], this.transform.position, this.transform.rotation);
+        // Instantiate(deadAliensPrerfabs[currentSpecies], this.transform.position, this.transform.rotation);
+        
+        // 0:Sphere > 1:Square > 2:Triangle
+        
+        if (currentSpecies == 0)
+        {
+            deadAlienGO = PoolManager.Instance.GetPooledDeadSphereAlien();
+            deadAlienGO.transform.localPosition = MyTransform.position;
+            deadAlienGO.transform.localRotation = MyTransform.rotation;
+            deadAlienGO.gameObject.SetActive(true);
+        }
+        
+        if (currentSpecies == 1)
+        {
+            deadAlienGO = PoolManager.Instance.GetPooledDeadSquareAlien();
+            deadAlienGO.transform.localPosition = MyTransform.position;
+            deadAlienGO.transform.localRotation = MyTransform.rotation;
+            deadAlienGO.gameObject.SetActive(true);
+        }
+        
+        if (currentSpecies == 2)
+        {
+            deadAlienGO = PoolManager.Instance.GetPooledDeadTriangleAlien();
+            deadAlienGO.transform.localPosition = MyTransform.position;
+            deadAlienGO.transform.localRotation = MyTransform.rotation;
+            deadAlienGO.gameObject.SetActive(true);
+        }
+        
         Debug.Break();
-        if (deadAlienGO != null)
+        /*if (deadAlienGO != null)
         {
             deadAlienGO.transform.position = MyTransform.position;
             deadAlienGO.transform.rotation = MyTransform.rotation;
@@ -645,8 +672,7 @@ public class AlienHandler : MonoBehaviour
             deadAlien.bulletForce = bulletForce;
             deadAlien.currentAlienSpecies = currentSpecies;
 
-            deadAlienGO.gameObject.SetActive(true);
-        }
+        }*/
         Debug.Log("TODO: Dead Alien Ragdoll here");
         StartCoroutine(WaitForDeath(.2f));
 
