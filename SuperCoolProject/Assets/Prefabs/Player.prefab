@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1073890523632106191
 RectTransform:
   m_ObjectHideFlags: 0
@@ -90,7 +90,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &6409773689940403714
 RectTransform:
   m_ObjectHideFlags: 0
@@ -222,7 +222,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2352655426427189093
 RectTransform:
   m_ObjectHideFlags: 0
@@ -569,6 +569,8 @@ MonoBehaviour:
   stepsUnfold: 0
   playerShield: {fileID: 6422262875128791845}
   playerAntenna: {fileID: 3078844584867170363}
+  tickTimer: 0
+  tickTimerMax: 0.5
 --- !u!114 &7595266375327355587
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2697,7 +2699,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.073893905, g: 0.4433962, b: 0, a: 1}
+  m_Color: {r: 0.1851463, g: 1, b: 0, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 0
@@ -4032,7 +4034,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.88705206, g: 0, b: 1, a: 1}
+  m_Color: {r: 0.1851463, g: 1, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4205,7 +4207,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &148307616774562709
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4954,7 +4956,7 @@ Light:
   serializedVersion: 10
   m_Type: 0
   m_Shape: 0
-  m_Color: {r: 0, g: 1, b: 0.523159, a: 1}
+  m_Color: {r: 0.1851463, g: 1, b: 0, a: 1}
   m_Intensity: 50
   m_Range: 30
   m_SpotAngle: 120
@@ -5291,7 +5293,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.073893905, g: 0.4433962, b: 0, a: 1}
+  m_Color: {r: 0.1851463, g: 1, b: 0, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 0
@@ -5573,7 +5575,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6309703988354050704
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5762,7 +5764,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4522037182476434306
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5842,7 +5844,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.073893905, g: 0.4433962, b: 0, a: 1}
+  m_Color: {r: 0.1851463, g: 1, b: 0, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 0
@@ -6026,7 +6028,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.073893905, g: 0.4433962, b: 0, a: 1}
+  m_Color: {r: 0.1851463, g: 1, b: 0, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 0
@@ -6352,10 +6354,70 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2803428557261237756, guid: ff3d8ca018207aa4fa630831c2b246bc,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2803428557261237756, guid: ff3d8ca018207aa4fa630831c2b246bc,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2803428557261237756, guid: ff3d8ca018207aa4fa630831c2b246bc,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2803428557261237756, guid: ff3d8ca018207aa4fa630831c2b246bc,
+        type: 3}
+      propertyPath: InitialModule.startColor.minColor.r
+      value: 0.1851463
+      objectReference: {fileID: 0}
+    - target: {fileID: 3906727916846175712, guid: ff3d8ca018207aa4fa630831c2b246bc,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3906727916846175712, guid: ff3d8ca018207aa4fa630831c2b246bc,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3906727916846175712, guid: ff3d8ca018207aa4fa630831c2b246bc,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3906727916846175712, guid: ff3d8ca018207aa4fa630831c2b246bc,
+        type: 3}
+      propertyPath: InitialModule.startColor.minColor.r
+      value: 0.1851463
+      objectReference: {fileID: 0}
     - target: {fileID: 4983323646147669299, guid: ff3d8ca018207aa4fa630831c2b246bc,
         type: 3}
       propertyPath: m_Name
       value: PlayerUpgradeParticles
+      objectReference: {fileID: 0}
+    - target: {fileID: 7805393122951994136, guid: ff3d8ca018207aa4fa630831c2b246bc,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7805393122951994136, guid: ff3d8ca018207aa4fa630831c2b246bc,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7805393122951994136, guid: ff3d8ca018207aa4fa630831c2b246bc,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7805393122951994136, guid: ff3d8ca018207aa4fa630831c2b246bc,
+        type: 3}
+      propertyPath: InitialModule.startColor.minColor.r
+      value: 0.1851463
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6392,10 +6454,35 @@ PrefabInstance:
       propertyPath: moveWithTransform
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1590924187153885377, guid: 89d86ad59dd1a394c96ea25a4cb97d65,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1590924187153885377, guid: 89d86ad59dd1a394c96ea25a4cb97d65,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 0.1851463
+      objectReference: {fileID: 0}
     - target: {fileID: 3218888375421251660, guid: 89d86ad59dd1a394c96ea25a4cb97d65,
         type: 3}
       propertyPath: m_Name
       value: PlayerDashParticles
+      objectReference: {fileID: 0}
+    - target: {fileID: 4161954952576034069, guid: 89d86ad59dd1a394c96ea25a4cb97d65,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4161954952576034069, guid: 89d86ad59dd1a394c96ea25a4cb97d65,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4161954952576034069, guid: 89d86ad59dd1a394c96ea25a4cb97d65,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 0.1851463
       objectReference: {fileID: 0}
     - target: {fileID: 8913305571808834289, guid: 89d86ad59dd1a394c96ea25a4cb97d65,
         type: 3}

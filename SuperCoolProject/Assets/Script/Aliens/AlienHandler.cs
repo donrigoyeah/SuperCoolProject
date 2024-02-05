@@ -865,7 +865,52 @@ public class AlienHandler : MonoBehaviour
     {
         if (isRendered == false)
         {
-            yield return null;
+            AlienManager.Instance.KillAlien(currentSpecies);
+        }
+        // 0:Sphere > 1:Square > 2:Triangle
+        
+        DeadAliensRagdollSpawner();
+        
+        /*if (deadAlienGO != null)
+        {
+            deadAlienGO.transform.position = MyTransform.position;
+            deadAlienGO.transform.rotation = MyTransform.rotation;
+
+            deadAlien = deadAlienGO.GetComponent<DeadAlienHandler>();
+            deadAlien.Rigidbodies[currentSpecies].position = this.transform.position;
+            deadAlien.transform.rotation = MyTransform.rotation;
+            deadAlien.bulletForce = bulletForce;
+            deadAlien.currentAlienSpecies = currentSpecies;
+
+        }*/
+        Debug.Log("TODO: Dead Alien Ragdoll here");
+        StartCoroutine(WaitForDeath(.2f));
+
+    }
+
+    public void HandleDeathByCombat()
+    {
+        isDead = true;
+        StartCoroutine(PlayActionParticle(AlienState.hunting));
+        StartCoroutine(WaitForDeath(1));
+    }
+
+    public void DeactivateAllModels()
+    {
+        for (int i = 0; i < alienSpecies.Length; i++)
+        {
+            alienSpecies[i].SetActive(false);
+            alienSpeciesChild[i].SetActive(false);
+            alienSpeciesAdult[i].SetActive(false);
+        }
+    }
+
+    public void ActivateCurrentModels(int currentSpeziesIndex)
+    {
+        DeactivateAllModels();
+        if (currentAge == AlienAge.resource)
+        {
+            alienSpeciesChild[currentSpeziesIndex].SetActive(true);
         }
         else
         {
@@ -1092,4 +1137,252 @@ public class AlienHandler : MonoBehaviour
         }
     }
 
+    private void UpdateResourceSteam(int currentIndex)
+    {
+        if (AlienManager.Instance == null) { return; }
+
+        if (currentIndex == 0)
+        {
+            resourceSteamMain.startColor = AlienManager.Instance.alienColors[currentIndex].color;
+            alienMiniMapMarker.material = AlienManager.Instance.alienColors[currentIndex];
+        }
+
+        if (currentIndex == 1)
+        {
+            resourceSteamMain.startColor = AlienManager.Instance.alienColors[currentIndex].color;
+            alienMiniMapMarker.material = AlienManager.Instance.alienColors[currentIndex];
+        }
+
+        if (currentIndex == 2)
+        {
+            resourceSteamMain.startColor = AlienManager.Instance.alienColors[currentIndex].color;
+            alienMiniMapMarker.material = AlienManager.Instance.alienColors[currentIndex];
+        }
+    }
+
+    private IEnumerator PlayActionParticle(AlienState currentState)
+    {
+        if (isRendered == false)
+        {
+            yield return null;
+        }
+        else
+        {
+            if (currentState == AlienState.loving)
+            {
+                alienActionFogMain.startColor = new ParticleSystem.MinMaxGradient(Color.red, Color.magenta);
+            }
+            else if (currentState == AlienState.hunting)
+            {
+                alienActionFogMain.startColor = new ParticleSystem.MinMaxGradient(Color.gray, Color.black);
+            }
+
+            alienActionParticlesGO.SetActive(true);
+            yield return new WaitForSeconds(1f);
+            alienActionParticlesGO.SetActive(false);
+        }
+    }
+
+    private IEnumerator HandleAge(bool isSpawningAsAdult)
+    {
+        if (isSpawningAsAdult == false)
+        {
+            // Resource Life
+            UpdateResourceSteam(currentSpecies);
+            resourceSteamGO.SetActive(true);
+            MyRigidbody.constraints = RigidbodyConstraints.FreezePosition | RigidbodyConstraints.FreezeRotation;
+            currentAge = AlienAge.resource;
+            alienHealth = alienLifeResource;
+            MyTransform.localScale = Vector3.one * resourceScale;
+            yield return new WaitForSeconds(minTimeToChild);
+        }
+
+        // Child Life
+        resourceSteamGO.SetActive(false);
+        MyRigidbody.constraints = RigidbodyConstraints.FreezePosition | RigidbodyConstraints.FreezeRotation;
+        alienHealth = alienLifeChild;
+        currentAge = AlienAge.child;
+        currentState = AlienState.roaming;
+        MyTransform.localScale = Vector3.one * childScale;
+        alienSpeciesChild[currentSpecies].SetActive(false);
+        alienSpeciesAdult[currentSpecies].SetActive(true);
+        if (AlienManager.Instance.resourceSphere.Count + AlienManager.Instance.resourceSquare.Count + AlienManager.Instance.resourceTriangle.Count > 0)
+        {
+            AlienManager.Instance.RemoveFromResourceList(this); // TODO: Check if available in List?!
+        }
+        yield return new WaitForSeconds(timeToSexual);
+
+        // Sexual active Life
+        alienHealth = alienLifeSexual;
+        currentAge = AlienAge.sexualActive;
+        StartCoroutine(HandleGrowing(childScale, sexualActiveScale));
+        yield return new WaitForSeconds(timeToFullGrown);
+
+        // Full Grown Life
+        alienHealth = alienLifeFullGrown;
+        currentAge = AlienAge.fullyGrown;
+        StartCoroutine(HandleGrowing(sexualActiveScale, fullGrownScale));
+    }
+
+    private IEnumerator HandleGrowing(float oldFactor, float newFactor)
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            yield return new WaitForSeconds(.5f / 10); // Total duration of transform 0.5f seconds
+            MyTransform.localScale = Vector3.one * ((oldFactor + newFactor * i / 10) - (oldFactor * i / 10));
+        }
+    }
+
+    private IEnumerator UndoBrainWash(float time)
+    {
+        yield return new WaitForSeconds(time);
+        brainWashed = false; // AKA tutuorial scene
+        StartCoroutine(HandleAge(true));
+    }
+
+    private IEnumerator WaitForDeath(float time)
+    {
+        if (!audioSource.isPlaying)
+        {
+            audioSource.PlayOneShot(RandomAudioSelectorAliens(dyingAudioList, currentSpecies), 1f);
+        }
+        yield return new WaitForSeconds(time);
+        HandleDeath();
+    }
+
+    AudioClip RandomAudioSelectorAliens(List<AudioClip[]> audioList, int species) // incase we plan to add more audio for each state
+    {
+        // TODO: think of something to have ot play an audio only 50% of the time?
+        AudioClip[] selectedAudioArray = audioList[species];
+
+        int randomIndex = Random.Range(0, selectedAudioArray.Length);
+        AudioClip selectedAudio = selectedAudioArray[randomIndex];
+
+        return selectedAudio;
+    }
+
+    AudioClip RandomAudioSelectorFoley(List<AudioClip> audioList) // incase we plan to add more audio for each state
+    {
+        int randomIndex = Random.Range(0, audioList.Count);
+        AudioClip selectedAudio = audioList[randomIndex];
+
+        return selectedAudio;
+    }
+
+    #endregion
+
+    private void HandleAnimation()
+    {
+        if (anim[currentSpecies] != null) { return; }
+
+        if (currentState == AlienState.hunting || currentState == AlienState.loving || currentState == AlienState.roaming)
+        {
+            anim[currentSpecies]["Armature|WALK"].speed = 1;
+            anim[currentSpecies].Play("Armature|WALK");
+        }
+        if (currentState == AlienState.evading)
+        {
+            anim[currentSpecies]["Armature|WALK"].speed = 2;
+            anim[currentSpecies].Play("Armature|WALK");
+        }
+        if (currentState == AlienState.idle)
+        {
+            if (currentSpecies != 0)
+            {
+                anim[currentSpecies].Play("Armature|IDLE");
+            }
+        }
+    }
+
+    public void HandleFleeing(GameObject currentTargetGO)
+    {
+        if (!audioSource.isPlaying)
+        {
+            audioSource.PlayOneShot(RandomAudioSelectorAliens(evadingAudioList, currentSpecies), 1f);
+        }
+
+        if (brainWashed == true) { return; }
+
+        if (currentTargetGO == null) { return; }
+        SetTarget(currentTargetGO);
+    } // Use this here on the player as well to scare the aliens away
+
+    public void HandleAttacking(GameObject currentTargetGO) // Player makes them flee as well and by acting als targetAlien in PlayerManager
+    {
+        if (!audioSource.isPlaying)
+        {
+            audioSource.PlayOneShot(RandomAudioSelectorAliens(attackAudioList, currentSpecies), 1f);
+        }
+
+        if (brainWashed == true) { return; }
+
+        if (currentTargetGO == null) { return; }
+        SetTarget(currentTargetGO);
+    }
+
+    private void HandleLoveApproach(GameObject currentTargetGO)
+    {
+        if (brainWashed == true) { return; }
+
+        if (currentTargetGO == null)
+        {
+            StartCoroutine(IdleSecsUntilNewState(AlienState.looking));
+        }
+    }
+
+    public void SetTarget(GameObject currentTargetGO)
+    {
+        if (targetAlien != null)
+        {
+            lastTargetAlien = targetAlien;
+        }
+
+        targetAlien = currentTargetGO;
+        if (targetAlien == null || brainWashed == true) { return; }
+
+        TargetAlienTransform = targetAlien.transform;
+        targetPosition3D = TargetAlienTransform.position;
+        targetPosition2D = new Vector2(targetPosition3D.x, targetPosition3D.z);
+    }
+
+    public IEnumerator IdleSecsUntilNewState(AlienState nextState)
+    {
+        canAct = false;
+        hasNewTarget = false;
+        if (brainWashed == false)
+        {
+            DiscardCurrentAction(); // To prevent the lost of target Alien
+        }
+        currentState = nextState;
+        lookTimeIdle = UnityEngine.Random.Range(0, (randomNumber + 1) * 10) / 10;
+        yield return new WaitForSeconds(lookTimeIdle);
+        canAct = true;
+    }
+
+    public void DeadAliensRagdollSpawner()
+    {
+        if (currentSpecies == 0)
+        {
+            deadAlienGO = PoolManager.Instance.GetPooledDeadSphereAlien();
+            deadAlienGO.transform.localPosition = MyTransform.position;
+            deadAlienGO.transform.localRotation = MyTransform.rotation;
+            deadAlienGO.gameObject.SetActive(true);
+        }
+        
+        if (currentSpecies == 1)
+        {
+            deadAlienGO = PoolManager.Instance.GetPooledDeadSquareAlien();
+            deadAlienGO.transform.localPosition = MyTransform.position;
+            deadAlienGO.transform.localRotation = MyTransform.rotation;
+            deadAlienGO.gameObject.SetActive(true);
+        }
+        
+        if (currentSpecies == 2)
+        {
+            deadAlienGO = PoolManager.Instance.GetPooledDeadTriangleAlien();
+            deadAlienGO.transform.localPosition = MyTransform.position;
+            deadAlienGO.transform.localRotation = MyTransform.rotation;
+            deadAlienGO.gameObject.SetActive(true);
+        }
+    }
 }

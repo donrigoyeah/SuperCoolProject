@@ -20,7 +20,7 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
-  m_LockedProperties: 
+  m_LockedProperties: _DissolveAmount _NormalStrength _QueueOffset
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -41,15 +41,15 @@ Material:
     - _DissolveAmount: 0
     - _DissolveScale: 29.3
     - _DissolveSize: 0.08
-    - _Metallic: 0
-    - _NormalStrength: 0.5
+    - _Metallic: 1
+    - _NormalStrength: 1.14
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Smoothness: 0.465
+    - _Smoothness: 0.52
     - _speed: 3.93
     m_Colors:
-    - _Color: {r: 0.32101846, g: 1, b: 0, a: 1}
-    - _DissolveColor: {r: 2.519016, g: 0.7489094, b: 0, a: 1}
+    - _Color: {r: 0.064709306, g: 1, b: 0, a: 1}
+    - _DissolveColor: {r: 4.489981, g: 4.489981, b: 4.489981, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &7853080584769367130
 MonoBehaviour:

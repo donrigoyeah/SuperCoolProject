@@ -81,6 +81,7 @@ public class GrenadeHandler : MonoBehaviour
                     {
                         Debug.Log("I am not sure if its write place to put maybe it needs to be in Alien Handler only");
                         nearAlien.gameObject.SetActive(false);
+                        nearAlien.DeadAliensRagdollSpawner();
                     }
                     Debug.Log(nearAlien.alienHealth);
                 }
