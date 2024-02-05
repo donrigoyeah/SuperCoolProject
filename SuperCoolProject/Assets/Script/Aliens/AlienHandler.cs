@@ -434,6 +434,33 @@ public class AlienHandler : MonoBehaviour
     }
 
 
+    public void DeadAliensRagdollSpawner()
+    {
+        if (currentSpecies == 0)
+        {
+            deadAlienGO = PoolManager.Instance.GetPooledDeadSphereAlien();
+            deadAlienGO.transform.localPosition = MyTransform.position;
+            deadAlienGO.transform.localRotation = MyTransform.rotation;
+            deadAlienGO.gameObject.SetActive(true);
+        }
+
+        if (currentSpecies == 1)
+        {
+            deadAlienGO = PoolManager.Instance.GetPooledDeadSquareAlien();
+            deadAlienGO.transform.localPosition = MyTransform.position;
+            deadAlienGO.transform.localRotation = MyTransform.rotation;
+            deadAlienGO.gameObject.SetActive(true);
+        }
+
+        if (currentSpecies == 2)
+        {
+            deadAlienGO = PoolManager.Instance.GetPooledDeadTriangleAlien();
+            deadAlienGO.transform.localPosition = MyTransform.position;
+            deadAlienGO.transform.localRotation = MyTransform.rotation;
+            deadAlienGO.gameObject.SetActive(true);
+        }
+    }
+
 
     public void HandleDeath()
     {
@@ -481,22 +508,8 @@ public class AlienHandler : MonoBehaviour
             deadAlienGO.gameObject.SetActive(true);
         }
 
-        Debug.Break();
-        /*if (deadAlienGO != null)
-        {
-            deadAlienGO.transform.position = MyTransform.position;
-            deadAlienGO.transform.rotation = MyTransform.rotation;
-
-            deadAlien = deadAlienGO.GetComponent<DeadAlienHandler>();
-            deadAlien.Rigidbodies[currentSpecies].position = this.transform.position;
-            deadAlien.transform.rotation = MyTransform.rotation;
-            deadAlien.bulletForce = bulletForce;
-            deadAlien.currentAlienSpecies = currentSpecies;
-
-        }*/
-        Debug.Log("TODO: Dead Alien Ragdoll here");
+        DeadAliensRagdollSpawner();
         StartCoroutine(WaitForDeath(.2f));
-
     }
 
     public void HandleDeathByCombat()
