@@ -660,7 +660,6 @@ public class AlienHandler : MonoBehaviour
             deadAlienGO.gameObject.SetActive(true);
         }
         
-        Debug.Break();
         /*if (deadAlienGO != null)
         {
             deadAlienGO.transform.position = MyTransform.position;
