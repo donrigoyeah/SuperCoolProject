@@ -379,6 +379,7 @@ MonoBehaviour:
   playerSpeed: 12
   gravityValue: -40
   jumpForce: 15
+  playerVelocity: {x: 0, y: 0, z: 0}
   targetAimPosition: {x: 0, y: 0, z: 0}
   dashUiGO: {fileID: 2948522083517843036}
   dashUi: {fileID: 5744495770559061739}
@@ -3633,6 +3634,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 2021500516931878421, guid: 6c349d905fa95d54882b16457121704a,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: fd2c7a177b89d464ca2981e0a8155bc8, type: 2}
     - target: {fileID: 2223639932434330405, guid: 6c349d905fa95d54882b16457121704a,
         type: 3}
       propertyPath: m_Animation
