@@ -21,7 +21,7 @@ public class GrenadeHandler : MonoBehaviour
 
     private AlienHandler alien;
     private Rigidbody rb;
-    private bool hasExploded = false;
+    public bool hasExploded = false;
 
     private int layerMaskAlien = 1 << 9; // Lyer 9 is Alien
 
@@ -41,7 +41,7 @@ public class GrenadeHandler : MonoBehaviour
         time += Time.deltaTime * speed;
         transform.position = playerAttacker.Evaluate(time);
 
-        if (transform.position.y < .1f || hasExploded == false)
+        if (time >= 0.98f && !hasExploded)
         {
             Explode();
             hasExploded = true;
