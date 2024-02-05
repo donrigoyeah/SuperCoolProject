@@ -321,12 +321,13 @@ public class AlienHandler : MonoBehaviour
 
     private void DiscardCurrentAction()
     {
+        targetPosition3D = Vector3.zero;
+
         if (targetAlien == null) { return; }
 
         lastTargetAlien = targetAlien;
         targetAlien = null;
         TargetAlienTransform = null;
-        targetPosition3D = Vector3.zero;
     }
 
     private void HandleUpdateVariables()
@@ -577,7 +578,7 @@ public class AlienHandler : MonoBehaviour
         }
         else // AlienStates: .resource .loving .looking .roaming
         {
-            if (distanceToCurrentTarget < 1f)
+            if (distanceToCurrentTarget < .1f)
             {
                 // Prevent the tutorial brainwashed aliens to walk away
                 if (brainWashed == true) { return; }
