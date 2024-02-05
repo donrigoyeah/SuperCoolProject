@@ -289,6 +289,7 @@ public class PlayerAttacker : MonoBehaviour
             leftRightSwitch = !leftRightSwitch;
 
             BH = bulletPoolGo.GetComponent<BulletHandler>();
+            BH.shootinPlayerAttacker = this;
             BH.isPlayerBullet = true;
             BH.bulletDamage = damage;
             bulletPoolGo.SetActive(true);

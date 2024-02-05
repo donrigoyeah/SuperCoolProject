@@ -63,9 +63,13 @@ public class TreeAndStoneHandler : MonoBehaviour
 
             potentialPosition = new Vector3(randPosX, 0, randPosZ);
 
-
-            // TODO: Check wheater spot is free or not
-            //while (Physics.OverlapSphere(potentialPosition, .1f, 9) != null)
+            while (Physics.OverlapSphere(potentialPosition, .1f).Length > 0)
+            {
+                angle = Random.Range(0, 360);
+                randPosX = r * Mathf.Cos(Mathf.Deg2Rad * angle);
+                randPosZ = r * Mathf.Sin(Mathf.Deg2Rad * angle);
+                potentialPosition = new Vector3(randPosX, 0, randPosZ);
+            }
 
             tmpTree = Instantiate(Tree);
             tmpTreeTransform = tmpTree.transform;
@@ -95,8 +99,14 @@ public class TreeAndStoneHandler : MonoBehaviour
             randPosZ = r * Mathf.Sin(Mathf.Deg2Rad * angle);
 
             potentialPosition = new Vector3(randPosX, 0, randPosZ);
-            // TODO: Check wheater spot is free or not
-            //while (Physics.OverlapSphere(potentialPosition, .1f, 9) != null)
+
+            while (Physics.OverlapSphere(potentialPosition, .1f).Length > 0)
+            {
+                angle = Random.Range(0, 360);
+                randPosX = r * Mathf.Cos(Mathf.Deg2Rad * angle);
+                randPosZ = r * Mathf.Sin(Mathf.Deg2Rad * angle);
+                potentialPosition = new Vector3(randPosX, 0, randPosZ);
+            }
 
             tmpStone = Instantiate(Stone);
             tmpStoneTransform = tmpStone.transform;

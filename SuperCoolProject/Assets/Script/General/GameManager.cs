@@ -77,7 +77,7 @@ public class GameManager : MonoBehaviour
     [Header("Dead Body")]
     public bool playerDeadBody = false;
 
-    [Header("Player/Spaceship Parts")] 
+    [Header("Player/Spaceship Parts")]
     public GameObject spaceshipAntenna;
     public GameObject spaceshipShield;
     public GameObject spaceshipGrenadeModule;
@@ -393,7 +393,7 @@ public class GameManager : MonoBehaviour
             randPosPartX = radius * Mathf.Cos(angle);
             randPosPartZ = radius * Mathf.Sin(angle);
 
-            while (Physics.OverlapSphere(new Vector3(randPosPartX, .5f, randPosPartZ), 0.1f).Length != 0)
+            while (Physics.OverlapSphere(new Vector3(randPosPartX, .5f, randPosPartZ), 0.1f).Length > 0)
             {
                 radius = Random.Range(50 + distanceIncrease, 80 + distanceIncrease);
                 randPosPartX = radius * Mathf.Cos(angle);
@@ -442,7 +442,7 @@ public class GameManager : MonoBehaviour
             {
                 item.shieldRechargeTime = item.shieldRechargeTimeWithUpgrade;
             }
-            
+
             foreach (PlayerManager playerAntennaa in players)
             {
                 Debug.Log("aaa");
@@ -458,7 +458,7 @@ public class GameManager : MonoBehaviour
             {
                 playerAntennaa.playerAntenna.gameObject.SetActive(true);
             }
-            
+
             HUDHandler.Instance.UnlockPopulation.SetActive(false);
 
         }

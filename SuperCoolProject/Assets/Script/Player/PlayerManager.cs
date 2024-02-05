@@ -99,6 +99,10 @@ public class PlayerManager : MonoBehaviour
     public GameObject playerShield;
     public GameObject playerAntenna;
 
+    [Header("Tick stats")]
+    public float tickTimer;
+    public float tickTimerMax = .5f;
+
     private int layerMaskAlien = 1 << 9; // Lyer 9 is Alien
 
     private void Awake()
@@ -123,8 +127,13 @@ public class PlayerManager : MonoBehaviour
     private void FixedUpdate()
     {
         timeSinceLastHit += Time.deltaTime;
-        HandleSurroundingAliens();
         HandleResource();
+
+        if (tickTimer >= tickTimerMax)
+        {
+            tickTimer -= tickTimerMax;
+            HandleSurroundingAliens();
+        }
     }
 
     public void HandleHit()
@@ -226,10 +235,18 @@ public class PlayerManager : MonoBehaviour
 
             if (CurrentSurroundingAH.currentAge == AlienHandler.AlienAge.fullyGrown)
             {
-                CurrentSurroundingAH.SetTarget(this.gameObject);
-                CurrentSurroundingAH.lastAlienState = CurrentSurroundingAH.currentState;
-                CurrentSurroundingAH.currentState = AlienHandler.AlienState.hunting;
-                //CurrentSurroundingAH.TargetAlienTransform = MyTransform;
+                if (Random.Range(0, 2) == 1)
+                {
+                    CurrentSurroundingAH.SetTarget(this.gameObject);
+                    CurrentSurroundingAH.lastAlienState = CurrentSurroundingAH.currentState;
+                    CurrentSurroundingAH.currentState = AlienHandler.AlienState.hunting;
+                }
+                else
+                {
+                    CurrentSurroundingAH.SetTarget(this.gameObject);
+                    CurrentSurroundingAH.lastAlienState = CurrentSurroundingAH.currentState;
+                    CurrentSurroundingAH.currentState = AlienHandler.AlienState.evading;
+                }
                 continue;
             }
             else
@@ -237,10 +254,8 @@ public class PlayerManager : MonoBehaviour
                 CurrentSurroundingAH.SetTarget(this.gameObject);
                 CurrentSurroundingAH.lastAlienState = CurrentSurroundingAH.currentState;
                 CurrentSurroundingAH.currentState = AlienHandler.AlienState.evading;
-                //CurrentSurroundingAH.TargetAlienTransform = MyTransform;
                 continue;
             }
-
         }
     }
 
@@ -340,6 +355,7 @@ public class PlayerManager : MonoBehaviour
             }
 
             // BackUp spawning new resource in case of none available
+            Debug.Log("Work on thiz");
             while (closestResource[neededResource] == null)
             {
                 for (int i = 0; i < PoolManager.Instance.AlienPool.Count; i++)
