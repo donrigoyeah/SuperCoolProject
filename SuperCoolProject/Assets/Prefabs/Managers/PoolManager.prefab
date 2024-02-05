@@ -31,6 +31,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5939312767450188020}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4184580074199034454
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2551989390615860121}
+  m_Layer: 0
+  m_Name: DeadSquareAlienContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2551989390615860121
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4184580074199034454}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5939312767450188020}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4323642014150451390
 GameObject:
   m_ObjectHideFlags: 0
@@ -217,6 +248,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5939312767450188020}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6788203113263091714
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5242313259835057910}
+  m_Layer: 0
+  m_Name: DeadSphereAlienContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5242313259835057910
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6788203113263091714}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5939312767450188020}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6835911651760370117
 GameObject:
   m_ObjectHideFlags: 0
@@ -240,6 +302,37 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6835911651760370117}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5939312767450188020}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6867181277390187482
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5840153151145130718}
+  m_Layer: 0
+  m_Name: DeadTriangleAlienContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5840153151145130718
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6867181277390187482}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -352,6 +445,9 @@ Transform:
   - {fileID: 5618040376331903156}
   - {fileID: 7470530527506757673}
   - {fileID: 5032610852388716496}
+  - {fileID: 5840153151145130718}
+  - {fileID: 5242313259835057910}
+  - {fileID: 2551989390615860121}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &292991685637541685
@@ -367,7 +463,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentAlienAmount: 0
-  alienAmount: 100
+  alienAmount: 50
   alienAmountExtra: 50
   AlienPool: []
   Alien: {fileID: 1047908099467871381, guid: d934f14e333eefc4697225457031ccaa, type: 3}
@@ -417,6 +513,20 @@ MonoBehaviour:
   GrenadePool: []
   grenade: {fileID: 2496734503096154801, guid: 632de922000647541804b1fae094b496, type: 3}
   GrenadeContainer: {fileID: 6835911651760370117}
+  deadTriangleAliensAmount: 10
+  deadTriangleAliensPool: []
+  deadTriangleAlien: {fileID: 5928193994446594984, guid: e762051c71086ec44897d4940008e05c,
+    type: 3}
+  deadTriangleContainer: {fileID: 6867181277390187482}
+  deadSphereAliensAmount: 10
+  deadSphereAliensPool: []
+  deadSphereAlien: {fileID: 2844827245074846859, guid: 00852b6d3b1509e45a4bc02022199df5,
+    type: 3}
+  deadSphereContainer: {fileID: 6788203113263091714}
+  deadSquareAliensAmount: 0
+  deadSquareAliensPool: []
+  deadSquareAlien: {fileID: 0}
+  deadSquareContainer: {fileID: 0}
   DeadPlayerContainer: {fileID: 5032610852388716496}
   loadingScreenHandler: {fileID: 0}
 --- !u!1 &8584367784129225532
