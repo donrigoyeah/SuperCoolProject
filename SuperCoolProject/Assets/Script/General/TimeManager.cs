@@ -127,8 +127,6 @@ public class TimeManager : MonoBehaviour
     private void HandleSunMoonMovement()
     {
         sunAngle = (((float)hours * 60) + (float)minutes) / ((float)24 * 60);
-        Debug.Log("hours: " + hours);
-        Debug.Log("hours / 24: " + sunAngle);
 
         if (hours < 12)
         {
