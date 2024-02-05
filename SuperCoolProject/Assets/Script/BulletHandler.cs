@@ -17,10 +17,12 @@ public class BulletHandler : MonoBehaviour
     private GameObject damageUIGo;
     private DamageUIHandler DUIH;
 
+    public PlayerAttacker shootinPlayerAttacker;
+
 
     private void Awake()
     {
-        Rigidbody rb = GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>();
     }
 
     private void OnEnable()

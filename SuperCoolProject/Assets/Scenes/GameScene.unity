@@ -4104,14 +4104,25 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 292991685637541685, guid: 959b924f5e51a25468637aa813697924,
         type: 3}
-      propertyPath: alienAmount
-      value: 15
-      objectReference: {fileID: 0}
+      propertyPath: deadSquareAlien
+      value: 
+      objectReference: {fileID: 2674170861359850901, guid: 8765b41a2fb6d984a9f0c4898b6103cc,
+        type: 3}
+    - target: {fileID: 292991685637541685, guid: 959b924f5e51a25468637aa813697924,
+        type: 3}
+      propertyPath: deadSquareContainer
+      value: 
+      objectReference: {fileID: 1653546569515437833}
     - target: {fileID: 292991685637541685, guid: 959b924f5e51a25468637aa813697924,
         type: 3}
       propertyPath: loadingScreenHandler
       value: 
       objectReference: {fileID: 506797206}
+    - target: {fileID: 292991685637541685, guid: 959b924f5e51a25468637aa813697924,
+        type: 3}
+      propertyPath: deadSquareAliensAmount
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 5939312767450188020, guid: 959b924f5e51a25468637aa813697924,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4172,6 +4183,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 959b924f5e51a25468637aa813697924, type: 3}
+--- !u!1 &1653546569515437833 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4184580074199034454, guid: 959b924f5e51a25468637aa813697924,
+    type: 3}
+  m_PrefabInstance: {fileID: 1653546569515437832}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1680529839115504497
 PrefabInstance:
   m_ObjectHideFlags: 0
