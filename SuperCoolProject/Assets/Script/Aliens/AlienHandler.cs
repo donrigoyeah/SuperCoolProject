@@ -630,37 +630,10 @@ public class AlienHandler : MonoBehaviour
         {
             AlienManager.Instance.KillAlien(currentSpecies);
         }
-        // deadAlienGO = PoolManager.Instance.GetPooledDeadAlien();
-
-        // Instantiate(deadAliensPrerfabs[currentSpecies], this.transform.position, this.transform.rotation);
-        
         // 0:Sphere > 1:Square > 2:Triangle
         
-        if (currentSpecies == 0)
-        {
-            deadAlienGO = PoolManager.Instance.GetPooledDeadSphereAlien();
-            deadAlienGO.transform.localPosition = MyTransform.position;
-            deadAlienGO.transform.localRotation = MyTransform.rotation;
-            deadAlienGO.gameObject.SetActive(true);
-        }
+        DeadAliensRagdollSpawner();
         
-        if (currentSpecies == 1)
-        {
-            deadAlienGO = PoolManager.Instance.GetPooledDeadSquareAlien();
-            deadAlienGO.transform.localPosition = MyTransform.position;
-            deadAlienGO.transform.localRotation = MyTransform.rotation;
-            deadAlienGO.gameObject.SetActive(true);
-        }
-        
-        if (currentSpecies == 2)
-        {
-            deadAlienGO = PoolManager.Instance.GetPooledDeadTriangleAlien();
-            deadAlienGO.transform.localPosition = MyTransform.position;
-            deadAlienGO.transform.localRotation = MyTransform.rotation;
-            deadAlienGO.gameObject.SetActive(true);
-        }
-        
-        Debug.Break();
         /*if (deadAlienGO != null)
         {
             deadAlienGO.transform.position = MyTransform.position;
@@ -1142,4 +1115,30 @@ public class AlienHandler : MonoBehaviour
         canAct = true;
     }
 
+    public void DeadAliensRagdollSpawner()
+    {
+        if (currentSpecies == 0)
+        {
+            deadAlienGO = PoolManager.Instance.GetPooledDeadSphereAlien();
+            deadAlienGO.transform.localPosition = MyTransform.position;
+            deadAlienGO.transform.localRotation = MyTransform.rotation;
+            deadAlienGO.gameObject.SetActive(true);
+        }
+        
+        if (currentSpecies == 1)
+        {
+            deadAlienGO = PoolManager.Instance.GetPooledDeadSquareAlien();
+            deadAlienGO.transform.localPosition = MyTransform.position;
+            deadAlienGO.transform.localRotation = MyTransform.rotation;
+            deadAlienGO.gameObject.SetActive(true);
+        }
+        
+        if (currentSpecies == 2)
+        {
+            deadAlienGO = PoolManager.Instance.GetPooledDeadTriangleAlien();
+            deadAlienGO.transform.localPosition = MyTransform.position;
+            deadAlienGO.transform.localRotation = MyTransform.rotation;
+            deadAlienGO.gameObject.SetActive(true);
+        }
+    }
 }
