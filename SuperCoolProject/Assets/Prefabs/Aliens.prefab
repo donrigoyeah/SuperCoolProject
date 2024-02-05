@@ -238,6 +238,10 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 1c6e829c024983b42b5e9746d1d88635, type: 3}
   tickTimer: 0
   tickTimerMax: 1
+  deadAliensPrerfabs:
+  - {fileID: 2844827245074846859, guid: 00852b6d3b1509e45a4bc02022199df5, type: 3}
+  - {fileID: 2674170861359850901, guid: 8765b41a2fb6d984a9f0c4898b6103cc, type: 3}
+  - {fileID: 5928193994446594984, guid: e762051c71086ec44897d4940008e05c, type: 3}
 --- !u!136 &1753352926865818878
 CapsuleCollider:
   m_ObjectHideFlags: 0

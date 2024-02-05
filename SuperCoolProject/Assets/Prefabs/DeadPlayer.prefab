@@ -229,7 +229,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 4
   m_CollisionDetection: 0
 --- !u!144 &5818977319418554718
 CharacterJoint:
@@ -2338,7 +2338,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 4
   m_CollisionDetection: 0
 --- !u!1 &5097995239495802498
 GameObject:
@@ -2431,7 +2431,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 4
   m_CollisionDetection: 0
 --- !u!144 &8940037630828262745
 CharacterJoint:
@@ -3397,7 +3397,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 4
   m_CollisionDetection: 0
 --- !u!65 &5975608871709565873
 BoxCollider:
@@ -3449,9 +3449,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerSpeedReduction: 8
   previousPlayerSpeed: 10
-  armature: {fileID: 7996086268359437582}
   boxCollider: {fileID: 637899993399382030}
-  parent: {fileID: 4666430136575265468}
+  deadPlayer: {fileID: 0}
 --- !u!1 &8394540330493178212
 GameObject:
   m_ObjectHideFlags: 0
