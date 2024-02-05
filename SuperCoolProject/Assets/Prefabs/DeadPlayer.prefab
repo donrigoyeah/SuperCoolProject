@@ -238,7 +238,7 @@ CharacterJoint:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 425534406406134411}
-  m_ConnectedBody: {fileID: 6957146649907236505}
+  m_ConnectedBody: {fileID: 2242119727787812199}
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
@@ -2250,7 +2250,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 29158321817188208}
-  - component: {fileID: 383467136632441256}
+  - component: {fileID: 637899993399382030}
+  - component: {fileID: 2242119727787812199}
   m_Layer: 0
   m_Name: DeadPlayer
   m_TagString: DeadBody
@@ -2271,6 +2272,7 @@ Transform:
   m_LocalScale: {x: 82.99468, y: 82.99466, z: 82.99467}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 7198887149817854788}
   - {fileID: 7030597633850389430}
   - {fileID: 4224244639973771352}
   - {fileID: 1520106940608849480}
@@ -2288,10 +2290,30 @@ Transform:
   - {fileID: 4346608093944635554}
   - {fileID: 5216916109556716066}
   - {fileID: 8163849986440606876}
-  - {fileID: 7198887149817854788}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 180}
---- !u!54 &383467136632441256
+--- !u!65 &637899993399382030
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4666430136575265468}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.062124554, y: 0.06024709, z: 0.07927998}
+  m_Center: {x: 0, y: -0.003818117, z: 0}
+--- !u!54 &2242119727787812199
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2418,7 +2440,7 @@ CharacterJoint:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5620111872241134547}
-  m_ConnectedBody: {fileID: 6957146649907236505}
+  m_ConnectedBody: {fileID: 2242119727787812199}
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
@@ -3410,7 +3432,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f443a9d8e993b54d9fa9486ac63cc4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rigidbody: {fileID: 383467136632441256}
+  rigidbody: {fileID: 0}
   childrenCollider: []
   childrenRigidbody: []
 --- !u!114 &2567293882480777045
@@ -3427,6 +3449,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerSpeedReduction: 8
   previousPlayerSpeed: 10
+  armature: {fileID: 7996086268359437582}
+  boxCollider: {fileID: 637899993399382030}
+  parent: {fileID: 4666430136575265468}
 --- !u!1 &8394540330493178212
 GameObject:
   m_ObjectHideFlags: 0

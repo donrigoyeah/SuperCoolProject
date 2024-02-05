@@ -511,7 +511,7 @@ MonoBehaviour:
   - {fileID: 0}
   currentPart: {fileID: 0}
   LightBeam: {fileID: 934595259696851748}
-  deadPlayer: {fileID: 4666430136575265468, guid: fb851b72f52ffba48b9ceb897753eec5,
+  deadPlayer: {fileID: 720819968891953191, guid: e27300444c2a2574a98804b3f6907599,
     type: 3}
   hasShield: 0
   playerShieldGO: {fileID: 6422262875128791845}

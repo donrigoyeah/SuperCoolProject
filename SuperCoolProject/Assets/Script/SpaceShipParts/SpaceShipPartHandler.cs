@@ -47,7 +47,6 @@ public class SpaceShipPartHandler : MonoBehaviour
     public float rotateSpeed = 75;
     public Transform rotatingPart;
     public bool noRotationRequired = false;
-    public float antennaRotation;
     
     private void Awake()
     {
@@ -109,6 +108,7 @@ public class SpaceShipPartHandler : MonoBehaviour
             {
                 audioSource.PlayOneShot(draggingAudio, 1f);
             }
+            
             playerManager.currentPart = this.gameObject;
             playerLocomotion.playerSpeed = previousPlayerSpeed;
             playerLocomotion.playerSpeed -= playerSpeedReduction;
