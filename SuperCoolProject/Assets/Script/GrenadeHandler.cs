@@ -77,6 +77,11 @@ public class GrenadeHandler : MonoBehaviour
                 if (nearAlien != null)
                 {
                     nearAlien.alienHealth -= damage;
+                    if (nearAlien.alienHealth <= 0 && nearAlien.isDead == false)
+                    {
+                        Debug.Log("I am not sure if its write place to put maybe it needs to be in Alien Handler only");
+                        nearAlien.gameObject.SetActive(false);
+                    }
                     Debug.Log(nearAlien.alienHealth);
                 }
             }
