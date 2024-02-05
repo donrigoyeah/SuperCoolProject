@@ -342,6 +342,11 @@ public class AlienHandler : MonoBehaviour
 
         if (anim[currentSpecies] != null) { anim[currentSpecies].Play("Armature|WALK"); }
 
+        if (targetPosition3D == Vector3.zero)
+        {
+            StartCoroutine(IdleSecsUntilNewState(1f, AlienState.looking));
+        }
+
         // Prevent spinning or tilting
         if (distanceToCurrentTarget > 1)
         {
@@ -358,17 +363,10 @@ public class AlienHandler : MonoBehaviour
         {
             if (distanceToCurrentTarget > lookRadius + 1)  // Add +1 so i is out of the lookradius
             {
-                if (lastTargetAlien != null && targetAlien != null)
-                {
-                    targetAlien = lastTargetAlien;
-                }
-
-                Debug.Log("Lost target");
                 canAct = false;
                 StartCoroutine(IdleSecsUntilNewState(1f, AlienState.looking));
                 return;
             }
-
         }
         else // AlienStates: .resource .loving .looking .roaming
         {
@@ -670,7 +668,8 @@ public class AlienHandler : MonoBehaviour
             deadAlienGO.gameObject.SetActive(true);
         }
         Debug.Log("TODO: Dead Alien Ragdoll here");
-        HandleDeath();
+        StartCoroutine(WaitForDeath(.2f));
+
     }
 
     public void HandleDeathByCombat()
@@ -736,8 +735,8 @@ public class AlienHandler : MonoBehaviour
             lastTargetAlien = targetAlien;
         }
         Debug.Log("Stack overflow error is coming from next two lines. Comment them out and error stops popping up");
-        //targetAlien = null;
-        //TargetAlienTransform = null;
+        targetAlien = null;
+        TargetAlienTransform = null;
         targetPosition3D = Vector3.zero;
         targetPosition2D = Vector2.zero;
     }
@@ -1010,6 +1009,10 @@ public class AlienHandler : MonoBehaviour
 
     private IEnumerator WaitForDeath(float time)
     {
+        if (!audioSource.isPlaying)
+        {
+            audioSource.PlayOneShot(RandomAudioSelectorAliens(dyingAudioList, currentSpecies), 1f);
+        }
         yield return new WaitForSeconds(time);
         HandleDeath();
     }
@@ -1050,8 +1053,6 @@ public class AlienHandler : MonoBehaviour
 
     public void HandleFleeing(GameObject currentTargetGO)
     {
-        if (currentTargetGO == null) { return; }
-
         if (!audioSource.isPlaying)
         {
             audioSource.PlayOneShot(RandomAudioSelectorAliens(evadingAudioList, currentSpecies), 1f);
@@ -1063,15 +1064,16 @@ public class AlienHandler : MonoBehaviour
             return;
         }
 
+        if (currentTargetGO == null) { return; }
         SetTarget(currentTargetGO);
     } // Use this here on the player as well to scare the aliens away
 
     public void HandleAttacking(GameObject currentTargetGO) // Player makes them flee as well and by acting als targetAlien in PlayerManager
     {
-        if (currentTargetGO == null) { return; }
-
+        Debug.Log("Should play sound now");
         if (!audioSource.isPlaying)
         {
+            Debug.Log("I am playing yesss");
             audioSource.PlayOneShot(RandomAudioSelectorAliens(attackAudioList, currentSpecies), 1f);
         }
 
@@ -1080,11 +1082,16 @@ public class AlienHandler : MonoBehaviour
 
         if (brainWashed == true) { return; }
 
+        if (currentTargetGO == null) { return; }
         SetTarget(currentTargetGO);
     }
 
     private void HandleLoveApproach(GameObject targetAlien)
     {
+        if (!audioSource.isPlaying)
+        {
+            audioSource.PlayOneShot(RandomAudioSelectorAliens(lovemakingAudioList, currentSpecies), 1f);
+        }
         if (brainWashed == true) { return; }
 
         if (targetAlien == null)
@@ -1116,10 +1123,10 @@ public class AlienHandler : MonoBehaviour
     {
         canAct = false;
         HandleIdleAnimation();
-        //if (brainWashed == false)
-        //{
-        //    DiscardCurrentAction(); // To prevent the lost of target Alien
-        //}
+        if (brainWashed == false)
+        {
+            DiscardCurrentAction(); // To prevent the lost of target Alien
+        }
         currentState = nextState;
         lookTimeIdle = UnityEngine.Random.Range(0, (seconds + 1) * 10) / 10;
         yield return new WaitForSeconds(lookTimeIdle);

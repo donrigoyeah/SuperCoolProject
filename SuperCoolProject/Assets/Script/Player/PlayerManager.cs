@@ -155,7 +155,7 @@ public class PlayerManager : MonoBehaviour
         isAlive = false;
         StopAllCoroutines();
         audioSource.PlayOneShot(deathAudio, 1f);
-        GameObject deadPlayerInstance = Instantiate(deadPlayer, MyTransform.position, Quaternion.identity);
+        GameObject deadPlayerInstance = Instantiate(deadPlayer, MyTransform.position, Quaternion.identity, PoolManager.Instance.DeadPlayerContainer);
 
         Rigidbody deadPlayerRigidbody = deadPlayerInstance.GetComponent<Rigidbody>();
         if (deadPlayerRigidbody != null)
