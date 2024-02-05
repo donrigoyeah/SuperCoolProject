@@ -522,7 +522,7 @@ MonoBehaviour:
   shieldRechargeTime: 2
   shieldRechargeTimeWithUpgrade: 1
   dissolveRate: 0.125
-  refreshRate: 0.25
+  refreshRate: 0.15
   counter: 0
   lightBulbMultiplicator: 0.5
   closestResource:

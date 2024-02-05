@@ -78,11 +78,9 @@ public class GameManager : MonoBehaviour
     public bool playerDeadBody = false;
 
     [Header("Player/Spaceship Parts")] 
-    public SkinnedMeshRenderer playerAntenna;
     public GameObject spaceshipAntenna;
     public GameObject spaceshipShield;
     public GameObject spaceshipGrenadeModule;
-    public GameObject playerGrenadeModule;
 
     public static GameManager Instance;
 
@@ -454,12 +452,10 @@ public class GameManager : MonoBehaviour
 
         if (hasAntenna)
         {
-            // playerAntenna.SetActive(true);
             spaceshipAntenna.SetActive(true);
 
             foreach (PlayerManager playerAntennaa in players)
             {
-                Debug.Log("aaa");
                 playerAntennaa.playerAntenna.gameObject.SetActive(true);
             }
             
@@ -482,7 +478,6 @@ public class GameManager : MonoBehaviour
 
         if (hasAmmoBox)
         {
-            playerGrenadeModule.SetActive(true);
             spaceshipGrenadeModule.SetActive(true);
         }
 

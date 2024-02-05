@@ -529,7 +529,6 @@ public class PlayerAttacker : MonoBehaviour
                 // throwForce = 0;
                 grenadeTrajectoryParent.transform.SetParent(null);
                 StartCoroutine(ResetGrenadeTransform());
-                grenadeAvailable = false;
                 grenadeKeyPressed = false;
                 LaunchGrenade();
             }
@@ -565,15 +564,16 @@ public class PlayerAttacker : MonoBehaviour
     {
         // GameObject NewGrenade = Instantiate(grenadePrefab, grenadespawnPoint.transform.position, transform.rotation);
         grenadePoolGo = PoolManager.Instance.GetPooledGrenade();
-        if (grenadePoolGo != null)
+        if (grenadePoolGo != null && grenadeAvailable)
         {
+            grenadeAvailable = false;
             grenadePoolGo.SetActive(true);
             grenadePoolGo.transform.position = grenadespawnPoint.transform.position;
             grenadePoolGo.transform.rotation = grenadespawnPoint.transform.rotation;
             currentGH = grenadePoolGo.GetComponent<GrenadeHandler>();
             currentGH.time = 0;
             currentGH.playerAttacker = this;
-            StartCoroutine(DisableAfterSeconds(2, grenadePoolGo));
+            StartCoroutine(DisableAfterSeconds(1, grenadePoolGo));
             // GrenadeHandler currentGH = NewGrenade.GetComponent<GrenadeHandler>();
             // currentGH.playerAttacker = this;
         }
