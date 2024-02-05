@@ -120,7 +120,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   explosionForce: 700
-  explosionRadius: 5
+  explosionRadius: 15
   explosionEffect: {fileID: 518168211817822157, guid: fb7d9e6c815c64345a2b9b60dd55c223,
     type: 3}
   playerAttacker: {fileID: 9130882823596995695, guid: 12858b1f8789e0e428bbcdcab1837ac1,
@@ -128,6 +128,7 @@ MonoBehaviour:
   speed: 1
   time: 0
   x: {x: 0, y: 0, z: 0}
+  hasExploded: 0
 --- !u!1001 &2241063578489347865
 PrefabInstance:
   m_ObjectHideFlags: 0

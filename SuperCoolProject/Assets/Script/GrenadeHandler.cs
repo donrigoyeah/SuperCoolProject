@@ -7,7 +7,7 @@ public class GrenadeHandler : MonoBehaviour
 
     private bool _isGhost;
     public float explosionForce = 700f;
-    public float explosionRadius = 5f;
+    public float explosionRadius = 10f;
     public GameObject explosionEffect;
 
     public PlayerAttacker playerAttacker;
@@ -40,8 +40,8 @@ public class GrenadeHandler : MonoBehaviour
     {
         time += Time.deltaTime * speed;
         transform.position = playerAttacker.Evaluate(time);
-
-        if (time >= 0.98f && !hasExploded)
+    
+        if (time >= 0.98f && !hasExploded || transform.position.y < .1f)
         {
             Explode();
             hasExploded = true;
@@ -60,18 +60,24 @@ public class GrenadeHandler : MonoBehaviour
         // TODO: CHeck if we only need the  rb.AddExplosionForce(explosionForce, transform.position, explosionRadius); without the sphere cast
 
         Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius, layerMaskAlien, QueryTriggerInteraction.Ignore);
+        Debug.Log("collider length" + colliders.Length);
 
         foreach (Collider nearbyObects in colliders)
         {
             rb = nearbyObects.GetComponent<Rigidbody>();
             if (rb != null)
             {
+                Debug.Log("Rigidbody: " + rb.name);
+                Debug.Log("BOOM");
                 distance = Vector3.Distance(transform.position, nearbyObects.transform.position);
+                Debug.Log("Distance: " + distance);
                 damage = CalculateDamage(distance);
+                rb.AddExplosionForce(explosionForce, transform.position, explosionRadius);
                 AlienHandler nearAlien = nearbyObects.gameObject.GetComponentInParent<AlienHandler>();
                 if (nearAlien != null)
                 {
                     nearAlien.alienHealth -= damage;
+                    Debug.Log(nearAlien.alienHealth);
                 }
             }
         }
@@ -80,12 +86,10 @@ public class GrenadeHandler : MonoBehaviour
 
     float CalculateDamage(float distance)
     {
-        float maxDamage = 50;
+        float maxDamage = 50f;
         float minDamage = 1f;
         float maxDistance = explosionRadius;
-
-        float damage = maxDamage - (distance / maxDistance) * (maxDamage - minDamage);
-        Debug.Log(damage);
+        damage = maxDamage - (distance / maxDistance) * (maxDamage - minDamage);
         return damage;
     }
 }
