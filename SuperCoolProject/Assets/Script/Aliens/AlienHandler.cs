@@ -74,38 +74,31 @@ public class AlienHandler : MonoBehaviour
     private Collider[] aliensInRangeColliderOrdered;
     public int aliensInRangeCount;
     private float worldRadiusSquared;
-    private int amountOfBabies;
     private BulletHandler CurrentBH;
     private float currentBulletDamage;
-
-    public float resourceScale = 0.7f;
-    public float childScale = 0.6f;
-    public float sexualActiveScale = 0.8f;
-    public float fullGrownScale = 1f;
 
     public bool brainWashed = false;
 
     [Header("This Alien")]
+    public int currentSpecies;
     private Rigidbody MyRigidbody;
     public Transform MyTransform;
     private Vector2 MyTransform2D;
     public AlienAge currentAge;
     public Collider MyCollisionCollider;
 
-    public bool spawnAsAdults = false;
-    public bool gotAttackedByPlayer = false;
-    public bool isRendered = true;
-    public bool canAct = true;
-    public int currentSpecies;
     public bool hasUterus;
     public float alienHealth;
     public bool isDead = true;
     public float lifeTime;
     public float lustTimer = 0;
     public float hungerTimer = 0;
-    public float lustTimerThreshold = 5;
-    public int maxAmountOfBabies = 10;
-    public float hungerTimerThreshold = 5;
+    public int amountOfBabies;
+
+    public bool spawnAsAdults = false;
+    public bool gotAttackedByPlayer = false;
+    public bool isRendered = true;
+    public bool canAct = true;
     public RawImage currentStateIcon;
     public Texture[] allStateIcons; // 0: eye, 1: crosshair, 2: wind, 3: heart, 4: shield
     public Vector3 targetPosition3D;
@@ -139,17 +132,15 @@ public class AlienHandler : MonoBehaviour
     public ParticleSystem alienActionFog;
     ParticleSystem.MainModule alienActionFogMain;
     ParticleSystem.MainModule resourceSteamMain;
-    public float alienSpeed;
-    public float lookRadius = 10;
     private float delta;
     private float speed;
-    private int alienLifeResource = 1;
-    private int alienLifeChild = 30;
-    private int alienLifeSexual = 40;
-    private int alienLifeFullGrown = 50;
     public int minTimeToChild = 5;
-    public int timeToSexual = 15;
-    public int timeToFullGrown = 25;
+
+    [Header("Alien Audio")]
+    private bool playClipSpawned = false;
+    public AudioSource audioSource;
+
+    [Header("More reference")]
     private GameObject deadAlienGO;
     private DeadAlienHandler deadAlien;
     private Vector2 CameraFollowSpot2D;
@@ -166,48 +157,11 @@ public class AlienHandler : MonoBehaviour
     public SkinnedMeshRenderer skinRenderer2;
     public SkinnedMeshRenderer skinRenderer3;
     public Material[] orignalMaterial;
-    public float dissolveRate = 0.0125f;
-    public float refreshRate = 0.025f;
-
-    [Header("Alien Audio")]
-    private bool playClipSpawned = false;
-    public List<AudioClip> aliensEating;
-    public List<AudioClip> aliensLoving;
-    public AudioSource audioSource;
-
-    [Header("Water / Sphere Alien Audio")]
-    public AudioClip[] sphereAttackAudio;
-    public AudioClip[] sphereDyingAudio;
-    public AudioClip[] sphereBeingAttackedAudio;
-    public AudioClip[] sphereLovemakingAudio;
-    public AudioClip[] sphereEvadingAudio;
-
-    [Header("Oxygen / Square Alien Audio")]
-    public AudioClip[] squareAttackAudio;
-    public AudioClip[] squareDyingAudio;
-    public AudioClip[] squareBeingAttackedAudio;
-    public AudioClip[] squareLovemakingAudio;
-    public AudioClip[] squareEvadingAudio;
-
-    [Header("Meat / Triangle Alien Audio")]
-    public AudioClip[] triangleAttackAudio;
-    public AudioClip[] triangleDyingAudio;
-    public AudioClip[] triangleBeingAttackedAudio;
-    public AudioClip[] triangleLovemakingAudio;
-    public AudioClip[] triangleEvadingAudio;
-
-    [Header("Array of all alien state")]
-    public List<AudioClip[]> attackAudioList = new List<AudioClip[]>();
-    private List<AudioClip[]> dyingAudioList = new List<AudioClip[]>();
-    private List<AudioClip[]> beingAttackedAudioList = new List<AudioClip[]>();
-    private List<AudioClip[]> lovemakingAudioList = new List<AudioClip[]>();
-    private List<AudioClip[]> evadingAudioList = new List<AudioClip[]>();
 
     [Header("Tick stats")]
     public float tickTimer;
     public float tickTimerMax = .5f;
     public bool hasNewTarget = false;
-
 
     [Header("DeadAliens")] // 0:Sphere > 1:Square > 2:Triangle
     public GameObject[] deadAliensPrerfabs;
@@ -222,26 +176,6 @@ public class AlienHandler : MonoBehaviour
 
     private void Start()
     {
-        attackAudioList.Add(sphereAttackAudio);
-        attackAudioList.Add(squareAttackAudio);
-        attackAudioList.Add(triangleAttackAudio);
-
-        dyingAudioList.Add(sphereDyingAudio);
-        dyingAudioList.Add(squareDyingAudio);
-        dyingAudioList.Add(triangleDyingAudio);
-
-        beingAttackedAudioList.Add(sphereBeingAttackedAudio);
-        beingAttackedAudioList.Add(squareBeingAttackedAudio);
-        beingAttackedAudioList.Add(triangleBeingAttackedAudio);
-
-        lovemakingAudioList.Add(sphereLovemakingAudio);
-        lovemakingAudioList.Add(squareLovemakingAudio);
-        lovemakingAudioList.Add(triangleLovemakingAudio);
-
-        evadingAudioList.Add(sphereEvadingAudio);
-        evadingAudioList.Add(squareEvadingAudio);
-        evadingAudioList.Add(triangleEvadingAudio);
-
         worldRadiusSquared = GameManager.Instance.worldRadius * GameManager.Instance.worldRadius;
         alienActionFogMain = alienActionFog.gameObject.GetComponent<ParticleSystem>().main;
         if (MyTransform == null) { MyTransform = this.gameObject.GetComponent<Transform>(); }
@@ -249,7 +183,7 @@ public class AlienHandler : MonoBehaviour
 
     private void OnEnable()
     {
-        ActivateCurrentModels(currentSpecies);
+        if (AlienManager.Instance == null) { return; }
 
         if (brainWashed == true)
         {
@@ -259,10 +193,13 @@ public class AlienHandler : MonoBehaviour
         {
             StartCoroutine(HandleAge(spawnAsAdults));
         }
+        ActivateCurrentModels(currentSpecies);
     }
 
     private void OnDisable()
     {
+        if (AlienManager.Instance == null) { return; }
+
         ResetVariable();
         DiscardCurrentAction();
         StopAllCoroutines();
@@ -275,13 +212,14 @@ public class AlienHandler : MonoBehaviour
         HandleRendering();
 
         if (isRendered == false) { return; }
-        if (canAct == false) { return; }
+        //if (canAct == false) { return; }
 
         delta = Time.deltaTime;
         HandleUpdateVariables();
-        HandleUpdateTarget();
 
         if (currentAge == AlienAge.resource || isDead == true) { return; }
+
+        HandleUpdateTarget();
         HandleAnimation();
 
         // Finaly move the alien if it can
@@ -329,7 +267,7 @@ public class AlienHandler : MonoBehaviour
 
     private void HandleRendering()
     {
-        if (distanceToCameraSpot > renderDistance)
+        if (distanceToCameraSpot > AlienManager.Instance.renderDistance)
         {
             if (isRendered == true)
             {
@@ -397,8 +335,7 @@ public class AlienHandler : MonoBehaviour
         lustTimer += delta;
         hungerTimer += delta;
         tickTimer += delta;
-        lifeTime += delta;
-        speed = (alienSpeed + ((lustTimer + hungerTimer) / 100)) * delta; // + ((2 * (lustTimer + hungerTimer)) / (lustTimer + hungerTimer)); TODO: make better?! Way too fast
+        speed = (AlienManager.Instance.alienSpeed + ((lustTimer + hungerTimer) / 100)) * delta; // + ((2 * (lustTimer + hungerTimer)) / (lustTimer + hungerTimer)); TODO: make better?! Way too fast
 
         randomNumber = Random.Range(1, 11) / 10;
     }
@@ -412,7 +349,7 @@ public class AlienHandler : MonoBehaviour
         currentAge = AlienAge.resource;
         minTimeToChild += UnityEngine.Random.Range(0, 10); // This just get added on top of minTimeToChild 
         hasUterus = UnityEngine.Random.Range(0, 2) == 1;
-        alienHealth = alienLifeResource;
+        alienHealth = AlienManager.Instance.alienLifeResource;
         brainWashed = false; // AKA tutuorial scene
         canAct = true;
         isDead = false;
@@ -455,36 +392,36 @@ public class AlienHandler : MonoBehaviour
             resourceSteamGO.SetActive(true);
             MyRigidbody.constraints = RigidbodyConstraints.FreezePosition | RigidbodyConstraints.FreezeRotation;
             currentAge = AlienAge.resource;
-            alienHealth = alienLifeResource;
-            MyTransform.localScale = Vector3.one * resourceScale;
+            alienHealth = AlienManager.Instance.alienLifeResource;
+            MyTransform.localScale = Vector3.one * AlienManager.Instance.resourceScale;
             yield return new WaitForSeconds(minTimeToChild);
         }
 
         // Child Life
         resourceSteamGO.SetActive(false);
         MyRigidbody.constraints = RigidbodyConstraints.FreezePosition | RigidbodyConstraints.FreezeRotation;
-        alienHealth = alienLifeChild;
+        alienHealth = AlienManager.Instance.alienLifeChild;
         currentAge = AlienAge.child;
         currentState = AlienState.roaming;
-        MyTransform.localScale = Vector3.one * childScale;
+        MyTransform.localScale = Vector3.one * AlienManager.Instance.childScale;
         alienSpeciesChild[currentSpecies].SetActive(false);
         alienSpeciesAdult[currentSpecies].SetActive(true);
         if (AlienManager.Instance.resourceSphere.Count + AlienManager.Instance.resourceSquare.Count + AlienManager.Instance.resourceTriangle.Count > 0)
         {
             AlienManager.Instance.RemoveFromResourceList(this); // TODO: Check if available in List?!
         }
-        yield return new WaitForSeconds(timeToSexual);
+        yield return new WaitForSeconds(AlienManager.Instance.timeToSexual);
 
         // Sexual active Life
-        alienHealth = alienLifeSexual;
+        alienHealth = AlienManager.Instance.alienLifeSexual;
         currentAge = AlienAge.sexualActive;
-        StartCoroutine(HandleGrowing(childScale, sexualActiveScale));
-        yield return new WaitForSeconds(timeToFullGrown);
+        StartCoroutine(HandleGrowing(AlienManager.Instance.childScale, AlienManager.Instance.sexualActiveScale));
+        yield return new WaitForSeconds(AlienManager.Instance.timeToFullGrown);
 
         // Full Grown Life
-        alienHealth = alienLifeFullGrown;
+        alienHealth = AlienManager.Instance.alienLifeFullGrown;
         currentAge = AlienAge.fullyGrown;
-        StartCoroutine(HandleGrowing(sexualActiveScale, fullGrownScale));
+        StartCoroutine(HandleGrowing(AlienManager.Instance.sexualActiveScale, AlienManager.Instance.fullGrownScale));
     }
 
     private IEnumerator HandleGrowing(float oldFactor, float newFactor)
@@ -573,7 +510,7 @@ public class AlienHandler : MonoBehaviour
     {
         if (!audioSource.isPlaying)
         {
-            audioSource.PlayOneShot(RandomAudioSelectorAliens(dyingAudioList, currentSpecies), 1f);
+            audioSource.PlayOneShot(RandomAudioSelectorAliens(AlienManager.Instance.dyingAudioList, currentSpecies), 1f);
         }
         yield return new WaitForSeconds(time);
         HandleDeath();
@@ -620,7 +557,7 @@ public class AlienHandler : MonoBehaviour
         // Act upon state and distance to current target
         if (currentState == AlienState.evading || currentState == AlienState.hunting)
         {
-            if (distanceToCurrentTarget > lookRadius + 1)  // Add +1 so i is out of the lookradius
+            if (distanceToCurrentTarget > AlienManager.Instance.lookRadius + 1)  // Add +1 so i is out of the lookradius
             {
                 StartCoroutine(IdleSecsUntilNewState(AlienState.looking));
             }
@@ -638,15 +575,15 @@ public class AlienHandler : MonoBehaviour
 
     public void HandleLooking()
     {
-        currentShortestDistanceLooking = lookRadius;
-        currentDistanceLooking = lookRadius;
+        currentShortestDistanceLooking = AlienManager.Instance.lookRadius;
+        currentDistanceLooking = AlienManager.Instance.lookRadius;
 
         aliensInRangeCount = aliensInRange.Count;
 
         // If does not have an array of nearby aliens, create one
         if (aliensInRangeCount == 0)
         {
-            aliensInRangeCollider = Physics.OverlapSphere(MyTransform.position, lookRadius, layerMaskAlien, QueryTriggerInteraction.Ignore);
+            aliensInRangeCollider = Physics.OverlapSphere(MyTransform.position, AlienManager.Instance.lookRadius, layerMaskAlien, QueryTriggerInteraction.Ignore);
             aliensInRangeColliderOrdered = aliensInRangeCollider.OrderBy(c => (MyTransform.position - c.transform.position).sqrMagnitude).ToArray();
 
             foreach (var item in aliensInRangeColliderOrdered)
@@ -684,8 +621,8 @@ public class AlienHandler : MonoBehaviour
                     hasUterus != targetAlienHandler.hasUterus && // opposite Sex
                     currentAge == AlienAge.sexualActive && // Sexual active
                     targetAlienHandler.currentAge == AlienAge.sexualActive && // potential partner also sexual active
-                    lustTimer > lustTimerThreshold && // can mate
-                    targetAlienHandler.lustTimer > lustTimerThreshold // partner can mate
+                    lustTimer > AlienManager.Instance.lustTimerThreshold && // can mate
+                    targetAlienHandler.lustTimer > AlienManager.Instance.lustTimerThreshold // partner can mate
                     )
                 {
                     currentState = AlienState.loving;
@@ -706,7 +643,7 @@ public class AlienHandler : MonoBehaviour
                 // Sphere eats Triangle / 0 eats 2
                 #endregion
 
-                if (hungerTimer > hungerTimerThreshold &&
+                if (hungerTimer > AlienManager.Instance.hungerTimerThreshold &&
                     (currentSpecies == targetAlienHandler.currentSpecies + 1 ||
                     (currentSpecies == 0 && targetAlienHandler.currentSpecies == 2))) // potential food || if closestAlienHandler is smaller || hunting state
                 {
@@ -832,7 +769,7 @@ public class AlienHandler : MonoBehaviour
     {
         if (!audioSource.isPlaying)
         {
-            audioSource.PlayOneShot(RandomAudioSelectorAliens(evadingAudioList, currentSpecies), 1f);
+            audioSource.PlayOneShot(RandomAudioSelectorAliens(AlienManager.Instance.evadingAudioList, currentSpecies), 1f);
         }
 
         if (brainWashed == true) { return; }
@@ -845,7 +782,7 @@ public class AlienHandler : MonoBehaviour
     {
         if (!audioSource.isPlaying)
         {
-            audioSource.PlayOneShot(RandomAudioSelectorAliens(attackAudioList, currentSpecies), 1f);
+            audioSource.PlayOneShot(RandomAudioSelectorAliens(AlienManager.Instance.attackAudioList, currentSpecies), 1f);
         }
 
         if (brainWashed == true) { return; }
@@ -858,7 +795,7 @@ public class AlienHandler : MonoBehaviour
     {
         if (!audioSource.isPlaying)
         {
-            audioSource.PlayOneShot(RandomAudioSelectorAliens(attackAudioList, currentSpecies), 1f);
+            audioSource.PlayOneShot(RandomAudioSelectorAliens(AlienManager.Instance.lovemakingAudioList, currentSpecies), 1f);
         }
 
         if (brainWashed == true) { return; }
@@ -878,12 +815,12 @@ public class AlienHandler : MonoBehaviour
 
         if (!audioSource.isPlaying)
         {
-            audioSource.PlayOneShot(RandomAudioSelectorAliens(lovemakingAudioList, currentSpecies), 1f);
+            audioSource.PlayOneShot(RandomAudioSelectorAliens(AlienManager.Instance.lovemakingAudioList, currentSpecies), 1f);
         }
 
         if (hasUterus == true)
         {
-            amountOfBabies = UnityEngine.Random.Range(1, maxAmountOfBabies);
+            amountOfBabies = UnityEngine.Random.Range(1, AlienManager.Instance.maxAmountOfBabies);
             if (brainWashed == true) { amountOfBabies = 1; }
             for (var i = 0; i < amountOfBabies; i++)
             {
@@ -1001,20 +938,30 @@ public class AlienHandler : MonoBehaviour
 
         if (currentState == AlienState.hunting || currentState == AlienState.loving || currentState == AlienState.roaming)
         {
-            anim[currentSpecies]["Armature|WALK"].speed = 1;
-            anim[currentSpecies].Play("Armature|WALK");
+            if (anim[currentSpecies].IsPlaying("Armature|WALK") == false)
+            {
+                anim[currentSpecies]["Armature|WALK"].speed = 1;
+                anim[currentSpecies].Play("Armature|WALK");
+            }
         }
         if (currentState == AlienState.evading)
         {
-            anim[currentSpecies]["Armature|WALK"].speed = 2;
-            anim[currentSpecies].Play("Armature|WALK");
+            if (anim[currentSpecies].IsPlaying("Armature|WALK") == false)
+            {
+                anim[currentSpecies]["Armature|WALK"].speed = 2;
+                anim[currentSpecies].Play("Armature|WALK");
+            }
         }
         if (currentState == AlienState.idle)
         {
             if (currentSpecies != 0)
             {
-                anim[currentSpecies].Play("Armature|IDLE");
+                if (anim[currentSpecies].IsPlaying("Armature|IDLE") == false)
+                {
+                    anim[currentSpecies].Play("Armature|IDLE");
+                }
             }
+
         }
     }
 
@@ -1058,7 +1005,7 @@ public class AlienHandler : MonoBehaviour
                     lustTimer = 0;
                     otherAlienHandler.lustTimer = 0;
                     StartCoroutine(PlayActionParticle(AlienState.loving)); // Loving Partilce
-                    audioSource.PlayOneShot(RandomAudioSelectorFoley(aliensLoving));
+                    audioSource.PlayOneShot(RandomAudioSelectorFoley(AlienManager.Instance.aliensLoving));
                     HandleMating();
                 }
             }
@@ -1077,7 +1024,7 @@ public class AlienHandler : MonoBehaviour
                     if (other.gameObject.activeInHierarchy)
                     {
                         otherAlienHandler.HandleDeathByCombat();
-                        audioSource.PlayOneShot(RandomAudioSelectorFoley(aliensEating));
+                        audioSource.PlayOneShot(RandomAudioSelectorFoley(AlienManager.Instance.aliensEating));
                     }
 
                     if (brainWashed == true) { return; }// For tutorial
@@ -1095,7 +1042,7 @@ public class AlienHandler : MonoBehaviour
 
             if (!audioSource.isPlaying)
             {
-                audioSource.PlayOneShot(RandomAudioSelectorAliens(beingAttackedAudioList, currentSpecies), 1f);
+                audioSource.PlayOneShot(RandomAudioSelectorAliens(AlienManager.Instance.beingAttackedAudioList, currentSpecies), 1f);
             }
 
             CurrentBH = other.gameObject.GetComponent<BulletHandler>();

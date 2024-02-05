@@ -22,7 +22,58 @@ public class AlienManager : MonoBehaviour
     public List<AlienHandler> resourceSquare = new List<AlienHandler>(100);
     public List<AlienHandler> resourceTriangle = new List<AlienHandler>(100);
 
-    // TODO: List of List better?!
+    [Header("Alien Settings")]
+    public int alienLifeResource = 1;
+    public int alienLifeChild = 30;
+    public int alienLifeSexual = 40;
+    public int alienLifeFullGrown = 50;
+    public int timeToSexual = 15;
+    public int timeToFullGrown = 25;
+    public float alienSpeed;
+    public float lookRadius = 10;
+    public float resourceScale = 0.7f;
+    public float childScale = 0.6f;
+    public float sexualActiveScale = 0.8f;
+    public float fullGrownScale = 1f;
+    public float lustTimerThreshold = 5;
+    public int maxAmountOfBabies = 10;
+    public float hungerTimerThreshold = 5;
+    public float dissolveRate = 0.0125f;
+    public float refreshRate = 0.025f;
+    public float renderDistance = 30;
+
+    [Header("Alien Audio")]
+    public List<AudioClip> aliensEating;
+    public List<AudioClip> aliensLoving;
+
+    [Header("Water / Sphere Alien Audio")]
+    public AudioClip[] sphereAttackAudio;
+    public AudioClip[] sphereDyingAudio;
+    public AudioClip[] sphereBeingAttackedAudio;
+    public AudioClip[] sphereLovemakingAudio;
+    public AudioClip[] sphereEvadingAudio;
+
+    [Header("Oxygen / Square Alien Audio")]
+    public AudioClip[] squareAttackAudio;
+    public AudioClip[] squareDyingAudio;
+    public AudioClip[] squareBeingAttackedAudio;
+    public AudioClip[] squareLovemakingAudio;
+    public AudioClip[] squareEvadingAudio;
+
+    [Header("Meat / Triangle Alien Audio")]
+    public AudioClip[] triangleAttackAudio;
+    public AudioClip[] triangleDyingAudio;
+    public AudioClip[] triangleBeingAttackedAudio;
+    public AudioClip[] triangleLovemakingAudio;
+    public AudioClip[] triangleEvadingAudio;
+
+    [Header("Array of all alien state")]
+    public List<AudioClip[]> attackAudioList = new List<AudioClip[]>();
+    public List<AudioClip[]> dyingAudioList = new List<AudioClip[]>();
+    public List<AudioClip[]> beingAttackedAudioList = new List<AudioClip[]>();
+    public List<AudioClip[]> lovemakingAudioList = new List<AudioClip[]>();
+    public List<AudioClip[]> evadingAudioList = new List<AudioClip[]>();
+
 
     [Header("Spawn Settings")]
     public int segmentAmount = 6;
@@ -77,6 +128,26 @@ public class AlienManager : MonoBehaviour
 
     private void Start()
     {
+        attackAudioList.Add(sphereAttackAudio);
+        attackAudioList.Add(squareAttackAudio);
+        attackAudioList.Add(triangleAttackAudio);
+
+        dyingAudioList.Add(sphereDyingAudio);
+        dyingAudioList.Add(squareDyingAudio);
+        dyingAudioList.Add(triangleDyingAudio);
+
+        beingAttackedAudioList.Add(sphereBeingAttackedAudio);
+        beingAttackedAudioList.Add(squareBeingAttackedAudio);
+        beingAttackedAudioList.Add(triangleBeingAttackedAudio);
+
+        lovemakingAudioList.Add(sphereLovemakingAudio);
+        lovemakingAudioList.Add(squareLovemakingAudio);
+        lovemakingAudioList.Add(triangleLovemakingAudio);
+
+        evadingAudioList.Add(sphereEvadingAudio);
+        evadingAudioList.Add(squareEvadingAudio);
+        evadingAudioList.Add(triangleEvadingAudio);
+
         StartCoroutine(SpawnAliens());
     }
 

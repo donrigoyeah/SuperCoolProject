@@ -173,7 +173,6 @@ public class TutorialHandler : MonoBehaviour
             if (isLoving == true)
             {
                 currentAlienHandler.hasUterus = true;
-                currentAlienHandler.maxAmountOfBabies = 2;
                 currentAlienHandler.currentState = AlienHandler.AlienState.loving;
                 currentAlienHandler.HandleStateIcon(AlienHandler.AlienState.loving);
             }

@@ -115,11 +115,12 @@ public class DevKitHandler : MonoBehaviour
     {
         int.TryParse(alienAmountOfBabies.text, out int input);
 
-        for (int i = 0; i <= PoolManager.Instance.AlienPool.Count; i++)
-        {
-            GameObject alien = PoolManager.Instance.AlienPool[i];
-            AlienHandler alienHandler = alien.GetComponent<AlienHandler>();
-            alienHandler.maxAmountOfBabies = input;
-        }
+        AlienManager.Instance.maxAmountOfBabies = input;
+        //for (int i = 0; i <= PoolManager.Instance.AlienPool.Count; i++)
+        //{
+        //    GameObject alien = PoolManager.Instance.AlienPool[i];
+        //    AlienHandler alienHandler = alien.GetComponent<AlienHandler>();
+        //    alienHandler.maxAmountOfBabies = input;
+        //}
     }
 }
