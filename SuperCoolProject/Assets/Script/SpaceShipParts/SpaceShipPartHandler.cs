@@ -132,7 +132,7 @@ public class SpaceShipPartHandler : MonoBehaviour
     public IEnumerator HandleFlyingParts()
     {
         flyingParticles.SetActive(true);
-        Vector3 targetPositon = new Vector3(targetPositionX, 0, targetPositionZ);
+        Vector3 targetPositon = new Vector3(targetPositionX, -1, targetPositionZ);
 
         float distanceToLandingPosition = 100;
 
