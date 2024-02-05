@@ -85,6 +85,7 @@ public class PoolManager : MonoBehaviour
     public GameObject GrenadeContainer;
 
     [Header("Reference")]
+    public Transform DeadPlayerContainer;
     public LoadingScreenHandler loadingScreenHandler;
 
     private void Awake()

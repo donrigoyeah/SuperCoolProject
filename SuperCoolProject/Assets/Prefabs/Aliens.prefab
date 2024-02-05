@@ -54,6 +54,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentStateValue: 4
+  lastAlienState: 0
   aliensInRange:
   - {fileID: 0}
   - {fileID: 0}
@@ -116,10 +117,6 @@ MonoBehaviour:
   - {fileID: 8883707581014243677}
   - {fileID: 8066611569036911850}
   - {fileID: 5585306842520454627}
-  alienColors:
-  - {fileID: 2100000, guid: b67f632216d52334bb0eb07fa4b4a1da, type: 2}
-  - {fileID: 2100000, guid: ce2b205562e7c674e9c2bd5cc9c0e13b, type: 2}
-  - {fileID: 2100000, guid: bcee1cfb4022c4c4baa972a255f5d436, type: 2}
   anim:
   - {fileID: 6730900815250296602}
   - {fileID: 2765858532473498374}
@@ -319,7 +316,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
+      value: 0.5
       inSlope: 0
       outSlope: 0
       tangentMode: 0
