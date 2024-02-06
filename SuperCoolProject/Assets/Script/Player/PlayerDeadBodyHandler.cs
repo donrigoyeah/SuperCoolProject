@@ -16,7 +16,11 @@ public class PlayerDeadBodyHandler : MonoBehaviour
 
     private void Update()
     {
-        deadPlayer.transform.localPosition = this.gameObject.transform.position;
+        if (deadPlayer != null)
+        {
+            deadPlayer.transform.localPosition = this.gameObject.transform.position;
+
+        }
         
         if(inputHandler == null || playerLocomotion == null || playerManager == null){return;}
 
@@ -80,7 +84,6 @@ public class PlayerDeadBodyHandler : MonoBehaviour
                 inputHandler = null;
                 playerLocomotion = null;
                 playerManager = null;
-
             }
         }
     }

@@ -92,7 +92,7 @@ public class SpaceShipPartHandler : MonoBehaviour
     {
 
         if (inputHandler == null || playerLocomotion == null || playerManager == null || isInteractingWithPlayer == false || hasLanded == false) { return; }
-
+        
         if (inputHandler.inputInteracting)
         {
             InteractionUIScreen.SetActive(false);
@@ -190,10 +190,18 @@ public class SpaceShipPartHandler : MonoBehaviour
             playerManager.currentPart = null;
             playerManager.isCarryingPart = false;
             myTransform.parent = null;
+            
+            if (playerManager.isCarryingPart)
+            {
+                Debug.Log("Double check");
+                playerManager.isCarryingPart = false;
+            }
+            
             inputHandler = null;
             playerLocomotion = null;
             playerManager = null;
         }
+
 
     }
 
