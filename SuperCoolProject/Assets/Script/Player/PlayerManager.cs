@@ -356,7 +356,7 @@ public class PlayerManager : MonoBehaviour
 
             // BackUp spawning new resource in case of none available
             Debug.Log("Work on thiz");
-            while (closestResource[neededResource] == null)
+            if (closestResource[neededResource] == null)
             {
                 for (int i = 0; i < PoolManager.Instance.AlienPool.Count; i++)
                 {
@@ -364,7 +364,7 @@ public class PlayerManager : MonoBehaviour
                     float distToAlien = Vector3.Distance(locationForResource, MyTransform.position);
                     if (distToAlien > 50 && distToAlien < 70)
                     {
-                        PoolManager.Instance.AlienPool[i].GetComponent<AlienHandler>().HandleDeath();
+                        PoolManager.Instance.AlienPool[i].SetActive(false);
 
                         ResourceAlienPoolGo = PoolManager.Instance.GetPooledAliens(false);
                         if (ResourceAlienPoolGo != null)
@@ -377,6 +377,7 @@ public class PlayerManager : MonoBehaviour
 
                             closestResource[neededResource] = ResourceAlienPoolGoHandler;
                         }
+                        break;
                     }
                 }
             }

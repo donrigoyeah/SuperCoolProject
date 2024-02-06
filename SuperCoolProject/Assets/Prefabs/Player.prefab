@@ -635,7 +635,7 @@ MonoBehaviour:
   overheatUIGO: {fileID: 339469481652884982}
   overheatUI: {fileID: 8228046787694399299}
   fireRate: 0.2
-  currentWeaponHeat: 0
+  currentWeaponHeat: 10
   maxWeaponHeat: 100
   boostWeaponHeatThreshold: 80
   singleLazerHeat: 25
@@ -5764,7 +5764,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &4522037182476434306
 RectTransform:
   m_ObjectHideFlags: 0

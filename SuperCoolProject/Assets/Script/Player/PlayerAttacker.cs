@@ -119,26 +119,22 @@ public class PlayerAttacker : MonoBehaviour
     void Update()
     {
         if (playerManager.isInteracting == true || playerManager.isAlive == false) { return; }
-        else
-        {
-            HandleShootLazer();
-            HandleGrenadeThrow();
-        }
+
+        HandleShootLazer();
+        HandleGrenadeThrow();
     }
 
     private void FixedUpdate()
     {
         if (playerManager.isInteracting == true || playerManager.isAlive == false) { return; }
-        else
+
+        delta = Time.deltaTime;
+        HandleWeaponHeat(delta);
+        HandleGrenadeCooldown(delta);
+        //HandleEnableLazerSight();
+        if (playerManager.canAim || GameManager.Instance.devMode)
         {
-            delta = Time.deltaTime;
-            HandleWeaponHeat(delta);
-            HandleGrenadeCooldown(delta);
-            //HandleEnableLazerSight();
-            if (playerManager.canAim || GameManager.Instance.devMode)
-            {
-                AimLockTarget();
-            }
+            AimLockTarget();
         }
     }
 
@@ -166,7 +162,6 @@ public class PlayerAttacker : MonoBehaviour
                 CameraShake.Instance.ShakeCamera(0);
                 currentWeaponHeat += singleLazerHeat;
                 nextFireTime = 0;
-                return;
             }
             else
             {
@@ -174,7 +169,7 @@ public class PlayerAttacker : MonoBehaviour
                 CameraShake.Instance.ResetCameraPosition();
             }
         }
-        if (gunOverheated == false && inputHandler.inputPrimaryFire)
+        if (inputHandler.inputPrimaryFire && gunOverheated == true)
         {
             audioSource.PlayOneShot(canNotShootLazer);
         }
@@ -244,8 +239,6 @@ public class PlayerAttacker : MonoBehaviour
 
     private void SpawnLazer(float damage)
     {
-        //TODO: Add Recoil
-
         bulletPoolGo = PoolManager.Instance.GetPooledBullets();
         muzzlePoolGo = PoolManager.Instance.GetPooledMuzzle();
 

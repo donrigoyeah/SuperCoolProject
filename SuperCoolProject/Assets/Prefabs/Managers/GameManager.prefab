@@ -45,12 +45,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 109ceb8310df21a4ebfad50b040233ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  devMode: 0
+  devMode: 1
   hideTut: 0
   worldRadius: 180
   hasLost: 1
   numberOfPlayers: 0
   maxPlayers: 2
+  playerSpawnLocation: {x: 0, y: 0, z: 0}
   cloneJuiceUI: {fileID: 0}
   cloneCost: 20
   currentCloneJuice: 0
@@ -98,11 +99,9 @@ MonoBehaviour:
   cameraSpeedMultiplier: 4
   cameraZOffset: 2
   playerDeadBody: 0
-  playerAntenna: {fileID: 0}
   spaceshipAntenna: {fileID: 0}
   spaceshipShield: {fileID: 0}
   spaceshipGrenadeModule: {fileID: 0}
-  playerGrenadeModule: {fileID: 0}
 --- !u!1 &9078134599936876708
 GameObject:
   m_ObjectHideFlags: 0

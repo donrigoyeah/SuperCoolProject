@@ -948,22 +948,23 @@ public class AlienHandler : MonoBehaviour
 
     private void HandleAnimation()
     {
-        if (anim[currentSpecies] != null) { return; }
+        if (anim[currentSpecies] == null) { Debug.Log("Has no animation"); return; }
 
         if (currentState == AlienState.hunting || currentState == AlienState.loving || currentState == AlienState.roaming)
         {
             if (anim[currentSpecies].IsPlaying("Armature|WALK") == false)
             {
-                anim[currentSpecies]["Armature|WALK"].speed = 1;
+                Debug.Log("Play walk animation");
                 anim[currentSpecies].Play("Armature|WALK");
+                anim[currentSpecies]["Armature|WALK"].speed = 1;
             }
         }
         if (currentState == AlienState.evading)
         {
             if (anim[currentSpecies].IsPlaying("Armature|WALK") == false)
             {
-                anim[currentSpecies]["Armature|WALK"].speed = 2;
                 anim[currentSpecies].Play("Armature|WALK");
+                anim[currentSpecies]["Armature|WALK"].speed = 2;
             }
         }
         if (currentState == AlienState.idle)
