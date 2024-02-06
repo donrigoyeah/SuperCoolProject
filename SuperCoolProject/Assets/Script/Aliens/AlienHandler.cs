@@ -481,8 +481,8 @@ public class AlienHandler : MonoBehaviour
     public void HandleDeathByCombat()
     {
         isDead = true;
-        StartCoroutine(PlayActionParticle(AlienState.hunting));
         StartCoroutine(WaitForDeath(1));
+        StartCoroutine(PlayActionParticle(AlienState.hunting));
     }
 
     private IEnumerator WaitForDeath(float time)
@@ -491,6 +491,7 @@ public class AlienHandler : MonoBehaviour
         {
             audioSource.PlayOneShot(RandomAudioSelectorAliens(AlienManager.Instance.dyingAudioList, currentSpecies), 1f);
         }
+        DeactivateAllModels();
         yield return new WaitForSeconds(time);
         HandleDeath();
     }
@@ -822,9 +823,9 @@ public class AlienHandler : MonoBehaviour
         canAct = false;
         hasNewTarget = false;
         targetPosition3D = Vector3.zero;
+        distanceToCurrentTarget = 999f;
         lastAlienState = currentState;
         currentState = AlienState.idle;
-        distanceToCurrentTarget = 999f;
         lookTimeIdle = UnityEngine.Random.Range(1, (randomNumber + 1) * 10) / 10;
         yield return new WaitForSeconds(lookTimeIdle);
         currentState = nextState;
