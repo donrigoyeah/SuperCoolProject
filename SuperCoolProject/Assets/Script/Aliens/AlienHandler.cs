@@ -77,8 +77,6 @@ public class AlienHandler : MonoBehaviour
     public bool spawnAsAdults = false;
     public RawImage currentStateIcon;
     public Texture[] allStateIcons; // 0: eye, 1: crosshair, 2: wind, 3: heart, 4: shield
-    public Vector3 targetPosition3D;
-    private Vector2 targetPosition2D;
     public float distanceToCurrentTarget;
     private float currentShortestDistanceLooking;
     private float currentDistanceLooking;
@@ -87,14 +85,14 @@ public class AlienHandler : MonoBehaviour
     private GameObject newBornAlienPoolGo;
     private AlienHandler newBornAlien;
     private float randomOffSetBabySpawn;
+    public Vector3 targetPosition3D;
+    private Vector2 targetPosition2D;
 
     [Header("Target Alien")]
     public GameObject targetAlien;
     public GameObject lastTargetAlien;
     public AlienHandler targetAlienHandler;
-    public Transform TargetAlienTransform;
     public AlienHandler otherAlienHandler;
-    private Vector2 TargetAlienTransform2D;
 
     [Header("General Alien References")]
     public GameObject[] alienSpecies; // 0:Sphere > 1:Square > 2:Triangle  
@@ -275,15 +273,15 @@ public class AlienHandler : MonoBehaviour
 
         if (currentState != AlienState.roaming)
         {
-            if (TargetAlienTransform == null) { return; }
+            if (targetAlien == null) { return; }
 
             if (currentState == AlienState.evading) // Away from target
             {
-                targetPosition3D = MyTransform.position + (MyTransform.position - TargetAlienTransform.position);
+                targetPosition3D = MyTransform.position + (MyTransform.position - targetAlien.transform.position);
             }
             else // towards target
             {
-                targetPosition3D = TargetAlienTransform.position;
+                targetPosition3D = targetAlien.transform.position;
             }
         }
 
@@ -321,7 +319,6 @@ public class AlienHandler : MonoBehaviour
         gotAttackedByPlayer = false;
         targetPosition3D = Vector3.zero;
         targetAlien = null;
-        TargetAlienTransform = null;
     }
 
     public void DeactivateAllModels()
@@ -672,6 +669,7 @@ public class AlienHandler : MonoBehaviour
         // Set state on closest target
         if (targetAlien == null)
         {
+            Debug.Log("Going bck to roaming");
             aliensInRange.Clear();
             StartCoroutine(IdleSecsUntilNewState(AlienState.roaming));
             return;
@@ -823,7 +821,10 @@ public class AlienHandler : MonoBehaviour
     {
         canAct = false;
         hasNewTarget = false;
+        targetPosition3D = Vector3.zero;
         lastAlienState = currentState;
+        currentState = AlienState.idle;
+        distanceToCurrentTarget = 999f;
         lookTimeIdle = UnityEngine.Random.Range(1, (randomNumber + 1) * 10) / 10;
         yield return new WaitForSeconds(lookTimeIdle);
         currentState = nextState;
