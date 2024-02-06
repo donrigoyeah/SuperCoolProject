@@ -217,11 +217,13 @@ public class PlayerManager : MonoBehaviour
         }
         aliensInRangePlayerCount = aliensInRangePlayer.Count;
 
+        // TODO: use this instead?!
         //aliensInRangePlayerCount = Physics.OverlapSphereNonAlloc(MyTransform.position, playerDetectionRadius, aliensInRangePlayer, layerMaskAlien, QueryTriggerInteraction.Ignore);
         if (aliensInRangePlayerCount == 0) { return; }
 
         for (int i = 0; i < aliensInRangePlayerCount; i++)
         {
+            if (aliensInRangePlayer[i] == null || aliensInRangePlayer[i].gameObject.activeInHierarchy == false) { continue; }
             CurrentSurroundingAH = aliensInRangePlayer[i].gameObject.GetComponentInParent<AlienHandler>();
             if (CurrentSurroundingAH.brainWashed == true) { continue; } // Interaction with player in TutorialScene, prevents HandleUpdateTarget error
 
@@ -231,45 +233,38 @@ public class PlayerManager : MonoBehaviour
                 continue;
             }
 
-            CurrentSurroundingAH.targetAlien = this.gameObject;
+            CurrentSurroundingAH.SetTarget(this.gameObject);
 
             if (CurrentSurroundingAH.currentAge == AlienHandler.AlienAge.fullyGrown)
             {
-
                 if (CurrentSurroundingAH.currentSpecies == 0 || AlienManager.Instance.sphereKilled > 20)
                 {
-                    CurrentSurroundingAH.SetTarget(this.gameObject);
                     CurrentSurroundingAH.IdleSecsUntilNewState(AlienHandler.AlienState.hunting);
                     continue;
                 }
                 if (CurrentSurroundingAH.currentSpecies == 1 || AlienManager.Instance.squareKilled > 20)
                 {
-                    CurrentSurroundingAH.SetTarget(this.gameObject);
                     CurrentSurroundingAH.IdleSecsUntilNewState(AlienHandler.AlienState.hunting);
                     continue;
                 }
                 if (CurrentSurroundingAH.currentSpecies == 2 || AlienManager.Instance.triangleKilled > 20)
                 {
-                    CurrentSurroundingAH.SetTarget(this.gameObject);
                     CurrentSurroundingAH.IdleSecsUntilNewState(AlienHandler.AlienState.hunting);
                     continue;
                 }
 
                 if (Random.Range(0, 2) == 1)
                 {
-                    CurrentSurroundingAH.SetTarget(this.gameObject);
                     CurrentSurroundingAH.IdleSecsUntilNewState(AlienHandler.AlienState.hunting);
                 }
                 else
                 {
-                    CurrentSurroundingAH.SetTarget(this.gameObject);
                     CurrentSurroundingAH.IdleSecsUntilNewState(AlienHandler.AlienState.evading);
                 }
                 continue;
             }
             else
             {
-                CurrentSurroundingAH.SetTarget(this.gameObject);
                 CurrentSurroundingAH.IdleSecsUntilNewState(AlienHandler.AlienState.evading);
                 continue;
             }
