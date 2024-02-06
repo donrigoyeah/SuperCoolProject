@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2535645080070637768}
   - component: {fileID: 1753352926865818878}
   - component: {fileID: 9042210739735769762}
+  - component: {fileID: 1377134776183474943}
   m_Layer: 9
   m_Name: Aliens
   m_TagString: Alien
@@ -273,6 +274,29 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!136 &1377134776183474943
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1047908099467871381}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &1058017370714696725
 GameObject:
   m_ObjectHideFlags: 0
@@ -5422,7 +5446,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7376151145612584595}
-  - component: {fileID: 5356344968068921494}
   m_Layer: 9
   m_Name: Square
   m_TagString: square
@@ -5446,29 +5469,6 @@ Transform:
   - {fileID: 3537768794041391794}
   m_Father: {fileID: 414676901202353711}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &5356344968068921494
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6981288141397108614}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.35
-  m_Height: 1
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!1 &8329259287624427090
 GameObject:
   m_ObjectHideFlags: 0
@@ -5478,7 +5478,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8466971964781309730}
-  - component: {fileID: 7543505279742811787}
   m_Layer: 9
   m_Name: Sphere
   m_TagString: sphere
@@ -5502,29 +5501,6 @@ Transform:
   - {fileID: 1553519783883977577}
   m_Father: {fileID: 414676901202353711}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &7543505279742811787
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8329259287624427090}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.35
-  m_Height: 1
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!1 &9077744314663935623
 GameObject:
   m_ObjectHideFlags: 0
@@ -5534,7 +5510,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7750546258101309282}
-  - component: {fileID: 1970980452987584353}
   m_Layer: 9
   m_Name: Triangle
   m_TagString: triangle
@@ -5558,29 +5533,6 @@ Transform:
   - {fileID: 4996983451765852392}
   m_Father: {fileID: 414676901202353711}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &1970980452987584353
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9077744314663935623}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.35
-  m_Height: 1
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!1001 &618811417814324295
 PrefabInstance:
   m_ObjectHideFlags: 0

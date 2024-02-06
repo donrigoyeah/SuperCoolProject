@@ -370,8 +370,6 @@ public class PlayerAttacker : MonoBehaviour
             laserSightLeft.SetPosition(1, (Vector3.forward * lazerSightRange * i) / stepsEnableLazer);
             laserSightRight.SetPosition(1, (Vector3.forward * lazerSightRange * i) / stepsEnableLazer);
         }
-
-
     }
 
     IEnumerator DisableLazers()
@@ -474,7 +472,6 @@ public class PlayerAttacker : MonoBehaviour
 
     private void DrawTrajectory()
     {
-        Debug.Log("I am sorry if you made any changes to this function I dont remember so I redid it");
         grenadeLineRenderer.enabled = true;
         var pointList = new List<Vector3>();
 

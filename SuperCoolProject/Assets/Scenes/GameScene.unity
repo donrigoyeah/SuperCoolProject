@@ -5305,16 +5305,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: HUD System
       objectReference: {fileID: 0}
-    - target: {fileID: 4044361012322878466, guid: ffb68a391af645d4bbbf12099ca9e96e,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6058697154715454132, guid: ffb68a391af645d4bbbf12099ca9e96e,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6645594335082624833, guid: ffb68a391af645d4bbbf12099ca9e96e,
         type: 3}
       propertyPath: m_Pivot.x
@@ -5413,11 +5403,6 @@ PrefabInstance:
     - target: {fileID: 6645594335082624833, guid: ffb68a391af645d4bbbf12099ca9e96e,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8318920298028124972, guid: ffb68a391af645d4bbbf12099ca9e96e,
-        type: 3}
-      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

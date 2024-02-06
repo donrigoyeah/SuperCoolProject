@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -15,9 +14,9 @@ public class PlayerManager : MonoBehaviour
     public float playerResourceScanRadius = 100;
     //public List<Collider> resourceInRange;
     public float playerDetectionRadius = 10;
-    public int aliensInRangePlayerCount;
     //public Collider[] aliensInRangePlayer = new Collider[10];
     public List<Collider> aliensInRangePlayer;
+    private int aliensInRangePlayerCount;
     public GameObject currentPart;
     public GameObject LightBeam;
     public GameObject deadPlayer;
@@ -76,7 +75,6 @@ public class PlayerManager : MonoBehaviour
     public AudioClip deathAudio;
     private AudioSource audioSource;
 
-    private InputHandler inputHandler;
     private Animator playerAnim;
     private AlienHandler CurrentSurroundingAH;
     public GameObject UpgradeParticles;
@@ -89,14 +87,11 @@ public class PlayerManager : MonoBehaviour
     private int loopAmount;
     private GameObject ResourceAlienPoolGo;
     private AlienHandler ResourceAlienPoolGoHandler;
-    private Vector3 targetRotation;
-    private Quaternion newRotation;
     public int stepsUnfold;
     private float animationDurationUnfold;
     private int stepsFold;
     private float animationDurationFold;
     private int stepsShield;
-    private float animationDurationShield;
 
     public GameObject playerShield;
     public GameObject playerAntenna;
@@ -104,13 +99,11 @@ public class PlayerManager : MonoBehaviour
     [Header("Tick stats")]
     public float tickTimer;
     public float tickTimerMax = .5f;
-
-    private int layerMaskAlien = 1 << 9; // Lyer 9 is Alien
+    private float delta;
 
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
-        inputHandler = GetComponent<InputHandler>();
         MyTransform = GetComponent<Transform>();
         playerAnim = GetComponentInChildren<Animator>();
 
@@ -128,7 +121,9 @@ public class PlayerManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        timeSinceLastHit += Time.deltaTime;
+        delta = Time.deltaTime;
+        timeSinceLastHit += delta;
+        tickTimer += delta;
         HandleResource();
 
         if (tickTimer >= tickTimerMax)
@@ -141,23 +136,19 @@ public class PlayerManager : MonoBehaviour
     public void HandleHit()
     {
         if (!isAlive) { return; }
-        if (timeSinceLastHit < invincibleFrames)
+        if (timeSinceLastHit < invincibleFrames) { return; }
+
+        if (hasShield == false)
         {
-            return;
+            HandleDeath(true);
         }
         else
         {
-            if (hasShield == false)
-            {
-                HandleDeath(true);
-            }
-            else
-            {
-                StartCoroutine(ShieldBreak(shieldRechargeTime));
-            }
-            timeSinceLastHit = 0;
-            return;
+            StartCoroutine(ShieldBreak(shieldRechargeTime));
         }
+        timeSinceLastHit = 0;
+        return;
+
     }
 
     private void HandleDeath(bool byAlien)
@@ -210,23 +201,27 @@ public class PlayerManager : MonoBehaviour
 
     private void HandleSurroundingAliens()
     {
+        int layerMaskAlien = 1 << 9; // Lyer 9 is Alien
+        //aliensInRangePlayerCount = Physics.OverlapSphereNonAlloc(MyTransform.position, playerDetectionRadius, aliensInRangePlayer, layerMaskAlien);
+
         aliensInRangePlayer.Clear();
-        foreach (var item in Physics.OverlapSphere(MyTransform.position, playerDetectionRadius, layerMaskAlien, QueryTriggerInteraction.Ignore))
+        foreach (var item in Physics.OverlapSphere(MyTransform.position, playerDetectionRadius, layerMaskAlien))
         {
             aliensInRangePlayer.Add(item);
         }
+
         aliensInRangePlayerCount = aliensInRangePlayer.Count;
 
-        // TODO: use this instead?!
-        //aliensInRangePlayerCount = Physics.OverlapSphereNonAlloc(MyTransform.position, playerDetectionRadius, aliensInRangePlayer, layerMaskAlien, QueryTriggerInteraction.Ignore);
         if (aliensInRangePlayerCount == 0) { return; }
 
         for (int i = 0; i < aliensInRangePlayerCount; i++)
         {
             if (aliensInRangePlayer[i] == null || aliensInRangePlayer[i].gameObject.activeInHierarchy == false) { continue; }
-            CurrentSurroundingAH = aliensInRangePlayer[i].gameObject.GetComponentInParent<AlienHandler>();
-            if (CurrentSurroundingAH.brainWashed == true) { continue; } // Interaction with player in TutorialScene, prevents HandleUpdateTarget error
 
+            CurrentSurroundingAH = aliensInRangePlayer[i].gameObject.GetComponentInParent<AlienHandler>();
+
+            if (CurrentSurroundingAH.targetAlien = this.gameObject) { continue; } // Check if already 
+            if (CurrentSurroundingAH.brainWashed == true) { continue; } // Interaction with player in TutorialScene, prevents HandleUpdateTarget error
             if (CurrentSurroundingAH.currentAge == AlienHandler.AlienAge.resource) // If sorrounding Alien is resource, put into resource Array
             {
                 closestResource[CurrentSurroundingAH.currentSpecies] = CurrentSurroundingAH;
@@ -235,38 +230,34 @@ public class PlayerManager : MonoBehaviour
 
             CurrentSurroundingAH.SetTarget(this.gameObject);
 
+            // TODO: need a way to do StopCoroutine(CurrentSurroundingAH.IdleSecsUntilNewState(what params here?))
             if (CurrentSurroundingAH.currentAge == AlienHandler.AlienAge.fullyGrown)
             {
-                if (CurrentSurroundingAH.currentSpecies == 0 || AlienManager.Instance.sphereKilled > 20)
+                if (CurrentSurroundingAH.currentSpecies == 0 && AlienManager.Instance.sphereKilled > 20)
                 {
+                    CurrentSurroundingAH.isAttackingPlayer = true;
                     CurrentSurroundingAH.IdleSecsUntilNewState(AlienHandler.AlienState.hunting);
-                    continue;
                 }
-                if (CurrentSurroundingAH.currentSpecies == 1 || AlienManager.Instance.squareKilled > 20)
+                else if (CurrentSurroundingAH.currentSpecies == 1 && AlienManager.Instance.squareKilled > 20)
                 {
+                    CurrentSurroundingAH.isAttackingPlayer = true;
                     CurrentSurroundingAH.IdleSecsUntilNewState(AlienHandler.AlienState.hunting);
-                    continue;
                 }
-                if (CurrentSurroundingAH.currentSpecies == 2 || AlienManager.Instance.triangleKilled > 20)
+                else if (CurrentSurroundingAH.currentSpecies == 2 && AlienManager.Instance.triangleKilled > 20)
                 {
-                    CurrentSurroundingAH.IdleSecsUntilNewState(AlienHandler.AlienState.hunting);
-                    continue;
-                }
-
-                if (Random.Range(0, 2) == 1)
-                {
+                    CurrentSurroundingAH.isAttackingPlayer = true;
                     CurrentSurroundingAH.IdleSecsUntilNewState(AlienHandler.AlienState.hunting);
                 }
                 else
                 {
+                    CurrentSurroundingAH.isEvadingPlayer = true;
                     CurrentSurroundingAH.IdleSecsUntilNewState(AlienHandler.AlienState.evading);
                 }
-                continue;
             }
             else
             {
+                CurrentSurroundingAH.isEvadingPlayer = true;
                 CurrentSurroundingAH.IdleSecsUntilNewState(AlienHandler.AlienState.evading);
-                continue;
             }
         }
     }
@@ -522,7 +513,7 @@ public class PlayerManager : MonoBehaviour
     {
         hasShield = false;
         stepsShield = 30;
-        animationDurationShield = .5f;
+        //animationDurationShield = .5f;
         dissolve.SetFloat("_DissolveAmount", 0.016f); // Bug at 0 seems very opaque
         audioSource.PlayOneShot(shieldBreakAudio, 1f);
 
