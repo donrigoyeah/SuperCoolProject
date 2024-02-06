@@ -30,6 +30,7 @@ public class AlienManager : MonoBehaviour
     public int timeToSexual = 15;
     public int timeToFullGrown = 25;
     public float alienSpeed;
+    public float alienSpeedHunting;
     public float lookRadius = 10;
     public float resourceScale = 0.7f;
     public float childScale = 0.6f;
@@ -123,6 +124,7 @@ public class AlienManager : MonoBehaviour
             Instance = this;
         }
 
+        alienSpeedHunting = alienSpeed + 2;
         loadingScreenHandler.totalAwakeCalls++;
     }
 

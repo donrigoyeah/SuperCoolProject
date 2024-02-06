@@ -160,7 +160,6 @@ public class PlayerManager : MonoBehaviour
 
     private void HandleDeath(bool byAlien)
     {
-        // Set Variable to disable movement/input
         isAlive = false;
         StopAllCoroutines();
         audioSource.PlayOneShot(deathAudio, 1f);
@@ -174,12 +173,9 @@ public class PlayerManager : MonoBehaviour
             deadPlayerRigidbody.AddForce(forceDirection * forceMagnitude, ForceMode.Impulse);
         }
 
-        // Enable UI Element
-        // TODO: Check if all players are dead. otherwise maybe make deathscreen on playerHUD as well
-
         if (GameManager.Instance.currentCloneJuice < 0)
         {
-            GameManager.Instance.hasLost = true;
+            GameManager.Instance.HandleLoss();
             return;
         }
 
@@ -273,54 +269,6 @@ public class PlayerManager : MonoBehaviour
 
     private void HandleResourceDetection(int neededResource)
     {
-        // TODO: This is possible quite cost intense!!!
-        // TODO: Make an Array of resources, add aliens to it after spawning, remove when eaten or evolved
-
-        #region Find via OverlappingSphere
-
-        //int layerMask = 1 << 9; // Lyer 9 is Alien
-        //float distanceToResource = playerResourceScanRadius;
-
-        //if (closestResource[neededResource] != null)
-        //{
-        //    closestResourceIndicator[neededResource].SetActive(true);
-        //    HandleResourceDetectionIndicator(closestResource[neededResource].transform.position, neededResource);
-        //    if (closestResource[neededResource].currentAge != AlienHandler.AlienAge.resource)
-        //    {
-        //        closestResource[neededResource] = null;
-        //        //Debug.Log("Resource became unavailable");
-        //        return;
-        //    }
-
-        //    if (closestResource[neededResource].gameObject.activeInHierarchy == false)
-        //    {
-        //        closestResource[neededResource] = null;
-        //    }
-        //    return;
-        //}
-        //closestResourceIndicator[neededResource].SetActive(false);
-
-        ////Debug.Log("Search for Closest Resource");
-        //resourceInRange = Physics.OverlapSphere(this.transform.position, playerResourceScanRadius, layerMask);
-        //foreach (var item in aliensInRange)
-        //{
-        //    AlienHandler AH = item.gameObject.GetComponent<AlienHandler>();
-        //    if (AH.currentAge != AlienHandler.AlienAge.resource) { continue; }
-        //    if (AH.currentSpecies != neededResource) { continue; }
-
-        //    float tmpDistance = Vector3.Distance(AH.transform.position, this.transform.position);
-        //    //Debug.Log("Distance to Resource: " + tmpDistance);
-        //    if (tmpDistance > distanceToResource) { continue; }
-
-        //    distanceToResource = tmpDistance;
-        //    closestResource[neededResource] = AH;
-        //    //Debug.Log("Found Closest Resource");
-        //}
-
-        #endregion
-
-        #region Find via ListScan
-
         if (closestResource[neededResource] != null)
         {
             if (closestResource[neededResource].currentAge != AlienHandler.AlienAge.resource ||
@@ -394,8 +342,6 @@ public class PlayerManager : MonoBehaviour
                 }
             }
         }
-
-        #endregion
     }
 
     private void HandleResourceDetectionIndicator(Vector3 targetResource, int neededResource)
@@ -551,14 +497,6 @@ public class PlayerManager : MonoBehaviour
 
 
             isAlive = true;
-        }
-    }
-
-    private void HandleGameOver()
-    {
-        if (GameManager.Instance.hasLost)
-        {
-            SceneManager.LoadScene("MenuScene");
         }
     }
 

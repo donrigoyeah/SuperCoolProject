@@ -24,7 +24,7 @@ public class PlayerLocomotion : MonoBehaviour
     private float rayDistance;
     private Plane groundPlane;
     private Ray ray;
-    private Vector3 move;
+    public Vector3 move;
     private Vector3 point;
 
     [Header("Dash")]
@@ -139,8 +139,15 @@ public class PlayerLocomotion : MonoBehaviour
 
     void Movement()
     {
-        move = new Vector3(inputHandler.inputMovement.x, 0, inputHandler.inputMovement.y);
-        controller.Move(move * Time.deltaTime * playerSpeed);
+        if (inputHandler.inputMovement == Vector2.zero)
+        {
+            move = Vector3.zero;
+        }
+        else
+        {
+            move = new Vector3(inputHandler.inputMovement.x, 0, inputHandler.inputMovement.y);
+            controller.Move(move * Time.deltaTime * playerSpeed);
+        }
 
 
         if (currentFSSTimer < deltaFSS)
@@ -170,8 +177,8 @@ public class PlayerLocomotion : MonoBehaviour
         }
 
         // TODO: DO we need this? Maybe remove gravity at all and set y to fixed position (?!)
-        playerVelocity.y += gravityValue * Time.deltaTime;
-        controller.Move(playerVelocity * Time.deltaTime);
+        //playerVelocity.y += gravityValue * Time.deltaTime;
+        //controller.Move(playerVelocity * Time.deltaTime);
     }
 
     void Rotation()

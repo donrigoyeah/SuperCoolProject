@@ -138,12 +138,15 @@ public class GameManager : MonoBehaviour
 
     private void HandleCameraZoom()
     {
-        foreach (var playerLoco in playersLocos)
+        if (playersLocos.TrueForAll(a => a.move != Vector3.zero))
         {
-            if (playerLoco.playerVelocity != Vector3.zero)
-            {
-                //zoomOuti = true;
-            }
+            // Zoom IN
+            CameraShake.Instance.ZoomIn();
+        }
+        else
+        {
+            // Zoom Out
+            CameraShake.Instance.ZoomOut();
         }
     }
 
@@ -207,12 +210,6 @@ public class GameManager : MonoBehaviour
 
     private void HandleTutorialStart()
     {
-        Debug.Log("TODO: Remove this later");
-        FreezeAllPlayers();
-        FreezeAllAliens();
-        TutorialHandler.Instance.EnableEntireTutorial();
-        return;
-
         // Folowing code only runs if playerPrefs exist, and they only do in builds
         if (PlayerPrefs.HasKey("hideTutorial"))
         {
@@ -233,7 +230,6 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        Debug.Log("has no PlayerPrefs");
         FreezeAllPlayers();
         FreezeAllAliens();
         TutorialHandler.Instance.EnableEntireTutorial();
@@ -280,6 +276,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // Activated vai button on ui
     public void RespawnAllPlayers()
     {
         foreach (var item in players)
@@ -363,9 +360,8 @@ public class GameManager : MonoBehaviour
 
     }
 
-    private void HandleLoss()
+    public void HandleLoss()
     {
-        Debug.Log("You Lost");
         hasLost = true;
         foreach (var item in players)
         {

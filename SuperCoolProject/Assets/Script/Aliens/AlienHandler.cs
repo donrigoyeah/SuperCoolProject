@@ -297,7 +297,16 @@ public class AlienHandler : MonoBehaviour
         lustTimer += delta;
         hungerTimer += delta;
         tickTimer += delta;
-        speed = (AlienManager.Instance.alienSpeed + ((lustTimer + hungerTimer) / 100)) * delta; // + ((2 * (lustTimer + hungerTimer)) / (lustTimer + hungerTimer)); TODO: make better?! Way too fast
+        if (currentState == AlienState.hunting)
+        {
+
+            speed = (AlienManager.Instance.alienSpeedHunting + ((lustTimer + hungerTimer) / 100)) * delta; // + ((2 * (lustTimer + hungerTimer)) / (lustTimer + hungerTimer)); TODO: make better?! Way too fast
+        }
+        else
+        {
+
+            speed = (AlienManager.Instance.alienSpeed + ((lustTimer + hungerTimer) / 100)) * delta; // + ((2 * (lustTimer + hungerTimer)) / (lustTimer + hungerTimer)); TODO: make better?! Way too fast
+        }
 
         randomNumber = Random.Range(1, 11) / 10;
     }
@@ -427,7 +436,6 @@ public class AlienHandler : MonoBehaviour
         }
     }
 
-
     public void HandleDeath()
     {
         isDead = true;
@@ -474,8 +482,11 @@ public class AlienHandler : MonoBehaviour
             deadAlienGO.gameObject.SetActive(true);
         }
 
-        DeadAliensRagdollSpawner();
-        StartCoroutine(WaitForDeath(.2f));
+        if (isDead == false)
+        {
+            DeadAliensRagdollSpawner();
+        }
+        HandleDeath();
     }
 
     public void HandleDeathByCombat()
@@ -675,49 +686,6 @@ public class AlienHandler : MonoBehaviour
             StartCoroutine(IdleSecsUntilNewState(AlienState.roaming));
             return;
         }
-
-        #region handle state change if better target code is used
-        //if (currentSpecies == targetAlienHandler.currentSpecies)
-        //{
-        //    StartCoroutine(IdleSecsUntilNewState(1f, AlienState.loving));
-        //    targetAlienHandler.currentState = AlienState.loving;
-        //    targetAlienHandler.targetAlienHandler = this;
-        //    return;
-        //}
-
-        //if (currentSpecies == targetAlienHandler.currentSpecies - 1 ||
-        //   (currentSpecies == 2 && targetAlienHandler.currentSpecies == 0)) // If target is bigger
-        //{
-
-        //    StartCoroutine(IdleSecsUntilNewState(1f, AlienState.evading));
-        //    return;
-        //}
-
-        //if (currentSpecies == targetAlienHandler.currentSpecies + 1 ||
-        //   (currentSpecies == 0 && targetAlienHandler.currentSpecies == 2)) // If target is smaller
-        //{
-        //    StartCoroutine(IdleSecsUntilNewState(1f, AlienState.hunting));
-        //    targetAlienHandler.currentState = AlienState.evading;
-        //    return;
-        //}
-
-        #endregion
-
-        #region Loop over List approach
-        //for (int i = 0; i < PoolManager.Instance.AlienPool.Count; i++)  //list of gameObjects to search through
-        //{
-        //    if (PoolManager.Instance.AlienPool[i] == this.gameObject || PoolManager.Instance.AlienPool[i] == lastClosestAlien) continue;
-
-        //    float dist = Vector3.Distance(PoolManager.Instance.AlienPool[i].transform.position, transform.position);
-        //    if (dist < lookRadius)
-        //    {
-        //        closestAlien = PoolManager.Instance.AlienPool[i];
-        //        closestAlienIndex = closestAlien.GetComponent<AlienHandler>().currentSpecies;
-        //        break;
-        //    }
-        //}
-        //return closestAlien;
-        #endregion
     }
 
     private void HandleRoaming()

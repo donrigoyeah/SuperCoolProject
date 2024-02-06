@@ -19,13 +19,13 @@ public class SpaceShipHandler : MonoBehaviour
     private SpaceShipPartHandler spaceShipPartHandler;
     private PlayerLocomotion PL;
 
-    
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
             PM = other.gameObject.GetComponent<PlayerManager>();
-            
+
             // Showing the current values of the resources
             StartCoroutine(PM.UnfoldResource(PM.ResourceUISphere, 50));
             StartCoroutine(PM.UnfoldResource(PM.ResourceUISquare, 25));
@@ -94,7 +94,7 @@ public class SpaceShipHandler : MonoBehaviour
                     showNewUpgradeBinging = true;
                     upgradeButtonBinding.text = TutorialHandler.Instance.toggleNavButton;
                 }
-                
+
                 if (spaceShipPartHandler.spaceShipData.partName == "AimAssist")
                 {
                     GameManager.Instance.hasAimAssist = true;
@@ -132,6 +132,7 @@ public class SpaceShipHandler : MonoBehaviour
     IEnumerator ShowInfoPanel()
     {
         yield return new WaitForSeconds(1);
+        Time.timeScale = 0;
         UpgradeInformationScreen.SetActive(true);
         if (showNewUpgradeBinging == true)
         {
@@ -175,5 +176,6 @@ public class SpaceShipHandler : MonoBehaviour
         showNewUpgradeBinging = false;
         UpgradeInformationScreen.SetActive(false);
         NewAbilityWithKey.SetActive(false);
+        Time.timeScale = 1;
     }
 }
