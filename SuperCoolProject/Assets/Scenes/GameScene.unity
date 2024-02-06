@@ -5089,6 +5089,11 @@ PrefabInstance:
       objectReference: {fileID: 102636596}
     - target: {fileID: 937689487682581970, guid: bf09349e08449f448b0d27ddea6565dc,
         type: 3}
+      propertyPath: devMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 937689487682581970, guid: bf09349e08449f448b0d27ddea6565dc,
+        type: 3}
       propertyPath: DeathScreen
       value: 
       objectReference: {fileID: 703073541}

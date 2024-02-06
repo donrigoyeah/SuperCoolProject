@@ -54,21 +54,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92d37729e291b4349b07b3bdacec80ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentStateValue: 4
-  lastAlienState: 0
-  aliensInRange:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  aliensInRangeCount: 0
+  lastAlienState: 4
+  aliensInRange: []
+  isRendered: 1
   brainWashed: 0
+  canAct: 1
   currentSpecies: 0
   MyTransform: {fileID: 414676901202353711}
   currentAge: 0
@@ -80,10 +70,8 @@ MonoBehaviour:
   lustTimer: 0
   hungerTimer: 0
   amountOfBabies: 0
-  spawnAsAdults: 0
   gotAttackedByPlayer: 0
-  isRendered: 1
-  canAct: 1
+  spawnAsAdults: 0
   currentStateIcon: {fileID: 3589108659310432011}
   allStateIcons:
   - {fileID: 2800000, guid: 779c3e5de35892b4bb177dc04da3ab35, type: 3}
@@ -123,6 +111,7 @@ MonoBehaviour:
   alienActionFog: {fileID: 2118769241431706716}
   minTimeToChild: 15
   audioSource: {fileID: 9042210739735769762}
+  lookTimeIdle: 0
   distanceToCameraSpot: 0
   dissolve: {fileID: 2100000, guid: d5b2fb1daa206294894f6eea03c042e4, type: 2}
   skinRenderer1: {fileID: 0}

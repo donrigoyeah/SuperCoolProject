@@ -235,25 +235,42 @@ public class PlayerManager : MonoBehaviour
 
             if (CurrentSurroundingAH.currentAge == AlienHandler.AlienAge.fullyGrown)
             {
+
+                if (CurrentSurroundingAH.currentSpecies == 0 || AlienManager.Instance.sphereKilled > 20)
+                {
+                    CurrentSurroundingAH.SetTarget(this.gameObject);
+                    CurrentSurroundingAH.IdleSecsUntilNewState(AlienHandler.AlienState.hunting);
+                    continue;
+                }
+                if (CurrentSurroundingAH.currentSpecies == 1 || AlienManager.Instance.squareKilled > 20)
+                {
+                    CurrentSurroundingAH.SetTarget(this.gameObject);
+                    CurrentSurroundingAH.IdleSecsUntilNewState(AlienHandler.AlienState.hunting);
+                    continue;
+                }
+                if (CurrentSurroundingAH.currentSpecies == 2 || AlienManager.Instance.triangleKilled > 20)
+                {
+                    CurrentSurroundingAH.SetTarget(this.gameObject);
+                    CurrentSurroundingAH.IdleSecsUntilNewState(AlienHandler.AlienState.hunting);
+                    continue;
+                }
+
                 if (Random.Range(0, 2) == 1)
                 {
                     CurrentSurroundingAH.SetTarget(this.gameObject);
-                    CurrentSurroundingAH.lastAlienState = CurrentSurroundingAH.currentState;
-                    CurrentSurroundingAH.currentState = AlienHandler.AlienState.hunting;
+                    CurrentSurroundingAH.IdleSecsUntilNewState(AlienHandler.AlienState.hunting);
                 }
                 else
                 {
                     CurrentSurroundingAH.SetTarget(this.gameObject);
-                    CurrentSurroundingAH.lastAlienState = CurrentSurroundingAH.currentState;
-                    CurrentSurroundingAH.currentState = AlienHandler.AlienState.evading;
+                    CurrentSurroundingAH.IdleSecsUntilNewState(AlienHandler.AlienState.evading);
                 }
                 continue;
             }
             else
             {
                 CurrentSurroundingAH.SetTarget(this.gameObject);
-                CurrentSurroundingAH.lastAlienState = CurrentSurroundingAH.currentState;
-                CurrentSurroundingAH.currentState = AlienHandler.AlienState.evading;
+                CurrentSurroundingAH.IdleSecsUntilNewState(AlienHandler.AlienState.evading);
                 continue;
             }
         }
