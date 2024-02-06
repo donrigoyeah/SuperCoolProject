@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: TrajectoryMaterial
+  m_Name: ShieldTest
   m_Shader: {fileID: -6465566751694194690, guid: 3569b158ae0238f48abd2cc579409d73,
     type: 3}
   m_Parent: {fileID: 0}
@@ -59,6 +59,6 @@ Material:
     - _QueueOffset: 0
     m_Colors:
     - _BGcolor: {r: 0, g: 0, b: 0, a: 0}
-    - _Color: {r: 6.355407, g: 16, b: 4.1761, a: 1}
+    - _Color: {r: 0.5767665, g: 1, b: 0.48113197, a: 1}
     - _direction: {r: -1, g: -1, b: 0, a: 0}
   m_BuildTextureStacks: []
