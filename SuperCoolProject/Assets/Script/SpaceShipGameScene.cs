@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -15,7 +16,7 @@ public class SpaceShipGameScene : MonoBehaviour
     public float animationDurationStart = 1f;
     public float animationDurationWin = 3f;
 
-    public Vector3 gamePosition = new Vector3(0, 0, 15);
+    public Vector3 gamePosition = new Vector3(0, -1, 15);
     private Vector3 startPosition = new Vector3(-260, 130, 15);
     private Vector3 winPosition = new Vector3(-260, 130, 15);
 
@@ -38,13 +39,47 @@ public class SpaceShipGameScene : MonoBehaviour
     private Vector3 startingPos;
     private AlienHandler enteringAlien;
 
+    public List<GameObject> shipLights;
+
+    public static SpaceShipGameScene Instance;
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
+        SpaceShipEntrance.SetActive(false);
+    }
 
     private void Start()
     {
         isMainMenu = SceneManager.GetActiveScene().buildIndex == 0;
-        if (isMainMenu) { return; }
-        SpaceShipEntrance.SetActive(false);
+        if (isMainMenu)
+        {
+            TurnOffShipLights();
+            return;
+        }
         this.transform.position = startPosition;
+    }
+
+    public void TurnOffShipLights()
+    {
+        foreach (var item in shipLights)
+        {
+            item.SetActive(false);
+        }
+    }
+    public void TurnOnShipLights()
+    {
+        foreach (var item in shipLights)
+        {
+            item.SetActive(true);
+        }
     }
 
 
@@ -106,6 +141,9 @@ public class SpaceShipGameScene : MonoBehaviour
             yield return frame;
         }
         this.transform.position = gamePosition;
+
+        SpaceShipEntrance.SetActive(true);
+
 
         LandingParticlesGO.SetActive(true);
         Destroy(LandingParticlesGO, 2);

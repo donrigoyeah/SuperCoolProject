@@ -19,6 +19,12 @@ public class SpaceShipHandler : MonoBehaviour
     private SpaceShipPartHandler spaceShipPartHandler;
     private PlayerLocomotion PL;
 
+    public Color collectPartColor1;
+    public Color collectPartColor2;
+    public Color collectCloneColor1;
+    public Color collectCloneColor2;
+
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -122,7 +128,7 @@ public class SpaceShipHandler : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         GameManager.Instance.canPlayerBeAdded = false;
-        
+
         if (other.gameObject.CompareTag("Player"))
         {
             PM = other.gameObject.GetComponent<PlayerManager>();
@@ -153,15 +159,15 @@ public class SpaceShipHandler : MonoBehaviour
 
             if (isPart)
             {
-                player.ParticleSystem1Main.startColor = new ParticleSystem.MinMaxGradient(Color.green, Color.yellow);
-                player.ParticleSystem2Main.startColor = new ParticleSystem.MinMaxGradient(Color.green, Color.yellow);
-                player.ParticleSystem3Main.startColor = new ParticleSystem.MinMaxGradient(Color.green, Color.yellow);
+                player.ParticleSystem1Main.startColor = new ParticleSystem.MinMaxGradient(collectPartColor1, collectPartColor2);
+                player.ParticleSystem2Main.startColor = new ParticleSystem.MinMaxGradient(collectPartColor1, collectPartColor2);
+                player.ParticleSystem3Main.startColor = new ParticleSystem.MinMaxGradient(collectPartColor1, collectPartColor2);
             }
             else
             {
-                player.ParticleSystem1Main.startColor = new ParticleSystem.MinMaxGradient(Color.green, Color.magenta);
-                player.ParticleSystem2Main.startColor = new ParticleSystem.MinMaxGradient(Color.green, Color.magenta);
-                player.ParticleSystem3Main.startColor = new ParticleSystem.MinMaxGradient(Color.green, Color.magenta);
+                player.ParticleSystem1Main.startColor = new ParticleSystem.MinMaxGradient(collectCloneColor1, collectCloneColor2);
+                player.ParticleSystem2Main.startColor = new ParticleSystem.MinMaxGradient(collectCloneColor1, collectCloneColor2);
+                player.ParticleSystem3Main.startColor = new ParticleSystem.MinMaxGradient(collectCloneColor1, collectCloneColor2);
             }
             player.UpgradeParticles.SetActive(true);
         }

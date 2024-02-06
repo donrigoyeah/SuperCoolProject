@@ -139,8 +139,8 @@ public class PauseMenu : MonoBehaviour
     public IEnumerator Resume()
     {
         Time.timeScale = 1;
-        PauseMenu.Instance.pauseMenu.SetActive(false);
-        PauseMenu.Instance.options.SetActive(false);
+        pauseMenu.SetActive(false);
+        options.SetActive(false);
         yield return new WaitForSeconds(0.2f);
         isPaused = false;
 
@@ -160,7 +160,8 @@ public class PauseMenu : MonoBehaviour
     {
         isPaused = false;
         Time.timeScale = 1;
-        PauseMenu.Instance.pauseMenu.SetActive(false);
+        pauseMenu.SetActive(false);
+        options.SetActive(false);
         EventSystem.current.SetSelectedGameObject(null);
 
     }

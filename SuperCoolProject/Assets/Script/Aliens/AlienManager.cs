@@ -42,6 +42,10 @@ public class AlienManager : MonoBehaviour
     public float dissolveRate = 0.0125f;
     public float refreshRate = 0.025f;
     public float renderDistance = 30;
+    public Color loveMakingColor1;
+    public Color loveMakingColor2;
+    public Color fightingColor1;
+    public Color fightingColor2;
 
     [Header("Alien Audio")]
     public List<AudioClip> aliensEating;
@@ -300,7 +304,7 @@ public class AlienManager : MonoBehaviour
     {
         if (killedAlienIndex == 0) { sphereKilled++; totalKillCount++; }
         if (killedAlienIndex == 1) { squareKilled++; totalKillCount++; }
-        if (killedAlienIndex == 2) { squareKilled++; totalKillCount++; }
+        if (killedAlienIndex == 2) { triangleKilled++; totalKillCount++; }
     }
 
     private void SetPieChart(float[] valuesToSet)
