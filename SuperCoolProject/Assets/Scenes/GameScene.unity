@@ -4062,10 +4062,25 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 292991685637541685, guid: 959b924f5e51a25468637aa813697924,
         type: 3}
+      propertyPath: alienAmount
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 292991685637541685, guid: 959b924f5e51a25468637aa813697924,
+        type: 3}
       propertyPath: deadSquareAlien
       value: 
       objectReference: {fileID: 2674170861359850901, guid: 8765b41a2fb6d984a9f0c4898b6103cc,
         type: 3}
+    - target: {fileID: 292991685637541685, guid: 959b924f5e51a25468637aa813697924,
+        type: 3}
+      propertyPath: alienAmountExtra
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 292991685637541685, guid: 959b924f5e51a25468637aa813697924,
+        type: 3}
+      propertyPath: currentAlienAmount
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 292991685637541685, guid: 959b924f5e51a25468637aa813697924,
         type: 3}
       propertyPath: deadSquareContainer

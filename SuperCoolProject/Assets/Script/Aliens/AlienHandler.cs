@@ -956,7 +956,7 @@ public class AlienHandler : MonoBehaviour
             {
                 Debug.Log("Play walk animation");
                 anim[currentSpecies].Play("Armature|WALK");
-                anim[currentSpecies]["Armature|WALK"].speed = 1;
+                //anim[currentSpecies]["Armature|WALK"].speed = 1;
             }
         }
         if (currentState == AlienState.evading)
@@ -964,7 +964,7 @@ public class AlienHandler : MonoBehaviour
             if (anim[currentSpecies].IsPlaying("Armature|WALK") == false)
             {
                 anim[currentSpecies].Play("Armature|WALK");
-                anim[currentSpecies]["Armature|WALK"].speed = 2;
+                //anim[currentSpecies]["Armature|WALK"].speed = 2;
             }
         }
         if (currentState == AlienState.idle)
