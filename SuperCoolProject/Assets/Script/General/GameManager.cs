@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -66,9 +67,9 @@ public class GameManager : MonoBehaviour
     public GameObject GameOverScreen;
     public Image DeathScreenCloneJuiceUI;
     public TextMeshProUGUI deathScreenReason;
-
+    public List<bool> isAliveBool;
     public GameObject Clouds;
-
+    public bool isAliveBoolChecker;
 
     [Header("Camera")]
     public int cameraSpeed = 1;
@@ -128,6 +129,20 @@ public class GameManager : MonoBehaviour
             playerInputManager.DisableJoining();
         }
         
+        for (int i = 0; i < isAliveBool.Count; i++)
+        {
+            if (isAliveBool.Count == numberOfPlayers)
+            {
+                isAliveBoolChecker = isAliveBool.Any();
+            }
+        }
+        
+        if (isAliveBoolChecker)
+        {   
+            DeathScreen.SetActive(true);
+            isAliveBoolChecker = false;
+            isAliveBool.Clear();
+        }
         
         HandleCameraTarget();
         HandleCameraZoom();

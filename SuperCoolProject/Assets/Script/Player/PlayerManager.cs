@@ -154,6 +154,8 @@ public class PlayerManager : MonoBehaviour
     private void HandleDeath(bool byAlien)
     {
         isAlive = false;
+        GameManager.Instance.isAliveBool.Add(isAlive);
+
         StopAllCoroutines();
         audioSource.PlayOneShot(deathAudio, 1f);
         GameObject deadPlayerInstance = Instantiate(deadPlayer, MyTransform.position, Quaternion.identity, PoolManager.Instance.DeadPlayerContainer);
@@ -453,6 +455,7 @@ public class PlayerManager : MonoBehaviour
         {
             if (GameManager.Instance.DeathScreen.activeInHierarchy)
             {
+                Debug.Log("DeathScreen#");
                 GameManager.Instance.DeathScreen.SetActive(false);
             }
 
