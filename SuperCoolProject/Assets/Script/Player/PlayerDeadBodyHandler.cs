@@ -50,7 +50,6 @@ public class PlayerDeadBodyHandler : MonoBehaviour
                 playerManager.isCarryingPart = true;
                 this.transform.parent = other.transform;
             }
-
         }
     }
 
