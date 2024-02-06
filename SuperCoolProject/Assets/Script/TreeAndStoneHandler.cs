@@ -73,7 +73,7 @@ public class TreeAndStoneHandler : MonoBehaviour
 
             tmpTree = Instantiate(Tree);
             tmpTreeTransform = tmpTree.transform;
-            tmpTreeTransform.position = potentialPosition;
+            tmpTreeTransform.position = new Vector3(randPosX, -1, randPosZ);
             tmpTreeTransform.rotation = Quaternion.Euler(0, randomRotation, 0);
             tmpTreeTransform.localScale = Vector3.one * randomScale;
             tmpTreeTransform.SetParent(this.transform);
@@ -110,7 +110,7 @@ public class TreeAndStoneHandler : MonoBehaviour
 
             tmpStone = Instantiate(Stone);
             tmpStoneTransform = tmpStone.transform;
-            tmpStoneTransform.position = potentialPosition;
+            tmpStoneTransform.position = new Vector3(randPosX, -1, randPosZ);
             tmpStoneTransform.rotation = Quaternion.Euler(0, randomRotation, 0);
             tmpStoneTransform.localScale = Vector3.one * randomScale;
             tmpStoneTransform.SetParent(this.transform);

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.17276844, g: 0.21589246, b: 0.2978263, a: 1}
+  m_IndirectSpecularColor: {r: 0.17276807, g: 0.21589197, b: 0.29782572, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4461,6 +4461,11 @@ PrefabInstance:
       propertyPath: UpgradeInformationScreen
       value: 
       objectReference: {fileID: 1613040191}
+    - target: {fileID: 5705133691590812045, guid: 04d1705c49be2ff449668c9f21cbf177,
+        type: 3}
+      propertyPath: gamePosition.y
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 5705133691590812045, guid: 04d1705c49be2ff449668c9f21cbf177,
         type: 3}
       propertyPath: playerInputManager

@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
@@ -802,11 +801,11 @@ public class AlienHandler : MonoBehaviour
         {
             if (currentState == AlienState.loving)
             {
-                alienActionFogMain.startColor = new ParticleSystem.MinMaxGradient(Color.red, Color.magenta);
+                alienActionFogMain.startColor = new ParticleSystem.MinMaxGradient(AlienManager.Instance.loveMakingColor1, AlienManager.Instance.loveMakingColor2);
             }
             else if (currentState == AlienState.hunting)
             {
-                alienActionFogMain.startColor = new ParticleSystem.MinMaxGradient(Color.gray, Color.black);
+                alienActionFogMain.startColor = new ParticleSystem.MinMaxGradient(AlienManager.Instance.fightingColor1, AlienManager.Instance.fightingColor2);
             }
 
             alienActionParticlesGO.SetActive(true);
