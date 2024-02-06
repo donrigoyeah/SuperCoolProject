@@ -73,6 +73,8 @@ public class AlienHandler : MonoBehaviour
     public float hungerTimer = 0;
     public int amountOfBabies;
     public bool gotAttackedByPlayer = false;
+    public bool isAttackingPlayer = false;
+    public bool isEvadingPlayer = false;
 
     public bool spawnAsAdults = false;
     public RawImage currentStateIcon;
@@ -326,6 +328,8 @@ public class AlienHandler : MonoBehaviour
         isDead = false;
         spawnAsAdults = false;
         gotAttackedByPlayer = false;
+        isAttackingPlayer = false;
+        isEvadingPlayer = false;
         targetPosition3D = Vector3.zero;
         targetAlien = null;
     }
@@ -552,14 +556,16 @@ public class AlienHandler : MonoBehaviour
         }
 
         // Act upon state and distance to current target
-        if (currentState == AlienState.evading || currentState == AlienState.hunting)
+        if (currentState == AlienState.evading || currentState == AlienState.hunting || currentState == AlienState.looking)
         {
             if (distanceToCurrentTarget > AlienManager.Instance.lookRadius + 1)  // Add +1 so i is out of the lookradius
             {
+                isAttackingPlayer = false;
+                isEvadingPlayer = false;
                 StartCoroutine(IdleSecsUntilNewState(lastAlienState));
             }
         }
-        else // AlienStates: .resource .loving .looking .roaming
+        else // AlienStates: .resource .loving .roaming
         {
             if (distanceToCurrentTarget < .1f)
             {
@@ -572,8 +578,15 @@ public class AlienHandler : MonoBehaviour
 
     public void HandleLooking()
     {
+        // Needs to do this somehow
+        if (isAttackingPlayer == true) { currentState = AlienState.hunting; return; }
+        if (isEvadingPlayer == true) { currentState = AlienState.evading; return; }
+
+
         currentShortestDistanceLooking = AlienManager.Instance.lookRadius;
         currentDistanceLooking = AlienManager.Instance.lookRadius;
+
+
 
         aliensInRangeCount = aliensInRange.Count;
         // If does not have an array of nearby aliens, create one
@@ -689,6 +702,10 @@ public class AlienHandler : MonoBehaviour
 
     private void HandleRoaming()
     {
+        // Needs to do this somehow
+        if (isAttackingPlayer == true) { currentState = AlienState.hunting; return; }
+        if (isEvadingPlayer == true) { currentState = AlienState.evading; return; }
+
         if (hasNewTarget == true) { return; }
         if (brainWashed == true) { return; }
 
@@ -784,7 +801,6 @@ public class AlienHandler : MonoBehaviour
 
     #endregion
 
-
     public IEnumerator IdleSecsUntilNewState(AlienState nextState)
     {
         canAct = false;
@@ -793,11 +809,12 @@ public class AlienHandler : MonoBehaviour
         distanceToCurrentTarget = 999f;
         lastAlienState = currentState;
         currentState = AlienState.idle;
-        lookTimeIdle = UnityEngine.Random.Range(1, (randomNumber + 1) * 10) / 10;
+        lookTimeIdle = Random.Range(1, (randomNumber + 1) * 10) / 10;
         yield return new WaitForSeconds(lookTimeIdle);
         currentState = nextState;
         canAct = true;
     }
+
     private IEnumerator PlayActionParticle(AlienState currentState)
     {
         if (isRendered == false)
@@ -873,7 +890,7 @@ public class AlienHandler : MonoBehaviour
     {
         if (anim[currentSpecies] == null) { return; }
 
-        if (currentState == AlienState.hunting || currentState == AlienState.loving || currentState == AlienState.roaming)
+        if (currentState == AlienState.hunting || currentState == AlienState.loving || currentState == AlienState.roaming || currentState == AlienState.looking)
         {
             if (anim[currentSpecies].IsPlaying("Armature|WALK") == false)
             {
@@ -891,14 +908,10 @@ public class AlienHandler : MonoBehaviour
         }
         if (currentState == AlienState.idle)
         {
-            if (currentSpecies != 0)
+            if (anim[currentSpecies].IsPlaying("Armature|IDLE") == false)
             {
-                if (anim[currentSpecies].IsPlaying("Armature|IDLE") == false)
-                {
-                    anim[currentSpecies].Play("Armature|IDLE");
-                }
+                anim[currentSpecies].Play("Armature|IDLE");
             }
-
         }
     }
 

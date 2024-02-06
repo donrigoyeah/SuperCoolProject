@@ -497,18 +497,7 @@ MonoBehaviour:
   isCarryingPart: 0
   playerResourceScanRadius: 100
   playerDetectionRadius: 10
-  aliensInRangePlayerCount: 0
-  aliensInRangePlayer:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  aliensInRangePlayer: []
   currentPart: {fileID: 0}
   LightBeam: {fileID: 934595259696851748}
   deadPlayer: {fileID: 720819968891953191, guid: e27300444c2a2574a98804b3f6907599,
@@ -570,7 +559,7 @@ MonoBehaviour:
   playerShield: {fileID: 6422262875128791845}
   playerAntenna: {fileID: 3078844584867170363}
   tickTimer: 0
-  tickTimerMax: 0.5
+  tickTimerMax: 1
 --- !u!114 &7595266375327355587
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -589,6 +578,7 @@ MonoBehaviour:
   jumpForce: 15
   playerVelocity: {x: 0, y: 0, z: 0}
   targetAimPosition: {x: 0, y: 0, z: 0}
+  move: {x: 0, y: 0, z: 0}
   dashUiGO: {fileID: 2948522083517843036}
   dashUi: {fileID: 5744495770559061739}
   dashMaxValue: 100
