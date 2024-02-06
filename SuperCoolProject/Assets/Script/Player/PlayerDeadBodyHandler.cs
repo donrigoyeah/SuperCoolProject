@@ -39,7 +39,6 @@ public class PlayerDeadBodyHandler : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("player");
             inputHandler = other.gameObject.GetComponent<InputHandler>();
             playerLocomotion = other.gameObject.GetComponent<PlayerLocomotion>();
             playerManager = other.gameObject.GetComponent<PlayerManager>();

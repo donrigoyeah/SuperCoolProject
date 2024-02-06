@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -15,13 +14,15 @@ public class PlayerManager : MonoBehaviour
     public float playerResourceScanRadius = 100;
     //public List<Collider> resourceInRange;
     public float playerDetectionRadius = 10;
-    public int aliensInRangePlayerCount;
     //public Collider[] aliensInRangePlayer = new Collider[10];
     public List<Collider> aliensInRangePlayer;
+    private int aliensInRangePlayerCount;
     public GameObject currentPart;
     public GameObject LightBeam;
     public GameObject deadPlayer;
     Transform MyTransform;
+    Vector3 locationForResource;
+    float distToAlien;
 
     [Header("Shield")]
     public bool hasShield;
@@ -37,7 +38,7 @@ public class PlayerManager : MonoBehaviour
 
     [Header("Resource Variables")]
     public float lightBulbMultiplicator = 1;
-    public AlienHandler[] closestResource = new AlienHandler[] { null, null, null };  // 0:Sphere, 1:Square, 2:Triangle
+    public List<AlienHandler> closestResource = new List<AlienHandler>(3);  // 0:Sphere, 1:Square, 2:Triangle
     public float maxSphereResource = 100;
     public float maxSquareResource = 100;
     public float maxTriangleResource = 100;
@@ -74,7 +75,6 @@ public class PlayerManager : MonoBehaviour
     public AudioClip deathAudio;
     private AudioSource audioSource;
 
-    private InputHandler inputHandler;
     private Animator playerAnim;
     private AlienHandler CurrentSurroundingAH;
     public GameObject UpgradeParticles;
@@ -87,14 +87,11 @@ public class PlayerManager : MonoBehaviour
     private int loopAmount;
     private GameObject ResourceAlienPoolGo;
     private AlienHandler ResourceAlienPoolGoHandler;
-    private Vector3 targetRotation;
-    private Quaternion newRotation;
     public int stepsUnfold;
     private float animationDurationUnfold;
     private int stepsFold;
     private float animationDurationFold;
     private int stepsShield;
-    private float animationDurationShield;
 
     public GameObject playerShield;
     public GameObject playerAntenna;
@@ -102,13 +99,11 @@ public class PlayerManager : MonoBehaviour
     [Header("Tick stats")]
     public float tickTimer;
     public float tickTimerMax = .5f;
-
-    private int layerMaskAlien = 1 << 9; // Lyer 9 is Alien
+    private float delta;
 
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
-        inputHandler = GetComponent<InputHandler>();
         MyTransform = GetComponent<Transform>();
         playerAnim = GetComponentInChildren<Animator>();
 
@@ -126,7 +121,9 @@ public class PlayerManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        timeSinceLastHit += Time.deltaTime;
+        delta = Time.deltaTime;
+        timeSinceLastHit += delta;
+        tickTimer += delta;
         HandleResource();
 
         if (tickTimer >= tickTimerMax)
@@ -139,23 +136,19 @@ public class PlayerManager : MonoBehaviour
     public void HandleHit()
     {
         if (!isAlive) { return; }
-        if (timeSinceLastHit < invincibleFrames)
+        if (timeSinceLastHit < invincibleFrames) { return; }
+
+        if (hasShield == false)
         {
-            return;
+            HandleDeath(true);
         }
         else
         {
-            if (hasShield == false)
-            {
-                HandleDeath(true);
-            }
-            else
-            {
-                StartCoroutine(ShieldBreak(shieldRechargeTime));
-            }
-            timeSinceLastHit = 0;
-            return;
+            StartCoroutine(ShieldBreak(shieldRechargeTime));
         }
+        timeSinceLastHit = 0;
+        return;
+
     }
 
     private void HandleDeath(bool byAlien)
@@ -206,23 +199,27 @@ public class PlayerManager : MonoBehaviour
 
     private void HandleSurroundingAliens()
     {
+        int layerMaskAlien = 1 << 9; // Lyer 9 is Alien
+        //aliensInRangePlayerCount = Physics.OverlapSphereNonAlloc(MyTransform.position, playerDetectionRadius, aliensInRangePlayer, layerMaskAlien);
+
         aliensInRangePlayer.Clear();
-        foreach (var item in Physics.OverlapSphere(MyTransform.position, playerDetectionRadius, layerMaskAlien, QueryTriggerInteraction.Ignore))
+        foreach (var item in Physics.OverlapSphere(MyTransform.position, playerDetectionRadius, layerMaskAlien))
         {
             aliensInRangePlayer.Add(item);
         }
+
         aliensInRangePlayerCount = aliensInRangePlayer.Count;
 
-        // TODO: use this instead?!
-        //aliensInRangePlayerCount = Physics.OverlapSphereNonAlloc(MyTransform.position, playerDetectionRadius, aliensInRangePlayer, layerMaskAlien, QueryTriggerInteraction.Ignore);
         if (aliensInRangePlayerCount == 0) { return; }
 
         for (int i = 0; i < aliensInRangePlayerCount; i++)
         {
             if (aliensInRangePlayer[i] == null || aliensInRangePlayer[i].gameObject.activeInHierarchy == false) { continue; }
-            CurrentSurroundingAH = aliensInRangePlayer[i].gameObject.GetComponentInParent<AlienHandler>();
-            if (CurrentSurroundingAH.brainWashed == true) { continue; } // Interaction with player in TutorialScene, prevents HandleUpdateTarget error
 
+            CurrentSurroundingAH = aliensInRangePlayer[i].gameObject.GetComponentInParent<AlienHandler>();
+
+            if (CurrentSurroundingAH.targetAlien = this.gameObject) { continue; } // Check if already 
+            if (CurrentSurroundingAH.brainWashed == true) { continue; } // Interaction with player in TutorialScene, prevents HandleUpdateTarget error
             if (CurrentSurroundingAH.currentAge == AlienHandler.AlienAge.resource) // If sorrounding Alien is resource, put into resource Array
             {
                 closestResource[CurrentSurroundingAH.currentSpecies] = CurrentSurroundingAH;
@@ -231,44 +228,41 @@ public class PlayerManager : MonoBehaviour
 
             CurrentSurroundingAH.SetTarget(this.gameObject);
 
+            // TODO: need a way to do StopCoroutine(CurrentSurroundingAH.IdleSecsUntilNewState(what params here?))
             if (CurrentSurroundingAH.currentAge == AlienHandler.AlienAge.fullyGrown)
             {
-                if (CurrentSurroundingAH.currentSpecies == 0 || AlienManager.Instance.sphereKilled > 20)
+                if (CurrentSurroundingAH.currentSpecies == 0 && AlienManager.Instance.sphereKilled > 20)
                 {
+                    CurrentSurroundingAH.isAttackingPlayer = true;
                     CurrentSurroundingAH.IdleSecsUntilNewState(AlienHandler.AlienState.hunting);
-                    continue;
                 }
-                if (CurrentSurroundingAH.currentSpecies == 1 || AlienManager.Instance.squareKilled > 20)
+                else if (CurrentSurroundingAH.currentSpecies == 1 && AlienManager.Instance.squareKilled > 20)
                 {
+                    CurrentSurroundingAH.isAttackingPlayer = true;
                     CurrentSurroundingAH.IdleSecsUntilNewState(AlienHandler.AlienState.hunting);
-                    continue;
                 }
-                if (CurrentSurroundingAH.currentSpecies == 2 || AlienManager.Instance.triangleKilled > 20)
+                else if (CurrentSurroundingAH.currentSpecies == 2 && AlienManager.Instance.triangleKilled > 20)
                 {
-                    CurrentSurroundingAH.IdleSecsUntilNewState(AlienHandler.AlienState.hunting);
-                    continue;
-                }
-
-                if (Random.Range(0, 2) == 1)
-                {
+                    CurrentSurroundingAH.isAttackingPlayer = true;
                     CurrentSurroundingAH.IdleSecsUntilNewState(AlienHandler.AlienState.hunting);
                 }
                 else
                 {
+                    CurrentSurroundingAH.isEvadingPlayer = true;
                     CurrentSurroundingAH.IdleSecsUntilNewState(AlienHandler.AlienState.evading);
                 }
-                continue;
             }
             else
             {
+                CurrentSurroundingAH.isEvadingPlayer = true;
                 CurrentSurroundingAH.IdleSecsUntilNewState(AlienHandler.AlienState.evading);
-                continue;
             }
         }
     }
 
     private void HandleResourceDetection(int neededResource)
     {
+        // Check the initla List if has resource already in mind
         if (closestResource[neededResource] != null)
         {
             if (closestResource[neededResource].currentAge != AlienHandler.AlienAge.resource ||
@@ -279,89 +273,88 @@ public class PlayerManager : MonoBehaviour
             }
 
             closestResourceIndicator[neededResource].SetActive(true);
-            HandleResourceDetectionIndicator(closestResource[neededResource].transform.position, neededResource);
+            HandleResourceDetectionIndicator(closestResource[neededResource], neededResource);
             return;
         }
 
+        // Check the resourceList of AlienManager for available resources (Might obsolute since no simulation)
         if (closestResource[neededResource] == null)
         {
             closestResourceIndicator[neededResource].SetActive(false);
+        }
 
-            dist = 1000;
+        dist = 1000;
 
-            loopAmount =
-                neededResource == 0 ? AlienManager.Instance.resourceSphere.Count :
-                neededResource == 1 ? AlienManager.Instance.resourceSquare.Count :
-                neededResource == 2 ? AlienManager.Instance.resourceTriangle.Count : 0;
+        loopAmount =
+            neededResource == 0 ? AlienManager.Instance.resourceSphere.Count :
+            neededResource == 1 ? AlienManager.Instance.resourceSquare.Count :
+            neededResource == 2 ? AlienManager.Instance.resourceTriangle.Count : 0;
 
-            List<AlienHandler> ResourceList =
-               neededResource == 0 ? AlienManager.Instance.resourceSphere :
-               neededResource == 1 ? AlienManager.Instance.resourceSquare :
-               neededResource == 2 ? AlienManager.Instance.resourceTriangle : null;
+        List<AlienHandler> ResourceList =
+           neededResource == 0 ? AlienManager.Instance.resourceSphere :
+           neededResource == 1 ? AlienManager.Instance.resourceSquare :
+           neededResource == 2 ? AlienManager.Instance.resourceTriangle : null;
 
-            for (int i = 0; i < loopAmount; i++)
+        for (int i = 0; i < loopAmount; i++)
+        {
+            currentDist = Vector3.Distance(ResourceList[i].transform.position, MyTransform.position);
+            if (currentDist < dist)
             {
-                currentDist = Vector3.Distance(ResourceList[i].transform.position, MyTransform.position);
-                if (currentDist < dist)
-                {
-                    dist = currentDist;
-                    closestResource[neededResource] = ResourceList[i];
+                dist = currentDist;
+                closestResource[neededResource] = ResourceList[i];
 
-                    if (dist < 10)
-                    {
-                        break;
-                    }
+                if (dist < 10)
+                {
+                    return;
                 }
             }
+        }
 
-            // BackUp spawning new resource in case of none available
-            Debug.Log("Work on thiz");
-            if (closestResource[neededResource] == null)
+        // BackUp spawning new resource in case of none available
+        Debug.Log("BackUp Resourc spawn");
+        if (closestResource[neededResource] == null)
+        {
+            for (int i = 0; i < AlienManager.Instance.allAlienHandlers.Count; i++)
             {
-                for (int i = 0; i < PoolManager.Instance.AlienPool.Count; i++)
+                if (AlienManager.Instance.allAlienHandlers[i].currentSpecies != neededResource) { continue; }
+
+                locationForResource = AlienManager.Instance.allAlienHandlers[i].transform.position;
+                distToAlien = Vector3.Distance(locationForResource, MyTransform.position);
+
+                if (distToAlien < 50) { continue; }
+
+                AlienManager.Instance.allAlienHandlers[i].gameObject.SetActive(false);
+
+                ResourceAlienPoolGo = PoolManager.Instance.GetPooledAliens(false);
+                if (ResourceAlienPoolGo != null)
                 {
-                    Vector3 locationForResource = PoolManager.Instance.AlienPool[i].transform.position;
-                    float distToAlien = Vector3.Distance(locationForResource, MyTransform.position);
-                    if (distToAlien > 50 && distToAlien < 70)
-                    {
-                        PoolManager.Instance.AlienPool[i].SetActive(false);
+                    ResourceAlienPoolGoHandler = ResourceAlienPoolGo.GetComponent<AlienHandler>();
+                    ResourceAlienPoolGoHandler.currentSpecies = neededResource;
+                    ResourceAlienPoolGoHandler.lifeTime = -10;
+                    ResourceAlienPoolGo.transform.position = locationForResource;
+                    ResourceAlienPoolGo.SetActive(true);
 
-                        ResourceAlienPoolGo = PoolManager.Instance.GetPooledAliens(false);
-                        if (ResourceAlienPoolGo != null)
-                        {
-                            ResourceAlienPoolGoHandler = ResourceAlienPoolGo.GetComponent<AlienHandler>();
-                            ResourceAlienPoolGoHandler.currentSpecies = neededResource;
-                            ResourceAlienPoolGoHandler.lifeTime = -10;
-                            ResourceAlienPoolGo.transform.position = locationForResource;
-                            ResourceAlienPoolGo.SetActive(true);
-
-                            closestResource[neededResource] = ResourceAlienPoolGoHandler;
-                        }
-                        break;
-                    }
+                    closestResource[neededResource] = ResourceAlienPoolGoHandler;
                 }
+                return;
             }
         }
     }
 
-    private void HandleResourceDetectionIndicator(Vector3 targetResource, int neededResource)
+    private void HandleResourceDetectionIndicator(AlienHandler targetAlienResource, int neededResource)
     {
-        if (targetResource == null)
+        if (targetAlienResource == null)
         {
             closestResourceIndicator[neededResource].SetActive(false);
             return;
         }
 
-        // 0:Sphere, 1:Square, 2:Triangle
         closestResourceIndicator[neededResource].SetActive(true);
-        targetRotation = targetResource - MyTransform.position;
-        newRotation = Quaternion.LookRotation(targetRotation, Vector3.up);
-        closestResourceIndicator[neededResource].transform.rotation = newRotation;
+        closestResourceIndicator[neededResource].transform.LookAt(targetAlienResource.transform.position + Vector3.up);
     }
 
     private void DeactivateResourceDetectionIndicator(int neededResource)
     {
-        // 0:Sphere, 1:Square, 2:Triangle
         closestResourceIndicator[neededResource].SetActive(false);
     }
 
@@ -383,40 +376,16 @@ public class PlayerManager : MonoBehaviour
 
 
         // Only show resource UI if below 75%
-        if (currentSphereResource < 3 * maxSphereResource / 4)
-        {
-            HandleResourceDetection(0);
-            // MaterialEmmissionControler(0);
-        }
-        else
-        {
-            DeactivateResourceDetectionIndicator(0);
-            // MaterialEmmissionControler(0);
-        }
+        if (currentSphereResource < 3 * maxSphereResource / 4) { HandleResourceDetection(0); }
+        else { DeactivateResourceDetectionIndicator(0); }
 
         // Only show resource UI if below 75%
-        if (currentSquareResource < 3 * maxSquareResource / 4)
-        {
-            HandleResourceDetection(1);
-            // MaterialEmmissionControler(1);
-        }
-        else
-        {
-            DeactivateResourceDetectionIndicator(1);
-            // MaterialEmmissionControler(1);
-        }
+        if (currentSquareResource < 3 * maxSquareResource / 4) { HandleResourceDetection(1); }
+        else { DeactivateResourceDetectionIndicator(1); }
 
         // Only show resource UI if below 75%
-        if (currentTriangleResource < 3 * maxTriangleResource / 4)
-        {
-            HandleResourceDetection(2);
-            // MaterialEmmissionControler(2);
-        }
-        else
-        {
-            DeactivateResourceDetectionIndicator(2);
-            // MaterialEmmissionControler(2);
-        }
+        if (currentTriangleResource < 3 * maxTriangleResource / 4) { HandleResourceDetection(2); }
+        else { DeactivateResourceDetectionIndicator(2); }
 
         // Update UI
         resourcePieCharts[0].fillAmount = currentSphereResource / maxSphereResource;
@@ -424,9 +393,11 @@ public class PlayerManager : MonoBehaviour
         resourcePieCharts[2].fillAmount = currentTriangleResource / maxTriangleResource;
 
         // Check if enough resources
-        if (currentSphereResource <= 0 ||
+        if (
+            currentSphereResource <= 0 ||
             currentSquareResource <= 0 ||
-            currentTriangleResource <= 0)
+            currentTriangleResource <= 0
+            )
         {
             HandleDeath(false);
         }
@@ -539,7 +510,7 @@ public class PlayerManager : MonoBehaviour
     {
         hasShield = false;
         stepsShield = 30;
-        animationDurationShield = .5f;
+        //animationDurationShield = .5f;
         dissolve.SetFloat("_DissolveAmount", 0.016f); // Bug at 0 seems very opaque
         audioSource.PlayOneShot(shieldBreakAudio, 1f);
 
