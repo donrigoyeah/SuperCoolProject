@@ -17,14 +17,25 @@ public class DeadAlienHandler : MonoBehaviour
     private float steps;
     private float durtaion;
     private float dissolveAMount;
-    
+    Rigidbody rb;
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
+
     private void OnEnable()
     {
-        Rigidbody rb = GetComponent<Rigidbody>();
-        rb.AddForce((bulletForce * 4) + Vector3.up * 4);
-        
+        rb.AddForce((bulletForce * 20) + Vector3.up * 10);
         StartCoroutine(Dissolve());
     }
+
+    private void OnDisable()
+    {
+        rb.velocity = Vector3.zero;
+        this.transform.position = Vector3.zero;
+    }
+
 
     IEnumerator Dissolve()
     {

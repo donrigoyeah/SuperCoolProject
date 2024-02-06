@@ -24,8 +24,6 @@ public class SpaceShipHandler : MonoBehaviour
     public Color collectCloneColor1;
     public Color collectCloneColor2;
 
-
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))

@@ -146,7 +146,7 @@ public class PlayerAttacker : MonoBehaviour
         {
             overheatUI.color = Color.red;
 
-            if (inputHandler.inputPrimaryFire && !playerManager.isCarryingPart && !PauseMenu.Instance.isPaused)
+            if (inputHandler.inputPrimaryFire && !playerManager.isCarryingPart)
             {
                 playerAnim.SetBool("IsShooting", true);
 

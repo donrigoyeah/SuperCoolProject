@@ -118,6 +118,7 @@ public class AlienHandler : MonoBehaviour
     [Header("More reference")]
     public float lookTimeIdle;
     private GameObject deadAlienGO;
+    private Rigidbody deadAlienRB;
     private DeadAlienHandler deadAlien;
     private Vector2 CameraFollowSpot2D;
     private float randomNumber;
@@ -413,31 +414,24 @@ public class AlienHandler : MonoBehaviour
     }
 
 
-    public void DeadAliensRagdollSpawner()
+    public void DeadAliensRagdollSpawner(Vector3 forciForce)
     {
         if (currentSpecies == 0)
         {
             deadAlienGO = PoolManager.Instance.GetPooledDeadSphereAlien();
-            deadAlienGO.transform.localPosition = MyTransform.position;
-            deadAlienGO.transform.localRotation = MyTransform.rotation;
-            deadAlienGO.gameObject.SetActive(true);
         }
-
-        if (currentSpecies == 1)
+        else if (currentSpecies == 1)
         {
             deadAlienGO = PoolManager.Instance.GetPooledDeadSquareAlien();
-            deadAlienGO.transform.localPosition = MyTransform.position;
-            deadAlienGO.transform.localRotation = MyTransform.rotation;
-            deadAlienGO.gameObject.SetActive(true);
         }
-
-        if (currentSpecies == 2)
+        else if (currentSpecies == 2)
         {
             deadAlienGO = PoolManager.Instance.GetPooledDeadTriangleAlien();
-            deadAlienGO.transform.localPosition = MyTransform.position;
-            deadAlienGO.transform.localRotation = MyTransform.rotation;
-            deadAlienGO.gameObject.SetActive(true);
         }
+
+        deadAlienGO.GetComponent<DeadAlienHandler>().bulletForce = forciForce;
+        deadAlienGO.transform.SetLocalPositionAndRotation(MyTransform.position, MyTransform.rotation);
+        deadAlienGO.SetActive(true);
     }
 
     public void HandleDeath()
@@ -456,15 +450,10 @@ public class AlienHandler : MonoBehaviour
         {
             AlienManager.Instance.KillAlien(currentSpecies);
         }
-        // deadAlienGO = PoolManager.Instance.GetPooledDeadAlien();
-
-        // Instantiate(deadAliensPrerfabs[currentSpecies], this.transform.position, this.transform.rotation);
-
-        // 0:Sphere > 1:Square > 2:Triangle
 
         if (isDead == false)
         {
-            DeadAliensRagdollSpawner();
+            DeadAliensRagdollSpawner(bulletForce);
         }
         HandleDeath();
     }
@@ -1010,14 +999,14 @@ public class AlienHandler : MonoBehaviour
                 damageUIGo.SetActive(true);
             }
 
-            CurrentBH = null;
-            other.gameObject.SetActive(false);
-
             // Handle Alien Death
             if (alienHealth <= 0 && isDead == false)
             {
                 HandleDeathByBullet(isPlayerBullet, other.GetComponent<Rigidbody>().velocity);
             };
+
+            CurrentBH = null;
+            other.gameObject.SetActive(false);
 
             return;
         }
