@@ -19,7 +19,7 @@ public class GrenadeHandler : MonoBehaviour
     private float distance;
     private float damage;
 
-    private AlienHandler alien;
+    private AlienHandler nearAlien;
     private Rigidbody rb;
     public bool hasExploded = false;
 
@@ -40,7 +40,7 @@ public class GrenadeHandler : MonoBehaviour
     {
         time += Time.deltaTime * speed;
         transform.position = playerAttacker.Evaluate(time);
-    
+
         if (time >= 0.98f && !hasExploded || transform.position.y < .1f)
         {
             Explode();
@@ -63,26 +63,20 @@ public class GrenadeHandler : MonoBehaviour
 
         foreach (Collider nearbyObects in colliders)
         {
+            nearAlien = nearbyObects.gameObject.GetComponent<AlienHandler>();
+            if (nearAlien == null || nearAlien.currentAge == AlienHandler.AlienAge.resource) { continue; }
+
             rb = nearbyObects.GetComponent<Rigidbody>();
-            if (rb != null)
+            if (rb == null) { continue; }
+
+            distance = Vector3.Distance(transform.position, nearbyObects.transform.position);
+            damage = CalculateDamage(distance);
+            rb.AddExplosionForce(explosionForce, transform.position, explosionRadius);
+
+            nearAlien.alienHealth -= damage;
+            if (nearAlien.alienHealth <= 0 && nearAlien.isDead == false)
             {
-                distance = Vector3.Distance(transform.position, nearbyObects.transform.position);
-                damage = CalculateDamage(distance);
-                rb.AddExplosionForce(explosionForce, transform.position, explosionRadius);
-                AlienHandler nearAlien = nearbyObects.gameObject.GetComponentInParent<AlienHandler>();
-                Debug.Log(nearAlien);
-                if (nearAlien != null)
-                {
-                    nearAlien.alienHealth -= damage;
-                    if (nearAlien.alienHealth <= 0 && nearAlien.isDead == false)
-                    {
-                        Debug.Log("I am not sure if its write place to put maybe it needs to be in Alien Handler only");
-                        nearAlien.gameObject.SetActive(false);
-                        
-                        nearAlien.DeadAliensRagdollSpawner();
-                    }
-                    Debug.Log(nearAlien.alienHealth);
-                }
+                nearAlien.HandleDeathByBullet(true, (nearbyObects.transform.position - transform.position) * damage);
             }
         }
         time = 0;
