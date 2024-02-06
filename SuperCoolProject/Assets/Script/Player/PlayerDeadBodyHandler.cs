@@ -13,25 +13,27 @@ public class PlayerDeadBodyHandler : MonoBehaviour
     public float previousPlayerSpeed = 10f;
     public BoxCollider boxCollider;
     public GameObject deadPlayer;
-
-    private void Update()
+    public GameObject interactionUI;
+    
+    private void FixedUpdate()
     {
         if (deadPlayer != null)
         {
             deadPlayer.transform.localPosition = this.gameObject.transform.position;
-
         }
         
         if(inputHandler == null || playerLocomotion == null || playerManager == null){return;}
 
         if (inputHandler.inputInteracting)
         {
+            interactionUI.SetActive(false);
             playerManager.currentPart = this.gameObject;
             playerLocomotion.playerSpeed = playerSpeedReduction;
             playerManager.isCarryingPart = true;
         }
         else if (!inputHandler.inputInteracting)
         {
+            interactionUI.SetActive(true);
             playerLocomotion.playerSpeed = previousPlayerSpeed;
             playerManager.currentPart = null;
             playerManager.isCarryingPart = false;
@@ -49,6 +51,7 @@ public class PlayerDeadBodyHandler : MonoBehaviour
             
             if (inputHandler.inputInteracting)
             {
+                interactionUI.SetActive(false);
                 playerManager.currentPart = this.gameObject;
                 playerLocomotion.playerSpeed = playerSpeedReduction;
                 playerManager.isCarryingPart = true;
@@ -76,7 +79,7 @@ public class PlayerDeadBodyHandler : MonoBehaviour
                 {
                     playerLocomotion = other.gameObject.GetComponent<PlayerLocomotion>();
                 }
-                
+                interactionUI.SetActive(false);
                 playerLocomotion.playerSpeed = previousPlayerSpeed;
                 playerManager.currentPart = null;
                 playerManager.isCarryingPart = false;
