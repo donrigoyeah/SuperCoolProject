@@ -24,6 +24,8 @@ public class SpaceShipHandler : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
+
+            Debug.Log("Insert boolean for enabling joing, and respawning if mulitplayer and one person is dead");
             PM = other.gameObject.GetComponent<PlayerManager>();
 
             // Showing the current values of the resources
