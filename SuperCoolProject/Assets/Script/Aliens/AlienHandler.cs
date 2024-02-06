@@ -485,7 +485,6 @@ public class AlienHandler : MonoBehaviour
     }
 
 
-
     public void BrainwashAlien()
     {
         brainWashed = true;
