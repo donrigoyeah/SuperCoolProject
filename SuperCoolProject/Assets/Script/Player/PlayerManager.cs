@@ -22,6 +22,8 @@ public class PlayerManager : MonoBehaviour
     public GameObject LightBeam;
     public GameObject deadPlayer;
     Transform MyTransform;
+    Vector3 locationForResource;
+    float distToAlien;
 
     [Header("Shield")]
     public bool hasShield;
@@ -37,7 +39,7 @@ public class PlayerManager : MonoBehaviour
 
     [Header("Resource Variables")]
     public float lightBulbMultiplicator = 1;
-    public AlienHandler[] closestResource = new AlienHandler[] { null, null, null };  // 0:Sphere, 1:Square, 2:Triangle
+    public List<AlienHandler> closestResource = new List<AlienHandler>(3);  // 0:Sphere, 1:Square, 2:Triangle
     public float maxSphereResource = 100;
     public float maxSquareResource = 100;
     public float maxTriangleResource = 100;
@@ -269,6 +271,7 @@ public class PlayerManager : MonoBehaviour
 
     private void HandleResourceDetection(int neededResource)
     {
+        // Check the initla List if has resource already in mind
         if (closestResource[neededResource] != null)
         {
             if (closestResource[neededResource].currentAge != AlienHandler.AlienAge.resource ||
@@ -279,89 +282,88 @@ public class PlayerManager : MonoBehaviour
             }
 
             closestResourceIndicator[neededResource].SetActive(true);
-            HandleResourceDetectionIndicator(closestResource[neededResource].transform.position, neededResource);
+            HandleResourceDetectionIndicator(closestResource[neededResource], neededResource);
             return;
         }
 
+        // Check the resourceList of AlienManager for available resources (Might obsolute since no simulation)
         if (closestResource[neededResource] == null)
         {
             closestResourceIndicator[neededResource].SetActive(false);
+        }
 
-            dist = 1000;
+        dist = 1000;
 
-            loopAmount =
-                neededResource == 0 ? AlienManager.Instance.resourceSphere.Count :
-                neededResource == 1 ? AlienManager.Instance.resourceSquare.Count :
-                neededResource == 2 ? AlienManager.Instance.resourceTriangle.Count : 0;
+        loopAmount =
+            neededResource == 0 ? AlienManager.Instance.resourceSphere.Count :
+            neededResource == 1 ? AlienManager.Instance.resourceSquare.Count :
+            neededResource == 2 ? AlienManager.Instance.resourceTriangle.Count : 0;
 
-            List<AlienHandler> ResourceList =
-               neededResource == 0 ? AlienManager.Instance.resourceSphere :
-               neededResource == 1 ? AlienManager.Instance.resourceSquare :
-               neededResource == 2 ? AlienManager.Instance.resourceTriangle : null;
+        List<AlienHandler> ResourceList =
+           neededResource == 0 ? AlienManager.Instance.resourceSphere :
+           neededResource == 1 ? AlienManager.Instance.resourceSquare :
+           neededResource == 2 ? AlienManager.Instance.resourceTriangle : null;
 
-            for (int i = 0; i < loopAmount; i++)
+        for (int i = 0; i < loopAmount; i++)
+        {
+            currentDist = Vector3.Distance(ResourceList[i].transform.position, MyTransform.position);
+            if (currentDist < dist)
             {
-                currentDist = Vector3.Distance(ResourceList[i].transform.position, MyTransform.position);
-                if (currentDist < dist)
-                {
-                    dist = currentDist;
-                    closestResource[neededResource] = ResourceList[i];
+                dist = currentDist;
+                closestResource[neededResource] = ResourceList[i];
 
-                    if (dist < 10)
-                    {
-                        break;
-                    }
+                if (dist < 10)
+                {
+                    return;
                 }
             }
+        }
 
-            // BackUp spawning new resource in case of none available
-            Debug.Log("Work on thiz");
-            if (closestResource[neededResource] == null)
+        // BackUp spawning new resource in case of none available
+        Debug.Log("BackUp Resourc spawn");
+        if (closestResource[neededResource] == null)
+        {
+            for (int i = 0; i < AlienManager.Instance.allAlienHandlers.Count; i++)
             {
-                for (int i = 0; i < PoolManager.Instance.AlienPool.Count; i++)
+                if (AlienManager.Instance.allAlienHandlers[i].currentSpecies != neededResource) { continue; }
+
+                locationForResource = AlienManager.Instance.allAlienHandlers[i].transform.position;
+                distToAlien = Vector3.Distance(locationForResource, MyTransform.position);
+
+                if (distToAlien < 50) { continue; }
+
+                AlienManager.Instance.allAlienHandlers[i].gameObject.SetActive(false);
+
+                ResourceAlienPoolGo = PoolManager.Instance.GetPooledAliens(false);
+                if (ResourceAlienPoolGo != null)
                 {
-                    Vector3 locationForResource = PoolManager.Instance.AlienPool[i].transform.position;
-                    float distToAlien = Vector3.Distance(locationForResource, MyTransform.position);
-                    if (distToAlien > 50 && distToAlien < 70)
-                    {
-                        PoolManager.Instance.AlienPool[i].SetActive(false);
+                    ResourceAlienPoolGoHandler = ResourceAlienPoolGo.GetComponent<AlienHandler>();
+                    ResourceAlienPoolGoHandler.currentSpecies = neededResource;
+                    ResourceAlienPoolGoHandler.lifeTime = -10;
+                    ResourceAlienPoolGo.transform.position = locationForResource;
+                    ResourceAlienPoolGo.SetActive(true);
 
-                        ResourceAlienPoolGo = PoolManager.Instance.GetPooledAliens(false);
-                        if (ResourceAlienPoolGo != null)
-                        {
-                            ResourceAlienPoolGoHandler = ResourceAlienPoolGo.GetComponent<AlienHandler>();
-                            ResourceAlienPoolGoHandler.currentSpecies = neededResource;
-                            ResourceAlienPoolGoHandler.lifeTime = -10;
-                            ResourceAlienPoolGo.transform.position = locationForResource;
-                            ResourceAlienPoolGo.SetActive(true);
-
-                            closestResource[neededResource] = ResourceAlienPoolGoHandler;
-                        }
-                        break;
-                    }
+                    closestResource[neededResource] = ResourceAlienPoolGoHandler;
                 }
+                return;
             }
         }
     }
 
-    private void HandleResourceDetectionIndicator(Vector3 targetResource, int neededResource)
+    private void HandleResourceDetectionIndicator(AlienHandler targetAlienResource, int neededResource)
     {
-        if (targetResource == null)
+        if (targetAlienResource == null)
         {
             closestResourceIndicator[neededResource].SetActive(false);
             return;
         }
 
-        // 0:Sphere, 1:Square, 2:Triangle
         closestResourceIndicator[neededResource].SetActive(true);
-        targetRotation = targetResource - MyTransform.position;
-        newRotation = Quaternion.LookRotation(targetRotation, Vector3.up);
-        closestResourceIndicator[neededResource].transform.rotation = newRotation;
+        closestResourceIndicator[neededResource].transform.LookAt(targetAlienResource.transform.position + Vector3.up);
     }
 
     private void DeactivateResourceDetectionIndicator(int neededResource)
     {
-        // 0:Sphere, 1:Square, 2:Triangle
         closestResourceIndicator[neededResource].SetActive(false);
     }
 
@@ -383,40 +385,16 @@ public class PlayerManager : MonoBehaviour
 
 
         // Only show resource UI if below 75%
-        if (currentSphereResource < 3 * maxSphereResource / 4)
-        {
-            HandleResourceDetection(0);
-            // MaterialEmmissionControler(0);
-        }
-        else
-        {
-            DeactivateResourceDetectionIndicator(0);
-            // MaterialEmmissionControler(0);
-        }
+        if (currentSphereResource < 3 * maxSphereResource / 4) { HandleResourceDetection(0); }
+        else { DeactivateResourceDetectionIndicator(0); }
 
         // Only show resource UI if below 75%
-        if (currentSquareResource < 3 * maxSquareResource / 4)
-        {
-            HandleResourceDetection(1);
-            // MaterialEmmissionControler(1);
-        }
-        else
-        {
-            DeactivateResourceDetectionIndicator(1);
-            // MaterialEmmissionControler(1);
-        }
+        if (currentSquareResource < 3 * maxSquareResource / 4) { HandleResourceDetection(1); }
+        else { DeactivateResourceDetectionIndicator(1); }
 
         // Only show resource UI if below 75%
-        if (currentTriangleResource < 3 * maxTriangleResource / 4)
-        {
-            HandleResourceDetection(2);
-            // MaterialEmmissionControler(2);
-        }
-        else
-        {
-            DeactivateResourceDetectionIndicator(2);
-            // MaterialEmmissionControler(2);
-        }
+        if (currentTriangleResource < 3 * maxTriangleResource / 4) { HandleResourceDetection(2); }
+        else { DeactivateResourceDetectionIndicator(2); }
 
         // Update UI
         resourcePieCharts[0].fillAmount = currentSphereResource / maxSphereResource;
@@ -424,9 +402,11 @@ public class PlayerManager : MonoBehaviour
         resourcePieCharts[2].fillAmount = currentTriangleResource / maxTriangleResource;
 
         // Check if enough resources
-        if (currentSphereResource <= 0 ||
+        if (
+            currentSphereResource <= 0 ||
             currentSquareResource <= 0 ||
-            currentTriangleResource <= 0)
+            currentTriangleResource <= 0
+            )
         {
             HandleDeath(false);
         }
