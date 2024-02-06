@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     public int numberOfPlayers;
     public int maxPlayers = 2;
     public Vector3 playerSpawnLocation;
+    public bool canPlayerBeAdded;
 
     [Header("Clone Juice")]
     public Image cloneJuiceUI;
@@ -114,6 +115,20 @@ public class GameManager : MonoBehaviour
         if (players.Count == 0) { return; }
         if (players[0].isInteracting == true) { return; }
 
+        if (numberOfPlayers == 0)
+        {
+            playerInputManager.EnableJoining();
+        }
+        else if (canPlayerBeAdded)
+        {
+            playerInputManager.EnableJoining();
+        }
+        else
+        {
+            playerInputManager.DisableJoining();
+        }
+        
+        
         HandleCameraTarget();
         HandleCameraZoom();
     }

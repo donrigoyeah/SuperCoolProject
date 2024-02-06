@@ -59,21 +59,18 @@ public class GrenadeHandler : MonoBehaviour
     {
         // TODO: CHeck if we only need the  rb.AddExplosionForce(explosionForce, transform.position, explosionRadius); without the sphere cast
 
-        Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius, layerMaskAlien, QueryTriggerInteraction.Ignore);
-        Debug.Log("collider length" + colliders.Length);
+        Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius, layerMaskAlien);
 
         foreach (Collider nearbyObects in colliders)
         {
             rb = nearbyObects.GetComponent<Rigidbody>();
             if (rb != null)
             {
-                Debug.Log("Rigidbody: " + rb.name);
-                Debug.Log("BOOM");
                 distance = Vector3.Distance(transform.position, nearbyObects.transform.position);
-                Debug.Log("Distance: " + distance);
                 damage = CalculateDamage(distance);
                 rb.AddExplosionForce(explosionForce, transform.position, explosionRadius);
                 AlienHandler nearAlien = nearbyObects.gameObject.GetComponentInParent<AlienHandler>();
+                Debug.Log(nearAlien);
                 if (nearAlien != null)
                 {
                     nearAlien.alienHealth -= damage;
@@ -81,6 +78,7 @@ public class GrenadeHandler : MonoBehaviour
                     {
                         Debug.Log("I am not sure if its write place to put maybe it needs to be in Alien Handler only");
                         nearAlien.gameObject.SetActive(false);
+                        
                         nearAlien.DeadAliensRagdollSpawner();
                     }
                     Debug.Log(nearAlien.alienHealth);

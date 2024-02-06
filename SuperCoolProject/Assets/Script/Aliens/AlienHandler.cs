@@ -142,6 +142,7 @@ public class AlienHandler : MonoBehaviour
 
     [Header("DeadAliens")] // 0:Sphere > 1:Square > 2:Triangle
     public GameObject[] deadAliensPrerfabs;
+    public bool canSpawnDeadBodies;
 
     #endregion
 
@@ -461,30 +462,6 @@ public class AlienHandler : MonoBehaviour
         // Instantiate(deadAliensPrerfabs[currentSpecies], this.transform.position, this.transform.rotation);
 
         // 0:Sphere > 1:Square > 2:Triangle
-
-        if (currentSpecies == 0)
-        {
-            deadAlienGO = PoolManager.Instance.GetPooledDeadSphereAlien();
-            deadAlienGO.transform.localPosition = MyTransform.position;
-            deadAlienGO.transform.localRotation = MyTransform.rotation;
-            deadAlienGO.gameObject.SetActive(true);
-        }
-
-        if (currentSpecies == 1)
-        {
-            deadAlienGO = PoolManager.Instance.GetPooledDeadSquareAlien();
-            deadAlienGO.transform.localPosition = MyTransform.position;
-            deadAlienGO.transform.localRotation = MyTransform.rotation;
-            deadAlienGO.gameObject.SetActive(true);
-        }
-
-        if (currentSpecies == 2)
-        {
-            deadAlienGO = PoolManager.Instance.GetPooledDeadTriangleAlien();
-            deadAlienGO.transform.localPosition = MyTransform.position;
-            deadAlienGO.transform.localRotation = MyTransform.rotation;
-            deadAlienGO.gameObject.SetActive(true);
-        }
 
         if (isDead == false)
         {
