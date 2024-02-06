@@ -28,19 +28,18 @@ public class RagdollHandler : MonoBehaviour
             collider.enabled = activate;
         }
 
-        foreach (var rigidbody in childrenRigidbody)
-        {
-            rigidbody.isKinematic = !activate;
-        }
-
-        rigidbody.isKinematic = !activate;
+        // foreach (var rigidbody in childrenRigidbody)
+        // {
+        //     rigidbody.isKinematic = !activate;
+        // }
+        //
+        // rigidbody.isKinematic = !activate;
     }
 
     public void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Bullet"))
         {
-            Debug.Log("gfs");
             RagdollActivate(true);
         }
     }
