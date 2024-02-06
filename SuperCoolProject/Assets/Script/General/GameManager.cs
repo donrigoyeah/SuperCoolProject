@@ -53,6 +53,7 @@ public class GameManager : MonoBehaviour
     public PlayerInputManager playerInputManager;
     public List<PlayerManager> players;
     public List<PlayerLocomotion> playersLocos;
+    public List<InputHandler> playerInputs;
     public Transform CameraFollowSpot; // For Cinemachine
     public LoadingScreenHandler loadingScreenHandler;
     public SpaceShipGameScene spaceShipGameScene;
@@ -98,6 +99,7 @@ public class GameManager : MonoBehaviour
 
         players = new List<PlayerManager>();
         playersLocos = new List<PlayerLocomotion>();
+        playerInputs = new List<InputHandler>();
         totalSpaceShipParts = spaceShipScriptable.Length;
         currentSpaceShipParts = 0;
         spaceShipPartsDisplay.text = currentSpaceShipParts.ToString() + "/" + totalSpaceShipParts.ToString();
@@ -138,7 +140,7 @@ public class GameManager : MonoBehaviour
 
     private void HandleCameraZoom()
     {
-        if (playersLocos.TrueForAll(a => a.move != Vector3.zero))
+        if (playerInputs.TrueForAll(a => a.inputMovement == Vector2.zero))
         {
             // Zoom IN
             CameraShake.Instance.ZoomIn();
@@ -169,6 +171,9 @@ public class GameManager : MonoBehaviour
 
         PlayerLocomotion currentPlayerLoco = pm.GetComponent<PlayerLocomotion>();
         playersLocos.Add(currentPlayerLoco);
+
+        InputHandler currentPlayerInput = pm.GetComponent<InputHandler>();
+        playerInputs.Add(currentPlayerInput);
 
         pm.gameObject.transform.position = playerSpawnLocation;
         pm.gameObject.transform.LookAt(TutorialHandler.Instance.alienEndPosition);

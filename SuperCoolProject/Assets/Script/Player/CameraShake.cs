@@ -54,8 +54,7 @@ public class CameraShake : MonoBehaviour
     public void ZoomIn()
     {
         Debug.Log("Zoom In");
-
-        CinemachineVirtualCamera.m_Lens.FieldOfView = 60;
+        CinemachineVirtualCamera.m_Lens.FieldOfView = Mathf.Lerp(CinemachineVirtualCamera.m_Lens.FieldOfView, 60, Time.deltaTime);
 
     }
 
@@ -63,6 +62,6 @@ public class CameraShake : MonoBehaviour
     {
         Debug.Log("Zoom ot");
 
-        CinemachineVirtualCamera.m_Lens.FieldOfView = 70;
+        CinemachineVirtualCamera.m_Lens.FieldOfView = Mathf.Lerp(CinemachineVirtualCamera.m_Lens.FieldOfView, 70, Time.deltaTime);
     }
 }
