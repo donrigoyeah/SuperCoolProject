@@ -4139,7 +4139,7 @@ PrefabInstance:
     - target: {fileID: 292991685637541685, guid: 959b924f5e51a25468637aa813697924,
         type: 3}
       propertyPath: currentAlienAmount
-      value: 50
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 292991685637541685, guid: 959b924f5e51a25468637aa813697924,
         type: 3}
@@ -4870,6 +4870,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: DeathScreen
+      objectReference: {fileID: 0}
+    - target: {fileID: 5114784885420805789, guid: 4e9f40b14e37beb4ea8ac8f132bf56b0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6440453155960347903, guid: 4e9f40b14e37beb4ea8ac8f132bf56b0,
         type: 3}
