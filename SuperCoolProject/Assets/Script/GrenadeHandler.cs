@@ -70,7 +70,6 @@ public class GrenadeHandler : MonoBehaviour
                 damage = CalculateDamage(distance);
                 rb.AddExplosionForce(explosionForce, transform.position, explosionRadius);
                 AlienHandler nearAlien = nearbyObects.gameObject.GetComponentInParent<AlienHandler>();
-                Debug.Log(nearAlien);
                 if (nearAlien != null)
                 {
                     nearAlien.alienHealth -= damage;
