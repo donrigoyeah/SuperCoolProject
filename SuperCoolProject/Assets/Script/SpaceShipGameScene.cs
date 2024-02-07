@@ -171,10 +171,13 @@ public class SpaceShipGameScene : MonoBehaviour
         PlayerInputManager.instance.DisableJoining();
         DamageParticlesGO.SetActive(false);
 
+
+
         while (elapsedTimeWin < animationDurationWin)
         {
             this.transform.position = Vector3.Lerp(startingPos, winPosition, (elapsedTimeWin / animationDurationWin));
             elapsedTimeWin += Time.fixedDeltaTime;
+            this.transform.position = GameManager.Instance.CameraFollowSpot.transform.position;
             yield return new WaitForEndOfFrame();
         }
 

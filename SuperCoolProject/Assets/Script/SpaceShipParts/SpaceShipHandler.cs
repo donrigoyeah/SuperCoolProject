@@ -45,7 +45,10 @@ public class SpaceShipHandler : MonoBehaviour
 
                 spaceShipPartHandler = PM.currentPart.GetComponent<SpaceShipPartHandler>();
                 PL = PM.GetComponent<PlayerLocomotion>();
-                PL.playerSpeed = spaceShipPartHandler.previousPlayerSpeed;
+                if (PL != null)
+                {
+                    PL.playerSpeed = spaceShipPartHandler.previousPlayerSpeed;
+                }
 
                 GameManager.Instance.currentSpaceShipParts++;
                 PM.currentPart.SetActive(false);

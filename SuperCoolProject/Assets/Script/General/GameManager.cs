@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     [Header("General")]
     public bool devMode;
     public int hideTut;
+    public bool hasWon = false;
 
     [Header("World")]
     public int worldRadius = 150;
@@ -59,6 +60,7 @@ public class GameManager : MonoBehaviour
     public Transform CameraFollowSpot; // For Cinemachine
     public LoadingScreenHandler loadingScreenHandler;
     public SpaceShipGameScene spaceShipGameScene;
+    public GameObject WinScreenGO;
 
     [Header("UI Elements")]
     public GameObject DeathScreen;
@@ -113,6 +115,7 @@ public class GameManager : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (hasWon) { return; }
         if (players.Count == 0) { return; }
         if (players[0].isInteracting == true) { return; }
 
@@ -335,6 +338,10 @@ public class GameManager : MonoBehaviour
             {
                 player.LightBeam.SetActive(true);
             }
+            foreach (var lights in SpaceShipGameScene.Instance.shipLights)
+            {
+                lights.SetActive(true);
+            }
         }
     }
 
@@ -343,6 +350,10 @@ public class GameManager : MonoBehaviour
         foreach (PlayerManager player in players)
         {
             player.LightBeam.SetActive(false);
+        }
+        foreach (var lights in SpaceShipGameScene.Instance.shipLights)
+        {
+            lights.SetActive(false);
         }
     }
 
@@ -387,6 +398,7 @@ public class GameManager : MonoBehaviour
     private void HandleWin()
     {
         Debug.Log("Player won");
+        hasWon = true;
 
         foreach (var item in players)
         {
@@ -397,8 +409,16 @@ public class GameManager : MonoBehaviour
         {
             StartCoroutine(spaceShipGameScene.WinAnimation());
         }
+
+        StartCoroutine(WinCoroutine());
         //CopManager.Instance.HandleSpawnCopCar(AlienManager.Instance.totalKillCount);
 
+    }
+
+    IEnumerator WinCoroutine()
+    {
+        yield return new WaitForSeconds(2);
+        WinScreenGO.SetActive(true);
     }
 
     public void HandleLoss()
