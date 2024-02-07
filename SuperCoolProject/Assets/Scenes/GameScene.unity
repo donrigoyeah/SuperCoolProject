@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.17276844, g: 0.21589246, b: 0.2978263, a: 1}
+  m_IndirectSpecularColor: {r: 0.17276807, g: 0.21589197, b: 0.29782572, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -160,6 +160,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1967303792690895420}
   m_PrefabAsset: {fileID: 0}
+--- !u!224 &103888065 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 1185421999469394759, guid: ffb68a391af645d4bbbf12099ca9e96e,
+    type: 3}
+  m_PrefabInstance: {fileID: 4802670096955318320}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &169493283 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8048525042496938338, guid: 47dea8476420d14458ede6b0cfd95a2d,
@@ -172,6 +178,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d199490a83bb2b844b9695cbf13b01ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!224 &180923340 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5275147705035095662, guid: ffb68a391af645d4bbbf12099ca9e96e,
+    type: 3}
+  m_PrefabInstance: {fileID: 4802670096955318320}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &200399474 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2054848811460540635, guid: 8a39cf38023b57946be252867c65b70b,
@@ -574,6 +586,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &497841215 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8614463535036520622, guid: ffb68a391af645d4bbbf12099ca9e96e,
+    type: 3}
+  m_PrefabInstance: {fileID: 4802670096955318320}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &506797197
 GameObject:
   m_ObjectHideFlags: 0
@@ -762,7 +786,7 @@ MonoBehaviour:
   - {fileID: 1676495536}
   HUDScaler: {fileID: 1005060846}
   UnlockPopulation: {fileID: 605855100}
-  UnlockPopulationImage: {fileID: 0}
+  UnlockPopulationImage: {fileID: 497841215}
   UnlockMiniMap: {fileID: 1035967894}
   UnlockMiniMapImage: {fileID: 1259839230}
   MiniMapCamera: {fileID: 407634943}
@@ -1728,6 +1752,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce1433bb24fe6a247a87d8c24dceaee3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!224 &1477248106 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 7097500312095665674, guid: ffb68a391af645d4bbbf12099ca9e96e,
+    type: 3}
+  m_PrefabInstance: {fileID: 4802670096955318320}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1525866066 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3022947434942135248, guid: 04d1705c49be2ff449668c9f21cbf177,
@@ -4710,7 +4740,7 @@ PrefabInstance:
     - target: {fileID: 7766592979571582262, guid: 3079f47d50dfbbd4ebf5954fdc48b8a4,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7908300006847071817, guid: 3079f47d50dfbbd4ebf5954fdc48b8a4,
         type: 3}
@@ -4889,6 +4919,11 @@ PrefabInstance:
       objectReference: {fileID: 506797206}
     - target: {fileID: 1139254413652998083, guid: c80505f0b68aa6f4dbb7fa8f96b9436d,
         type: 3}
+      propertyPath: pieChartArrows.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1139254413652998083, guid: c80505f0b68aa6f4dbb7fa8f96b9436d,
+        type: 3}
       propertyPath: imagesPieChart.Array.data[0]
       value: 
       objectReference: {fileID: 1441383995}
@@ -4902,6 +4937,21 @@ PrefabInstance:
       propertyPath: imagesPieChart.Array.data[2]
       value: 
       objectReference: {fileID: 2114840081}
+    - target: {fileID: 1139254413652998083, guid: c80505f0b68aa6f4dbb7fa8f96b9436d,
+        type: 3}
+      propertyPath: pieChartArrows.Array.data[0]
+      value: 
+      objectReference: {fileID: 1477248106}
+    - target: {fileID: 1139254413652998083, guid: c80505f0b68aa6f4dbb7fa8f96b9436d,
+        type: 3}
+      propertyPath: pieChartArrows.Array.data[1]
+      value: 
+      objectReference: {fileID: 180923340}
+    - target: {fileID: 1139254413652998083, guid: c80505f0b68aa6f4dbb7fa8f96b9436d,
+        type: 3}
+      propertyPath: pieChartArrows.Array.data[2]
+      value: 
+      objectReference: {fileID: 103888065}
     - target: {fileID: 4484446586205612040, guid: c80505f0b68aa6f4dbb7fa8f96b9436d,
         type: 3}
       propertyPath: m_Name
