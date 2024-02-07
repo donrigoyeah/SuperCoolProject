@@ -1257,7 +1257,7 @@ PrefabInstance:
     - target: {fileID: 690190895482579582, guid: f25dcd618d3acd64795bf8bb32edb6c9,
         type: 3}
       propertyPath: m_Text
-      value: Esc
+      value: Tab
       objectReference: {fileID: 0}
     - target: {fileID: 2522024079686518319, guid: f25dcd618d3acd64795bf8bb32edb6c9,
         type: 3}
@@ -1499,7 +1499,7 @@ PrefabInstance:
     - target: {fileID: 690190895482579582, guid: f25dcd618d3acd64795bf8bb32edb6c9,
         type: 3}
       propertyPath: m_Text
-      value: Esc
+      value: LMB
       objectReference: {fileID: 0}
     - target: {fileID: 2522024079686518319, guid: f25dcd618d3acd64795bf8bb32edb6c9,
         type: 3}
