@@ -107,8 +107,8 @@ public class PlayerManager : MonoBehaviour
         MyTransform = GetComponent<Transform>();
         playerAnim = GetComponentInChildren<Animator>();
 
-        dissolve = playerShieldGO.gameObject.GetComponent<Renderer>().material;
-        dissolve.SetFloat("_DissolveAmount", 0.016f);
+
+        // dissolve.SetFloat("_DissolveAmount", 0.016f);
         StartCoroutine(RespawnShield(2));
 
         ParticleSystem[] particleSystems = UpgradeParticles.GetComponentsInChildren<ParticleSystem>();
@@ -144,7 +144,8 @@ public class PlayerManager : MonoBehaviour
         }
         else
         {
-            StartCoroutine(ShieldBreak(shieldRechargeTime));
+            // StartCoroutine(ShieldBreak(shieldRechargeTime));
+            StartCoroutine(RespawnShield(2f));
         }
         timeSinceLastHit = 0;
         return;
@@ -537,7 +538,7 @@ public class PlayerManager : MonoBehaviour
     {
         playerShieldGO.SetActive(false);
         yield return new WaitForSeconds(timeToRecharge);
-        dissolve.SetFloat("_DissolveAmount", 0.016f);
+        // dissolve.SetFloat("_DissolveAmount", 0.016f);
         hasShield = true;
         audioSource.PlayOneShot(shieldRechargeAudio, 1f);
         playerShieldGO.SetActive(true);
