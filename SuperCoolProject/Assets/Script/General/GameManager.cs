@@ -128,7 +128,7 @@ public class GameManager : MonoBehaviour
         {
             playerInputManager.DisableJoining();
         }
-        
+
         for (int i = 0; i < isAliveBool.Count; i++)
         {
             if (isAliveBool.Count == numberOfPlayers)
@@ -136,14 +136,14 @@ public class GameManager : MonoBehaviour
                 isAliveBoolChecker = isAliveBool.Any();
             }
         }
-        
+
         if (isAliveBoolChecker)
-        {   
+        {
             DeathScreen.SetActive(true);
             isAliveBoolChecker = false;
             isAliveBool.Clear();
         }
-        
+
         HandleCameraTarget();
         HandleCameraZoom();
     }
@@ -245,6 +245,12 @@ public class GameManager : MonoBehaviour
 
     private void HandleTutorialStart()
     {
+        Debug.Log("Remove this for the build");
+        FreezeAllPlayers();
+        FreezeAllAliens();
+        TutorialHandler.Instance.EnableEntireTutorial();
+        return;
+
         // Folowing code only runs if playerPrefs exist, and they only do in builds
         if (PlayerPrefs.HasKey("hideTutorial"))
         {
