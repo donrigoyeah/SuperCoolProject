@@ -140,7 +140,7 @@ public class PlayerManager : MonoBehaviour
 
         if (hasShield == false)
         {
-            HandleDeath(true);
+            HandleDeath("alien");
         }
         else
         {
@@ -151,7 +151,7 @@ public class PlayerManager : MonoBehaviour
 
     }
 
-    private void HandleDeath(bool byAlien)
+    public void HandleDeath(string causeOfDeath)
     {
         isAlive = false;
         GameManager.Instance.isAliveBool.Add(isAlive);
@@ -177,13 +177,17 @@ public class PlayerManager : MonoBehaviour
         if (GameManager.Instance.players.Count == 1)
         {
             GameManager.Instance.DeathScreen.SetActive(true);
-            if (byAlien == true)
+            if (causeOfDeath == "alien")
             {
                 GameManager.Instance.deathScreenReason.text = "Your clone got killed by an Alien!";
             }
-            else
+            else if (causeOfDeath == "resources")
             {
                 GameManager.Instance.deathScreenReason.text = "Your clone ran out of resources!";
+            }
+            else if (causeOfDeath == "enviroment")
+            {
+                GameManager.Instance.deathScreenReason.text = "You fell to your death";
             }
 
             EventSystem.current.SetSelectedGameObject(GameManager.Instance.respawnButton.gameObject);
@@ -401,7 +405,7 @@ public class PlayerManager : MonoBehaviour
             currentTriangleResource <= 0
             )
         {
-            HandleDeath(false);
+            HandleDeath("resources");
         }
     }
 
