@@ -168,7 +168,7 @@ public class PlayerManager : MonoBehaviour
             deadPlayerRigidbody.AddForce(forceDirection * forceMagnitude, ForceMode.Impulse);
         }
 
-        if (GameManager.Instance.currentCloneJuice < 0)
+        if (GameManager.Instance.currentCloneJuice <= 0)
         {
             GameManager.Instance.HandleLoss();
             return;
