@@ -100,7 +100,7 @@ public class HUDHandler : MonoBehaviour
             newColor.g = Mathf.PingPong(Time.time * whiteNoiseSpeed, 1);
             newColor.b = Mathf.PingPong(Time.time * whiteNoiseSpeed, 1);
             UnlockMiniMapImage.color = newColor;
-            UnlockMiniMapImage.rectTransform.Rotate(Vector3.forward, Time.time * whiteNoiseRotationSpeed);
+            UnlockMiniMapImage.rectTransform.Rotate(Vector3.back, Time.time * whiteNoiseRotationSpeed);
         }
     }
 
