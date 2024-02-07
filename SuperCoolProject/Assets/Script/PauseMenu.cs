@@ -117,8 +117,8 @@ public class PauseMenu : MonoBehaviour
         PauseMenu.Instance.pauseMenu.SetActive(true);
         PauseMenu.Instance.stats.SetActive(true);
         EventSystem.current.SetSelectedGameObject(resumeButton.gameObject);
-        yield return new WaitForSeconds(0.02f);
         Time.timeScale = 0.01f;
+        yield return new WaitForSeconds(0.02f);
         isPaused = true;
     }
 
