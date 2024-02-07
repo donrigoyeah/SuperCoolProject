@@ -72,6 +72,8 @@ MonoBehaviour:
   hungerTimer: 0
   amountOfBabies: 0
   gotAttackedByPlayer: 0
+  isAttackingPlayer: 0
+  isEvadingPlayer: 0
   spawnAsAdults: 0
   currentStateIcon: {fileID: 3589108659310432011}
   allStateIcons:
@@ -128,6 +130,7 @@ MonoBehaviour:
   - {fileID: 2844827245074846859, guid: 00852b6d3b1509e45a4bc02022199df5, type: 3}
   - {fileID: 2674170861359850901, guid: 8765b41a2fb6d984a9f0c4898b6103cc, type: 3}
   - {fileID: 5928193994446594984, guid: e762051c71086ec44897d4940008e05c, type: 3}
+  canSpawnDeadBodies: 0
 --- !u!54 &2535645080070637768
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -187,7 +190,8 @@ AudioSource:
   m_GameObject: {fileID: 1047908099467871381}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 2266403996617237174, guid: 3067df7eb9e53804eb6bac7a7694931c,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
