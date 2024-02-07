@@ -67,8 +67,8 @@ public class HUDHandler : MonoBehaviour
         currentHUD = 2;
         if (GameManager.Instance.devMode)
         {
-            UnlockMiniMap.SetActive(true);
-            UnlockPopulation.SetActive(true);
+            UnlockMiniMap.SetActive(false);
+            UnlockPopulation.SetActive(false);
         }
         DisbaleAllHUDS();
     }
