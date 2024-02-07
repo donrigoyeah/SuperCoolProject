@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 
 public class HUDHandler : MonoBehaviour
@@ -10,7 +11,9 @@ public class HUDHandler : MonoBehaviour
     public GameObject[] HUDS; // 0: Population 1: Minimap 2: Time
     public RectTransform HUDScaler;
     public GameObject UnlockPopulation;
+    public Image UnlockPopulationImage;
     public GameObject UnlockMiniMap;
+    public Image UnlockMiniMapImage;
 
     [Header("MiniMap")]
     public Camera MiniMapCamera;
@@ -33,7 +36,9 @@ public class HUDHandler : MonoBehaviour
     private bool isResizing = false;
     public float scalingTransitionDuration = .5f;
     private int scalingTransitionSteps = 30;
-
+    public float whiteNoiseSpeed;
+    public float whiteNoiseRotationSpeed;
+    public Material color;
 
     public static HUDHandler Instance;
 
@@ -72,11 +77,31 @@ public class HUDHandler : MonoBehaviour
     {
         lastInputTimer += Time.fixedDeltaTime;
 
-        if (lastInputTimer > timeThreshold)
+        if (lastInputTimer > timeThreshold && HUDScaler.localScale == Vector3.one)
         {
-            if (HUDScaler.localScale == Vector3.one) { StartCoroutine(ScaleDown()); }
+            StartCoroutine(ScaleDown());
         }
+
         if (currentHUD == 2) { HandleDisplayTimeOfDay(); }
+
+        if (currentHUD == 0 && GameManager.Instance.hasAntenna == false)
+        {
+            Color newColor = UnlockPopulationImage.color;
+            newColor.r = Mathf.PingPong(Time.time * whiteNoiseSpeed, 1);
+            newColor.g = Mathf.PingPong(Time.time * whiteNoiseSpeed, 1);
+            newColor.b = Mathf.PingPong(Time.time * whiteNoiseSpeed, 1);
+            UnlockPopulationImage.color = newColor;
+            UnlockPopulationImage.rectTransform.Rotate(Vector3.forward, Time.time * whiteNoiseRotationSpeed);
+        }
+        if (currentHUD == 1 && GameManager.Instance.hasRadar == false)
+        {
+            Color newColor = UnlockPopulationImage.color;
+            newColor.r = Mathf.PingPong(Time.time * whiteNoiseSpeed, 1);
+            newColor.g = Mathf.PingPong(Time.time * whiteNoiseSpeed, 1);
+            newColor.b = Mathf.PingPong(Time.time * whiteNoiseSpeed, 1);
+            UnlockMiniMapImage.color = newColor;
+            UnlockMiniMapImage.rectTransform.Rotate(Vector3.back, Time.time * whiteNoiseRotationSpeed);
+        }
     }
 
     public void ChangeHUD()

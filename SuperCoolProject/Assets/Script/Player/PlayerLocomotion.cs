@@ -177,8 +177,13 @@ public class PlayerLocomotion : MonoBehaviour
         }
 
         // TODO: DO we need this? Maybe remove gravity at all and set y to fixed position (?!)
-        //playerVelocity.y += gravityValue * Time.deltaTime;
-        //controller.Move(playerVelocity * Time.deltaTime);
+        playerVelocity.y += gravityValue * Time.deltaTime;
+        controller.Move(playerVelocity * Time.deltaTime);
+
+        if (myTransform.position.y < -2)
+        {
+            playerManager.HandleDeath("enviroment");
+        }
     }
 
     void Rotation()
