@@ -197,10 +197,13 @@ public class TutorialHandler : MonoBehaviour
         alienHandler1.transform.LookAt(alienEndPosition);
         yield return new WaitForSeconds(spawnDelay);
         alienHandler2 = SpawnAdultAlien(1, false, alienHandler1);
+        alienHandler2.transform.LookAt(alienEndPosition);
         yield return new WaitForSeconds(spawnDelay);
         alienHandler3 = SpawnAdultAlien(2, false, alienHandler2);
+        alienHandler3.transform.LookAt(alienEndPosition);
         yield return new WaitForSeconds(spawnDelay);
         LoveAlien1 = SpawnAdultAlien(0, false, alienHandler3);
+        LoveAlien1.transform.LookAt(alienEndPosition);
         yield return new WaitForSeconds(spawnDelay + 1.5f);
 
         EnableCertainSlide(currentTutorialSlide);
