@@ -169,7 +169,7 @@ public class PlayerAttacker : MonoBehaviour
                 CameraShake.Instance.ResetCameraPosition();
             }
         }
-        if (inputHandler.inputPrimaryFire && gunOverheated == true)
+        if (inputHandler.inputPrimaryFire && gunOverheated == true && !PauseMenu.Instance.isPaused)
         {
             audioSource.PlayOneShot(canNotShootLazer);
         }

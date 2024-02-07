@@ -48,7 +48,7 @@ public class PauseMenu : MonoBehaviour
 
     [Header("Camera Shake")]
     public CameraShake cameraShake;
-    //[SerializeField] private Slider cameraShakeSlider;
+    [SerializeField] private Slider cameraShakeSlider;
 
     //TODO: mouse sensivity
 
@@ -196,10 +196,9 @@ public class PauseMenu : MonoBehaviour
     {
         musicSlider.value = PlayerPrefs.GetFloat("musicVolume");
         sfxSlider.value = PlayerPrefs.GetFloat("SFXVolume");
-        // TODO: Add this later when slider is found
-        //cameraShakeSlider.value = PlayerPrefs.GetFloat("CameraShakeIntensity");
+        cameraShakeSlider.value = PlayerPrefs.GetFloat("CameraShakeIntensity");
 
-        //CameraShakeController();
+        CameraShakeController();
         SetMusicVol();
         SetSFXVol();
     }
@@ -214,11 +213,11 @@ public class PauseMenu : MonoBehaviour
         musicSlider.Select();
     }
 
-    //private void CameraShakeController()
-    //{
-    //    float cameraShakeModifier = cameraShakeSlider.value * 2.5f;
-    //    cameraShake.shakeIntensity = cameraShakeModifier;
-    //    PlayerPrefs.SetFloat("CameraShakeIntensity", cameraShakeModifier);
-    //}
+    public void CameraShakeController()
+    {
+        float cameraShakeModifier = cameraShakeSlider.value * 5.5f;
+        cameraShake.shakeIntensity = cameraShakeModifier;
+        PlayerPrefs.SetFloat("CameraShakeIntensity", cameraShakeModifier);
+    }
 }
 
