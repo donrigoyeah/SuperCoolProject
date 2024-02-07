@@ -15,6 +15,7 @@ public class AlienManager : MonoBehaviour
     public int totalActiveAliens;
 
     public Image[] imagesPieChart;
+    public RectTransform[] pieChartArrows;
     public float[] values;
 
     [Header("Current Alien Resources")]
@@ -314,6 +315,8 @@ public class AlienManager : MonoBehaviour
         {
             totalValues += FindPercentage(valuesToSet, i);
             imagesPieChart[i].fillAmount = totalValues;
+
+            pieChartArrows[i].transform.rotation = Quaternion.Euler(0, 0, (totalValues * 360) - 180);
         }
     }
 

@@ -11,7 +11,6 @@ public class PlayerDeadBodyHandler : MonoBehaviour
     
     public float playerSpeedReduction = 2f;
     public float previousPlayerSpeed = 10f;
-    public BoxCollider boxCollider;
     public GameObject deadPlayer;
     public GameObject interactionUI;
     
