@@ -365,10 +365,10 @@ public class GameManager : MonoBehaviour
     {
         currentCloneJuice -= cloneCost;
         cloneJuiceUI.fillAmount = currentCloneJuice / maxCloneJuice;
-        //if (currentCloneJuice < 0)
-        //{
-        //    HandleLoss();
-        //}
+        if (currentCloneJuice < 0)
+        {
+            HandleLoss();
+        }
     }
 
     public void HandleGainCloneJuivce(float gain)
