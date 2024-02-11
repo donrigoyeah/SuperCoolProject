@@ -124,14 +124,15 @@ public class PlayerManager : MonoBehaviour
         delta = Time.deltaTime;
         timeSinceLastHit += delta;
         tickTimer += delta;
-        HandleResource();
 
         if (tickTimer >= tickTimerMax)
         {
             tickTimer -= tickTimerMax;
             HandleSurroundingAliens();
+            HandleResource();
         }
     }
+
 
     public void HandleHit()
     {
@@ -382,16 +383,16 @@ public class PlayerManager : MonoBehaviour
         MaterialEmmissionControler();
 
 
-        // Only show resource UI if below 75%
-        if (currentSphereResource < 3 * maxSphereResource / 4) { HandleResourceDetection(0); }
+        // Only show resource UI if below 50%
+        if (currentSphereResource < 2 * maxSphereResource / 4) { HandleResourceDetection(0); }
         else { DeactivateResourceDetectionIndicator(0); }
 
-        // Only show resource UI if below 75%
-        if (currentSquareResource < 3 * maxSquareResource / 4) { HandleResourceDetection(1); }
+        // Only show resource UI if below 50%
+        if (currentSquareResource < 2 * maxSquareResource / 4) { HandleResourceDetection(1); }
         else { DeactivateResourceDetectionIndicator(1); }
 
-        // Only show resource UI if below 75%
-        if (currentTriangleResource < 3 * maxTriangleResource / 4) { HandleResourceDetection(2); }
+        // Only show resource UI if below 50%
+        if (currentTriangleResource < 2 * maxTriangleResource / 4) { HandleResourceDetection(2); }
         else { DeactivateResourceDetectionIndicator(2); }
 
         // Update UI
@@ -483,8 +484,8 @@ public class PlayerManager : MonoBehaviour
     {
         RectTransform GORT;
 
-        stepsUnfold = 30;
-        animationDurationUnfold = .3f;
+        stepsUnfold = 10;
+        animationDurationUnfold = .2f;
         Resource.gameObject.SetActive(true);
         GORT = Resource.GetComponent<RectTransform>();
         GORT.localScale = Vector3.zero;
@@ -499,7 +500,7 @@ public class PlayerManager : MonoBehaviour
 
     public IEnumerator FoldResource(GameObject Resource)
     {
-        stepsFold = 30;
+        stepsFold = 10;
         animationDurationFold = .2f;
         RectTransform GORT;
 

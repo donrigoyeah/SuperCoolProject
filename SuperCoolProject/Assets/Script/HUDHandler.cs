@@ -80,6 +80,14 @@ public class HUDHandler : MonoBehaviour
         if (lastInputTimer > timeThreshold && HUDScaler.localScale == Vector3.one)
         {
             StartCoroutine(ScaleDown());
+
+            // TODO: Bad placement of this code
+            foreach (var PM in GameManager.Instance.players)
+            {
+                StartCoroutine(PM.FoldResource(PM.ResourceUISphere));
+                StartCoroutine(PM.FoldResource(PM.ResourceUISquare));
+                StartCoroutine(PM.FoldResource(PM.ResourceUITriangle));
+            }
         }
 
         if (currentHUD == 2) { HandleDisplayTimeOfDay(); }
@@ -117,6 +125,14 @@ public class HUDHandler : MonoBehaviour
             if (currentHUD == 1) { StartCoroutine(MiniMapCameraZoomOut()); } // Is MiniMap
             StartCoroutine(ScaleUp());
             EnableCurrentHUD(currentHUD);
+
+            // TODO: Bad placement of this code
+            foreach (var PM in GameManager.Instance.players)
+            {
+                StartCoroutine(PM.UnfoldResource(PM.ResourceUISphere, 50));
+                StartCoroutine(PM.UnfoldResource(PM.ResourceUISquare, 25));
+                StartCoroutine(PM.UnfoldResource(PM.ResourceUITriangle, 0));
+            }
         }
         else
         {

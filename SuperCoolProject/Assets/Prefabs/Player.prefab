@@ -528,7 +528,7 @@ MonoBehaviour:
   squareUnfolded: 0
   triangleUnfolded: 0
   resourceDrain: 0.03
-  resourceGain: 20
+  resourceGain: 100
   resourcePieCharts:
   - {fileID: 9071979888274502329}
   - {fileID: 7812766738713300160}

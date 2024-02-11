@@ -87,7 +87,6 @@ public class AlienManager : MonoBehaviour
     public int minSpawnRadius = 30;
     public int maxSpawnRadius = 70;
     public int maxInitialLifeTime = 10;
-    public int totalTimeToSpawnAliens = 3;
 
     [Header("Kill Stuff")]
     public int totalKillCount = 0;
@@ -155,7 +154,7 @@ public class AlienManager : MonoBehaviour
         evadingAudioList.Add(squareEvadingAudio);
         evadingAudioList.Add(triangleEvadingAudio);
 
-        StartCoroutine(SpawnAliens());
+        SpawnAliens();
     }
 
 
@@ -172,9 +171,9 @@ public class AlienManager : MonoBehaviour
         resourceTriangle.Clear();
     }
 
-    IEnumerator SpawnAliens()
+    public void SpawnAliens()
     {
-        if (PoolManager.Instance.alienAmount == 0) { yield return null; }
+        if (PoolManager.Instance.alienAmount == 0) { return; }
 
         ClearResourceList();
         oneSegmentOfPoulation = Mathf.RoundToInt(PoolManager.Instance.alienAmount / segmentAmount);
@@ -220,9 +219,7 @@ public class AlienManager : MonoBehaviour
                 alienPoolGo.transform.position = new Vector3(randPosX, 0.1f, randPosZ);
                 alienPoolGo.SetActive(true);
             }
-            yield return new WaitForSeconds((1 / PoolManager.Instance.alienAmount));//* totalTimeToSpawnAliens
         }
-
         loadingScreenHandler.currentAwakeCalls++;
     }
 
