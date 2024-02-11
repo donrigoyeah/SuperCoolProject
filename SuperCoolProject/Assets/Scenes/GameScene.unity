@@ -1919,18 +1919,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 3161632916095767646}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1150323688 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6731782831622427760, guid: 3079f47d50dfbbd4ebf5954fdc48b8a4,
-    type: 3}
-  m_PrefabInstance: {fileID: 7334238867359192586}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1171402647 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3311312529497967774, guid: ffb68a391af645d4bbbf12099ca9e96e,
@@ -2445,18 +2433,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1996508346 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3981394123477394130, guid: 3079f47d50dfbbd4ebf5954fdc48b8a4,
-    type: 3}
-  m_PrefabInstance: {fileID: 7334238867359192586}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1998650053
@@ -3215,6 +3191,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameOverScreen
       objectReference: {fileID: 0}
+    - target: {fileID: 8956740563064680595, guid: 81c6b5e65c6ab9b4baec02a6208dde50,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3844,6 +3825,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: DeathScreen
       objectReference: {fileID: 0}
+    - target: {fileID: 5114784885420805789, guid: 4e9f40b14e37beb4ea8ac8f132bf56b0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6440453155960347903, guid: 4e9f40b14e37beb4ea8ac8f132bf56b0,
         type: 3}
       propertyPath: m_Pivot.x
@@ -3948,12 +3934,12 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Navigation.m_SelectOnUp
       value: 
-      objectReference: {fileID: 1150323688}
+      objectReference: {fileID: 705789653}
     - target: {fileID: 9125157352701599431, guid: 4e9f40b14e37beb4ea8ac8f132bf56b0,
         type: 3}
       propertyPath: m_Navigation.m_SelectOnDown
       value: 
-      objectReference: {fileID: 1996508346}
+      objectReference: {fileID: 705789653}
     - target: {fileID: 9125157352701599431, guid: 4e9f40b14e37beb4ea8ac8f132bf56b0,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
