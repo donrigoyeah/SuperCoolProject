@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -483,35 +484,41 @@ public class PlayerManager : MonoBehaviour
     public IEnumerator UnfoldResource(GameObject Resource, float degree)
     {
         RectTransform GORT;
-
-        stepsUnfold = 10;
-        animationDurationUnfold = .2f;
-        Resource.gameObject.SetActive(true);
         GORT = Resource.GetComponent<RectTransform>();
-        GORT.localScale = Vector3.zero;
-        for (int i = 0; i < stepsUnfold; i++)
-        {
-            yield return new WaitForSeconds(animationDurationUnfold / stepsUnfold);
-            GORT.localScale = Vector3.one * 3 * i / stepsUnfold;
-            GORT.localEulerAngles = new Vector3(0, 0, degree * i / stepsUnfold);
-        }
+        float delta = 0;
 
+        WaitForEndOfFrame frame = new WaitForEndOfFrame();
+        Resource.gameObject.SetActive(true);
+
+        while (delta < HUDHandler.Instance.scalingTransitionDuration)
+        {
+            GORT.localScale = Vector3.Lerp(Vector3.zero, Vector3.one * 3, delta / HUDHandler.Instance.scalingTransitionDuration);
+            GORT.localEulerAngles = new Vector3(0, 0, degree * delta / HUDHandler.Instance.scalingTransitionDuration);
+            delta += Time.deltaTime;
+
+            yield return frame;
+        }
     }
 
-    public IEnumerator FoldResource(GameObject Resource)
-    {
-        stepsFold = 10;
-        animationDurationFold = .2f;
-        RectTransform GORT;
 
+    public IEnumerator FoldResource(GameObject Resource, float degree)
+    {
+        RectTransform GORT;
         GORT = Resource.GetComponent<RectTransform>();
-        GORT.localScale = Vector3.one * 2;
-        for (int i = 0; i < stepsFold; i++)
+        float delta = 0;
+
+        WaitForEndOfFrame frame = new WaitForEndOfFrame();
+        Resource.gameObject.SetActive(true);
+
+        while (delta < HUDHandler.Instance.scalingTransitionDuration)
         {
-            yield return new WaitForSeconds(animationDurationFold / stepsFold);
-            GORT.localScale = Vector3.one * 2 - Vector3.one * 2 * i / stepsFold;
+            GORT.localScale = Vector3.Lerp(Vector3.one * 3, Vector3.zero, delta / HUDHandler.Instance.scalingTransitionDuration);
+            GORT.localEulerAngles = new Vector3(0, 0, degree - (degree * delta / HUDHandler.Instance.scalingTransitionDuration));
+            delta += Time.deltaTime;
+
+            yield return frame;
         }
-        GORT.localEulerAngles = Vector3.zero;
+
         Resource.gameObject.SetActive(false);
     }
 

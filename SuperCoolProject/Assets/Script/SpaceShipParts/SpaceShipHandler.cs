@@ -134,9 +134,9 @@ public class SpaceShipHandler : MonoBehaviour
         {
             PM = other.gameObject.GetComponent<PlayerManager>();
 
-            StartCoroutine(PM.FoldResource(PM.ResourceUISphere));
-            StartCoroutine(PM.FoldResource(PM.ResourceUISquare));
-            StartCoroutine(PM.FoldResource(PM.ResourceUITriangle));
+            StartCoroutine(PM.FoldResource(PM.ResourceUISphere, 50));
+            StartCoroutine(PM.FoldResource(PM.ResourceUISquare, 25));
+            StartCoroutine(PM.FoldResource(PM.ResourceUITriangle, 0));
         }
     }
 

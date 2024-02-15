@@ -357,6 +357,7 @@ public class AlienHandler : MonoBehaviour
             alienSpeciesAdult[currentSpeziesIndex].SetActive(true);
         }
         alienSpecies[currentSpeziesIndex].SetActive(true);
+        alienMiniMapMarker.material = AlienManager.Instance.alienColors[currentSpeziesIndex];
 
         MyCollisionCollider = alienSpecies[currentSpeziesIndex].GetComponentInChildren<Collider>();
     }
@@ -835,19 +836,16 @@ public class AlienHandler : MonoBehaviour
         if (currentIndex == 0)
         {
             resourceSteamMain.startColor = AlienManager.Instance.alienColors[currentIndex].color;
-            alienMiniMapMarker.material = AlienManager.Instance.alienColors[currentIndex];
         }
 
         if (currentIndex == 1)
         {
             resourceSteamMain.startColor = AlienManager.Instance.alienColors[currentIndex].color;
-            alienMiniMapMarker.material = AlienManager.Instance.alienColors[currentIndex];
         }
 
         if (currentIndex == 2)
         {
             resourceSteamMain.startColor = AlienManager.Instance.alienColors[currentIndex].color;
-            alienMiniMapMarker.material = AlienManager.Instance.alienColors[currentIndex];
         }
     }
 

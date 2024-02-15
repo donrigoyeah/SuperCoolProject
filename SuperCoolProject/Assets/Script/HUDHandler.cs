@@ -35,7 +35,6 @@ public class HUDHandler : MonoBehaviour
     private float minWaitDuration = .5f;
     private bool isResizing = false;
     public float scalingTransitionDuration = .5f;
-    private int scalingTransitionSteps = 30;
     public float whiteNoiseSpeed;
     public float whiteNoiseRotationSpeed;
     public Material color;
@@ -84,9 +83,9 @@ public class HUDHandler : MonoBehaviour
             // TODO: Bad placement of this code
             foreach (var PM in GameManager.Instance.players)
             {
-                StartCoroutine(PM.FoldResource(PM.ResourceUISphere));
-                StartCoroutine(PM.FoldResource(PM.ResourceUISquare));
-                StartCoroutine(PM.FoldResource(PM.ResourceUITriangle));
+                StartCoroutine(PM.FoldResource(PM.ResourceUISphere, 50));
+                StartCoroutine(PM.FoldResource(PM.ResourceUISquare, 25));
+                StartCoroutine(PM.FoldResource(PM.ResourceUITriangle, 0));
             }
         }
 
