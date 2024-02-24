@@ -79,6 +79,21 @@ public class GameManager : MonoBehaviour
     public int cameraSpeedRaiseDuration = 2;
     public int cameraSpeedMultiplier = 3;
     public float cameraZOffset = 2;
+    public float cameraPreviewMulti = 1;
+    float targetX;
+    float targetY;
+    float targetZ;
+    float targetXNorm;
+    float targetYNorm;
+    float targetZNorm;
+    float targetVelX;
+    float targetVelY;
+    float targetVelZ;
+    float targetVelXNorm;
+    float targetVelYNorm;
+    float targetVelZNorm;
+
+
 
     [Header("Dead Body")]
     public bool playerDeadBody = false;
@@ -153,9 +168,11 @@ public class GameManager : MonoBehaviour
 
     private void HandleCameraTarget()
     {
-        float targetX = 0;
-        float targetY = 0;
-        float targetZ = 0;
+
+        // Medium Position
+        targetX = 0;
+        targetY = 0;
+        targetZ = 0;
 
         foreach (var pm in players)
         {
@@ -164,11 +181,41 @@ public class GameManager : MonoBehaviour
             targetZ += pm.transform.position.z;
         }
 
-        float targetXNorm = targetX / players.Count;
-        float targetYNorm = targetY / players.Count;
-        float targetZNorm = (targetZ / players.Count) - cameraZOffset;
+        targetXNorm = targetX / players.Count;
+        targetYNorm = targetY / players.Count;
+        targetZNorm = (targetZ / players.Count) - cameraZOffset;
+        Vector3 preTarget = new Vector3(targetXNorm, 0, targetZNorm);
+        // Medium Velocity
 
-        CameraFollowSpot.position = Vector3.Lerp(CameraFollowSpot.transform.position, new Vector3(targetXNorm, targetYNorm, targetZNorm), Time.deltaTime * cameraSpeed);
+        targetVelX = 0;
+        targetVelZ = 0;
+
+
+        foreach (var pI in playerInputs)
+        {
+            targetVelX += pI.inputMovement.x;
+            targetVelZ += pI.inputMovement.y;
+        }
+
+        targetVelXNorm = targetVelX / players.Count;
+        targetVelZNorm = (targetVelZ / players.Count) - cameraZOffset;
+        Vector3 preTargetMotion = new Vector3(targetVelXNorm * cameraPreviewMulti, 0, targetVelZNorm * cameraPreviewMulti);
+        Vector3 targetTransform;
+
+        if (targetVelX == 0 && targetVelZ == 0)
+        {
+
+            targetTransform = Vector3.Lerp(CameraFollowSpot.transform.position, preTarget, Time.deltaTime * cameraSpeed);
+        }
+        else
+        {
+            targetTransform = Vector3.Lerp(CameraFollowSpot.transform.position, preTarget + preTargetMotion, Time.deltaTime * cameraSpeed);
+            //Vector3 targetTransform = Vector3.Lerp(CameraFollowSpot.transform.position, new Vector3(targetXNorm, 0, targetZNorm), Time.deltaTime * cameraSpeed);
+            //Vector3 targetTransform = Vector3.Lerp(CameraFollowSpot.transform.position, new Vector3(targetXNorm, targetYNorm, targetZNorm), Time.deltaTime * cameraSpeed);
+        }
+
+
+        CameraFollowSpot.position = targetTransform;
     }
 
     private void HandleCameraZoom()

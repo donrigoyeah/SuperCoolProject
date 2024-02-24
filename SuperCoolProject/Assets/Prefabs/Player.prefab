@@ -527,7 +527,7 @@ MonoBehaviour:
   sphereUnfolded: 0
   squareUnfolded: 0
   triangleUnfolded: 0
-  resourceDrain: 0.03
+  resourceDrain: 1
   resourceGain: 100
   resourcePieCharts:
   - {fileID: 9071979888274502329}

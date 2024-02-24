@@ -123,6 +123,7 @@ public class PlayerManager : MonoBehaviour
     private void FixedUpdate()
     {
         delta = Time.deltaTime;
+        HandleResouceDrain(delta);
         timeSinceLastHit += delta;
         tickTimer += delta;
 
@@ -367,13 +368,12 @@ public class PlayerManager : MonoBehaviour
         closestResourceIndicator[neededResource].SetActive(false);
     }
 
-    private void HandleResource()
+    private void HandleResouceDrain(float delta)
     {
         if (isAlive == false) { return; }
-        // 0:Sphere, 1:Square, 2:Triangle
-        if (currentSphereResource > 0) { currentSphereResource -= resourceDrain; }
-        if (currentSquareResource > 0) { currentSquareResource -= resourceDrain; }
-        if (currentTriangleResource > 0) { currentTriangleResource -= resourceDrain; }
+        if (currentSphereResource > 0) { currentSphereResource -= resourceDrain * delta; }
+        if (currentSquareResource > 0) { currentSquareResource -= resourceDrain * delta; }
+        if (currentTriangleResource > 0) { currentTriangleResource -= resourceDrain * delta; }
 
 
         // Will go from 0 to max
@@ -382,6 +382,12 @@ public class PlayerManager : MonoBehaviour
         currentTriangleResourceInverse = maxTriangleResource - currentTriangleResource;
 
         MaterialEmmissionControler();
+    }
+    private void HandleResource()
+    {
+        if (isAlive == false) { return; }
+        // 0:Sphere, 1:Square, 2:Triangle
+
 
 
         // Only show resource UI if below 50%

@@ -2942,7 +2942,7 @@ PrefabInstance:
     - target: {fileID: 292991685637541685, guid: 959b924f5e51a25468637aa813697924,
         type: 3}
       propertyPath: currentAlienAmount
-      value: 150
+      value: 400
       objectReference: {fileID: 0}
     - target: {fileID: 292991685637541685, guid: 959b924f5e51a25468637aa813697924,
         type: 3}
@@ -4186,6 +4186,11 @@ PrefabInstance:
       propertyPath: deathScreenReason
       value: 
       objectReference: {fileID: 243543366}
+    - target: {fileID: 937689487682581970, guid: bf09349e08449f448b0d27ddea6565dc,
+        type: 3}
+      propertyPath: cameraPreviewMulti
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 937689487682581970, guid: bf09349e08449f448b0d27ddea6565dc,
         type: 3}
       propertyPath: playerInputManager
