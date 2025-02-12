@@ -4915,13 +4915,15 @@ ParticleSystemRenderer:
   m_RenderAlignment: 0
   m_Pivot: {x: 0, y: 0, z: 0}
   m_Flip: {x: 0, y: 0, z: 0}
-  m_UseCustomVertexStreams: 0
   m_EnableGPUInstancing: 1
   m_ApplyActiveColorSpace: 1
   m_AllowRoll: 1
   m_FreeformStretching: 0
   m_RotateWithStretchDirection: 1
+  m_UseCustomVertexStreams: 0
   m_VertexStreams: 00010304
+  m_UseCustomTrailVertexStreams: 0
+  m_TrailVertexStreams: 00010304
   m_Mesh: {fileID: 0}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
@@ -5112,6 +5114,7 @@ Transform:
   m_Children:
   - {fileID: 1048214976965772922}
   - {fileID: 838058802262824377}
+  - {fileID: 8008169872680614954}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!33 &964141953573791125
@@ -5231,3 +5234,83 @@ MonoBehaviour:
   lifeTime: 2
   isPlayerBullet: 0
   rb: {fileID: 8848349150236317888}
+  shootinPlayerAttacker: {fileID: 0}
+--- !u!1001 &7255552330438705337
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 150823305121710393}
+    m_Modifications:
+    - target: {fileID: 833828347545025683, guid: 41284acba44129b4c8482d2abcf265f9,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 833828347545025683, guid: 41284acba44129b4c8482d2abcf265f9,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 833828347545025683, guid: 41284acba44129b4c8482d2abcf265f9,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 833828347545025683, guid: 41284acba44129b4c8482d2abcf265f9,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 833828347545025683, guid: 41284acba44129b4c8482d2abcf265f9,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 833828347545025683, guid: 41284acba44129b4c8482d2abcf265f9,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 833828347545025683, guid: 41284acba44129b4c8482d2abcf265f9,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 833828347545025683, guid: 41284acba44129b4c8482d2abcf265f9,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 833828347545025683, guid: 41284acba44129b4c8482d2abcf265f9,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 833828347545025683, guid: 41284acba44129b4c8482d2abcf265f9,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2675995187106261905, guid: 41284acba44129b4c8482d2abcf265f9,
+        type: 3}
+      propertyPath: m_Range
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8039553857983877565, guid: 41284acba44129b4c8482d2abcf265f9,
+        type: 3}
+      propertyPath: m_Name
+      value: LazerLight
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 41284acba44129b4c8482d2abcf265f9, type: 3}
+--- !u!4 &8008169872680614954 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 833828347545025683, guid: 41284acba44129b4c8482d2abcf265f9,
+    type: 3}
+  m_PrefabInstance: {fileID: 7255552330438705337}
+  m_PrefabAsset: {fileID: 0}

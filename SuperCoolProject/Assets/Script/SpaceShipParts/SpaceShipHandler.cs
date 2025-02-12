@@ -44,6 +44,8 @@ public class SpaceShipHandler : MonoBehaviour
                 StartCoroutine(PlayRetrieveParticle(true));
 
                 spaceShipPartHandler = PM.currentPart.GetComponent<SpaceShipPartHandler>();
+
+                if(spaceShipPartHandler == null) { Debug.Log("No More SpaceShopPartHandler"); return; }
                 PL = PM.GetComponent<PlayerLocomotion>();
                 if (PL != null)
                 {
