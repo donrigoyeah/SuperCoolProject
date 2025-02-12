@@ -118,6 +118,14 @@ public class PlayerManager : MonoBehaviour
         ParticleSystem2Main = particleSystems[1].main;
         ParticleSystem3Main = particleSystems[1].main;
         UpgradeParticles.SetActive(false);
+
+
+        if(GameManager.Instance.devMode == true)
+        {
+            StartCoroutine(UnfoldResource(ResourceUISphere, 50));
+            StartCoroutine(UnfoldResource(ResourceUISquare, 25));
+            StartCoroutine(UnfoldResource(ResourceUITriangle, 0));
+        }
     }
 
     private void FixedUpdate()
@@ -378,7 +386,6 @@ public class PlayerManager : MonoBehaviour
             if (currentTriangleResource > 0) { currentTriangleResource -= resourceDrain * delta; }
         }
 
-
         // Will go from 0 to max
         currentSphereResourceInverse = maxSphereResource - currentSphereResource;
         currentSquareResourceInverse = maxSquareResource - currentSquareResource;
@@ -392,18 +399,23 @@ public class PlayerManager : MonoBehaviour
         // 0:Sphere, 1:Square, 2:Triangle
 
 
+        HandleResourceDetection(0);
+        HandleResourceDetection(1);
+        HandleResourceDetection(2);
 
-        // Only show resource UI if below 50%
-        if (currentSphereResource < 2 * maxSphereResource / 4) { HandleResourceDetection(0); }
-        else { DeactivateResourceDetectionIndicator(0); }
+        #region Show resource only on low state
+        //// Only show resource UI if below 50%
+        //if (currentSphereResource < 2 * maxSphereResource / 4) { HandleResourceDetection(0); }
+        //else { DeactivateResourceDetectionIndicator(0); }
 
-        // Only show resource UI if below 50%
-        if (currentSquareResource < 2 * maxSquareResource / 4) { HandleResourceDetection(1); }
-        else { DeactivateResourceDetectionIndicator(1); }
+        //// Only show resource UI if below 50%
+        //if (currentSquareResource < 2 * maxSquareResource / 4) { HandleResourceDetection(1); }
+        //else { DeactivateResourceDetectionIndicator(1); }
 
-        // Only show resource UI if below 50%
-        if (currentTriangleResource < 2 * maxTriangleResource / 4) { HandleResourceDetection(2); }
-        else { DeactivateResourceDetectionIndicator(2); }
+        //// Only show resource UI if below 50%
+        //if (currentTriangleResource < 2 * maxTriangleResource / 4) { HandleResourceDetection(2); }
+        //else { DeactivateResourceDetectionIndicator(2); }
+        #endregion
 
         // Update UI
         resourcePieCharts[0].fillAmount = currentSphereResource / maxSphereResource;

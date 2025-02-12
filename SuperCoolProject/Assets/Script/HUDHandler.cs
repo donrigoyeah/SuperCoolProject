@@ -68,6 +68,7 @@ public class HUDHandler : MonoBehaviour
         {
             UnlockMiniMap.SetActive(false);
             UnlockPopulation.SetActive(false);
+
         }
         DisbaleAllHUDS();
     }
