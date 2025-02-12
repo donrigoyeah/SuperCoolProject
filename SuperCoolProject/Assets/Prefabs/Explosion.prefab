@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8683977540767724126}
   - component: {fileID: 5361294747664470324}
   - component: {fileID: 1094265710502753188}
+  - component: {fileID: 1124967133409398559}
   m_Layer: 0
   m_Name: Explosion
   m_TagString: Untagged
@@ -33,6 +34,7 @@ Transform:
   m_Children:
   - {fileID: 9101506464668105827}
   - {fileID: 8232182074442956783}
+  - {fileID: 4196415357542651110}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!198 &5361294747664470324
@@ -4890,6 +4892,21 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &1124967133409398559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 518168211817822157}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4976d1f788fb2141a40ba4133d7be31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  explosionLight: {fileID: 6705490710548983278}
+  LightDimmDuration: 0.3
+  LightIntensity: 30
 --- !u!1001 &866742794157636360
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4898,6 +4915,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8683977540767724126}
     m_Modifications:
+    - target: {fileID: 5793680860512018372, guid: 5ac9aa638e2646e4296c37d65833e07e,
+        type: 3}
+      propertyPath: LightsModule.enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7385309224086400773, guid: 5ac9aa638e2646e4296c37d65833e07e,
         type: 3}
       propertyPath: m_Name
@@ -5037,4 +5059,84 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7287075781616361385, guid: f0ecd35ef78dfeb4d88e01f398195fc3,
     type: 3}
   m_PrefabInstance: {fileID: 1665893343937880134}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &8834885087632139205
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 8683977540767724126}
+    m_Modifications:
+    - target: {fileID: 4658824990473811747, guid: 150fdc906b7725849929fa2e49ba542b,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4658824990473811747, guid: 150fdc906b7725849929fa2e49ba542b,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4658824990473811747, guid: 150fdc906b7725849929fa2e49ba542b,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4658824990473811747, guid: 150fdc906b7725849929fa2e49ba542b,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4658824990473811747, guid: 150fdc906b7725849929fa2e49ba542b,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4658824990473811747, guid: 150fdc906b7725849929fa2e49ba542b,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4658824990473811747, guid: 150fdc906b7725849929fa2e49ba542b,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4658824990473811747, guid: 150fdc906b7725849929fa2e49ba542b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4658824990473811747, guid: 150fdc906b7725849929fa2e49ba542b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4658824990473811747, guid: 150fdc906b7725849929fa2e49ba542b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7554154272838407243, guid: 150fdc906b7725849929fa2e49ba542b,
+        type: 3}
+      propertyPath: m_Name
+      value: ExplosionLight
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 150fdc906b7725849929fa2e49ba542b, type: 3}
+--- !u!4 &4196415357542651110 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4658824990473811747, guid: 150fdc906b7725849929fa2e49ba542b,
+    type: 3}
+  m_PrefabInstance: {fileID: 8834885087632139205}
+  m_PrefabAsset: {fileID: 0}
+--- !u!108 &6705490710548983278 stripped
+Light:
+  m_CorrespondingSourceObject: {fileID: 2852293054038117931, guid: 150fdc906b7725849929fa2e49ba542b,
+    type: 3}
+  m_PrefabInstance: {fileID: 8834885087632139205}
   m_PrefabAsset: {fileID: 0}

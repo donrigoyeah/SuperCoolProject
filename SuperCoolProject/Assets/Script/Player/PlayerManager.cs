@@ -146,6 +146,11 @@ public class PlayerManager : MonoBehaviour
         timeSinceLastHit += delta;
         tickTimer += delta;
 
+        // Always point resource Indicator in the right direction
+        HandleResourceDetection(0);
+        HandleResourceDetection(1);
+        HandleResourceDetection(2);
+
         if (tickTimer >= tickTimerMax)
         {
             tickTimer -= tickTimerMax;
@@ -407,7 +412,24 @@ public class PlayerManager : MonoBehaviour
         }
 
         closestResourceIndicator[neededResource].SetActive(true);
-        closestResourceIndicator[neededResource].transform.LookAt(targetAlienResource.transform.position + Vector3.up);
+        //closestResourceIndicator[neededResource].transform.LookAt(targetAlienResource.transform.position + Vector3.up);
+
+        Transform indicatorTransform = closestResourceIndicator[neededResource].transform;
+
+        // Target direction
+        Vector3 targetPosition = targetAlienResource.transform.position + Vector3.up;
+        Vector3 direction = targetPosition - indicatorTransform.position;
+
+        if (direction != Vector3.zero)
+        {
+            // Smooth rotation using Slerp
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            indicatorTransform.rotation = Quaternion.Slerp(
+                indicatorTransform.rotation,
+                targetRotation,
+                Time.deltaTime * 10 // Adjust rotationSpeed as needed
+            );
+        }
     }
 
     private void DeactivateResourceDetectionIndicator(int neededResource)
@@ -513,6 +535,10 @@ public class PlayerManager : MonoBehaviour
                 currentTriangleResource = maxTriangleResource;
             }
         }
+
+        StartCoroutine(UnFoldAndFoldResource(ResourceUITriangle, 0));
+        StartCoroutine(UnFoldAndFoldResource(ResourceUISquare, 25));
+        StartCoroutine(UnFoldAndFoldResource(ResourceUISphere, 50));
     }
 
     public void HandleRespawn()
@@ -579,6 +605,13 @@ public class PlayerManager : MonoBehaviour
         }
 
         Resource.gameObject.SetActive(false);
+    }
+
+    public IEnumerator UnFoldAndFoldResource(GameObject Resource, float degree)
+    {
+        yield return StartCoroutine(UnfoldResource(Resource, degree));
+        yield return new WaitForSeconds(1f);
+        yield return StartCoroutine(FoldResource(Resource, degree));
     }
 
     IEnumerator ShieldBreak(float timeToRecharge)
