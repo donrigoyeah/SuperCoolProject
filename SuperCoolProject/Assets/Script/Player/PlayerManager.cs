@@ -109,7 +109,13 @@ public class PlayerManager : MonoBehaviour
         playerAnim = GetComponentInChildren<Animator>();
 
 
-        // dissolve.SetFloat("_DissolveAmount", 0.016f);
+        foreach (var item in resourceMaterial)
+        {
+            item.SetColor("_EmissionColor", Color.black);
+        }
+        dissolve.SetFloat("_DissolveAmount", 0);
+        
+        
         StartCoroutine(RespawnShield(2));
 
         ParticleSystem[] particleSystems = UpgradeParticles.GetComponentsInChildren<ParticleSystem>();
@@ -143,6 +149,24 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+
+    private void OnDestroy()
+    {
+        foreach (var item in resourceMaterial)
+        {
+            item.SetColor("_EmissionColor", Color.black);
+        }
+        dissolve.SetFloat("_DissolveAmount", 0);
+    }
+
+    private void OnDisable()
+    {
+        foreach (var item in resourceMaterial)
+        {
+            item.SetColor("_EmissionColor", Color.black);
+        }
+        dissolve.SetFloat("_DissolveAmount", 0);
+    }
 
     public void HandleHit()
     {
