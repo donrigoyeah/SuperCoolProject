@@ -128,10 +128,15 @@ public class PlayerManager : MonoBehaviour
 
         if(GameManager.Instance.devMode == true)
         {
-            StartCoroutine(UnfoldResource(ResourceUISphere, 50));
-            StartCoroutine(UnfoldResource(ResourceUISquare, 25));
-            StartCoroutine(UnfoldResource(ResourceUITriangle, 0));
+            //StartCoroutine(UnfoldResource(ResourceUISphere, 50));
+            //StartCoroutine(UnfoldResource(ResourceUISquare, 25));
+            //StartCoroutine(UnfoldResource(ResourceUITriangle, 0));
         }
+    }
+
+    private void Start()
+    {
+        MiniMapCameraHandler.Instance.PlayerTransform = this.transform;
     }
 
     private void FixedUpdate()

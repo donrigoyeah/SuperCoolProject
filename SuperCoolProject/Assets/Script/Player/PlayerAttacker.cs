@@ -66,6 +66,7 @@ public class PlayerAttacker : MonoBehaviour
     public bool grenadeKeyPressed = false;
     public Transform grenadespawnPoint;
     public Transform target;
+    public GameObject targetGO;
     public Transform arcHeight;
     public float trajectorySpeed = 2;
     public Vector3 ac;
@@ -106,6 +107,7 @@ public class PlayerAttacker : MonoBehaviour
         laserSightLeft.enabled = false;
         laserSightRight.enabled = false;
         AimTargetIndicatorGO.SetActive(false);
+        targetGO.SetActive(false);
         currentGrenadeCooldownValue = grenadeCooldownMax;
         audioSource = GetComponent<AudioSource>();
         inputHandler = GetComponent<InputHandler>();
@@ -473,6 +475,8 @@ public class PlayerAttacker : MonoBehaviour
     private void DrawTrajectory()
     {
         grenadeLineRenderer.enabled = true;
+        targetGO.SetActive(true);
+
         var pointList = new List<Vector3>();
 
         for (float t = 0; t <= 1; t += 1 / vertecCount)
@@ -511,6 +515,7 @@ public class PlayerAttacker : MonoBehaviour
                 {
                     target.localPosition += new Vector3(0f, 0f, 0.2f);
                 }
+                target.localPosition = new Vector3(target.localPosition.x, 0.2f, target.localPosition.z);
             }
             else if (!inputHandler.inputSecondaryFire && grenadeAvailable && grenadeKeyPressed)
             {
@@ -522,9 +527,19 @@ public class PlayerAttacker : MonoBehaviour
                 StartCoroutine(ResetGrenadeTransform());
                 grenadeKeyPressed = false;
                 LaunchGrenade();
+
+                StartCoroutine(DisableGrenadeImpactTargetLocationGO());
             }
         }
     }
+
+    IEnumerator DisableGrenadeImpactTargetLocationGO()
+    {
+        yield return new WaitForSeconds(1.2f);
+        targetGO.SetActive(true);
+    }
+
+
 
     private void HandleGrenadeCooldown(float delta)
     {

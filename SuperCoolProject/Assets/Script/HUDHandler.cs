@@ -29,6 +29,11 @@ public class HUDHandler : MonoBehaviour
     public int currentTotalMinutes = 0;
     public float currentPercentage = 0;
 
+    [Header("MultiplayerInfo")]
+    public GameObject MultiplayerInvitation;
+    public bool isOpening = false;
+    public bool isClosing = false;
+
     [Header("General")]
     public float lastInputTimer = 100;
     public float timeThreshold = 3;
@@ -70,6 +75,8 @@ public class HUDHandler : MonoBehaviour
             UnlockPopulation.SetActive(false);
 
         }
+
+        MultiplayerInvitation.SetActive(false);
         DisbaleAllHUDS();
     }
 
@@ -112,6 +119,25 @@ public class HUDHandler : MonoBehaviour
         }
     }
 
+    public IEnumerator OpenMultiplayerInvitation()
+    {
+        isOpening = true;
+        MultiplayerInvitation.SetActive(true);
+
+        yield return null;
+        isOpening = false;
+    }
+
+    public IEnumerator CLoseMultiplayerInvitation()
+    {
+        isClosing = true;
+        // TODO: Add Animation for UI
+        yield return null;
+
+        MultiplayerInvitation.SetActive(false);
+        isClosing = false;
+    }
+
     public void ChangeHUD()
     {
         // Prevent double clicking
@@ -122,7 +148,8 @@ public class HUDHandler : MonoBehaviour
 
         if (HUDScaler.localScale != Vector3.one)
         {
-            if (currentHUD == 1) { StartCoroutine(MiniMapCameraZoomOut()); } // Is MiniMap
+            //if (currentHUD == 1) { StartCoroutine(MiniMapCameraZoomOut()); } // Is MiniMap
+            if (currentHUD == 1) { StartCoroutine(MiniMapCameraZoomIn()); } // Is MiniMap
             StartCoroutine(ScaleUp());
             EnableCurrentHUD(currentHUD);
 
@@ -138,7 +165,7 @@ public class HUDHandler : MonoBehaviour
         {
             currentHUD++;
             // This here is just to zoom on the 
-            if (currentHUD == 1) { StartCoroutine(MiniMapCameraZoomOut()); } // Is MiniMap
+            if (currentHUD == 1) { StartCoroutine(MiniMapCameraZoomIn()); } // Is MiniMap
             if (currentHUD == 3) { currentHUD = 0; } // loop back to 0
             EnableCurrentHUD(currentHUD);
         }
@@ -186,6 +213,16 @@ public class HUDHandler : MonoBehaviour
         {
             yield return new WaitForSeconds(timeThreshold / zoomiSteps);
             MiniMapCamera.orthographicSize = cameraZoomIn + ((cameraZoomOut - cameraZoomIn) * i / zoomiSteps);
+        }
+    }
+
+    IEnumerator MiniMapCameraZoomIn()
+    {
+        zoomiSteps = 40;
+        for (int i = 0; i <= zoomiSteps; i++)
+        {
+            yield return new WaitForSeconds(timeThreshold / zoomiSteps);
+            MiniMapCamera.orthographicSize = cameraZoomOut + ((cameraZoomIn - cameraZoomOut) * i / zoomiSteps);
         }
     }
 

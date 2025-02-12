@@ -28,8 +28,10 @@ public class SpaceShipHandler : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
+            if (HUDHandler.Instance.isOpening == false) { StartCoroutine(HUDHandler.Instance.OpenMultiplayerInvitation()); };
             GameManager.Instance.canPlayerBeAdded = true;
-            Debug.Log("Insert boolean for enabling joining, and respawning if mulitplayer and one person is dead");
+
+            
             PM = other.gameObject.GetComponent<PlayerManager>();
 
             // Showing the current values of the resources
@@ -130,6 +132,8 @@ public class SpaceShipHandler : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+        if (HUDHandler.Instance.isClosing == false) { StartCoroutine(HUDHandler.Instance.CLoseMultiplayerInvitation()); };
+
         GameManager.Instance.canPlayerBeAdded = false;
 
         if (other.gameObject.CompareTag("Player"))
