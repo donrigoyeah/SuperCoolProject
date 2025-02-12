@@ -165,7 +165,17 @@ public class PlayerManager : MonoBehaviour
 
     public void HandleDeath(string causeOfDeath)
     {
-        isAlive = false;
+        if (GameManager.Instance.devMode == true)
+        {
+            currentSphereResource = maxSphereResource;
+            currentSquareResource = maxSquareResource;
+            currentTriangleResource = maxTriangleResource;
+
+            return; 
+        }
+
+
+            isAlive = false;
         GameManager.Instance.isAliveBool.Add(isAlive);
 
         StopAllCoroutines();
@@ -379,12 +389,11 @@ public class PlayerManager : MonoBehaviour
     private void HandleResouceDrain(float delta)
     {
         if (isAlive == false) { return; }
-        if(GameManager.Instance.devMode == false)
-        {
-            if (currentSphereResource > 0) { currentSphereResource -= resourceDrain * delta; }
-            if (currentSquareResource > 0) { currentSquareResource -= resourceDrain * delta; }
-            if (currentTriangleResource > 0) { currentTriangleResource -= resourceDrain * delta; }
-        }
+
+        if (currentSphereResource > 0) { currentSphereResource -= resourceDrain * delta; }
+        if (currentSquareResource > 0) { currentSquareResource -= resourceDrain * delta; }
+        if (currentTriangleResource > 0) { currentTriangleResource -= resourceDrain * delta; }
+        
 
         // Will go from 0 to max
         currentSphereResourceInverse = maxSphereResource - currentSphereResource;
