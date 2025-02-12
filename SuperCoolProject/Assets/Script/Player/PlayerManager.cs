@@ -371,9 +371,12 @@ public class PlayerManager : MonoBehaviour
     private void HandleResouceDrain(float delta)
     {
         if (isAlive == false) { return; }
-        if (currentSphereResource > 0) { currentSphereResource -= resourceDrain * delta; }
-        if (currentSquareResource > 0) { currentSquareResource -= resourceDrain * delta; }
-        if (currentTriangleResource > 0) { currentTriangleResource -= resourceDrain * delta; }
+        if(GameManager.Instance.devMode == false)
+        {
+            if (currentSphereResource > 0) { currentSphereResource -= resourceDrain * delta; }
+            if (currentSquareResource > 0) { currentSquareResource -= resourceDrain * delta; }
+            if (currentTriangleResource > 0) { currentTriangleResource -= resourceDrain * delta; }
+        }
 
 
         // Will go from 0 to max
