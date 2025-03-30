@@ -389,7 +389,7 @@ public class AlienHandler : MonoBehaviour
         alienSpeciesAdult[currentSpecies].SetActive(true);
         if (AlienManager.Instance.resourceSphere.Count + AlienManager.Instance.resourceSquare.Count + AlienManager.Instance.resourceTriangle.Count > 0)
         {
-            AlienManager.Instance.RemoveFromResourceList(this); // TODO: Check if available in List?!
+            // AlienManager.Instance.RemoveFromResourceList(AlienStateMachine); // TODO: Check if available in List?!
         }
         yield return new WaitForSeconds(AlienManager.Instance.timeToSexual);
 
@@ -931,7 +931,7 @@ public class AlienHandler : MonoBehaviour
             {
                 if (otherAlienHandler.currentAge == AlienAge.resource) // You, the resource, gets trampled
                 {
-                    AlienManager.Instance.RemoveFromResourceList(otherAlienHandler);
+                    // AlienManager.Instance.RemoveFromResourceList(otherAlienHandler);
                     otherAlienHandler.HandleDeath();
                     return;
                 }

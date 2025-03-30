@@ -194,7 +194,7 @@ public class PoolManager : MonoBehaviour
             // Add total amount for looping to find active
             currentAlienAmount++;
             // If Force added, include in allAlienHandlerList
-            AlienManager.Instance.allAlienHandlers.Add(tmp.GetComponent<AlienHandler>());
+            AlienManager.Instance.allAlienHandlers.Add(tmp.GetComponent<AlienStateMachine>());
             // Return newly generated GO
             return tmp;
         }

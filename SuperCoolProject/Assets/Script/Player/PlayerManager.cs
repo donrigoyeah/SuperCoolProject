@@ -39,7 +39,7 @@ public class PlayerManager : MonoBehaviour
 
     [Header("Resource Variables")]
     public float lightBulbMultiplicator = 1;
-    public List<AlienHandler> closestResource = new List<AlienHandler>(3);  // 0:Sphere, 1:Square, 2:Triangle
+    public List<AlienStateMachine> closestResource = new List<AlienStateMachine>(3);  // 0:Sphere, 1:Square, 2:Triangle
     public float maxSphereResource = 100;
     public float maxSquareResource = 100;
     public float maxTriangleResource = 100;
@@ -77,7 +77,7 @@ public class PlayerManager : MonoBehaviour
     private AudioSource audioSource;
 
     private Animator playerAnim;
-    private AlienHandler CurrentSurroundingAH;
+    private AlienStateMachine alienStateMachine;
     public GameObject UpgradeParticles;
     public ParticleSystem.MainModule ParticleSystem1Main;
     public ParticleSystem.MainModule ParticleSystem2Main;
@@ -87,7 +87,7 @@ public class PlayerManager : MonoBehaviour
     private float currentDist;
     private int loopAmount;
     private GameObject ResourceAlienPoolGo;
-    private AlienHandler ResourceAlienPoolGoHandler;
+    private AlienStateMachine ResourceAlienPoolGoHandler;
     public int stepsUnfold;
     private float animationDurationUnfold;
     private int stepsFold;
@@ -268,46 +268,46 @@ public class PlayerManager : MonoBehaviour
         {
             if (aliensInRangePlayer[i] == null || aliensInRangePlayer[i].gameObject.activeInHierarchy == false) { continue; }
 
-            CurrentSurroundingAH = aliensInRangePlayer[i].gameObject.GetComponentInParent<AlienHandler>();
+            alienStateMachine = aliensInRangePlayer[i].gameObject.GetComponentInParent<AlienStateMachine>();
 
-            if (CurrentSurroundingAH.targetAlien = this.gameObject) { continue; } // Check if already 
-            if (CurrentSurroundingAH.brainWashed == true) { continue; } // Interaction with player in TutorialScene, prevents HandleUpdateTarget error
-            if (CurrentSurroundingAH.currentAge == AlienHandler.AlienAge.resource) // If sorrounding Alien is resource, put into resource Array
+            if (alienStateMachine.alienClass.targetAlien = this.gameObject) { continue; } // Check if already 
+            if (alienStateMachine.alienClass.brainWashed == true) { continue; } // Interaction with player in TutorialScene, prevents HandleUpdateTarget error
+            if (alienStateMachine.currentAge == AlienStateMachine.AlienAge.resource) // If sorrounding Alien is resource, put into resource Array
             {
-                closestResource[CurrentSurroundingAH.currentSpecies] = CurrentSurroundingAH;
+                closestResource[alienStateMachine.alienClass.currentSpecies] = alienStateMachine;
                 continue;
             }
 
-            CurrentSurroundingAH.SetTarget(this.gameObject);
+            alienStateMachine.SetTarget(this.gameObject);
 
             // TODO: need a way to do StopCoroutine(CurrentSurroundingAH.IdleSecsUntilNewState(what params here?))
-            if (CurrentSurroundingAH.currentAge == AlienHandler.AlienAge.fullyGrown)
+            if (alienStateMachine.currentAge == AlienStateMachine.AlienAge.fullyGrown)
             {
-                if (CurrentSurroundingAH.currentSpecies == 0 && AlienManager.Instance.sphereKilled > 20)
+                if (alienStateMachine.alienClass.currentSpecies == 0 && AlienManager.Instance.sphereKilled > 20)
                 {
-                    CurrentSurroundingAH.isAttackingPlayer = true;
-                    CurrentSurroundingAH.IdleSecsUntilNewState(AlienHandler.AlienState.hunting);
+                    alienStateMachine.alienClass.isAttackingPlayer = true;
+                    alienStateMachine.IdleSecsUntilNewState();
                 }
-                else if (CurrentSurroundingAH.currentSpecies == 1 && AlienManager.Instance.squareKilled > 20)
+                else if (alienStateMachine.alienClass.currentSpecies == 1 && AlienManager.Instance.squareKilled > 20)
                 {
-                    CurrentSurroundingAH.isAttackingPlayer = true;
-                    CurrentSurroundingAH.IdleSecsUntilNewState(AlienHandler.AlienState.hunting);
+                    alienStateMachine.alienClass.isAttackingPlayer = true;
+                    alienStateMachine.IdleSecsUntilNewState();
                 }
-                else if (CurrentSurroundingAH.currentSpecies == 2 && AlienManager.Instance.triangleKilled > 20)
+                else if (alienStateMachine.alienClass.currentSpecies == 2 && AlienManager.Instance.triangleKilled > 20)
                 {
-                    CurrentSurroundingAH.isAttackingPlayer = true;
-                    CurrentSurroundingAH.IdleSecsUntilNewState(AlienHandler.AlienState.hunting);
+                    alienStateMachine.alienClass.isAttackingPlayer = true;
+                    alienStateMachine.IdleSecsUntilNewState();
                 }
                 else
                 {
-                    CurrentSurroundingAH.isEvadingPlayer = true;
-                    CurrentSurroundingAH.IdleSecsUntilNewState(AlienHandler.AlienState.evading);
+                    alienStateMachine.alienClass.isEvadingPlayer = true;
+                    alienStateMachine.IdleSecsUntilNewState();
                 }
             }
             else
             {
-                CurrentSurroundingAH.isEvadingPlayer = true;
-                CurrentSurroundingAH.IdleSecsUntilNewState(AlienHandler.AlienState.evading);
+                alienStateMachine.alienClass.isEvadingPlayer = true;
+                alienStateMachine.IdleSecsUntilNewState();
             }
         }
     }
@@ -317,7 +317,7 @@ public class PlayerManager : MonoBehaviour
         // Check the initla List if has resource already in mind
         if (closestResource[neededResource] != null)
         {
-            if (closestResource[neededResource].currentAge != AlienHandler.AlienAge.resource ||
+            if (closestResource[neededResource].currentAge != AlienStateMachine.AlienAge.resource ||
                 closestResource[neededResource].gameObject.activeInHierarchy == false)
             {
                 closestResource[neededResource] = null;
@@ -342,7 +342,7 @@ public class PlayerManager : MonoBehaviour
             neededResource == 1 ? AlienManager.Instance.resourceSquare.Count :
             neededResource == 2 ? AlienManager.Instance.resourceTriangle.Count : 0;
 
-        List<AlienHandler> ResourceList =
+        List<AlienStateMachine> ResourceList =
            neededResource == 0 ? AlienManager.Instance.resourceSphere :
            neededResource == 1 ? AlienManager.Instance.resourceSquare :
            neededResource == 2 ? AlienManager.Instance.resourceTriangle : null;
@@ -368,7 +368,7 @@ public class PlayerManager : MonoBehaviour
         {
             for (int i = 0; i < AlienManager.Instance.allAlienHandlers.Count; i++)
             {
-                if (AlienManager.Instance.allAlienHandlers[i].currentSpecies != neededResource) { continue; }
+                if (AlienManager.Instance.allAlienHandlers[i].alienClass.currentSpecies != neededResource) { continue; }
 
                 locationForResource = AlienManager.Instance.allAlienHandlers[i].transform.position;
                 distToAlien = Vector3.Distance(locationForResource, MyTransform.position);
@@ -380,9 +380,9 @@ public class PlayerManager : MonoBehaviour
                 ResourceAlienPoolGo = PoolManager.Instance.GetPooledAliens(false);
                 if (ResourceAlienPoolGo != null)
                 {
-                    ResourceAlienPoolGoHandler = ResourceAlienPoolGo.GetComponent<AlienHandler>();
-                    ResourceAlienPoolGoHandler.currentSpecies = neededResource;
-                    ResourceAlienPoolGoHandler.lifeTime = -10;
+                    ResourceAlienPoolGoHandler = ResourceAlienPoolGo.GetComponent<AlienStateMachine>();
+                    ResourceAlienPoolGoHandler.alienClass.currentSpecies = neededResource;
+                    ResourceAlienPoolGoHandler.alienClass.lifeTime = -10;
                     ResourceAlienPoolGo.transform.position = locationForResource;
                     ResourceAlienPoolGo.SetActive(true);
 
@@ -393,7 +393,7 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    private void HandleResourceDetectionIndicator(AlienHandler targetAlienResource, int neededResource)
+    private void HandleResourceDetectionIndicator(AlienStateMachine targetAlienResource, int neededResource)
     {
         if (targetAlienResource == null)
         {

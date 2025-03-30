@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class AlienManager : MonoBehaviour
 {
     [Header("Current Alien Population")]
-    public List<AlienHandler> allAlienHandlers = new List<AlienHandler>(300);
+    public List<AlienStateMachine> allAlienHandlers = new List<AlienStateMachine>(300);
     // 0:Sphere, 1:Square, 2:Triangle
     public int sphereCount;
     public int squareCount;
@@ -19,9 +19,9 @@ public class AlienManager : MonoBehaviour
     public float[] values;
 
     [Header("Current Alien Resources")]
-    public List<AlienHandler> resourceSphere = new List<AlienHandler>(100);
-    public List<AlienHandler> resourceSquare = new List<AlienHandler>(100);
-    public List<AlienHandler> resourceTriangle = new List<AlienHandler>(100);
+    public List<AlienStateMachine> resourceSphere = new List<AlienStateMachine>(100);
+    public List<AlienStateMachine> resourceSquare = new List<AlienStateMachine>(100);
+    public List<AlienStateMachine> resourceTriangle = new List<AlienStateMachine>(100);
 
     [Header("Alien Settings")]
     public int alienLifeResource = 1;
@@ -97,7 +97,7 @@ public class AlienManager : MonoBehaviour
 
     public LoadingScreenHandler loadingScreenHandler;
     private GameObject alienPoolGo;
-    private AlienHandler alienPoolGoHandler;
+    private AlienStateMachine alienPoolGoHandler;
     private int oneSegmentOfPoulation;
     private int currentPopulationSegment;
     private int pieSliceSize;
@@ -113,7 +113,7 @@ public class AlienManager : MonoBehaviour
     public Material[] alienColors; // 0:Blue > 1:Green > 2:Red  
 
 
-    private AlienHandler PopulationUIAH;
+    private AlienStateMachine PopulationUIAH;
 
     public static AlienManager Instance;
 
@@ -197,11 +197,11 @@ public class AlienManager : MonoBehaviour
 
                 }
 
-                alienPoolGoHandler = alienPoolGo.GetComponent<AlienHandler>();
+                alienPoolGoHandler = alienPoolGo.GetComponent<AlienStateMachine>();
                 allAlienHandlers.Add(alienPoolGoHandler);
-                alienPoolGoHandler.currentSpecies = currentSpieziesForArea;
+                alienPoolGoHandler.alienClass.currentSpecies = currentSpieziesForArea;
                 AddToResourceList(alienPoolGoHandler);
-                alienPoolGoHandler.spawnAsAdults = true;
+                alienPoolGoHandler.alienClass.spawnAsAdults = true;
 
                 r = Random.Range(minSpawnRadius, maxSpawnRadius);
                 angle = Random.Range(currentSlize - segmentWidthRange, currentSlize + segmentWidthRange);
@@ -223,38 +223,38 @@ public class AlienManager : MonoBehaviour
         loadingScreenHandler.currentAwakeCalls++;
     }
 
-    public void AddToResourceList(AlienHandler currentAlien)
+    public void AddToResourceList(AlienStateMachine currentAlien)
     {
-        if (currentAlien.currentSpecies == 0)
+        if (currentAlien.alienClass.currentSpecies == 0)
         {
             resourceSphere.Add(currentAlien);
             return;
         }
-        else if (currentAlien.currentSpecies == 1)
+        else if (currentAlien.alienClass.currentSpecies == 1)
         {
             resourceSquare.Add(currentAlien);
             return;
         }
-        else if (currentAlien.currentSpecies == 2)
+        else if (currentAlien.alienClass.currentSpecies == 2)
         {
             resourceTriangle.Add(currentAlien);
             return;
         }
     }
 
-    public void RemoveFromResourceList(AlienHandler currentAlien)
+    public void RemoveFromResourceList(AlienStateMachine currentAlien)
     {
-        if (currentAlien.currentSpecies == 0)
+        if (currentAlien.alienClass.currentSpecies == 0)
         {
             resourceSphere.Remove(currentAlien);
             return;
         }
-        else if (currentAlien.currentSpecies == 1)
+        else if (currentAlien.alienClass.currentSpecies == 1)
         {
             resourceSquare.Remove(currentAlien);
             return;
         }
-        else if (currentAlien.currentSpecies == 2)
+        else if (currentAlien.alienClass.currentSpecies == 2)
         {
             resourceTriangle.Remove(currentAlien);
             return;
@@ -273,16 +273,16 @@ public class AlienManager : MonoBehaviour
         {
             if (item.activeInHierarchy)
             {
-                PopulationUIAH = item.GetComponent<AlienHandler>();
-                if (PopulationUIAH.currentSpecies == 0)
+                PopulationUIAH = item.GetComponent<AlienStateMachine>();
+                if (PopulationUIAH.alienClass.currentSpecies == 0)
                 {
                     sphereCount++;
                 }
-                else if (PopulationUIAH.currentSpecies == 1)
+                else if (PopulationUIAH.alienClass.currentSpecies == 1)
                 {
                     squareCount++;
                 }
-                else if (PopulationUIAH.currentSpecies == 2)
+                else if (PopulationUIAH.alienClass.currentSpecies == 2)
                 {
                     triangleCount++;
                 }

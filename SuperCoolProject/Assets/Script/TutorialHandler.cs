@@ -186,7 +186,7 @@ public class TutorialHandler : MonoBehaviour
         {
             return null;
         }
-        AlienManager.Instance.allAlienHandlers.Add(currentAlienHandler);
+        // AlienManager.Instance.allAlienHandlers.Add(currentAlienHandler);
         return currentAlienHandler;
     }
 

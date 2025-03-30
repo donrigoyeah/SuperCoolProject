@@ -331,7 +331,8 @@ public class GameManager : MonoBehaviour
     {
         foreach (var item in AlienManager.Instance.allAlienHandlers)
         {
-            item.canAct = false;
+            item.alienClass.canAct = false;
+            
         }
     }
 
@@ -339,7 +340,7 @@ public class GameManager : MonoBehaviour
     {
         foreach (var item in AlienManager.Instance.allAlienHandlers)
         {
-            item.canAct = true;
+            item.alienClass.canAct = true;
         }
     }
 

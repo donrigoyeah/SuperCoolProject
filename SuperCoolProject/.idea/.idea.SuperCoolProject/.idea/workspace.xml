@@ -4,15 +4,59 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="492c3224-daad-4c6b-b227-2d9cc0a83923" name="Changes" comment="" />
+    <list default="true" id="492c3224-daad-4c6b-b227-2d9cc0a83923" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Assets/Prefabs/AlienNewSM.prefab" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Prefabs/AlienNewSM.prefab.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scenes/GameScene/NavMesh-NavMesh.asset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scenes/GameScene/NavMesh-NavMesh.asset.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine/AlienClass.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine/AlienClass.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine/AlienStateMachine.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine/AlienStateMachine.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine/States.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine/States/BaseState.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine/States/BaseState.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine/States/EvadingState.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine/States/EvadingState.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine/States/HuntingState.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine/States/HuntingState.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine/States/LookingState.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine/States/LookingState.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine/States/LovingState.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine/States/LovingState.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.SuperCoolProject/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SuperCoolProject/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Material/BulbMaterial/BlueBulb.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Material/BulbMaterial/BlueBulb.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Material/BulbMaterial/RedBulb.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Material/BulbMaterial/RedBulb.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Material/BulbMaterial/YellowBulb.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Material/BulbMaterial/YellowBulb.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/GameScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/GameScene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Aliens/AlienHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Aliens/AlienHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Aliens/AlienManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Aliens/AlienManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/General/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/General/GameManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/General/PoolManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/General/PoolManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Player/PlayerAttacker.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Player/PlayerAttacker.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Player/PlayerManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Player/PlayerManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/TutorialHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/TutorialHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/ab14d35a27c043688812ae199c64b5aa151218/ea/0a2dd954/Quaternion.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f7237cf7abef49bfbb552d7eb076e422174200/08/5e3301fd/Renderer.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f7237cf7abef49bfbb552d7eb076e422174200/ad/26ab1ff0/Transform.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f7237cf7abef49bfbb552d7eb076e422174200/af/6e7386fc/MonoBehaviour.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f7237cf7abef49bfbb552d7eb076e422174200/f5/121ccf10/Mathf.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/3ea01e77be99618395f448b16bd7cc2bd4248bd9e5d8474964b2d97f39c5d74/System.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine/AlienStateMachine.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine/States/RoamingState.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/Aliens/DeadAlienHandler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/General/TimeManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/Player/CameraShake.cs" root0="FORCE_HIGHLIGHTING" />
@@ -35,6 +79,7 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Prototyping-NSM-v1&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -59,7 +104,7 @@
   </component>
   <component name="RunManager" selected="Attach to Unity Player.WindowsPlayer(2,Kinshuk)">
     <configuration name="Standalone Player" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="$PROJECT_DIR$/../../../../BuiltProjects/newnewnew\SuperCoolProject.exe" />
+      <option name="EXE_PATH" value="$PROJECT_DIR$/../../../../BuiltProjects/PlanetB_Final\SuperCoolProject.exe" />
       <option name="PROGRAM_PARAMETERS" value="" />
       <option name="WORKING_DIRECTORY" value="U:\UnityProjects\BuiltProjects\New folder" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -356,6 +401,37 @@
       <workItem from="1707167174364" duration="283000" />
       <workItem from="1707236375734" duration="17849000" />
       <workItem from="1707293050445" duration="188000" />
+      <workItem from="1740570183217" duration="804000" />
+      <workItem from="1740574619184" duration="2458000" />
+      <workItem from="1740587070808" duration="2428000" />
+      <workItem from="1742314349303" duration="6716000" />
+      <workItem from="1742406720011" duration="1520000" />
+      <workItem from="1742466074197" duration="1530000" />
+      <workItem from="1742476102382" duration="188000" />
+      <workItem from="1742481774048" duration="137000" />
+      <workItem from="1742573230774" duration="74000" />
+      <workItem from="1742576249556" duration="2942000" />
+      <workItem from="1742588907466" duration="1058000" />
+      <workItem from="1742637860095" duration="1236000" />
+      <workItem from="1742643893576" duration="2480000" />
+      <workItem from="1742678359079" duration="887000" />
+      <workItem from="1742718572411" duration="3038000" />
+      <workItem from="1742734511618" duration="3301000" />
+      <workItem from="1742759595136" duration="1865000" />
+      <workItem from="1742813413023" duration="181000" />
+      <workItem from="1742896367699" duration="4070000" />
+      <workItem from="1742901236671" duration="723000" />
+      <workItem from="1743083148247" duration="1415000" />
+      <workItem from="1743084673533" duration="254000" />
+      <workItem from="1743084965529" duration="304000" />
+      <workItem from="1743085409606" duration="3943000" />
+      <workItem from="1743169783791" duration="1336000" />
+      <workItem from="1743174250654" duration="1167000" />
+      <workItem from="1743178332217" duration="3175000" />
+      <workItem from="1743184419112" duration="2698000" />
+      <workItem from="1743190624096" duration="61000" />
+      <workItem from="1743264705130" duration="868000" />
+      <workItem from="1743334969667" duration="1851000" />
     </task>
     <servers />
   </component>

@@ -88,7 +88,7 @@ public class PlayerAttacker : MonoBehaviour
     private Animator playerAnim;
     private CharacterController controller;
     private float delta;
-    private AlienHandler CurrentCollidingAH;
+    private AlienStateMachine alienStateMachine;
 
     [Header("Audio")]
     public AudioClip coolingDownAudio;
@@ -580,26 +580,29 @@ public class PlayerAttacker : MonoBehaviour
         // Less resources on all the alien instances
         if (other.gameObject.CompareTag("Alien"))
         {
+            BaseState deathState = new DeathState(alienStateMachine);
 
-            CurrentCollidingAH = other.gameObject.GetComponent<AlienHandler>();
-            if (CurrentCollidingAH.isDead) { return; }
+            alienStateMachine = other.gameObject.GetComponent<AlienStateMachine>();
+            if (alienStateMachine.alienClass.isDead) { return; }
 
-            if (CurrentCollidingAH.currentAge == AlienAge.resource)
+            if (alienStateMachine.currentAge == AlienStateMachine.AlienAge.resource)
             {
                 audioSource.PlayOneShot(collectingResource, 1f);
 
-                playerManager.HandleGainResource(CurrentCollidingAH.currentSpecies);
-                AlienManager.Instance.RemoveFromResourceList(CurrentCollidingAH);
-                CurrentCollidingAH.HandleDeath();
+                playerManager.HandleGainResource(alienStateMachine.alienClass.currentSpecies);
+                AlienManager.Instance.RemoveFromResourceList(alienStateMachine);
+
+                alienStateMachine.ChangeState(deathState);
+                // alienStateMachine.HandleDeath();
             }
             else
             {
-                if (CurrentCollidingAH.currentState == AlienHandler.AlienState.hunting)
+                if (alienStateMachine.GetCurrentState() is HuntingState)
                 {
                     playerManager.HandleHit();
                     if (other.gameObject.activeInHierarchy)
                     {
-                        CurrentCollidingAH.HandleDeathByCombat();
+                        alienStateMachine.ChangeState(deathState);
                     }
                 }
             }
