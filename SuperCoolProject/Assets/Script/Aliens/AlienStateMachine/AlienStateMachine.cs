@@ -1,9 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
+
+//Death By bullet logic, Animation, Sound
 
 public class AlienStateMachine : MonoBehaviour
 {
@@ -56,7 +59,6 @@ public class AlienStateMachine : MonoBehaviour
         }
         
         InitializeStates();
-        ChangeState(roamingState);
         alienClass.rigidbody = GetComponent<Rigidbody>();
         alienClass.resourceSteamGO = GetComponentInChildren<ParticleSystem>().gameObject;
         alienClass.resourceSteamMain = alienClass.resourceSteamGO.GetComponent<ParticleSystem>().main;
@@ -67,6 +69,9 @@ public class AlienStateMachine : MonoBehaviour
         {
             agent.enabled = true;
         }
+        
+        ChangeState(roamingState);
+        Debug.Log(_currentState);
     }
     
     private void Start()
@@ -124,14 +129,11 @@ public class AlienStateMachine : MonoBehaviour
 
     public void ChangeState(BaseState newState)
     {
+        // if (!alienClass.canAct || alienClass.isDead) return;
+        
+        _currentState?.Exit();
         _currentState = newState;
         _currentState.Enter();
-        _currentState?.Exit();
-    }
-    
-    public BaseState GetCurrentState()
-    {
-        return _currentState;
     }
 
     private void OnEnable()
@@ -139,10 +141,19 @@ public class AlienStateMachine : MonoBehaviour
         if (AlienManager.Instance == null)
         {
             Debug.Log("AlienManager.Instance is null");
-            return; 
         }
+        
+        ResetVariable();
+        
         StartCoroutine(HandleAge(alienClass.spawnAsAdults));
         ActivateCurrentModels(alienClass.currentSpecies);
+    }
+
+    private void OnDisable()
+    {
+        ResetVariable();
+        StopAllCoroutines();
+        alienClass.brainWashed = false;
     }
 
     private void HandleRendering()
@@ -304,17 +315,109 @@ public class AlienStateMachine : MonoBehaviour
         }
     }
     
+    private IEnumerator PlayActionParticle(BaseState currentState)
+    {
+        if (alienClass.isRendered == false)
+        {
+            yield return null;
+        }
+        else
+        {
+            if (currentState == lovingState)
+            {
+                alienClass.alienActionFogMain.startColor = new ParticleSystem.MinMaxGradient(AlienManager.Instance.loveMakingColor1, AlienManager.Instance.loveMakingColor2);
+            }
+            else if (currentState == huntingState)
+            {
+                alienClass.alienActionFogMain.startColor = new ParticleSystem.MinMaxGradient(AlienManager.Instance.fightingColor1, AlienManager.Instance.fightingColor2);
+            }
+
+            alienClass.alienActionParticlesGO.SetActive(true);
+            yield return new WaitForSeconds(1f);
+            alienClass.alienActionParticlesGO.SetActive(false);
+        }
+    }
+
+    private void ResetVariable()
+    {
+        alienClass.lustTimer = 0;
+        alienClass.hungerTimer = 0;
+        alienClass.lifeTime = 0;
+        alienClass.rigidbody.velocity = Vector3.zero;
+        currentAge = AlienAge.resource;
+        alienClass.minTimeToChild += UnityEngine.Random.Range(0, 10); // This just get added on top of minTimeToChild 
+        alienClass.hasUterus = UnityEngine.Random.Range(0, 2) == 1;
+        alienClass.alienHealth = AlienManager.Instance.alienLifeResource;
+        alienClass.brainWashed = false; // AKA tutuorial scene
+        alienClass.canAct = true;
+        alienClass.isDead = false;
+        alienClass.spawnAsAdults = false;
+        alienClass.gotAttackedByPlayer = false;
+        alienClass.isAttackingPlayer = false;
+        alienClass.isEvadingPlayer = false;
+        alienClass.targetPosition3D = Vector3.zero;
+        alienClass.targetAlien = null;
+    }
+    
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Alien"))
         {
-            AlienStateMachine prey = other.GetComponent<AlienStateMachine>();
-            if (prey.alienClass.currentSpecies != alienClass.currentSpecies && _currentState == evadingState)
+            AlienStateMachine otherAlien = other.GetComponent<AlienStateMachine>();
+            if (otherAlien.alienClass.currentSpecies != alienClass.currentSpecies && _currentState == evadingState)
             {
                 ChangeState(deathState);
                 
                 alienClass.hungerTimer = 0; // Reset hunger
             }
+            
+            if (alienClass.currentSpecies == otherAlien.alienClass.currentSpecies && _currentState == lovingState && otherAlien._currentState == lovingState)
+            {
+                alienClass.lustTimer = 0;
+                otherAlien.alienClass.lustTimer = 0;
+                StartCoroutine(PlayActionParticle(lovingState));
+                // audioSource.PlayOneShot(RandomAudioSelectorFoley(AlienManager.Instance.aliensLoving));
+                ChangeState(lovingState);
+            }
+        }
+        
+        if (other.CompareTag("Bullet"))
+        {
+            if(currentAge == AlienAge.resource) return;
+            
+            alienClass.CurrentBH = other.gameObject.GetComponent<BulletHandler>();
+            alienClass.currentBulletDamage = alienClass.CurrentBH.bulletDamage;
+            
+            alienClass.alienHealth -= alienClass.currentBulletDamage;
+            alienClass.isPlayerBullet = alienClass.CurrentBH.isPlayerBullet;
+
+            if (Random.Range(0, 2) == 1)
+            {
+                alienClass.gotAttackedByPlayer = true;
+                ChangeState(huntingState);
+            }
+            else
+            {
+                alienClass.gotAttackedByPlayer = true;
+                ChangeState(evadingState);
+            }
+            
+            alienClass.damageUIGo = PoolManager.Instance.GetPooledDamageUI();
+            if (alienClass.damageUIGo != null)
+            {
+                alienClass.damageUIGo.transform.position = alienClass.MyTransform.position;
+
+                alienClass.DUIH = alienClass.damageUIGo.GetComponentInChildren<DamageUIHandler>();
+                alienClass.DUIH.damageValue = alienClass.currentBulletDamage;
+
+                alienClass.damageUIGo.SetActive(true);
+            }
+            
+            if (alienClass.alienHealth <= 0 && alienClass.isDead == false)
+            {
+                ChangeState(deathState);
+            };
+            
         }
     }
 }

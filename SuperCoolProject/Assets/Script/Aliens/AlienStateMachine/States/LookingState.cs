@@ -16,6 +16,8 @@ public class LookingState : BaseState
     {
         base.Enter();
         model.agent.speed = 3.5f; //Default speed
+        Debug.Log("Alien is looking");
+        model.StartCoroutine(BackToRoamingState());
         Looking();
     }
 
@@ -63,6 +65,8 @@ public class LookingState : BaseState
             // Check for mating conditions (same species)
             if (model.alienClass.currentSpecies == model.otherAlien.alienClass.currentSpecies)
             {
+                Debug.Log("Same species");
+                
                 if (model.alienClass.hasUterus != model.otherAlien.alienClass.hasUterus && 
                     model.currentAge == AlienStateMachine.AlienAge.sexualActive && 
                     model.otherAlien.currentAge == AlienStateMachine.AlienAge.sexualActive &&
@@ -72,7 +76,7 @@ public class LookingState : BaseState
                     model.agent.SetDestination(model.otherAlien.transform.position);
                     model.otherAlien.ChangeState(model.otherAlien.lovingState);
                     model.otherAlien.agent.SetDestination(model.transform.position);
-                    model.ChangeState(model.lovingState);
+                    // model.ChangeState(model.lovingState);
                     break;
                 }
             }
@@ -80,6 +84,8 @@ public class LookingState : BaseState
             {
                 bool isPredator = (model.alienClass.currentSpecies == (model.otherAlien.alienClass.currentSpecies + 1) % 3); // 0 > 1 > 2 > 0 cycle
 
+                if(model.currentAge < AlienStateMachine.AlienAge.sexualActive) return;
+                
                 if (model.alienClass.hungerTimer > AlienManager.Instance.hungerTimerThreshold && isPredator)
                 {
                     model.ChangeState(model.huntingState);
@@ -107,5 +113,15 @@ public class LookingState : BaseState
         // }
     }
     
+    private IEnumerator BackToRoamingState()
+    {
+        yield return new WaitForSeconds(2f);
+
+        if (model._currentState == model.lookingState)
+        {
+            Debug.Log("Roaming --- 2");
+            model.ChangeState(model.roamingState);
+        }
+    }
 }
 

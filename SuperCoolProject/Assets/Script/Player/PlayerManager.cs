@@ -286,22 +286,22 @@ public class PlayerManager : MonoBehaviour
                 if (alienStateMachine.alienClass.currentSpecies == 0 && AlienManager.Instance.sphereKilled > 20)
                 {
                     alienStateMachine.alienClass.isAttackingPlayer = true;
-                    alienStateMachine.IdleSecsUntilNewState();
+                    StartCoroutine(alienStateMachine.IdleSecsUntilNewState());
                 }
                 else if (alienStateMachine.alienClass.currentSpecies == 1 && AlienManager.Instance.squareKilled > 20)
                 {
                     alienStateMachine.alienClass.isAttackingPlayer = true;
-                    alienStateMachine.IdleSecsUntilNewState();
+                    StartCoroutine(alienStateMachine.IdleSecsUntilNewState());
                 }
                 else if (alienStateMachine.alienClass.currentSpecies == 2 && AlienManager.Instance.triangleKilled > 20)
                 {
                     alienStateMachine.alienClass.isAttackingPlayer = true;
-                    alienStateMachine.IdleSecsUntilNewState();
+                    StartCoroutine(alienStateMachine.IdleSecsUntilNewState());
                 }
                 else
                 {
                     alienStateMachine.alienClass.isEvadingPlayer = true;
-                    alienStateMachine.IdleSecsUntilNewState();
+                    StartCoroutine(alienStateMachine.IdleSecsUntilNewState());
                 }
             }
             else

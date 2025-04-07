@@ -19,9 +19,9 @@ public class HuntingState : BaseState
         base.Update();
         model.agent.SetDestination(model.otherAlien.transform.position);
 
-        if (!model.otherAlien.gameObject.activeInHierarchy)
+        float distance = Vector3.Distance(model.transform.position, model.otherAlien.transform.position);
+        if (distance > AlienManager.Instance.lookRadius || !model.otherAlien.gameObject.activeInHierarchy)
         {
-            model.otherAlien = null;
             model.ChangeState(model.roamingState);
         }
         

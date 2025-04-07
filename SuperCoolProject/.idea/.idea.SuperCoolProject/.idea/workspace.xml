@@ -5,40 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="492c3224-daad-4c6b-b227-2d9cc0a83923" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/Prefabs/AlienNewSM.prefab" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Prefabs/AlienNewSM.prefab.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scenes/GameScene/NavMesh-NavMesh.asset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scenes/GameScene/NavMesh-NavMesh.asset.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine/AlienClass.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine/AlienClass.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine/AlienStateMachine.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine/AlienStateMachine.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine/States.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine/States/BaseState.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine/States/BaseState.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine/States/EvadingState.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine/States/EvadingState.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine/States/HuntingState.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine/States/HuntingState.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine/States/LookingState.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine/States/LookingState.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine/States/LovingState.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine/States/LovingState.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SuperCoolProject/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SuperCoolProject/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Material/BulbMaterial/BlueBulb.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Material/BulbMaterial/BlueBulb.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Material/BulbMaterial/RedBulb.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Material/BulbMaterial/RedBulb.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Material/BulbMaterial/YellowBulb.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Material/BulbMaterial/YellowBulb.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Material/ShaderGraph/DissolveMaterial.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Material/ShaderGraph/DissolveMaterial.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/AlienNewSM.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/AlienNewSM.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/GameScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/GameScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Aliens/AlienHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Aliens/AlienHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Aliens/AlienManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Aliens/AlienManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/General/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/General/GameManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/General/PoolManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/General/PoolManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine/AlienClass.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine/AlienClass.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine/AlienStateMachine.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine/AlienStateMachine.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine/States/DeathState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine/States/DeathState.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine/States/EvadingState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine/States/EvadingState.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine/States/HuntingState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine/States/HuntingState.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine/States/LookingState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine/States/LookingState.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine/States/LovingState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Aliens/AlienStateMachine/States/LovingState.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Script/Player/PlayerAttacker.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Player/PlayerAttacker.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Script/Player/PlayerManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Player/PlayerManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/TutorialHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/TutorialHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -432,6 +411,20 @@
       <workItem from="1743190624096" duration="61000" />
       <workItem from="1743264705130" duration="868000" />
       <workItem from="1743334969667" duration="1851000" />
+      <workItem from="1743340048630" duration="1247000" />
+      <workItem from="1743341515238" duration="6257000" />
+      <workItem from="1743354702156" duration="672000" />
+      <workItem from="1743363643213" duration="1223000" />
+      <workItem from="1743682787677" duration="2201000" />
+      <workItem from="1743951661947" duration="2451000" />
+      <workItem from="1743957172205" duration="287000" />
+      <workItem from="1743957505626" duration="190000" />
+      <workItem from="1743957708223" duration="739000" />
+      <workItem from="1743958475895" duration="140000" />
+      <workItem from="1743958704201" duration="974000" />
+      <workItem from="1743961951951" duration="168000" />
+      <workItem from="1744013992815" duration="1192000" />
+      <workItem from="1744019298401" duration="169000" />
     </task>
     <servers />
   </component>

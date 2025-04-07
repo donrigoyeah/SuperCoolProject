@@ -47,7 +47,7 @@ public class AlienClass
     public float randDirXRoaming;
     public float randDirZRoaming;
     public GameObject newBornAlienPoolGo;
-    public AlienHandler newBornAlien;
+    public AlienStateMachine newBornAlien;
     public float randomOffSetBabySpawn;
     public Vector3 targetPosition3D;
     public Vector2 targetPosition2D;
@@ -71,7 +71,7 @@ public class AlienClass
     
     [Header("More reference")]
     public float lookTimeIdle;
-    private GameObject deadAlienGO;
+    public GameObject deadAlienGO;
     public Rigidbody deadAlienRB;
     public DeadAlienHandler deadAlien;
     public Vector2 CameraFollowSpot2D;

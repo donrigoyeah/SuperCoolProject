@@ -24,6 +24,7 @@ public class EvadingState : BaseState
     public override void Exit()
     {
         base.Exit();
+        model.otherAlien = null;
     }
 
     public void Evading()
