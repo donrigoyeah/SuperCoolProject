@@ -29,6 +29,8 @@ public class PlayerDeadBodyHandler : MonoBehaviour
             playerManager.currentPart = this.gameObject;
             playerLocomotion.playerSpeed = playerSpeedReduction;
             playerManager.isCarryingPart = true;
+            GetComponent<Rigidbody>().isKinematic = true;
+
         }
         else if (!inputHandler.inputInteracting)
         {
@@ -37,10 +39,12 @@ public class PlayerDeadBodyHandler : MonoBehaviour
             playerManager.currentPart = null;
             playerManager.isCarryingPart = false;
             this.transform.parent = null;
+            GetComponent<Rigidbody>().isKinematic = false;
+
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Player"))
         {
@@ -63,6 +67,7 @@ public class PlayerDeadBodyHandler : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            Debug.Log("Player exited dead body trigger");
             if (inputHandler == null)
             {
                 inputHandler = other.gameObject.GetComponent<InputHandler>();
@@ -70,6 +75,7 @@ public class PlayerDeadBodyHandler : MonoBehaviour
             
             if (!inputHandler.inputInteracting)
             {
+                Debug.Log("Stopped interacting with dead body from trigger exit");
                 if (playerManager == null)
                 {
                     playerManager = other.gameObject.GetComponent<PlayerManager>();
