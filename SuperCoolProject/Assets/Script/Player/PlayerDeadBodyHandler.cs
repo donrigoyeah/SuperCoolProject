@@ -29,6 +29,8 @@ public class PlayerDeadBodyHandler : MonoBehaviour
             playerManager.currentPart = this.gameObject;
             playerLocomotion.playerSpeed = playerSpeedReduction;
             playerManager.isCarryingPart = true;
+            GetComponent<Rigidbody>().isKinematic = true;
+
         }
         else if (!inputHandler.inputInteracting)
         {
@@ -37,10 +39,12 @@ public class PlayerDeadBodyHandler : MonoBehaviour
             playerManager.currentPart = null;
             playerManager.isCarryingPart = false;
             this.transform.parent = null;
+            GetComponent<Rigidbody>().isKinematic = false;
+
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Player"))
         {
