@@ -67,7 +67,6 @@ public class PlayerDeadBodyHandler : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Player exited dead body trigger");
             if (inputHandler == null)
             {
                 inputHandler = other.gameObject.GetComponent<InputHandler>();
@@ -75,7 +74,6 @@ public class PlayerDeadBodyHandler : MonoBehaviour
             
             if (!inputHandler.inputInteracting)
             {
-                Debug.Log("Stopped interacting with dead body from trigger exit");
                 if (playerManager == null)
                 {
                     playerManager = other.gameObject.GetComponent<PlayerManager>();
