@@ -288,8 +288,8 @@ public class PlayerAttacker : MonoBehaviour
             BH.isPlayerBullet = true;
             BH.bulletDamage = damage;
             bulletPoolGo.SetActive(true);
-            BH.rb.velocity = Vector3.zero;
-            BH.rb.velocity = bulletPoolGo.transform.forward * bulletSpeed;
+            BH.rb.linearVelocity = Vector3.zero;
+            BH.rb.linearVelocity = bulletPoolGo.transform.forward * bulletSpeed;
 
             audioSource.PlayOneShot(RandomAudioSelector(shootLazer), 1f);
 

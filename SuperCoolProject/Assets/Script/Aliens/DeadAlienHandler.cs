@@ -32,7 +32,7 @@ public class DeadAlienHandler : MonoBehaviour
 
     private void OnDisable()
     {
-        rb.velocity = Vector3.zero;
+        rb.linearVelocity = Vector3.zero;
         this.transform.position = Vector3.zero;
     }
 

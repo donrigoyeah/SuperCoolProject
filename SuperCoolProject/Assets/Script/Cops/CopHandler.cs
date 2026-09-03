@@ -178,8 +178,8 @@ public class CopHandler : MonoBehaviour
             BH = copBulletPoolGo.GetComponent<BulletHandler>();
             BH.bulletDamage = copBulletDamage;
             BH.isPlayerBullet = false;
-            BH.rb.velocity = Vector3.zero;
-            BH.rb.velocity = lazerSpawnLocation.forward * copBulletSpeed;
+            BH.rb.linearVelocity = Vector3.zero;
+            BH.rb.linearVelocity = lazerSpawnLocation.forward * copBulletSpeed;
 
             copBulletPoolGo.SetActive(true);
         }

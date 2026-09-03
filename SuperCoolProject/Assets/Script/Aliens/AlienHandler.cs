@@ -319,7 +319,7 @@ public class AlienHandler : MonoBehaviour
         lustTimer = 0;
         hungerTimer = 0;
         lifeTime = 0;
-        MyRigidbody.velocity = Vector3.zero;
+        MyRigidbody.linearVelocity = Vector3.zero;
         currentAge = AlienAge.resource;
         minTimeToChild += UnityEngine.Random.Range(0, 10); // This just get added on top of minTimeToChild 
         hasUterus = UnityEngine.Random.Range(0, 2) == 1;
@@ -1000,7 +1000,7 @@ public class AlienHandler : MonoBehaviour
             // Handle Alien Death
             if (alienHealth <= 0 && isDead == false)
             {
-                HandleDeathByBullet(isPlayerBullet, other.GetComponent<Rigidbody>().velocity);
+                HandleDeathByBullet(isPlayerBullet, other.GetComponent<Rigidbody>().linearVelocity);
             };
 
             CurrentBH = null;

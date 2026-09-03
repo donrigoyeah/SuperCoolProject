@@ -12,6 +12,7 @@ Material:
   m_Parent: {fileID: 2100000, guid: 5597bbc0df6e4e04cb695dccf979e73f, type: 2}
   m_ModifiedSerializedProperties: 2
   m_ValidKeywords:
+  - _EMISSION
   - _RECEIVE_SHADOWS_OFF
   m_InvalidKeywords: []
   m_LightmapFlags: 6
@@ -20,7 +21,8 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap:
     RenderType: Opaque
-  disabledShaderPasses: []
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -31,6 +33,7 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!114 &1994005521573686712
 MonoBehaviour:
   m_ObjectHideFlags: 11
@@ -43,4 +46,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  version: 7
+  version: 10
