@@ -54,6 +54,10 @@ public class SpaceShipHandler : MonoBehaviour
                     PL.playerSpeed = spaceShipPartHandler.previousPlayerSpeed;
                 }
 
+                PM.currentSphereResource = PM.maxSphereResource;
+                PM.currentSquareResource = PM.maxSquareResource;
+                PM.currentTriangleResource = PM.maxTriangleResource;
+
                 GameManager.Instance.currentSpaceShipParts++;
                 PM.currentPart.SetActive(false);
                 PM.currentPart = null;
