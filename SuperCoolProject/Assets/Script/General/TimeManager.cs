@@ -126,11 +126,11 @@ public class TimeManager : MonoBehaviour
 
     private void HandleSunMoonMovement()
     {
-        sunAngle = (((float)hours * 60) + (float)minutes) / ((float)24 * 60);
+        sunAngle = (((float)hours * 60) + (float)minutes) / ((float)24 * 60) ;
 
-        if (hours < 12)
+        if (hours > 6 || hours <= 18)
         {
-            sunTransform.eulerAngles = new Vector3((sunAngle * 360), 0, 0);
+            sunTransform.eulerAngles = new Vector3((sunAngle * 360) - 90, 0, 0);
         }
         else
         {
@@ -140,28 +140,28 @@ public class TimeManager : MonoBehaviour
 
     private void HourSettings()
     {
-        if (hours == 6)
+        if (hours == 24)
         {
             StartCoroutine(ChangeColor(nightToSunrise, 5f, 0.5f, 1f));
             currentState = DayState.nightToSunrise;
+
+            hours = 0;
+            days++;
         }
-        else if (hours == 12)
+        else if (hours == 6)
         {
             StartCoroutine(ChangeColor(sunriseToDay, 5f, 1f, 1.5f));
             currentState = DayState.sunriseToDay;
         }
-        else if (hours == 18)
+        else if (hours == 12)
         {
             StartCoroutine(ChangeColor(dayToSunSet, 5f, 1.5f, 1f));
             currentState = DayState.dayToSunSet;
         }
-        else if (hours == 24)
+        else if (hours == 18)
         {
             StartCoroutine(ChangeColor(sunsetToNight, 5f, 1f, 0.5f));
             currentState = DayState.sunsetToNight;
-
-            hours = 0;
-            days++;
         }
     }
 

@@ -199,10 +199,11 @@ public class HUDHandler : MonoBehaviour
         {
             DayNightCircle.transform.rotation = Quaternion.Euler(0, 0, (180 * (currentTotalMinutes - (5 * 60)) / 60) + 180);
         }
-        if (currentTotalMinutes > (17 * 60) && currentTotalMinutes <= 18 * 60)
+        else if ((currentTotalMinutes > (17 * 60) && currentTotalMinutes <= 18 * 60) || currentTotalMinutes == 0)
         {
             DayNightCircle.transform.rotation = Quaternion.Euler(0, 0, 180 * (currentTotalMinutes - (17 * 60)) / 60);
         }
+
     }
 
 

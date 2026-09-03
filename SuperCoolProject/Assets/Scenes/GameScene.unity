@@ -758,13 +758,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 410087039}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 53.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2045070898}
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &410087042
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1958,6 +1958,11 @@ PrefabInstance:
       objectReference: {fileID: 410087040}
     - target: {fileID: 8011158361019024895, guid: 19d3c33e64a2e1c40a235581f0853b09,
         type: 3}
+      propertyPath: timeBoost
+      value: 1500
+      objectReference: {fileID: 0}
+    - target: {fileID: 8011158361019024895, guid: 19d3c33e64a2e1c40a235581f0853b09,
+        type: 3}
       propertyPath: displayTime
       value: 
       objectReference: {fileID: 1821839599}
@@ -3119,7 +3124,7 @@ PrefabInstance:
     - target: {fileID: 3962486824595711025, guid: 5a1cddd508ccd8642aadca25d5fcd657,
         type: 3}
       propertyPath: field of view
-      value: 60.05972
+      value: 66.71
       objectReference: {fileID: 0}
     - target: {fileID: 4011496363855694401, guid: 5a1cddd508ccd8642aadca25d5fcd657,
         type: 3}
@@ -3184,7 +3189,7 @@ PrefabInstance:
     - target: {fileID: 8075329454108913224, guid: 5a1cddd508ccd8642aadca25d5fcd657,
         type: 3}
       propertyPath: m_Lens.FieldOfView
-      value: 60.05972
+      value: 66.71
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4508,7 +4513,7 @@ PrefabInstance:
     - target: {fileID: 4044361012322878466, guid: ffb68a391af645d4bbbf12099ca9e96e,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5578650370429634536, guid: ffb68a391af645d4bbbf12099ca9e96e,
         type: 3}
@@ -4629,6 +4634,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8565966556133376978, guid: ffb68a391af645d4bbbf12099ca9e96e,
+        type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
+    - target: {fileID: 8749456656454422153, guid: ffb68a391af645d4bbbf12099ca9e96e,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7050057
+      objectReference: {fileID: 0}
+    - target: {fileID: 8749456656454422153, guid: ffb68a391af645d4bbbf12099ca9e96e,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.7092017
+      objectReference: {fileID: 0}
+    - target: {fileID: 8749456656454422153, guid: ffb68a391af645d4bbbf12099ca9e96e,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -90.34
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 427652949654344195, guid: ffb68a391af645d4bbbf12099ca9e96e, type: 3}
